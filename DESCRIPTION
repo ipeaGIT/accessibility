@@ -1,0 +1,41 @@
+Type: Package
+Package: accessibility
+Title: Transport accessibility metrics
+Version: 0.0.1
+Authors@R: 
+    c(person(given = "Daniel",
+             family = "Herszenhut",
+             role = c("aut", "cre"),
+             email = "dhersz@gmail.com",
+             comment = c(ORCID = "0000-0001-8066-1105")),
+      person(given = "Rafael H. M.",
+             family = "Pereira",
+             role = "aut",
+             comment = c(ORCID = "0000-0003-2125-7465")),
+      person(given = "Ipea - Institute for Applied Economic Research",
+             role = c("cph", "fnd")))
+Description: Utility functions to calculate multiple transport accessiility metrics.
+License: MIT + file LICENSE
+URL: https://github.com/ipeaGIT/accessibility
+BugReports: https://github.com/ipeaGIT/accessibility/issues
+Depends: 
+    R (>= 2.10)
+Imports:
+    checkmate,
+    data.table,
+    utils
+Suggests: 
+    covr,
+    ggplot2,
+    knitr,
+    r5r,
+    rmarkdown,
+    sf,
+    stats,
+    testthat
+VignetteBuilder: 
+    knitr
+Encoding: UTF-8
+NeedsCompilation: no
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.0
