@@ -41,7 +41,7 @@ cumulative_time_threshold <- function(data, opportunity_colname, cutoff = 20, by
   checkmate::test_data_frame(data)
   checkmate::test_string(opportunity_colname)
   checkmate::test_string(by_col)
-  checkmate::test_numeric(cutoff)
+  checkmate::assert_number(cutoff, lower = 0)
 
   checkmate::assert_names(names(data), must.include = opportunity_colname,
                           .var.name = "data")

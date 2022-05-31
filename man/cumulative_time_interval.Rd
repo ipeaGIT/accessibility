@@ -10,7 +10,7 @@ cumulative_time_interval(
   start = 20,
   end = 30,
   by_col = "from_id",
-  summary = "mean"
+  stat = "mean"
 )
 }
 \arguments{
@@ -27,7 +27,7 @@ interval.}
 \item{by_col}{A string pointing to the name of the column of origin or
 destination.}
 
-\item{summary}{A \code{string} indicating the summary measure to be used. It
+\item{stat}{A \code{string} indicating the summary measure to be used. It
 accepts either \code{median} (Default) or \code{mean}.}
 }
 \value{
@@ -49,7 +49,7 @@ df <- cumulative_time_interval(data = ttm,
                               start = 20,
                               end = 30,
                               by_col = 'from_id',
-                              summary ='median')
+                              stat ='median')
 head(df)
 
 }
