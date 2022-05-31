@@ -4,14 +4,23 @@
 \alias{cumulative_time_threshold}
 \title{Cumulative access based on time threshold}
 \usage{
-cumulative_time_threshold(data, cutoff = 20, by_col = "from_id")
+cumulative_time_threshold(
+  data,
+  opportunity_colname,
+  cutoff = 20,
+  by_col = "from_id"
+)
 }
 \arguments{
-\item{data}{A \code{data.frame} with a travel time matrix in long format}
+\item{data}{A \code{data.frame} with a travel time matrix in long format.}
 
-\item{cutoff}{An \code{numeric}}
+\item{opportunity_colname}{A \code{string} indicating the column name where the
+data on number of opportunities is stored.}
 
-\item{by_col}{A string pointing to the name of the column of origin or destination}
+\item{cutoff}{A \code{numeric} value indicating the maximum travel time considered.}
+
+\item{by_col}{A \code{string} pointing to the name of the column of origin or
+destination.}
 }
 \value{
 A \code{data.table} object.
@@ -29,14 +38,17 @@ ttm <- read.csv(data_path)
 
 # Active accessibility: number of schools accessible from each origin
 df <- cumulative_time_threshold(data = ttm,
+                               opportunity_colname = 'schools',
                                cutoff = 30,
                                by_col = 'from_id')
 head(df)
 
 # Passive accessibility: number of people that can reach each destination
 df <- cumulative_time_threshold(data = ttm,
+                               opportunity_colname = 'population',
                                cutoff = 30,
                                by_col = 'to_id')
+head(df)
 }
 \seealso{
 Other Cumulative access: 

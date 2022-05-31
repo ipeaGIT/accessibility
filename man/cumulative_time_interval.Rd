@@ -6,6 +6,7 @@
 \usage{
 cumulative_time_interval(
   data = df,
+  opportunity_colname,
   start = 20,
   end = 30,
   by_col = "from_id",
@@ -13,16 +14,21 @@ cumulative_time_interval(
 )
 }
 \arguments{
-\item{data}{A \code{data.frame} with a travel time matrix in long format}
+\item{data}{A \code{data.frame} with a travel time matrix in long format.}
 
-\item{start}{An \code{integer} indicating the \code{start} point of the travel time interval}
+\item{opportunity_colname}{A \code{string} indicating the column name where the
+data on number of opportunities is stored.}
 
-\item{end}{An \code{integer} indicating the \code{end} point of the travel time interval}
+\item{start}{An \code{integer} indicating the \code{start} point of the travel time
+interval.}
 
-\item{by_col}{A string pointing to the name of the column of origin or destination}
+\item{end}{An \code{integer} indicating the \code{end} point of the travel time interval.}
 
-\item{summary}{A \code{string} indicating the summary measure to be used. It accepts
-either \code{mean} (Default) or \code{median}.}
+\item{by_col}{A string pointing to the name of the column of origin or
+destination.}
+
+\item{summary}{A \code{string} indicating the summary measure to be used. It
+accepts either \code{median} (Default) or \code{mean}.}
 }
 \value{
 A \code{data.table} object.
@@ -39,10 +45,11 @@ data_path <- system.file("extdata/ttm_poa.csv", package = "accessibility")
 ttm <- read.csv(data_path)
 
 df <- cumulative_time_interval(data = ttm,
+                              opportunity_colname = 'schools',
                               start = 20,
                               end = 30,
                               by_col = 'from_id',
-                              summary ='mean')
+                              summary ='median')
 head(df)
 
 }
