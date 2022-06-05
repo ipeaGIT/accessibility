@@ -3,16 +3,22 @@
 #' The function calculates the average or median number of opportunities
 #' accessible within a travel time interval specified by the user.
 #'
-#' @param data A `data.frame` with a travel time matrix in long format.
-#' @param opportunity_colname A `string` indicating the column name where the
-#' data on number of opportunities is stored.
+#' @param data A `data.frame` with a travel time matrix in long format,
+#'   containing the at least the columns of origin, destination, travel time
+#'   from origin to destination, and number of opportunities in destination
+#'   locations.
+#' @param opportunity_colname A `string` indicating the name of the column with
+#'   data on the number of opportunities to be considered.
+#' @param by_colname A `string` with the name of the column of origin or
+#'   destination that should be considered, indicating whether accessibility
+#'   levels should by calculated by each origin (active accessibility) or
+#'   destination (passive accessibility).
 #' @param start An `integer` indicating the `start` point of the travel time
 #' interval.
 #' @param end An `integer` indicating the `end` point of the travel time interval.
-#' @param stat A `string` indicating the summary measure to be used. It
-#' accepts either `median` (Default) or `mean`.
-#' @param by_col A string pointing to the name of the column of origin or
-#' destination.
+#' @param stat A `string` indicating the summary statistic used to aggregate the
+#' accessibility estimates within the time interval. It accepts either `median`
+#' (Default) or `mean`.
 #'
 #' @return A `data.table` object.
 #' @examples
@@ -26,25 +32,25 @@
 #'                               opportunity_colname = 'schools',
 #'                               start = 20,
 #'                               end = 30,
-#'                               by_col = 'from_id',
+#'                               by_colname = 'from_id',
 #'                               stat ='median')
 #'head(df)
 #'
 #' @family Cumulative access
 #' @export
-cumulative_time_interval <- function(data = df, opportunity_colname, start=20, end=30, by_col='from_id', stat='mean'){
+cumulative_time_interval <- function(data, opportunity_colname, start, end, by_colname, stat='mean'){
 
   # check inputs ------------------------------------------------------------
   checkmate::test_data_frame(data)
   checkmate::test_string(opportunity_colname)
-  checkmate::test_string(by_col)
+  checkmate::test_string(by_colname)
   checkmate::test_numeric(start)
   checkmate::test_numeric(end)
 
   checkmate::assert_names(names(data), must.include = opportunity_colname,
                           .var.name = "data")
 
-  checkmate::assert_names(names(data), must.include = by_col,
+  checkmate::assert_names(names(data), must.include = by_colname,
                           .var.name = "data")
 
   checkmate::assert_choice(x=stat, choices=c('mean', 'median'))
@@ -62,7 +68,7 @@ cumulative_time_interval <- function(data = df, opportunity_colname, start=20, e
                           temp <-  cumulative_time_threshold(data = data,
                                                              cutoff = i,
                                                              opportunity_colname=opportunity_colname,
-                                                             by_col=by_col)
+                                                             by_colname=by_colname)
                           return(temp)
                           }
                         )
@@ -70,10 +76,10 @@ cumulative_time_interval <- function(data = df, opportunity_colname, start=20, e
 
   # summary measure to be used
   if (stat=='mean') {
-    access <- access[, .(access=mean(access, na.rm=T)), by=by_col ] }
+    access <- access[, .(access=mean(access, na.rm=T)), by=by_colname ] }
 
   if (stat=='median') {
-    access <- access[, .(access=median(access, na.rm=T)), by=by_col ] }
+    access <- access[, .(access=median(access, na.rm=T)), by=by_colname ] }
 
   return(access)
   }

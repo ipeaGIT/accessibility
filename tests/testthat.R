@@ -1,6 +1,4 @@
-options(java.parameters = '-Xmx2G')
-
 library(testthat)
-library(r5r)
+library(accessibility)
 
-test_check("r5r")
+test_check("accessibility")

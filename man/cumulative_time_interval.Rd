@@ -5,30 +5,36 @@
 \title{Cumulative access based on time interval}
 \usage{
 cumulative_time_interval(
-  data = df,
+  data,
   opportunity_colname,
-  start = 20,
-  end = 30,
-  by_col = "from_id",
+  start,
+  end,
+  by_colname,
   stat = "mean"
 )
 }
 \arguments{
-\item{data}{A \code{data.frame} with a travel time matrix in long format.}
+\item{data}{A \code{data.frame} with a travel time matrix in long format,
+containing the at least the columns of origin, destination, travel time
+from origin to destination, and number of opportunities in destination
+locations.}
 
-\item{opportunity_colname}{A \code{string} indicating the column name where the
-data on number of opportunities is stored.}
+\item{opportunity_colname}{A \code{string} indicating the name of the column with
+data on the number of opportunities to be considered.}
 
 \item{start}{An \code{integer} indicating the \code{start} point of the travel time
 interval.}
 
 \item{end}{An \code{integer} indicating the \code{end} point of the travel time interval.}
 
-\item{by_col}{A string pointing to the name of the column of origin or
-destination.}
+\item{by_colname}{A \code{string} with the name of the column of origin or
+destination that should be considered, indicating whether accessibility
+levels should by calculated by each origin (active accessibility) or
+destination (passive accessibility).}
 
-\item{stat}{A \code{string} indicating the summary measure to be used. It
-accepts either \code{median} (Default) or \code{mean}.}
+\item{stat}{A \code{string} indicating the summary statistic used to aggregate the
+accessibility estimates within the time interval. It accepts either \code{median}
+(Default) or \code{mean}.}
 }
 \value{
 A \code{data.table} object.
@@ -48,7 +54,7 @@ df <- cumulative_time_interval(data = ttm,
                               opportunity_colname = 'schools',
                               start = 20,
                               end = 30,
-                              by_col = 'from_id',
+                              by_colname = 'from_id',
                               stat ='median')
 head(df)
 
