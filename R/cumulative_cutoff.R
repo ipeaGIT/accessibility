@@ -1,7 +1,7 @@
-#' Cumulative access based on time threshold
+#' Cumulative access based on maximum travel time cutoff
 #'
 #' The function calculates the number of opportunities accessible under a given
-#' travel time threshold specified by the user.
+#' travel time cutoff specified by the user.
 #'
 #' @param data A `data.frame` with a travel time matrix in long format,
 #'   containing the at least the columns of origin, destination, travel time
@@ -25,28 +25,28 @@
 #' ttm <- read.csv(data_path)
 #'
 #'# Active accessibility: number of schools accessible from each origin
-#'df <- cumulative_time_threshold(data = ttm,
+#'df <- cumulative_time_cutoff(data = ttm,
 #'                                opportunity_colname = 'schools',
 #'                                cutoff = 30,
 #'                                by_colname = 'from_id')
 #'head(df)
 #'
 #'# Passive accessibility: number of people that can reach each destination
-#'df <- cumulative_time_threshold(data = ttm,
+#'df <- cumulative_time_cutoff(data = ttm,
 #'                                opportunity_colname = 'population',
 #'                                cutoff = 30,
 #'                                by_colname = 'to_id')
 #'head(df)
 #' @family Cumulative access
 #' @export
-cumulative_time_threshold <- function(data, opportunity_colname, cutoff, by_colname){
+cumulative_time_cutoff <- function(data, opportunity_colname, cutoff, by_colname){
 
 
   # check inputs ------------------------------------------------------------
   checkmate::test_data_frame(data)
   checkmate::test_string(opportunity_colname)
   checkmate::test_string(by_colname)
-  checkmate::assert_number(cutoff, lower = 0)
+  checkmate::assert_number(cutoff, lower = 0, finite = TRUE)
 
   checkmate::assert_names(names(data), must.include = opportunity_colname,
                           .var.name = "data")

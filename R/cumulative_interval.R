@@ -44,8 +44,9 @@ cumulative_time_interval <- function(data, opportunity_colname, start, end, by_c
   checkmate::test_data_frame(data)
   checkmate::test_string(opportunity_colname)
   checkmate::test_string(by_colname)
-  checkmate::test_numeric(start)
-  checkmate::test_numeric(end)
+  checkmate::assert_number(start, lower = 0, finite = TRUE)
+  checkmate::assert_number(end, lower = 0, finite = TRUE)
+
 
   checkmate::assert_names(names(data), must.include = opportunity_colname,
                           .var.name = "data")
@@ -60,12 +61,13 @@ cumulative_time_interval <- function(data, opportunity_colname, start, end, by_c
   # calculate access -----------------------------------------------------------
 
   # minute-by-minute interval
-  vct <- seq(start, end, 1)
+  # vct <- seq(start, end, 1)
+  vct <- start:end
 
   # calculate cumulative access for every minute in the interval
   access_list <- lapply(X=vct,
                         FUN= function(i){
-                          temp <-  cumulative_time_threshold(data = data,
+                          temp <-  cumulative_time_cutoff(data = data,
                                                              cutoff = i,
                                                              opportunity_colname=opportunity_colname,
                                                              by_colname=by_colname)

@@ -61,6 +61,6 @@ head(df)
 }
 \seealso{
 Other Cumulative access: 
-\code{\link{cumulative_time_threshold}()}
+\code{\link{cumulative_time_cutoff}()}
 }
 \concept{Cumulative access}
