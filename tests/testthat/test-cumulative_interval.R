@@ -67,8 +67,12 @@ test_that("output is correct", {
   # different by_colname
   expect_true(is(default_tester(by_colname = 'from_id'), "data.table"))
 
-  # different cutoff values
+  # different interval values
   expect_true(is(default_tester(start = 1), "data.table"))
-  expect_true(is(default_tester(end = 200), "data.table"))
+  expect_true(is(default_tester(end = 60), "data.table"))
+  expect_true(is(default_tester(start=30, end = 20), "data.table"))
+
+  # different summary stat
+  expect_true(is(default_tester(stat = 'median'), "data.table"))
 
 })
