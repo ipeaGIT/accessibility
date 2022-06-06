@@ -38,6 +38,7 @@ Sys.setenv(NOT_CRAN = "true")
 
 a <- covr::function_coverage(fun=accessibility::cumulative_time_cutoff, test_file("tests/testthat/test-cumulative_cutoff.R"))
 a <- covr::function_coverage(fun=accessibility::cumulative_time_interval, test_file("tests/testthat/test-cumulative_interval.R"))
+a <- covr::function_coverage(fun=accessibility::time_to_closest, test_file("tests/testthat/test-time_to_closest.R"))
 a
 
 # the whole package

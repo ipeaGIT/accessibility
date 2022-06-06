@@ -2,6 +2,7 @@
 
 export(cumulative_time_cutoff)
 export(cumulative_time_interval)
+export(time_to_closest)
 importFrom(data.table,"%chin%")
 importFrom(data.table,":=")
 importFrom(data.table,.GRP)
