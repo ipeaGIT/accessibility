@@ -8,12 +8,12 @@ cumulative_time_cutoff(data, opportunity_colname, cutoff, by_colname)
 }
 \arguments{
 \item{data}{A \code{data.frame} with a travel time matrix in long format,
-containing the at least the columns of origin, destination, travel time
-from origin to destination, and number of opportunities in destination
-locations.}
+containing the at least the columns of origin \code{from_id}, destination \code{to_id},
+travel time \code{travel_time} from origin to destination, and number of
+opportunities in destination locations.}
 
 \item{opportunity_colname}{A \code{string} indicating the name of the column with
-data on the number of opportunities to be considered.}
+data on the opportunities to be considered.}
 
 \item{cutoff}{A \code{numeric} value indicating the maximum travel time considered.}
 

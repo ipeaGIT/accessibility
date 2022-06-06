@@ -15,12 +15,12 @@ cumulative_time_interval(
 }
 \arguments{
 \item{data}{A \code{data.frame} with a travel time matrix in long format,
-containing the at least the columns of origin, destination, travel time
-from origin to destination, and number of opportunities in destination
-locations.}
+containing the at least the columns of origin \code{from_id}, destination \code{to_id},
+travel time \code{travel_time} from origin to destination, and number of
+opportunities in destination locations.}
 
 \item{opportunity_colname}{A \code{string} indicating the name of the column with
-data on the number of opportunities to be considered.}
+data on the opportunities to be considered.}
 
 \item{start}{An \code{integer} indicating the \code{start} point of the travel time
 interval.}
@@ -40,8 +40,9 @@ accessibility estimates within the time interval. It accepts either \code{median
 A \code{data.table} object.
 }
 \description{
-The function calculates the average or median number of opportunities
-accessible within a travel time interval specified by the user.
+The function calculates the average or median number of opportunities that
+can be reached considering multiple minute-by-minute time thresholds within a
+given travel time interval specified by the user.
 }
 \examples{
 library(accessibility)

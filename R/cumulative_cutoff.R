@@ -4,11 +4,11 @@
 #' travel time cutoff specified by the user.
 #'
 #' @param data A `data.frame` with a travel time matrix in long format,
-#'   containing the at least the columns of origin, destination, travel time
-#'   from origin to destination, and number of opportunities in destination
-#'   locations.
+#'   containing the at least the columns of origin `from_id`, destination `to_id`,
+#'   travel time `travel_time` from origin to destination, and number of
+#'   opportunities in destination locations.
 #' @param opportunity_colname A `string` indicating the name of the column with
-#'   data on the number of opportunities to be considered.
+#'   data on the opportunities to be considered.
 #' @param by_colname A `string` with the name of the column of origin or
 #'   destination that should be considered, indicating whether accessibility
 #'   levels should by calculated by each origin (active accessibility) or
