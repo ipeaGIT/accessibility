@@ -2,9 +2,9 @@
 % Please edit documentation in R/time_to_closest.R
 \name{time_to_closest}
 \alias{time_to_closest}
-\title{Minimum travel time to closest opportunity}
+\title{Minimum travel time to closest opportunities}
 \usage{
-time_to_closest(data, opportunity_colname, by_colname)
+time_to_closest(data, opportunity_colname, by_colname, n_opportunities = 1)
 }
 \arguments{
 \item{data}{A \code{data.frame} with a travel time matrix in long format,
@@ -19,13 +19,17 @@ data on the opportunities to be considered.}
 destination that should be considered, indicating whether accessibility
 levels should by calculated by each origin (active accessibility) or
 destination (passive accessibility).}
+
+\item{n_opportunities}{A \code{numeric} value with the mininum N number of
+opportunities that should be considered. Defaults to \code{1}}
 }
 \value{
 A \code{data.table} object indicating for each origin the travel time to
 the closest opportunity and the id of the destination where it is located.
 }
 \description{
-The function calculates the minimum travel time to closest opportunity.
+The function calculates the minimum travel time to closest N number of
+opportunities.
 }
 \examples{
 library(accessibility)
@@ -35,8 +39,15 @@ data_path <- system.file("extdata/ttm_poa.csv", package = "accessibility")
 ttm <- read.csv(data_path)
 
 df <- time_to_closest(data = ttm,
-                              opportunity_colname = 'schools',
-                              by_colname = 'from_id')
+                     opportunity_colname = 'schools',
+                     by_colname = 'from_id',
+                     n_opportunities = 1)
+head(df)
+
+df <- time_to_closest(data = ttm,
+                     opportunity_colname = 'schools',
+                     by_colname = 'from_id',
+                     n_opportunities = 2)
 head(df)
 
 }

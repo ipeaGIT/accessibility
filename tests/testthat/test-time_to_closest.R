@@ -7,11 +7,13 @@ testthat::skip_on_cran()
 
 default_tester <- function(data = ttm,
                            opportunity_colname = 'schools',
-                           by_colname='from_id') {
+                           by_colname='from_id',
+                           n_opportunities = 1) {
 
   results <- accessibility::time_to_closest(data = data,
                                       opportunity_colname = opportunity_colname,
-                                      by_colname = by_colname)
+                                      by_colname = by_colname,
+                                      n_opportunities = n_opportunities)
   return(results)
   }
 
@@ -30,6 +32,10 @@ test_that("adequately raises errors", {
   expect_error(default_tester(opportunity_colname = 999))
   expect_error(default_tester(by_colname = 999))
 
+  # n_opportunities value is not positive numeric
+  expect_error(default_tester(n_opportunities = "banana"))
+  expect_error(default_tester(n_opportunities = -3))
+  expect_error(is(default_tester(n_opportunities = Inf), "data.table"))
 })
 
 
@@ -48,4 +54,7 @@ test_that("output is correct", {
   # different by_colname
   expect_true(is(default_tester(by_colname = 'from_id'), "data.table"))
 
+  # different n_opportunities values
+  expect_true(is(default_tester(n_opportunities = 2), "data.table"))
+  expect_true(is(default_tester(n_opportunities = 3), "data.table"))
 })
