@@ -79,16 +79,6 @@ system("R CMD Rd2pdf --title=Package gtfs2gps --output=./gtfs2gps/manual.pdf")
 
 
 
-1. Failure: detailed_itineraries output is correct (@test-detailed_itineraries.R#182)
-2. Failure: detailed_itineraries output is correct (@test-detailed_itineraries.R#202)
-
-pdflatex
-
-
-
-path <- 'E:/Dropbox/other_projects/0_jean_capability/opentripplanner/otp_got'
-options(java.parameters = "-Xmx16G")
-r5r_core <- setup_r5(path)
 
 ### CMD Check ----------------
 # Check package errors

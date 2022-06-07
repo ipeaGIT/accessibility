@@ -41,7 +41,6 @@
 #' @export
 cumulative_time_cutoff <- function(data, opportunity_colname, cutoff, by_colname){
 
-
   # check inputs ------------------------------------------------------------
   checkmate::test_data_frame(data)
   checkmate::test_string(opportunity_colname)
@@ -56,12 +55,12 @@ cumulative_time_cutoff <- function(data, opportunity_colname, cutoff, by_colname
 
   # calculate access -----------------------------------------------------------
 
+  # eval colnames
+  opport_colname <- as.name(opportunity_colname)
+  by_colname <- as.name(by_colname)
   data.table::setDT(data)
 
-  ### TO DO
-  # CONVERT the "travel_time" column into a function parameter ?
-  colname <- as.name(opportunity_colname)
-  access <- data[travel_time <= cutoff, .(access = sum(eval(colname))), by=by_colname]
+  access <- data[travel_time <= cutoff, .(access = sum(eval(opport_colname))), by=eval(by_colname)]
 
   return(access)
 }
