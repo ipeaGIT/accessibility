@@ -61,10 +61,6 @@ cumulative_time_interval <- function(data, opportunity_colname, start, end, by_c
 
   # calculate access -----------------------------------------------------------
 
-  # eval colnames
-  opport_colname <- as.name(opportunity_colname)
-  by_colname <- as.name(by_colname)
-
   # minute-by-minute interval
   # vct <- seq(start, end, 1)
   vct <- start:end
@@ -82,12 +78,13 @@ cumulative_time_interval <- function(data, opportunity_colname, start, end, by_c
   access <- data.table::rbindlist(access_list)
 
 
+
   # summary measure to be used
   if (stat=='mean') {
-    access <- access[, .(access = mean(access, na.rm=T)), by = eval(by_colname) ] }
+    access <- access[, .(access = mean(access, na.rm=T)), by = by_colname ] }
 
   if (stat=='median') {
-    access <- access[, .(access = median(access, na.rm=T)), by = eval(by_colname) ] }
+    access <- access[, .(access = median(access, na.rm=T)), by = by_colname ] }
 
   return(access)
 }

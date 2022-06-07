@@ -26,16 +26,16 @@
 #'
 #'# Active accessibility: number of schools accessible from each origin
 #'df <- cumulative_time_cutoff(data = ttm,
-#'                                opportunity_colname = 'schools',
-#'                                cutoff = 30,
-#'                                by_colname = 'from_id')
+#'                             opportunity_colname = 'schools',
+#'                             cutoff = 30,
+#'                             by_colname = 'from_id')
 #'head(df)
 #'
 #'# Passive accessibility: number of people that can reach each destination
 #'df <- cumulative_time_cutoff(data = ttm,
-#'                                opportunity_colname = 'population',
-#'                                cutoff = 30,
-#'                                by_colname = 'to_id')
+#'                             opportunity_colname = 'population',
+#'                             cutoff = 30,
+#'                             by_colname = 'to_id')
 #'head(df)
 #' @family Cumulative access
 #' @export
@@ -56,11 +56,11 @@ cumulative_time_cutoff <- function(data, opportunity_colname, cutoff, by_colname
   # calculate access -----------------------------------------------------------
 
   # eval colnames
-  opport_colname <- as.name(opportunity_colname)
-  by_colname <- as.name(by_colname)
+  opport_colname_ref <- as.name(opportunity_colname)
+  by_colname_ref <- as.name(by_colname)
   data.table::setDT(data)
 
-  access <- data[travel_time <= cutoff, .(access = sum(eval(opport_colname))), by=eval(by_colname)]
+  access <- data[travel_time <= cutoff, .(access = sum(eval(opport_colname_ref))), by=eval(by_colname)]
 
   return(access)
 }

@@ -24,6 +24,8 @@ utils::globalVariables(
     "df",
     "median",
     "mean",
-    "travel_time"
+    "travel_time",
+    "to_id",
+    "cum_opport"
     )
 )

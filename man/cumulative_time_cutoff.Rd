@@ -38,16 +38,16 @@ ttm <- read.csv(data_path)
 
 # Active accessibility: number of schools accessible from each origin
 df <- cumulative_time_cutoff(data = ttm,
-                               opportunity_colname = 'schools',
-                               cutoff = 30,
-                               by_colname = 'from_id')
+                            opportunity_colname = 'schools',
+                            cutoff = 30,
+                            by_colname = 'from_id')
 head(df)
 
 # Passive accessibility: number of people that can reach each destination
 df <- cumulative_time_cutoff(data = ttm,
-                               opportunity_colname = 'population',
-                               cutoff = 30,
-                               by_colname = 'to_id')
+                            opportunity_colname = 'population',
+                            cutoff = 30,
+                            by_colname = 'to_id')
 head(df)
 }
 \seealso{

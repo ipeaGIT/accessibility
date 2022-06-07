@@ -57,34 +57,33 @@ time_to_closest <- function(data, opportunity_colname, by_colname, n_opportuniti
   # calculate access -----------------------------------------------------------
 
   # eval colnames
-  opport_colname <- as.name(opportunity_colname)
-  by_colname <- as.name(by_colname)
+  opport_colname_ref <- as.name(opportunity_colname)
+  by_colname_ref <- as.name(by_colname)
   data.table::setDT(data)
 
 
  if (n_opportunities == 1) {
 
-   access <- data[ eval(opport_colname) > 0,
-                   .(travel_time = min(travel_time[which(eval(opport_colname) > 0 )])
+   access <- data[ eval(opport_colname_ref) > 0,
+                   .(travel_time = min(travel_time[which(eval(opport_colname_ref) > 0 )])
                      , destination = to_id[which.min(travel_time)]
-                     ), by = eval(by_colname)]
+                     ), by = by_colname]
 
  } else {
 
   # keep only destinations with at least one opportunity
-  temp <- data[ eval(opport_colname) > 0,]
+  temp <- data[ eval(opport_colname_ref) > 0,]
 
   # sort by shortest to longets travel times
-  temp <- temp[order(eval(by_colname), travel_time)]
-
+  temp <- temp[order(eval(by_colname_ref), travel_time)]
 
   # cumsum of opportunities
-  temp[, cum_opport := cumsum(eval(opport_colname)), by = eval(by_colname)]
+  temp[, cum_opport := cumsum(eval(opport_colname_ref)), by = by_colname]
 
   access <- temp[,
                  .(travel_time = travel_time[which(cum_opport == n_opportunities)]
                    , destination = paste(to_id[which(cum_opport <= n_opportunities)], collapse  = ";")
-                 ), by=eval(by_colname)]
+                 ), by = by_colname]
   }
 
   return(access)
