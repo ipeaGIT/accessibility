@@ -15,6 +15,8 @@
 
 -   [r5r](https://github.com/ipeaGIT/r5r): Rapid Realistic Routing with R5 in R
 -   [tracc](https://github.com/jamaps/tracc): Transport accessibility measures in Python
+-   [access](https://access.readthedocs.io/en/latest/): Spatial Access for PySAL
+
 
 ## Acknowledgement <a href="https://www.ipea.gov.br"><img src="man/figures/ipea_logo.png" alt="IPEA" align="right" width="300"/></a>
 
