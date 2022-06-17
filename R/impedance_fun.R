@@ -70,7 +70,7 @@ impedance_fun <- function(t_ij, decay_function, cutoff=NULL, decay_value=NULL){
     impedance <- function(t_ij, cutoff, decay_value){ t_ij * data.table::fifelse(t_ij <= cutoff, (1-t_ij/cutoff), 0) }
   }
 
-  # apply impedance function
+  # get impedance factor
   impedance_factor <- impedance(t_ij, cutoff, decay_value)
 
   return(impedance_factor)
