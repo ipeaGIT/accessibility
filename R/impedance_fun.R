@@ -2,7 +2,6 @@
 #'
 #' Provides a numer of impedance functions to be used inside `accessibility` functions.
 #'
-#'
 #' @param t_ij A number indicating the travel cost (time or money) between
 #'             origin (i) and destination (j).
 #' @param decay_function A string. Which decay function to use when calculating
@@ -17,7 +16,6 @@
 #' @param decay_value A number. Extra parameter to be passed to the selected
 #'               `decay_function`. Has no effects when `decay_function` is either
 #'               `step` or `exponential`.
-#'
 #'
 #' @return A `function`
 #'
@@ -72,6 +70,9 @@ impedance_fun <- function(t_ij, decay_function, cutoff=NULL, decay_value=NULL){
     impedance <- function(t_ij, cutoff, decay_value){ t_ij * data.table::fifelse(t_ij <= cutoff, (1-t_ij/cutoff), 0) }
   }
 
-  return(impedance)
+  # apply impedance function
+  impedance_factor <- impedance(t_ij, cutoff, decay_value)
+
+  return(impedance_factor)
 }
 

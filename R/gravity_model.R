@@ -80,7 +80,7 @@ gravity_access <- function(data,
   # get impendance function
   impedance <- impedance_fun(decay_function='linear', cutoff, decay_value)
 
-  access <- data[, .(access = sum(impedance(t_ij = eval(opport_colname_ref), cutoff, decay_value))),
+  access <- data[, .(access = sum(eval(opport_colname_ref) * impedance(t_ij = travel_time, cutoff, decay_value))),
                  by=eval(by_colname)]
 
   return(access)

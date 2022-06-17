@@ -2,7 +2,7 @@
 % Please edit documentation in R/impedance_fun.R
 \name{impedance_fun}
 \alias{impedance_fun}
-\title{Impedance functions}
+\title{General impedance functions}
 \usage{
 impedance_fun(t_ij, decay_function, cutoff = NULL, decay_value = NULL)
 }
