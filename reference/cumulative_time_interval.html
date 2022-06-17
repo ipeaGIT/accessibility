@@ -71,32 +71,46 @@ given travel time interval specified by the user.</p>
 containing the at least the columns of origin <code>from_id</code>, destination <code>to_id</code>,
 travel time <code>travel_time</code> from origin to destination, and number of
 opportunities in destination locations.</p></dd>
+
+
 <dt>opportunity_colname</dt>
 <dd><p>A <code>string</code> indicating the name of the column with
 data on the opportunities to be considered.</p></dd>
+
+
 <dt>start</dt>
 <dd><p>An <code>integer</code> indicating the <code>start</code> point of the travel time
 interval.</p></dd>
+
+
 <dt>end</dt>
 <dd><p>An <code>integer</code> indicating the <code>end</code> point of the travel time interval.</p></dd>
+
+
 <dt>by_colname</dt>
 <dd><p>A <code>string</code> with the name of the column of origin or
 destination that should be considered, indicating whether accessibility
 levels should by calculated by each origin (active accessibility) or
 destination (passive accessibility).</p></dd>
+
+
 <dt>stat</dt>
 <dd><p>A <code>string</code> indicating the summary statistic used to aggregate the
 accessibility estimates within the time interval. It accepts either <code>median</code>
 (Default) or <code>mean</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>data.table</code> object.</p>
+    
+
+<p>A <code>data.table</code> object.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p>Other Cumulative access: 
-<code><a href="cumulative_time_cutoff.html">cumulative_time_cutoff</a>()</code></p></div>
+<code><a href="cumulative_time_cutoff.html">cumulative_time_cutoff</a>()</code>,
+<code><a href="gravity_access.html">gravity_access</a>()</code></p></div>
     </div>
 
     <div id="ref-examples">
@@ -136,7 +150,7 @@ accessibility estimates within the time interval. It accepts either <code>median
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>
