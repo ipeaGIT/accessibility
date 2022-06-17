@@ -128,29 +128,19 @@ calculating cumulative opportunities accessibility with the
 <span class="r-in">                           by_colname <span class="op">=</span> <span class="st">'from_id'</span>,</span>
 <span class="r-in">                           decay_function <span class="op">=</span><span class="st">'linear'</span>,</span>
 <span class="r-in">                           cutoff <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in impedance(t_ij = travel_time, cutoff, decay_value):</span> could not find function "impedance"</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_linear</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            from_id access</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a901291abffff   11.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a9012a3cfffff   11.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a901295b7ffff   11.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a901284a3ffff   11.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a9012809bffff   11.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a901285cfffff   11.2</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in head(df_linear):</span> object 'df_linear' not found</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">df_neg_exp</span> <span class="op">&lt;-</span> <span class="fu">gravity_access</span><span class="op">(</span>data <span class="op">=</span> <span class="va">ttm</span>,</span>
 <span class="r-in">                            opportunity_colname <span class="op">=</span> <span class="st">'schools'</span>,</span>
 <span class="r-in">                            by_colname <span class="op">=</span> <span class="st">'from_id'</span>,</span>
 <span class="r-in">                            decay_function <span class="op">=</span><span class="st">'negative_exponential'</span>,</span>
 <span class="r-in">                            decay_value <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in impedance(t_ij = travel_time, cutoff, decay_value):</span> could not find function "impedance"</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_neg_exp</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            from_id access</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a901291abffff      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a9012a3cfffff      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a901295b7ffff      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a901284a3ffff      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a9012809bffff      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a901285cfffff      0</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in head(df_neg_exp):</span> object 'df_neg_exp' not found</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
