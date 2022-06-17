@@ -62,6 +62,7 @@ head(df)
 }
 \seealso{
 Other Cumulative access: 
-\code{\link{cumulative_time_cutoff}()}
+\code{\link{cumulative_time_cutoff}()},
+\code{\link{gravity_access}()}
 }
 \concept{Cumulative access}

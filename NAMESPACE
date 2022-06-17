@@ -2,6 +2,8 @@
 
 export(cumulative_time_cutoff)
 export(cumulative_time_interval)
+export(gravity_access)
+export(impedance_fun)
 export(time_to_closest)
 importFrom(data.table,"%chin%")
 importFrom(data.table,":=")
