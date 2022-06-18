@@ -1,7 +1,7 @@
 library(hexSticker) # https://github.com/GuangchuangYu/hexSticker
 library(ggplot2)
 library(sf)
-library(r5r)
+library(accessibility)
 library(sysfonts)
 library(data.table)
 
@@ -10,48 +10,57 @@ sysfonts::font_add_google(name = "Roboto", family = "Roboto")
 
 ### setup ------------------------
 
-# load origin/destination points
-points <- read.csv(system.file("extdata/poa/poa_hexgrid.csv", package = "r5r"))
-points_sf <- sfheaders::sf_point(points, x='lon', y='lat', keep = T)
-sf::st_crs(points_sf) <- 4326
+library(accessibility)
+library(data.table)
+library(ggplot2)
+library(sf)
 
 
-origin <- subset(points_sf, id == '89a90129977ffff')
-destinations <- subset(points_sf, id %like% c('89a901299'))
+ttm_path <- system.file("extdata/ttm_bho.rds", package = "accessibility")
+grid_path <- system.file("extdata/grid_bho.rds", package = "accessibility")
+ttm <- readRDS(ttm_path)
+grid <- readRDS(grid_path)
 
-# build transport network
-data_path <- system.file("extdata/poa", package = "r5r")
-r5r_core <- setup_r5(data_path = data_path)
+setdiff(ttm$from_id, grid$id)
 
-# routing
-df <- detailed_itineraries(r5r_core,
-                           origins = origin,
-                           destinations = destinations,
-                           mode = 'WALK',
-                           departure_datetime = as.POSIXct("13-03-2019 14:00:00", format = "%d-%m-%Y %H:%M:%S"),
-                           max_trip_duration = 300)
+unique(ttm$from_id) |> length()
+unique(grid$id) |> length()
 
+# Active accessibility: number of schools accessible from each origin
+df <- cumulative_time_cutoff(data = ttm,
+                             opportunity_colname = 'jobs',
+                             cutoff = 30,
+                             by_colname = 'from_id')
+#
+# df <- accessibility::gravity_access(data = ttm,
+#                                     opportunity_colname = 'jobs',
+#                                     decay_function = 'inverse_power',
+#                                     decay_value = .5,
+#                                     by_colname = 'from_id')
 
-# st_crs(destinations) <- st_crs(df)
+# access
+df2 <- df[setDT(grid), on=c('from_id'='id'), geom := i.geom]
+
+df2 <- st_sf(df2)
+
 
 
 ### network plot  ------------------------
 
 # plot results
-net <- ggplot() +
-  geom_sf(data = df, color='gray95', alpha=.2) +
-  # geom_sf(data=destinations,  color='gray95', size=1) +
-  # geom_sf(data=destinations,  color='navyblue', size=.6) +
-  # scale_x_continuous(limits = c(-51.20560, -51.18052 )) +
-  # scale_y_continuous(limits = c(-30.02239, -30.0002 )) +
+fig <- ggplot() +
+  geom_sf(data=df2, aes(fill=access), color=NA, show.legend = F) +
+  scale_fill_viridis_c() +
   theme_void() +
   theme(panel.grid.major=element_line(colour="transparent"))
+
+fig
 
 
 ### save sticker  ------------------------
 
 # big
-sticker(net,
+sticker(fig,
 
         # package name
         package= expression( italic(paste("R"^5,"R"))),  p_size=10, p_y = 1.5, p_color = "gray95", p_family="Roboto",
@@ -66,7 +75,7 @@ sticker(net,
         # h_fill="gray20", h_color="gray80", h_size=1.3,
 
         # url
-        url = "github.com/ipeaGIT/r5r", u_color= "gray95", u_family = "Roboto", u_size = 1.8,
+        url = "github.com/ipeaGIT/accessibility", u_color= "gray95", u_family = "Roboto", u_size = 1.8,
 
         # save output name and resolution
         filename="./man/figures/r5r_biagaa.png", dpi=300 #
