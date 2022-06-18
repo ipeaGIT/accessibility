@@ -56,6 +56,17 @@ fig <- ggplot() +
 
 fig
 
+########### spatial interpolation --------------------
+
+
+# interpolate estimates to get spatially smooth result
+travel_times.interp <- with(na.omit(ttm), interp(lon, lat, travel_time_p50)) %>%
+  with(cbind(travel_time=as.vector(z),  # Column-major order
+             x=rep(x, times=length(y)),
+             y=rep(y, each=length(x)))) %>%
+  as.data.frame() %>% na.omit()
+
+
 
 ### save sticker  ------------------------
 
@@ -63,21 +74,21 @@ fig
 sticker(fig,
 
         # package name
-        package= expression( italic(paste("R"^5,"R"))),  p_size=10, p_y = 1.5, p_color = "gray95", p_family="Roboto",
+        package= expression( italic('accessibility')),  p_size= 4, p_y = 1.6, p_color = "gray95", p_family="Roboto",
 
         # ggplot image size and position
         s_x=1, s_y=.85, s_width=1.4, s_height=1.4,
 
         # blue hexagon
-        h_fill="#0d8bb1", h_color="white", h_size=1.3,
+        h_fill="#440154", h_color="#440154", h_size=1.3,
 
         ## blackhexagon
         # h_fill="gray20", h_color="gray80", h_size=1.3,
 
         # url
-        url = "github.com/ipeaGIT/accessibility", u_color= "gray95", u_family = "Roboto", u_size = 1.8,
+        url = "github.com/ipeaGIT/accessibility", u_color= "gray95", u_family = "Roboto", u_size = 1.2,
 
         # save output name and resolution
-        filename="./man/figures/r5r_biagaa.png", dpi=300 #
+        filename="./man/figures/logo.png", dpi=300 #
 )
 
