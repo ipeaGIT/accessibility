@@ -54,11 +54,9 @@ fwrite(ttm, file = 'ttm_poa.csv' )
 library(data.table)
 library(sf)
 library(ggplot2)
-library(mapview)
-mapview::mapviewOptions(platform = 'mapdeck')
+
 
 sigla <- 'bho'
-
 
 ########## select radius  --------------------------------------------------
 # acces <- aopdata::read_access(city=sigla, year=2019, geometry = T)
@@ -71,12 +69,12 @@ buff <- subset(acces_for, id_hex == center) |>
           st_centroid()  |>
           st_buffer(dist = 5000)
 
-buff$CMATT30 <- NULL
 
 ggplot() +
   geom_sf(data=acces_for, aes(fill=CMATT30), color=NA) +
   geom_sf(data=buff, color='red', fill='red', alpha=.5)
 
+buff$CMATT30 <- NULL
 inter <- st_intersection(acces_for, buff )
 
 ggplot() +
@@ -98,13 +96,15 @@ ttm <- subset(dt,
               pico == 1 &
               ano == 2019 &
               city  == sigla &
-              travel_time <= 30)
+              travel_time <= 120)
 
 
 ttm[, c('pico', 'city', 'ano', 'mode') := NULL]
 names(ttm) <- c('from_id', 'to_id', 'travel_time')
 head(ttm)
 
+ttm <- subset(ttm, from_id %in% unique(inter$id_hex) )
+ttm <- subset(ttm, to_id %in% unique(inter$id_hex) )
 
 ########## land use  --------------------------------------------------
 land_for <- aopdata::read_landuse(city=sigla, year=2019, geometry = F)
@@ -119,8 +119,6 @@ ttm[land_for, on=c('to_id'='id'), schools  := i.schools ]
 
 
 ttm2 <- subset(ttm, population > 0 | jobs >0 | schools >0 )
-ttm2 <- subset(ttm2, from_id %in% unique(inter$id_hex) )
-ttm2 <- subset(ttm2, to_id %in% unique(inter$id_hex) )
 head(ttm2)
 
 saveRDS(ttm, './inst/extdata/ttm_bho.rds', compress = TRUE)
@@ -139,4 +137,4 @@ class(grid2)
 plot(grid2)
 head(grid2)
 
-saveRDS(grid2, './inst/extdata/grid_bho.rds', compress = TRUE)
+saveRDS(grid2, './inst/extdata/grid_bho.rds', compress = T)
