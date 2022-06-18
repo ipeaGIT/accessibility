@@ -1,27 +1,3 @@
-library(sf)
-library(data.table)
-library(magrittr)
-library(roxygen2)
-library(devtools)
-library(usethis)
-library(profvis)
-library(dplyr)
-library(mapview)
-library(covr)
-library(testthat)
-library(ggplot2)
-library(checkmate)
-library(geobr)
-library(gtfs2gps)
-library(tictoc)
-library(mapview)
-mapviewOptions(platform = 'leafgl')
-
-
-# utils::remove.packages('r5r')
-# devtools::install_github("ipeaGIT/r5r", subdir = "r-package", ref = 'detach_r5_codebase')
-# library(r5r)
-
 ##### example map ------------------------
 library(accessibility)
 library(data.table)
@@ -35,6 +11,9 @@ ttm <- readRDS(ttm_path)
 grid <- readRDS(grid_path)
 
 setdiff(ttm$from_id, grid$id)
+
+unique(ttm$from_id) |> length()
+unique(grid$id) |> length()
 
 # Active accessibility: number of schools accessible from each origin
 df <- cumulative_time_cutoff(data = ttm,
