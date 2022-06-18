@@ -98,8 +98,8 @@ destination (passive accessibility).</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/accessibility" class="external-link">accessibility</a></span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># load a travel time matrix data in long format</span></span>
-<span class="r-in"><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/ttm_poa.csv"</span>, package <span class="op">=</span> <span class="st">"accessibility"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ttm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">data_path</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/ttm_bho.rds"</span>, package <span class="op">=</span> <span class="st">"accessibility"</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">ttm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">data_path</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Active accessibility: number of schools accessible from each origin</span></span>
 <span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">cumulative_time_cutoff</span><span class="op">(</span>data <span class="op">=</span> <span class="va">ttm</span>,</span>
@@ -108,12 +108,12 @@ destination (passive accessibility).</p></dd>
 <span class="r-in">                            by_colname <span class="op">=</span> <span class="st">'from_id'</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            from_id access</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a901291abffff      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a9012a3cfffff      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a901295b7ffff      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a901284a3ffff      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a9012809bffff      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a901285cfffff      3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a88cd814fffff     11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a88cdb57bffff      6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a88cd88cbffff      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a88cd9047ffff     30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a88136977ffff      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a88cdae1bffff     16</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Passive accessibility: number of people that can reach each destination</span></span>
 <span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">cumulative_time_cutoff</span><span class="op">(</span>data <span class="op">=</span> <span class="va">ttm</span>,</span>
@@ -122,12 +122,12 @@ destination (passive accessibility).</p></dd>
 <span class="r-in">                            by_colname <span class="op">=</span> <span class="st">'to_id'</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              to_id access</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a901291abffff   6082</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a90129157ffff   4920</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a9012956bffff   3657</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a90128257ffff  18011</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a90128043ffff  16033</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a90129ed3ffff   7434</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a88cd814fffff  69245</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a88cd816bffff  67002</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a88cd81dbffff  67832</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a88cd8347ffff  33222</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a88cd839bffff  39961</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a88cd83b7ffff  65051</span>
 </code></pre></div>
     </div>
   </div>

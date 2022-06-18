@@ -120,8 +120,8 @@ calculating cumulative opportunities accessibility with the
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/accessibility" class="external-link">accessibility</a></span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># load a travel time matrix data in long format</span></span>
-<span class="r-in"><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/ttm_poa.csv"</span>, package <span class="op">=</span> <span class="st">"accessibility"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ttm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">data_path</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/ttm_bho.rds"</span>, package <span class="op">=</span> <span class="st">"accessibility"</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">ttm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">data_path</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">df_linear</span> <span class="op">&lt;-</span> <span class="fu">gravity_access</span><span class="op">(</span>data <span class="op">=</span> <span class="va">ttm</span>,</span>
 <span class="r-in">                           opportunity_colname <span class="op">=</span> <span class="st">'schools'</span>,</span>
@@ -130,13 +130,13 @@ calculating cumulative opportunities accessibility with the
 <span class="r-in">                           cutoff <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_linear</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            from_id     access</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a901291abffff 0.03333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a9012a3cfffff 0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a901295b7ffff 0.76666667</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a901284a3ffff 0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a9012809bffff 0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a901285cfffff 1.30000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            from_id    access</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a88cd814fffff 2.0333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a88cdb57bffff 0.1000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a88cd88cbffff 0.4333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a88cd9047ffff 7.6333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a88136977ffff 0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a88cdae1bffff 7.0066667</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">df_neg_exp</span> <span class="op">&lt;-</span> <span class="fu">gravity_access</span><span class="op">(</span>data <span class="op">=</span> <span class="va">ttm</span>,</span>
 <span class="r-in">                            opportunity_colname <span class="op">=</span> <span class="st">'schools'</span>,</span>
@@ -145,12 +145,12 @@ calculating cumulative opportunities accessibility with the
 <span class="r-in">                            decay_value <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_neg_exp</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            from_id       access</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a901291abffff 5.318286e-07</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a9012a3cfffff 4.142229e-08</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a901295b7ffff 6.739334e-03</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a901284a3ffff 8.874965e-09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a9012809bffff 3.132692e-07</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a901285cfffff 8.314983e-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a88cd814fffff 2.833765e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a88cdb57bffff 2.559486e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a88cd88cbffff 4.677089e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a88cd9047ffff 2.448098e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a88136977ffff 0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a88cdae1bffff 1.324943e-01</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
