@@ -67,18 +67,24 @@ center <- acces_for$id_hex[which.max(acces_for$CMATT30)]
 
 buff <- subset(acces_for, id_hex == center) |>
           st_centroid()  |>
-          st_buffer(dist = 5000)
+           st_transform(crs = '+proj=utm +zone23 +datum=WGS84 +units=m +ellps=WGS84 +towgs84=0,0,0') |>
+          st_buffer(dist = 7000) |>
+          st_transform(crs = st_crs(acces_for))
 
+plot(buff['id_hex'])
 
 ggplot() +
   geom_sf(data=acces_for, aes(fill=CMATT30), color=NA) +
   geom_sf(data=buff, color='red', fill='red', alpha=.5)
 
 buff$CMATT30 <- NULL
-inter <- st_intersection(acces_for, buff )
+inter <- st_intersects(acces_for, buff, sparse = FALSE )
+
+inter <- acces_for[inter, ]
 
 ggplot() +
-  geom_sf(data=inter, aes(fill=CMATT30), color=NA)
+  geom_sf(data=inter, aes(fill=CMATT30), color=NA) # +geom_sf(data=buff, color='red', fill='red', alpha=.5)
+
 
 
 
@@ -118,10 +124,10 @@ ttm[land_for, on=c('to_id'='id'), jobs  := i.jobs ]
 ttm[land_for, on=c('to_id'='id'), schools  := i.schools ]
 
 
-ttm2 <- subset(ttm, population > 0 | jobs >0 | schools >0 )
-head(ttm2)
+# ttm2 <- subset(ttm, population > 0 | jobs >0 | schools >0 )
+head(ttm)
+summary(ttm)
 
-saveRDS(ttm, './inst/extdata/ttm_bho.rds', compress = TRUE)
 
 
 ########## grid  --------------------------------------------------
@@ -137,4 +143,11 @@ class(grid2)
 plot(grid2)
 head(grid2)
 
+# check
+setdiff(ttm$from_id, grid2$id)
+setdiff(ttm$to_id, grid2$id)
+setdiff(grid2$id, ttm$to_id)
+
+# save files
+saveRDS(ttm, './inst/extdata/ttm_bho.rds', compress = TRUE)
 saveRDS(grid2, './inst/extdata/grid_bho.rds', compress = T)

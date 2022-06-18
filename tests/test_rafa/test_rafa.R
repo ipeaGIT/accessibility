@@ -25,6 +25,7 @@ mapviewOptions(platform = 'leafgl')
 ##### example map ------------------------
 library(accessibility)
 library(data.table)
+library(ggplot2)
 library(sf)
 
 
@@ -37,20 +38,37 @@ setdiff(ttm$from_id, grid$id)
 
 # Active accessibility: number of schools accessible from each origin
 df <- cumulative_time_cutoff(data = ttm,
-                             opportunity_colname = 'schools',
+                             opportunity_colname = 'jobs',
                              cutoff = 30,
                              by_colname = 'from_id')
 
-df2 <- dplyr::left_join(df, grid, by=c('from_id'='id'))
-merge(df, grid, by=c('from_id'='id'))
+df <- accessibility::gravity_access(data = ttm,
+                             opportunity_colname = 'jobs',
+                             decay_function = 'inverse_power',
+                             decay_value = .5,
+                             by_colname = 'from_id')
 
-setDT(grid)
-df2 <- df[grid, on=c('from_id'='id'), geom := i.geom]
+# access
+df2 <- df[setDT(grid), on=c('from_id'='id'), geom := i.geom]
+
 df2 <- st_sf(df2)
-head(df2)
-
 ggplot() +
-  geom_sf(data=df2, aes(fill=access))
+  geom_sf(data=df2, aes(fill=access), color=NA) +
+  scale_fill_viridis_c()
+
+
+
+# isochone
+id <- ttm[, .(t_min = mean(travel_time)), by = 'from_id']
+id <- id[min(t_min)]$from_id
+df <- ttm[ from_id ==id, ]
+df2 <- df[setDT(grid), on=c('to_id'='id'), geom := i.geom]
+
+
+df2 <- st_sf(df2)
+ggplot() +
+  geom_sf(data=df2, aes(fill=travel_time), color=NA) +
+  scale_fill_viridis_c()
 
 
 ##### gravity ------------------------
