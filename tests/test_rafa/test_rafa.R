@@ -23,21 +23,31 @@ mapviewOptions(platform = 'leafgl')
 # library(r5r)
 
 ##### example map ------------------------
+library(accessibility)
+library(data.table)
+library(sf)
 
 
 ttm_path <- system.file("extdata/ttm_bho.rds", package = "accessibility")
 grid_path <- system.file("extdata/grid_bho.rds", package = "accessibility")
-ttm <- readRDS(data_path)
+ttm <- readRDS(ttm_path)
 grid <- readRDS(grid_path)
+
+setdiff(ttm$from_id, grid$id)
 
 # Active accessibility: number of schools accessible from each origin
 df <- cumulative_time_cutoff(data = ttm,
                              opportunity_colname = 'schools',
                              cutoff = 30,
                              by_colname = 'from_id')
+
+df2 <- dplyr::left_join(df, grid, by=c('from_id'='id'))
+merge(df, grid, by=c('from_id'='id'))
+
 setDT(grid)
 df2 <- df[grid, on=c('from_id'='id'), geom := i.geom]
 df2 <- st_sf(df2)
+head(df2)
 
 ggplot() +
   geom_sf(data=df2, aes(fill=access))
