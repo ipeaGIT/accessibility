@@ -45,16 +45,16 @@ test_that("adequately raises errors", {
 
 test_that("output is correct", {
 
-  # # output class
-  # expect_true(is(default_tester(), "data.table"))
+  # TO DO:
+  #> test output values
 
   # different opportunity_colname
-  expect_true(is(default_tester(opportunity_colname = 'population'), "data.table"))
+  expect_is( default_tester(opportunity_colname = 'population'), "data.table")
 
   # different by_colname
-  expect_true(is(default_tester(by_colname = 'from_id'), "data.table"))
+  expect_is( default_tester(by_colname = 'from_id'), "data.table")
 
   # different n_opportunities values
-  expect_true(is(default_tester(n_opportunities = 2), "data.table"))
-  expect_true(is(default_tester(n_opportunities = 3), "data.table"))
+  expect_is( default_tester(n_opportunities = 2), "data.table")
+  expect_is( default_tester(n_opportunities = 3), "data.table")
 })

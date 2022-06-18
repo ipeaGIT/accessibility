@@ -1,4 +1,4 @@
-context("Cumulative interval function")
+context("Gravity access")
 
 # if running manually, please run the following line first:
 # source("tests/testthat/setup.R")
@@ -7,16 +7,16 @@ testthat::skip_on_cran()
 
 default_tester <- function(data = ttm,
                            opportunity_colname = 'schools',
-                           start = 20,
-                           end = 25,
-                           stat = 'mean',
+                           decay_function = 'linear',
+                           cutoff = 60,
+                           decay_value=0.5,
                            by_colname='from_id') {
 
-  results <- accessibility::cumulative_time_interval(data = data,
+  results <- accessibility::gravity_access(data = data,
                                       opportunity_colname = opportunity_colname,
-                                      start = start,
-                                      end = end,
-                                      stat = stat,
+                                      cutoff = cutoff,
+                                      decay_function= decay_function,
+                                      decay_value=decay_value,
                                       by_colname = by_colname)
   return(results)
   }
@@ -36,19 +36,6 @@ test_that("adequately raises errors", {
   expect_error(default_tester(opportunity_colname = 999))
   expect_error(default_tester(by_colname = 999))
 
-  # invalid summary stat
-  expect_error(default_tester(stat = 'banana'))
-  expect_error(default_tester(stat = 999))
-
-
-  # start / end values are not positive numeric
-  expect_error(default_tester(start = "banana"))
-  expect_error(default_tester(end = "banana"))
-  expect_error(default_tester(start = -3))
-  expect_error(default_tester(end = -3))
-  expect_error(is(default_tester(start = Inf), "data.table"))
-  expect_error(is(default_tester(end = Inf), "data.table"))
-
 })
 
 
@@ -61,19 +48,14 @@ test_that("output is correct", {
   # TO DO:
   #> test output values
 
-
   # different opportunity_colname
   expect_is( default_tester(opportunity_colname = 'population'), "data.table")
 
   # different by_colname
   expect_is( default_tester(by_colname = 'from_id'), "data.table")
 
-  # different interval values
-  expect_is( default_tester(start = 1), "data.table")
-  expect_is( default_tester(end = 60), "data.table")
-  expect_is( default_tester(start=30, end = 20), "data.table")
-
-  # different summary stat
-  expect_is( default_tester(stat = 'median'), "data.table")
+  # different cutoff values
+  expect_is( default_tester(cutoff = 1), "data.table")
+  expect_is( default_tester(cutoff = 1000), "data.table")
 
 })

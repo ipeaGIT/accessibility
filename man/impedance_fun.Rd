@@ -26,7 +26,7 @@ calculating cumulative opportunities accessibility with the
 \code{step} or \code{exponential}.}
 }
 \value{
-A \code{function}
+A \code{numeric} impedance factor
 }
 \description{
 Provides a numer of impedance functions to be used inside \code{accessibility} functions.

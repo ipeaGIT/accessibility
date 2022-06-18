@@ -58,16 +58,16 @@ ttm <- read.csv(data_path)
 df_linear <- gravity_access(data = ttm,
                            opportunity_colname = 'schools',
                            by_colname = 'from_id',
-                           decay_function ='linear',
-                           cutoff = 15)
+                           decay_function = 'linear',
+                           cutoff = 30)
 
 head(df_linear)
 
 df_neg_exp <- gravity_access(data = ttm,
                             opportunity_colname = 'schools',
                             by_colname = 'from_id',
-                            decay_function ='negative_exponential',
-                            decay_value = 0.6)
+                            decay_function = 'negative_exponential',
+                            decay_value = 0.5)
 head(df_neg_exp)
 
 }

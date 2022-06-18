@@ -17,7 +17,7 @@
 #'               `decay_function`. Has no effects when `decay_function` is either
 #'               `step` or `exponential`.
 #'
-#' @return A `function`
+#' @return A `numeric` impedance factor
 #'
 #' @examples
 #' library(accessibility)
@@ -44,30 +44,39 @@
 impedance_fun <- function(t_ij, decay_function, cutoff=NULL, decay_value=NULL){
 
   # check inputs ------------------------------------------------------------
-  checkmate::test_string(decay_function, null.ok = FALSE)
-  checkmate::test_number(cutoff, null.ok = TRUE)
-  checkmate::test_number(decay_value, null.ok = TRUE)
+  checkmate::assert_string(decay_function, null.ok = FALSE)
+  checkmate::assert_numeric(t_ij, null.ok = FALSE, lower = 0, finite = TRUE)
+  checkmate::assert_number(cutoff, null.ok = TRUE, lower = 0)
+  checkmate::assert_number(decay_value, null.ok = TRUE, lower = 0, finite = TRUE)
+
+  decay_options <- c('negative_exponential', 'inverse_power', 'modified_gaussian', 'linear', 'step')
+  if (! decay_function %in% decay_options){stop("Parameter 'decay_function' must be one of the following: ", paste0(decay_options, collapse = ", "))}
 
   # impedance functions ------------------------------------------------------------
 
   if(decay_function=='negative_exponential'){
+    if (is.null(decay_value)) {stop("'decay_value' cannot be NULL with this decay_function")}
     impedance <- function(t_ij, cutoff, decay_value){ exp(-decay_value * t_ij) }
     }
 
   if(decay_function=='inverse_power'){
-    impedance <- function(t_ij, cutoff, decay_value){ t_ij^-decay_value }
+    if (is.null(decay_value)) {stop("'decay_value' cannot be NULL with this decay_function")}
+    impedance <- function(t_ij, cutoff, decay_value){ data.table::fifelse(t_ij < 1, 1, t_ij^-decay_value) }
   }
 
   if(decay_function=='modified_gaussian'){
+    if (is.null(decay_value)) {stop("'decay_value' cannot be NULL with this decay_function")}
     impedance <- function(t_ij, cutoff, decay_value){ exp(-t_ij^2/decay_value) }
   }
 
   if(decay_function=='step'){
-    impedance <- function(t_ij, cutoff, decay_value){ t_ij * data.table::fifelse(t_ij <= cutoff, 1, 0) }
+    if (is.null(cutoff)) {stop("'cutoff' cannot be NULL with this decay_function")}
+    impedance <- function(t_ij, cutoff, decay_value){ data.table::fifelse(t_ij <= cutoff, 1, 0) }
   }
 
   if(decay_function=='linear'){
-    impedance <- function(t_ij, cutoff, decay_value){ t_ij * data.table::fifelse(t_ij <= cutoff, (1-t_ij/cutoff), 0) }
+    if (is.null(cutoff)) {stop("'cutoff' cannot be NULL with this decay_function")}
+    impedance <- function(t_ij, cutoff, decay_value){ data.table::fifelse(t_ij <= cutoff, (1-t_ij/cutoff), 0) }
   }
 
   # get impedance factor

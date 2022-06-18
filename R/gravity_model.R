@@ -36,16 +36,16 @@
 #'df_linear <- gravity_access(data = ttm,
 #'                            opportunity_colname = 'schools',
 #'                            by_colname = 'from_id',
-#'                            decay_function ='linear',
-#'                            cutoff = 15)
+#'                            decay_function = 'linear',
+#'                            cutoff = 30)
 #'
 #'head(df_linear)
 #'
 #'df_neg_exp <- gravity_access(data = ttm,
 #'                             opportunity_colname = 'schools',
 #'                             by_colname = 'from_id',
-#'                             decay_function ='negative_exponential',
-#'                             decay_value = 0.6)
+#'                             decay_function = 'negative_exponential',
+#'                             decay_value = 0.5)
 #'head(df_neg_exp)
 #'
 #' @family Cumulative access
@@ -58,9 +58,9 @@ gravity_access <- function(data,
                            decay_value=NULL){
 
   # check inputs ------------------------------------------------------------
-  checkmate::test_data_frame(data)
-  checkmate::test_string(opportunity_colname)
-  checkmate::test_string(by_colname)
+  checkmate::assert_data_frame(data)
+  checkmate::assert_string(opportunity_colname)
+  checkmate::assert_string(by_colname)
 
   checkmate::assert_names(names(data), must.include = opportunity_colname,
                           .var.name = "data")
@@ -77,10 +77,7 @@ gravity_access <- function(data,
   by_colname_ref <- as.name(by_colname)
   data.table::setDT(data)
 
-  # get impendance function
-  impedance <- impedance_fun(decay_function='linear', cutoff, decay_value)
-
-  access <- data[, .(access = sum(eval(opport_colname_ref) * impedance(t_ij = travel_time, cutoff, decay_value))),
+  access <- data[, .(access = sum(eval(opport_colname_ref) * impedance_fun(t_ij = travel_time, decay_function = decay_function, cutoff, decay_value))),
                  by=eval(by_colname)]
 
   return(access)
