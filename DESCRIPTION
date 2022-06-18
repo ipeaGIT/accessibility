@@ -19,7 +19,7 @@ License: MIT + file LICENSE
 URL: https://github.com/ipeaGIT/accessibility
 BugReports: https://github.com/ipeaGIT/accessibility/issues
 Depends: 
-    R (>= 2.10)
+    R (>= 3.5.0)
 Imports:
     checkmate,
     data.table,
