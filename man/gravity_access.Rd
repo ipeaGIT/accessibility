@@ -52,8 +52,8 @@ The function calculates gravity-based accessibility measures...
 library(accessibility)
 
 # load a travel time matrix data in long format
-data_path <- system.file("extdata/ttm_poa.csv", package = "accessibility")
-ttm <- read.csv(data_path)
+data_path <- system.file("extdata/ttm_bho.rds", package = "accessibility")
+ttm <- readRDS(data_path)
 
 df_linear <- gravity_access(data = ttm,
                            opportunity_colname = 'schools',

@@ -26,8 +26,8 @@
 #' library(accessibility)
 #'
 #' # load a travel time matrix data in long format
-#' data_path <- system.file("extdata/ttm_poa.csv", package = "accessibility")
-#' ttm <- read.csv(data_path)
+#' data_path <- system.file("extdata/ttm_bho.rds", package = "accessibility")
+#' ttm <- readRDS(data_path)
 #'
 #'df <- cumulative_time_interval(data = ttm,
 #'                               opportunity_colname = 'schools',
