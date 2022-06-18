@@ -135,5 +135,8 @@ grid$code_muni <- NULL
 names(grid)[1] <- 'id'
 
 grid2 <- subset(grid, id %in% unique(inter$id_hex) )
+class(grid2)
+plot(grid2)
+head(grid2)
 
-saveRDS(grid, './inst/extdata/grid_bho.rds', compress = TRUE)
+saveRDS(grid2, './inst/extdata/grid_bho.rds', compress = TRUE)
