@@ -1,56 +1,3 @@
-
-
-# Generate data for inst -----------------------------------------------------
-
-library(r5r)
-library(data.table)
-
-# build transport network
-data_path <- system.file("extdata/poa", package = "r5r")
-r5r_core <- setup_r5(data_path)
-
-# load origin/destination points
-points <- read.csv(file.path(data_path, "poa_hexgrid.csv"))[1:100,]
-
-departure_datetime <- as.POSIXct(
-  "13-05-2019 14:00:00",
-  format = "%d-%m-%Y %H:%M:%S"
-)
-
-ttm <- travel_time_matrix(
-  r5r_core,
-  origins = points,
-  destinations = points,
-  mode = 'transit',
-  departure_datetime = departure_datetime
-)
-
-# merge opportunities data
-ttm[points, on=c('from_id'='id'), population   := i.population  ]
-ttm[points, on=c('to_id'='id'), schools  := i.schools ]
-ttm[points, on=c('to_id'='id'), healthcare  := i.healthcare ]
-
-
-data.table::setnames(ttm, 'travel_time_p50' ,  'travel_time')
-
-head(ttm)
-nrow(ttm)
-
-fwrite(ttm, file = 'ttm_poa.csv' )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 library(data.table)
 library(sf)
 library(ggplot2)
@@ -112,6 +59,8 @@ head(ttm)
 ttm <- subset(ttm, from_id %in% unique(inter$id_hex) )
 ttm <- subset(ttm, to_id %in% unique(inter$id_hex) )
 
+
+
 ########## land use  --------------------------------------------------
 land_for <- aopdata::read_landuse(city=sigla, year=2019, geometry = F)
 land_for <- land_for[, .(id_hex, P001, T001, E001)]
@@ -147,6 +96,11 @@ head(grid2)
 setdiff(ttm$from_id, grid2$id)
 setdiff(ttm$to_id, grid2$id)
 setdiff(grid2$id, ttm$to_id)
+
+unique(ttm$to_id) |> length()
+unique(ttm$from_id) |> length()
+unique(grid2$id) |> length()
+
 
 # save files
 saveRDS(ttm, './inst/extdata/ttm_bho.rds', compress = TRUE)
