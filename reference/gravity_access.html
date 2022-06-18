@@ -130,13 +130,13 @@ calculating cumulative opportunities accessibility with the
 <span class="r-in">                           cutoff <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_linear</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            from_id    access</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a88cd814fffff 2.0333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a88cdb57bffff 0.1000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a88cd88cbffff 0.4333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a88cd9047ffff 7.6333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a88136977ffff 0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a88cdae1bffff 7.0066667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            from_id   access</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a88cdb57bffff 0.100000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a88cdb597ffff 6.813333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a88cdb5b3ffff 6.666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a88cdb5cfffff 1.666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a88cd909bffff 3.166667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a88cd90b7ffff 5.733333</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">df_neg_exp</span> <span class="op">&lt;-</span> <span class="fu">gravity_access</span><span class="op">(</span>data <span class="op">=</span> <span class="va">ttm</span>,</span>
 <span class="r-in">                            opportunity_colname <span class="op">=</span> <span class="st">'schools'</span>,</span>
@@ -145,12 +145,12 @@ calculating cumulative opportunities accessibility with the
 <span class="r-in">                            decay_value <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_neg_exp</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            from_id       access</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a88cd814fffff 2.833765e-03</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a88cdb57bffff 2.559486e-06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a88cd88cbffff 4.677089e-05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a88cd9047ffff 2.448098e-02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a88136977ffff 0.000000e+00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a88cdae1bffff 1.324943e-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a88cdb57bffff 2.705781e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a88cdb597ffff 1.249277e-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a88cdb5b3ffff 8.269861e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a88cdb5cfffff 3.023943e-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a88cd909bffff 3.059679e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a88cd90b7ffff 8.581966e-02</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
