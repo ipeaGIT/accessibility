@@ -71,10 +71,10 @@
   <div class="contents col-md-9">
 
 <div class="section level1">
-<div class="page-header"><h1 id="accessibility">accessibility<a class="anchor" aria-label="anchor" href="#accessibility"></a>
+<div class="page-header"><h1 id="accessibility-">accessibility <img align="right" src="reference/figures/logo.png?raw=true" alt="logo" width="180"><a class="anchor" aria-label="anchor" href="#accessibility-"></a>
 </h1></div>
 
-<p><strong>accessibility</strong> offers a set of convenient functions to calculate multiple transport accessibility measures. Given a pre-computed travel costs (e.g. travel times, monetary costs) combined with land-use data (e.g. location of jobs, healthcare, population), the package will soon support various accessibility metrics such as: travel time cutoff- and interval-based cumulative opportunity (active and passive), minimum travel cost to closest N number of activities, gravitational measures and different floating catchment area methods.</p>
+<p><strong>accessibility</strong> offers a set of fast and convenient functions to calculate multiple transport accessibility measures. Given a pre-computed travel cost matrix in long format combined with land-use data (e.g. location of jobs, healthcare, population), the package allows one to calculate active and passive accessibility levels using multiple accessibility metrics such as: cumulative opportunity measure (using either travel time <em>cutoff</em> or <em>interval</em>), minimum travel cost to closest <em>N</em> number of activities, gravitational measures and different floating catchment area methods.</p>
 </div>
 <div class="section level1">
 <h1 id="installation">Installation:<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -82,6 +82,41 @@
 <p><code>accessibility</code> is not available on CRAN yet. In the meantime, you may install the <strong>development version</strong>:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># install.packages("remotes")</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a>remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"ipeaGIT/accessibility"</span>)</span></code></pre></div>
+</div>
+<div class="section level1">
+<h1 id="basic-usage">Basic usage<a class="anchor" aria-label="anchor" href="#basic-usage"></a>
+</h1>
+<pre><code><span class="co"># load a travel time matrix data in long format</span>
+ <span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/ttm_bho.rds"</span>, package <span class="op">=</span> <span class="st">"accessibility"</span><span class="op">)</span>
+ <span class="va">ttm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">data_path</span><span class="op">)</span>
+ 
+<span class="co"># Cumulative accessibility</span>
+<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cumulative_time_cutoff.html">cumulative_time_cutoff</a></span><span class="op">(</span>
+               data <span class="op">=</span> <span class="va">ttm</span>,
+               opportunity_colname <span class="op">=</span> <span class="st">'schools'</span>,
+               cutoff <span class="op">=</span> <span class="fl">30</span>,
+               by_colname <span class="op">=</span> <span class="st">'from_id'</span>
+               <span class="op">)</span>
+
+<span class="co"># Gravity model</span>
+<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gravity_access.html">gravity_access</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">ttm</span>,
+               opportunity_colname <span class="op">=</span> <span class="st">'schools'</span>,
+               by_colname <span class="op">=</span> <span class="st">'from_id'</span>,
+               decay_function <span class="op">=</span> <span class="st">'negative_exponential'</span>,
+               decay_value <span class="op">=</span> <span class="fl">0.5</span>
+               <span class="op">)</span>
+                       
+<span class="co"># 2SFCA with a step decay function</span>
+<span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/floating_catchment_area.html">floating_catchment_area</a></span><span class="op">(</span>
+              data <span class="op">=</span> <span class="va">ttm</span>,
+              fca_metric <span class="op">=</span> <span class="st">'2SFCA'</span>,
+              orig_col <span class="op">=</span> <span class="st">'from_id'</span>,
+              dest_col <span class="op">=</span> <span class="st">'to_id'</span>,
+              opportunity_col <span class="op">=</span> <span class="st">'jobs'</span>,
+              population_col <span class="op">=</span> <span class="st">'population'</span>,
+              decay_function <span class="op">=</span> <span class="st">'step'</span>,
+              cutoff <span class="op">=</span> <span class="fl">30</span>
+              <span class="op">)</span></code></pre>
 <div class="section level2">
 <h2 id="related-work">Related work:<a class="anchor" aria-label="anchor" href="#related-work"></a>
 </h2>
