@@ -54,13 +54,9 @@ cumulative_time_cutoff <- function(data, opportunity_colname, cutoff, by_colname
 
 
   # calculate access -----------------------------------------------------------
-
-  # eval colnames
-  opport_colname_ref <- as.name(opportunity_colname)
-  by_colname_ref <- as.name(by_colname)
   data.table::setDT(data)
 
-  access <- data[travel_time <= cutoff, .(access = sum(eval(opport_colname_ref))), by=eval(by_colname)]
+  access <- data[travel_time <= cutoff, .(access = sum(get(opportunity_colname)) ), by=c(by_colname)]
 
   return(access)
 }

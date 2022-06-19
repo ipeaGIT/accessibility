@@ -81,10 +81,10 @@ cumulative_time_interval <- function(data, opportunity_colname, start, end, by_c
 
   # summary measure to be used
   if (stat=='mean') {
-    access <- access[, .(access = mean(access, na.rm=T)), by = by_colname ] }
+    access <- access[, .(access = mean(access, na.rm=T)), by = c(by_colname) ] }
 
   if (stat=='median') {
-    access <- access[, .(access = median(access, na.rm=T)), by = by_colname ] }
+    access <- access[, .(access = median(access, na.rm=T)), by = c(by_colname) ] }
 
   return(access)
 }

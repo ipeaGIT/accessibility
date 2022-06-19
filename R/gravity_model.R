@@ -70,15 +70,10 @@ gravity_access <- function(data,
 
 
   # calculate access -----------------------------------------------------------
-
-
-  # eval colnames
-  opport_colname_ref <- as.name(opportunity_colname)
-  by_colname_ref <- as.name(by_colname)
   data.table::setDT(data)
 
-  access <- data[, .(access = sum(eval(opport_colname_ref) * impedance_fun(t_ij = travel_time, decay_function = decay_function, cutoff, decay_value))),
-                 by=eval(by_colname)]
+  access <- data[, .(access = sum( get(opportunity_colname) * impedance_fun(t_ij = travel_time, decay_function = decay_function, cutoff, decay_value))),
+                 by= c(by_colname)]
 
   return(access)
 }
