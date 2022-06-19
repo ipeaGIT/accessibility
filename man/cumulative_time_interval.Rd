@@ -2,13 +2,12 @@
 % Please edit documentation in R/cumulative_interval.R
 \name{cumulative_time_interval}
 \alias{cumulative_time_interval}
-\title{Cumulative access based on time interval}
+\title{Cumulative access based on maximum travel time interval}
 \usage{
 cumulative_time_interval(
   data,
   opportunity_col,
-  start,
-  end,
+  interval,
   by_col,
   stat = "mean"
 )
@@ -22,10 +21,8 @@ opportunities in destination locations.}
 \item{opportunity_col}{A \code{string} indicating the name of the column with
 data on the opportunities to be considered.}
 
-\item{start}{An \code{integer} indicating the \code{start} point of the travel time
-interval.}
-
-\item{end}{An \code{integer} indicating the \code{end} point of the travel time interval.}
+\item{interval}{An \verb{numeric vector} of length 2, indicating the start and end
+points of the interval of travel time thresholds to be used.}
 
 \item{by_col}{A \code{string} with the name of the column of origin or
 destination that should be considered, indicating whether accessibility
@@ -41,8 +38,8 @@ A \code{data.table} object.
 }
 \description{
 The function calculates the average or median number of opportunities that
-can be reached considering multiple minute-by-minute time thresholds within a
-given travel time interval specified by the user.
+can be reached considering multiple minute-by-minute maximum travel time
+thresholds within a given travel time interval specified by the user.
 }
 \examples{
 library(accessibility)
@@ -53,16 +50,14 @@ ttm <- readRDS(data_path)
 
 df <- cumulative_time_interval(data = ttm,
                               opportunity_col = 'schools',
-                              start = 20,
-                              end = 30,
+                              interval = c(20, 30),
                               by_col = 'from_id',
-                              stat ='median')
+                              stat ='mean')
 head(df)
 
 }
 \seealso{
 Other Cumulative access: 
-\code{\link{cumulative_time_cutoff}()},
-\code{\link{gravity_access}()}
+\code{\link{cumulative_time_cutoff}()}
 }
 \concept{Cumulative access}
