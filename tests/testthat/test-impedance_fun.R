@@ -10,7 +10,7 @@ testthat::skip_on_cran()
 
 default_tester <- function(t_ij = 30,
                            decay_function = 'linear',
-                           cutoff = 60,
+                           cutoff = 40,
                            decay_value=0.5) {
 
   imp_factor <- accessibility::impedance_fun(t_ij = t_ij,

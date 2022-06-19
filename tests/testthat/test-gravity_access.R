@@ -8,7 +8,7 @@ testthat::skip_on_cran()
 default_tester <- function(data = ttm,
                            opportunity_colname = 'schools',
                            decay_function = 'linear',
-                           cutoff = 60,
+                           cutoff = 30,
                            decay_value=0.5,
                            by_colname='from_id') {
 

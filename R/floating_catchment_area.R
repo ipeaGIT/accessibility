@@ -115,22 +115,47 @@ floating_catchment_area <- function(data,
   if (! fca_metric %in% fca_options){stop("Parameter 'fca_metric' must be one of the following: ", paste0(fca_options, collapse = ", "))}
 
 
-  # select FCA metric  ---------------------------------------------------------
-
-  fca_fun <- if(fca_metric=='2SFCA'){ accessibility::fca_2sfca}
-  fca_fun <- if(fca_metric=='BFCA'){ accessibility::fca_bfca}
+  # # select FCA metric  ---------------------------------------------------------
+  ##> THIS throws error in testthat because tests cannot find the 'fca_fun' function
+  ##>
+  # fca_fun <- if(fca_metric=='2SFCA'){ accessibility::fca_2sfca}
+  # fca_fun <- if(fca_metric=='BFCA'){ accessibility::fca_bfca}
+  #
+  #   access <- fca_fun(data = data,
+  #                      orig_col = orig_col,
+  #                      dest_col = dest_col,
+  #                      population_col = population_col,
+  #                      opportunity_col = opportunity_col,
+  #                      decay_function = decay_function,
+  #                      cutoff = cutoff,
+  #                      decay_value = decay_value)
 
   # calculate access -----------------------------------------------------------
   data.table::setDT(data)
 
-  access <- fca_fun(data = data,
-                    orig_col = orig_col,
-                    dest_col = dest_col,
-                    population_col = population_col,
-                    opportunity_col = opportunity_col,
-                    decay_function = decay_function,
-                    cutoff = cutoff,
-                    decay_value = decay_value)
+  # 2SFCA
+  if (fca_metric=='2SFCA') {
+    access <- fca_2sfca(data = data,
+                       orig_col = orig_col,
+                       dest_col = dest_col,
+                       population_col = population_col,
+                       opportunity_col = opportunity_col,
+                       decay_function = decay_function,
+                       cutoff = cutoff,
+                       decay_value = decay_value)
+    }
+
+  # BFCA
+  if (fca_metric=='BFCA') {
+    access <- fca_bfca(data = data,
+                       orig_col = orig_col,
+                       dest_col = dest_col,
+                       population_col = population_col,
+                       opportunity_col = opportunity_col,
+                       decay_function = decay_function,
+                       cutoff = cutoff,
+                       decay_value = decay_value)
+    }
 
   return(access)
 }

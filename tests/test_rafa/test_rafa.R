@@ -93,7 +93,10 @@ a <- covr::function_coverage(fun=accessibility::cumulative_time_interval, test_f
 a <- covr::function_coverage(fun=accessibility::time_to_closest, test_file("tests/testthat/test-time_to_closest.R"))
 a <- covr::function_coverage(fun=accessibility::impedance_fun, test_file("tests/testthat/test-impedance_fun.R"))
 a <- covr::function_coverage(fun=accessibility::gravity_access, test_file("tests/testthat/test-gravity_access.R"))
+a <- covr::function_coverage(fun=accessibility::floating_catchment_area, test_file("tests/testthat/test-floating_catchment_area.R"))
 a
+
+accessibility::floating_catchment_area()
 
 # the whole package
 Sys.setenv(NOT_CRAN = "true")
