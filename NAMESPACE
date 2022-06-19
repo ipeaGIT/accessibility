@@ -2,6 +2,7 @@
 
 export(cumulative_time_cutoff)
 export(cumulative_time_interval)
+export(fca_bfca)
 export(gravity_access)
 export(impedance_fun)
 export(time_to_closest)

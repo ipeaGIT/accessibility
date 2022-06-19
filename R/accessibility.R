@@ -26,6 +26,15 @@ utils::globalVariables(
     "mean",
     "travel_time",
     "to_id",
-    "cum_opport"
+    "cum_opport",
+    "impedance",
+    "balanced_impedance_i",
+    "balanced_impedance_j",
+    "pop_served",
+    "ppr"
     )
 )
+
+
+
+
