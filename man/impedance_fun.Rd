@@ -29,7 +29,7 @@ calculating cumulative opportunities accessibility with the
 A \code{numeric} impedance factor
 }
 \description{
-Provides a numer of impedance functions to be used inside \code{accessibility} functions.
+Provides a number of impedance functions to be used inside \code{accessibility} functions.
 }
 \examples{
 library(accessibility)

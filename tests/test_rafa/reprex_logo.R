@@ -14,6 +14,9 @@ library(accessibility)
 library(data.table)
 library(ggplot2)
 library(sf)
+library(interp)
+library(sfheaders)
+
 
 
 ttm_path <- system.file("extdata/ttm_bho.rds", package = "accessibility")
@@ -60,11 +63,28 @@ fig
 
 
 # interpolate estimates to get spatially smooth result
-travel_times.interp <- with(na.omit(ttm), interp(lon, lat, travel_time_p50)) %>%
-  with(cbind(travel_time=as.vector(z),  # Column-major order
-             x=rep(x, times=length(y)),
-             y=rep(y, each=length(x)))) %>%
-  as.data.frame() %>% na.omit()
+temp_xy <-  df2 |>
+            st_centroid() |>
+            sfheaders::sf_to_df(fill = T)
+
+accss_interp <- interp(temp_xy$x, temp_xy$y, temp_xy$access) |>
+                with(cbind(access=as.vector(z),  # Column-major order
+                           x=rep(x, times=length(y)),
+                           y=rep(y, each=length(x)))) |>
+                as.data.frame() %>% na.omit()
+
+# find results' bounding box to crop the map
+bb_x <- c(min(accss_interp$x), max(accss_interp$x))
+bb_y <- c(min(accss_interp$y), max(accss_interp$y))
+
+fig_interp <- ggplot(data=accss_interp) +
+              geom_contour_filled(aes(x=x, y=y, z=access), alpha=.8, show.legend = F) +
+              # scale_fill_viridis_c() +
+              theme_void() +
+              theme(panel.grid.major=element_line(colour="transparent")) +
+              coord_sf(xlim = bb_x, ylim = bb_y, datum = NA) +
+              scale_x_continuous(expand=c(0,0)) +
+              scale_y_continuous(expand=c(0,0))
 
 
 
