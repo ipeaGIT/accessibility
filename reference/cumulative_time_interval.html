@@ -56,10 +56,10 @@ given travel time interval specified by the user.</p>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">cumulative_time_interval</span><span class="op">(</span>
   <span class="va">data</span>,
-  <span class="va">opportunity_colname</span>,
+  <span class="va">opportunity_col</span>,
   <span class="va">start</span>,
   <span class="va">end</span>,
-  <span class="va">by_colname</span>,
+  <span class="va">by_col</span>,
   stat <span class="op">=</span> <span class="st">"mean"</span>
 <span class="op">)</span></code></pre></div>
     </div>
@@ -73,7 +73,7 @@ travel time <code>travel_time</code> from origin to destination, and number of
 opportunities in destination locations.</p></dd>
 
 
-<dt>opportunity_colname</dt>
+<dt>opportunity_col</dt>
 <dd><p>A <code>string</code> indicating the name of the column with
 data on the opportunities to be considered.</p></dd>
 
@@ -87,7 +87,7 @@ interval.</p></dd>
 <dd><p>An <code>integer</code> indicating the <code>end</code> point of the travel time interval.</p></dd>
 
 
-<dt>by_colname</dt>
+<dt>by_col</dt>
 <dd><p>A <code>string</code> with the name of the column of origin or
 destination that should be considered, indicating whether accessibility
 levels should by calculated by each origin (active accessibility) or
@@ -122,10 +122,10 @@ accessibility estimates within the time interval. It accepts either <code>median
 <span class="r-in"><span class="va">ttm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">data_path</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">cumulative_time_interval</span><span class="op">(</span>data <span class="op">=</span> <span class="va">ttm</span>,</span>
-<span class="r-in">                              opportunity_colname <span class="op">=</span> <span class="st">'schools'</span>,</span>
+<span class="r-in">                              opportunity_col <span class="op">=</span> <span class="st">'schools'</span>,</span>
 <span class="r-in">                              start <span class="op">=</span> <span class="fl">20</span>,</span>
 <span class="r-in">                              end <span class="op">=</span> <span class="fl">30</span>,</span>
-<span class="r-in">                              by_colname <span class="op">=</span> <span class="st">'from_id'</span>,</span>
+<span class="r-in">                              by_col <span class="op">=</span> <span class="st">'from_id'</span>,</span>
 <span class="r-in">                              stat <span class="op">=</span><span class="st">'median'</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            from_id access</span>
