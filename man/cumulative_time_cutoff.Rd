@@ -52,7 +52,6 @@ head(df)
 }
 \seealso{
 Other Cumulative access: 
-\code{\link{cumulative_time_interval}()},
-\code{\link{gravity_access}()}
+\code{\link{cumulative_time_interval}()}
 }
 \concept{Cumulative access}

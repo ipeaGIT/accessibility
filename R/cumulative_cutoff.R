@@ -17,7 +17,7 @@
 #' @param cutoff A `numeric` value indicating the maximum travel time considered.
 #'
 #' @return A `data.table` object.
-#'
+#' @family Cumulative access
 #' @examples
 #' library(accessibility)
 #'
@@ -38,7 +38,6 @@
 #'                             cutoff = 30,
 #'                             by_col = 'to_id')
 #'head(df)
-#' @family Cumulative access
 #' @export
 cumulative_time_cutoff <- function(data, opportunity_col, cutoff, by_col){
 

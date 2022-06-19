@@ -32,6 +32,7 @@
 #'               `step` or `exponential`.
 #'
 #' @return A `numeric` estimate of accessibility.
+#'
 #' @details
 #' The balanced floating catchment area (BFCA) measure was originally proposed
 #' by Paez et al. (2019) and
@@ -43,6 +44,7 @@
 #' Brazil using a balanced float catchment area approach. Social Science &
 #' Medicine, 273. \doi{10.1016/j.socscimed.2021.113773}
 #'
+#' @family Floating catchment area
 #' @examples
 #' library(accessibility)
 #'
@@ -72,7 +74,6 @@
 #'
 #'head(df2)
 #'
-#' @family Floating catchment area
 #' @export
 fca_bfca <- function(data,
                      orig_col,

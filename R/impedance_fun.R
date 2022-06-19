@@ -20,7 +20,7 @@
 #'               `step` or `exponential`.
 #'
 #' @return A `numeric` impedance factor
-#'
+#' @family Impedance functions
 #' @examples
 #' library(accessibility)
 #'
@@ -41,7 +41,6 @@
 #'                             cutoff = 30,
 #'                             by_col = 'to_id')
 #'head(df)
-#' @family Impedance functions
 #' @export
 impedance_fun <- function(t_ij, decay_function, cutoff=NULL, decay_value=NULL){
 

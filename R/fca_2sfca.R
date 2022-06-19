@@ -5,7 +5,6 @@
 #' (2SFCA) proposed by Luo and Wang (2003). The 2SFCA metric was the first
 #' accessibility metric in the the floating catchment area family.
 #'
-#'
 #' @param data A `data.frame` with a travel time matrix in long format,
 #'   containing the at least the columns of origin `from_id`, destination `to_id`,
 #'   travel time `travel_time` from origin to destination, and number of
@@ -31,12 +30,14 @@
 #'               `step` or `exponential`.
 #'
 #' @return A `numeric` estimate of accessibility.
+#'
 #' @details
 #' References:
 #' - Luo, W., & Wang, F. (2003). Measures of spatial accessibility to health
 #' care in a GIS environment: synthesis and a case study in the Chicago region.
 #' Environment and planning B: planning and design, 30(6), 865-884. \doi{10.1068/b29120}.
 #'
+#' @family Floating catchment area
 #' @examples
 #' library(accessibility)
 #'
@@ -66,7 +67,6 @@
 #'
 #'head(df2)
 #'
-#' @family Floating catchment area
 #' @export
 fca_2sfca <- function(data,
                      orig_col,

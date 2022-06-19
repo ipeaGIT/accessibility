@@ -1,9 +1,9 @@
-#' @title Cumulative access based on time interval
+#' @title Cumulative access based on maximum travel time interval
 #'
 #' @description
 #' The function calculates the average or median number of opportunities that
-#' can be reached considering multiple minute-by-minute time thresholds within a
-#' given travel time interval specified by the user.
+#' can be reached considering multiple minute-by-minute maximum travel time
+#' thresholds within a given travel time interval specified by the user.
 #'
 #' @param data A `data.frame` with a travel time matrix in long format,
 #'   containing the at least the columns of origin `from_id`, destination `to_id`,
@@ -15,14 +15,14 @@
 #'   destination that should be considered, indicating whether accessibility
 #'   levels should by calculated by each origin (active accessibility) or
 #'   destination (passive accessibility).
-#' @param start An `integer` indicating the `start` point of the travel time
-#' interval.
-#' @param end An `integer` indicating the `end` point of the travel time interval.
+#' @param interval An `numeric vector` of length 2, indicating the start and end
+#'   points of the interval of travel time thresholds to be used.
 #' @param stat A `string` indicating the summary statistic used to aggregate the
 #' accessibility estimates within the time interval. It accepts either `median`
 #' (Default) or `mean`.
 #'
 #' @return A `data.table` object.
+#' @family Cumulative access
 #' @examples
 #' library(accessibility)
 #'
@@ -32,23 +32,22 @@
 #'
 #'df <- cumulative_time_interval(data = ttm,
 #'                               opportunity_col = 'schools',
-#'                               start = 20,
-#'                               end = 30,
+#'                               interval = c(20, 30),
 #'                               by_col = 'from_id',
-#'                               stat ='median')
+#'                               stat ='mean')
 #'head(df)
 #'
-#' @family Cumulative access
 #' @export
-cumulative_time_interval <- function(data, opportunity_col, start, end, by_col, stat='mean'){
+cumulative_time_interval <- function(data, opportunity_col, interval, by_col, stat='mean'){
 
   # check inputs ------------------------------------------------------------
   checkmate::test_data_frame(data)
   checkmate::test_string(opportunity_col)
   checkmate::test_string(by_col)
-  checkmate::assert_number(start, lower = 0, finite = TRUE)
-  checkmate::assert_number(end, lower = 0, finite = TRUE)
 
+  checkmate::assert_vector(interval, any.missing = FALSE, len = 2 ,unique = TRUE)
+  checkmate::assert_number(interval[1], lower = 0, finite = TRUE)
+  checkmate::assert_number(interval[2], lower = 0, finite = TRUE)
 
   checkmate::assert_names(names(data), must.include = opportunity_col,
                           .var.name = "data")
@@ -63,8 +62,8 @@ cumulative_time_interval <- function(data, opportunity_col, start, end, by_col, 
   # calculate access -----------------------------------------------------------
 
   # minute-by-minute interval
-  # vct <- seq(start, end, 1)
-  vct <- start:end
+  interval
+  vct <- interval[1]:interval[2]
 
   # calculate cumulative access for every minute in the interval
   access_list <- lapply(X=vct,

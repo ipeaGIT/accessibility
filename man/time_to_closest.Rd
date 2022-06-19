@@ -25,7 +25,8 @@ opportunities that should be considered. Defaults to \code{1}}
 }
 \value{
 A \code{data.table} object indicating for each origin the travel time to
-the closest opportunity and the id of the destination where it is located.
+the closest opportunity and the id of the destination where it is
+located.
 }
 \description{
 The function calculates the minimum travel time to closest N number of

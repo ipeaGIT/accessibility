@@ -27,6 +27,7 @@
 #'               `step` or `exponential`.
 #'
 #' @return A `data.table` object.
+#' @family Gravity-based accessibility
 #' @examples
 #' library(accessibility)
 #'
@@ -49,7 +50,6 @@
 #'                             decay_value = 0.5)
 #'head(df_neg_exp)
 #'
-#' @family Cumulative access
 #' @export
 gravity_access <- function(data,
                            opportunity_col,

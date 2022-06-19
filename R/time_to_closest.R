@@ -17,9 +17,11 @@
 #' @param n_opportunities A `numeric` value with the mininum N number of
 #'   opportunities that should be considered. Defaults to `1`
 #'
-#'
+
 #' @return A `data.table` object indicating for each origin the travel time to
-#' the closest opportunity and the id of the destination where it is located.
+#'         the closest opportunity and the id of the destination where it is
+#'         located.
+#' @family Minimum travel time
 #' @examples
 #' library(accessibility)
 #'
@@ -39,7 +41,6 @@
 #'                      n_opportunities = 2)
 #'head(df)
 #'
-#' @family Minimum travel time
 #' @export
 time_to_closest <- function(data, opportunity_col, by_col, n_opportunities = 1){
 

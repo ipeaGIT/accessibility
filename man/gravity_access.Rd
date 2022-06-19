@@ -71,9 +71,4 @@ df_neg_exp <- gravity_access(data = ttm,
 head(df_neg_exp)
 
 }
-\seealso{
-Other Cumulative access: 
-\code{\link{cumulative_time_cutoff}()},
-\code{\link{cumulative_time_interval}()}
-}
-\concept{Cumulative access}
+\concept{Gravity-based accessibility}

@@ -30,8 +30,8 @@
 #'               `decay_function`. Has no effects when `decay_function` is either
 #'               `step` or `exponential`.
 #'
-#' @return A `numeric` estimate of accessibility.
-#'
+#' @return A `data.table` object.
+#' @family Floating catchment area
 #' @examples
 #' library(accessibility)
 #'
@@ -77,7 +77,6 @@
 #'
 #'head(df2)
 #'
-#' @family Floating catchment area
 #' @export
 floating_catchment_area <- function(data,
                                     fca_metric,

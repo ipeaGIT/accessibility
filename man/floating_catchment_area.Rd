@@ -51,7 +51,7 @@ calculating cumulative opportunities accessibility with the
 \code{step} or \code{exponential}.}
 }
 \value{
-A \code{numeric} estimate of accessibility.
+A \code{data.table} object.
 }
 \description{
 Calculates accessibility accouting for the competition of resources using one
