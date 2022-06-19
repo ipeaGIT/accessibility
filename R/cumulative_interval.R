@@ -9,9 +9,9 @@
 #'   containing the at least the columns of origin `from_id`, destination `to_id`,
 #'   travel time `travel_time` from origin to destination, and number of
 #'   opportunities in destination locations.
-#' @param opportunity_colname A `string` indicating the name of the column with
+#' @param opportunity_col A `string` indicating the name of the column with
 #'   data on the opportunities to be considered.
-#' @param by_colname A `string` with the name of the column of origin or
+#' @param by_col A `string` with the name of the column of origin or
 #'   destination that should be considered, indicating whether accessibility
 #'   levels should by calculated by each origin (active accessibility) or
 #'   destination (passive accessibility).
@@ -31,29 +31,29 @@
 #' ttm <- readRDS(data_path)
 #'
 #'df <- cumulative_time_interval(data = ttm,
-#'                               opportunity_colname = 'schools',
+#'                               opportunity_col = 'schools',
 #'                               start = 20,
 #'                               end = 30,
-#'                               by_colname = 'from_id',
+#'                               by_col = 'from_id',
 #'                               stat ='median')
 #'head(df)
 #'
 #' @family Cumulative access
 #' @export
-cumulative_time_interval <- function(data, opportunity_colname, start, end, by_colname, stat='mean'){
+cumulative_time_interval <- function(data, opportunity_col, start, end, by_col, stat='mean'){
 
   # check inputs ------------------------------------------------------------
   checkmate::test_data_frame(data)
-  checkmate::test_string(opportunity_colname)
-  checkmate::test_string(by_colname)
+  checkmate::test_string(opportunity_col)
+  checkmate::test_string(by_col)
   checkmate::assert_number(start, lower = 0, finite = TRUE)
   checkmate::assert_number(end, lower = 0, finite = TRUE)
 
 
-  checkmate::assert_names(names(data), must.include = opportunity_colname,
+  checkmate::assert_names(names(data), must.include = opportunity_col,
                           .var.name = "data")
 
-  checkmate::assert_names(names(data), must.include = by_colname,
+  checkmate::assert_names(names(data), must.include = by_col,
                           .var.name = "data")
 
   checkmate::assert_choice(x=stat, choices=c('mean', 'median'))
@@ -71,8 +71,8 @@ cumulative_time_interval <- function(data, opportunity_colname, start, end, by_c
                         FUN= function(i){
                           temp <-  cumulative_time_cutoff(data = data,
                                                           cutoff = i,
-                                                          opportunity_colname = opportunity_colname,
-                                                          by_colname = by_colname)
+                                                          opportunity_col = opportunity_col,
+                                                          by_col = by_col)
                           return(temp)
                         }
   )
@@ -82,10 +82,10 @@ cumulative_time_interval <- function(data, opportunity_colname, start, end, by_c
 
   # summary measure to be used
   if (stat=='mean') {
-    access <- access[, .(access = mean(access, na.rm=T)), by = c(by_colname) ] }
+    access <- access[, .(access = mean(access, na.rm=T)), by = c(by_col) ] }
 
   if (stat=='median') {
-    access <- access[, .(access = median(access, na.rm=T)), by = c(by_colname) ] }
+    access <- access[, .(access = median(access, na.rm=T)), by = c(by_col) ] }
 
   return(access)
 }

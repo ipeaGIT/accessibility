@@ -41,16 +41,16 @@ ttm <- readRDS(data_path)
 
 # Active accessibility: number of schools accessible from each origin
 df <- cumulative_time_cutoff(data = ttm,
-                            opportunity_colname = 'schools',
+                            opportunity_col = 'schools',
                             cutoff = 30,
-                            by_colname = 'from_id')
+                            by_col = 'from_id')
 head(df)
 
 # Passive accessibility: number of people that can reach each destination
 df <- cumulative_time_cutoff(data = ttm,
-                            opportunity_colname = 'population',
+                            opportunity_col = 'population',
                             cutoff = 30,
-                            by_colname = 'to_id')
+                            by_col = 'to_id')
 head(df)
 }
 \concept{Impedance functions}

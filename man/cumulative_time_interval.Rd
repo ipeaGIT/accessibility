@@ -6,10 +6,10 @@
 \usage{
 cumulative_time_interval(
   data,
-  opportunity_colname,
+  opportunity_col,
   start,
   end,
-  by_colname,
+  by_col,
   stat = "mean"
 )
 }
@@ -19,7 +19,7 @@ containing the at least the columns of origin \code{from_id}, destination \code{
 travel time \code{travel_time} from origin to destination, and number of
 opportunities in destination locations.}
 
-\item{opportunity_colname}{A \code{string} indicating the name of the column with
+\item{opportunity_col}{A \code{string} indicating the name of the column with
 data on the opportunities to be considered.}
 
 \item{start}{An \code{integer} indicating the \code{start} point of the travel time
@@ -27,7 +27,7 @@ interval.}
 
 \item{end}{An \code{integer} indicating the \code{end} point of the travel time interval.}
 
-\item{by_colname}{A \code{string} with the name of the column of origin or
+\item{by_col}{A \code{string} with the name of the column of origin or
 destination that should be considered, indicating whether accessibility
 levels should by calculated by each origin (active accessibility) or
 destination (passive accessibility).}
@@ -52,10 +52,10 @@ data_path <- system.file("extdata/ttm_bho.rds", package = "accessibility")
 ttm <- readRDS(data_path)
 
 df <- cumulative_time_interval(data = ttm,
-                              opportunity_colname = 'schools',
+                              opportunity_col = 'schools',
                               start = 20,
                               end = 30,
-                              by_colname = 'from_id',
+                              by_col = 'from_id',
                               stat ='median')
 head(df)
 

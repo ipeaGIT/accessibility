@@ -4,7 +4,7 @@
 \alias{time_to_closest}
 \title{Minimum travel time to closest opportunities}
 \usage{
-time_to_closest(data, opportunity_colname, by_colname, n_opportunities = 1)
+time_to_closest(data, opportunity_col, by_col, n_opportunities = 1)
 }
 \arguments{
 \item{data}{A \code{data.frame} with a travel time matrix in long format,
@@ -12,10 +12,10 @@ containing the at least the columns of origin \code{from_id}, destination \code{
 travel time \code{travel_time} from origin to destination, and number of
 opportunities in destination locations.}
 
-\item{opportunity_colname}{A \code{string} indicating the name of the column with
+\item{opportunity_col}{A \code{string} indicating the name of the column with
 data on the opportunities to be considered.}
 
-\item{by_colname}{A \code{string} with the name of the column of origin or
+\item{by_col}{A \code{string} with the name of the column of origin or
 destination that should be considered, indicating whether accessibility
 levels should by calculated by each origin (active accessibility) or
 destination (passive accessibility).}
@@ -39,14 +39,14 @@ data_path <- system.file("extdata/ttm_bho.rds", package = "accessibility")
 ttm <- readRDS(data_path)
 
 df <- time_to_closest(data = ttm,
-                     opportunity_colname = 'schools',
-                     by_colname = 'from_id',
+                     opportunity_col = 'schools',
+                     by_col = 'from_id',
                      n_opportunities = 1)
 head(df)
 
 df <- time_to_closest(data = ttm,
-                     opportunity_colname = 'schools',
-                     by_colname = 'from_id',
+                     opportunity_col = 'schools',
+                     by_col = 'from_id',
                      n_opportunities = 2)
 head(df)
 

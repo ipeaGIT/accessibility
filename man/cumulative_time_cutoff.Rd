@@ -4,7 +4,7 @@
 \alias{cumulative_time_cutoff}
 \title{Cumulative access based on maximum travel time cutoff}
 \usage{
-cumulative_time_cutoff(data, opportunity_colname, cutoff, by_colname)
+cumulative_time_cutoff(data, opportunity_col, cutoff, by_col)
 }
 \arguments{
 \item{data}{A \code{data.frame} with a travel time matrix in long format,
@@ -12,12 +12,12 @@ containing the at least the columns of origin \code{from_id}, destination \code{
 travel time \code{travel_time} from origin to destination, and number of
 opportunities in destination locations.}
 
-\item{opportunity_colname}{A \code{string} indicating the name of the column with
+\item{opportunity_col}{A \code{string} indicating the name of the column with
 data on the opportunities to be considered.}
 
 \item{cutoff}{A \code{numeric} value indicating the maximum travel time considered.}
 
-\item{by_colname}{A \code{string} with the name of the column of origin or
+\item{by_col}{A \code{string} with the name of the column of origin or
 destination that should be considered, indicating whether accessibility
 levels should by calculated by each origin (active accessibility) or
 destination (passive accessibility).}
@@ -38,16 +38,16 @@ ttm <- readRDS(data_path)
 
 # Active accessibility: number of schools accessible from each origin
 df <- cumulative_time_cutoff(data = ttm,
-                            opportunity_colname = 'schools',
+                            opportunity_col = 'schools',
                             cutoff = 30,
-                            by_colname = 'from_id')
+                            by_col = 'from_id')
 head(df)
 
 # Passive accessibility: number of people that can reach each destination
 df <- cumulative_time_cutoff(data = ttm,
-                            opportunity_colname = 'population',
+                            opportunity_col = 'population',
                             cutoff = 30,
-                            by_colname = 'to_id')
+                            by_col = 'to_id')
 head(df)
 }
 \seealso{

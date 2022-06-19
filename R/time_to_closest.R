@@ -8,9 +8,9 @@
 #'   containing the at least the columns of origin `from_id`, destination `to_id`,
 #'   travel time `travel_time` from origin to destination, and number of
 #'   opportunities in destination locations.
-#' @param opportunity_colname A `string` indicating the name of the column with
+#' @param opportunity_col A `string` indicating the name of the column with
 #'   data on the opportunities to be considered.
-#' @param by_colname A `string` with the name of the column of origin or
+#' @param by_col A `string` with the name of the column of origin or
 #'   destination that should be considered, indicating whether accessibility
 #'   levels should by calculated by each origin (active accessibility) or
 #'   destination (passive accessibility).
@@ -28,31 +28,31 @@
 #' ttm <- readRDS(data_path)
 #'
 #'df <- time_to_closest(data = ttm,
-#'                      opportunity_colname = 'schools',
-#'                      by_colname = 'from_id',
+#'                      opportunity_col = 'schools',
+#'                      by_col = 'from_id',
 #'                      n_opportunities = 1)
 #'head(df)
 #'
 #'df <- time_to_closest(data = ttm,
-#'                      opportunity_colname = 'schools',
-#'                      by_colname = 'from_id',
+#'                      opportunity_col = 'schools',
+#'                      by_col = 'from_id',
 #'                      n_opportunities = 2)
 #'head(df)
 #'
 #' @family Minimum travel time
 #' @export
-time_to_closest <- function(data, opportunity_colname, by_colname, n_opportunities = 1){
+time_to_closest <- function(data, opportunity_col, by_col, n_opportunities = 1){
 
   # check inputs ------------------------------------------------------------
   checkmate::test_data_frame(data)
-  checkmate::test_string(opportunity_colname)
-  checkmate::test_string(by_colname)
+  checkmate::test_string(opportunity_col)
+  checkmate::test_string(by_col)
   checkmate::assert_number(n_opportunities, lower = 1, finite = TRUE)
 
-  checkmate::assert_names(names(data), must.include = opportunity_colname,
+  checkmate::assert_names(names(data), must.include = opportunity_col,
                           .var.name = "data")
 
-  checkmate::assert_names(names(data), must.include = by_colname,
+  checkmate::assert_names(names(data), must.include = by_col,
                           .var.name = "data")
 
   # calculate access -----------------------------------------------------------
@@ -61,26 +61,26 @@ time_to_closest <- function(data, opportunity_colname, by_colname, n_opportuniti
 
  if (n_opportunities == 1) {
 
-   access <- data[ get(opportunity_colname) > 0,
-                   .(travel_time = min(travel_time[which(get(opportunity_colname) > 0 )])
+   access <- data[ get(opportunity_col) > 0,
+                   .(travel_time = min(travel_time[which(get(opportunity_col) > 0 )])
                      , destination = to_id[which.min(travel_time)]
-                     ), by = c(by_colname)]
+                     ), by = c(by_col)]
 
  } else {
 
   # keep only destinations with at least one opportunity
-  temp <- data[ get(opportunity_colname) > 0,]
+  temp <- data[ get(opportunity_col) > 0,]
 
   # sort by shortest to longets travel times
-  temp <- temp[order(get(by_colname), travel_time)]
+  temp <- temp[order(get(by_col), travel_time)]
 
   # cumsum of opportunities
-  temp[, cum_opport := cumsum(get(opportunity_colname)), by = c(by_colname)]
+  temp[, cum_opport := cumsum(get(opportunity_col)), by = c(by_col)]
 
   access <- temp[,
                  .(travel_time = travel_time[which(cum_opport == n_opportunities)]
                    , destination = paste(to_id[which(cum_opport <= n_opportunities)], collapse  = ";")
-                 ), by = c(by_colname)]
+                 ), by = c(by_col)]
   }
 
   return(access)

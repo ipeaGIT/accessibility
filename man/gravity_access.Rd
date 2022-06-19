@@ -6,8 +6,8 @@
 \usage{
 gravity_access(
   data,
-  opportunity_colname,
-  by_colname,
+  opportunity_col,
+  by_col,
   decay_function,
   cutoff = NULL,
   decay_value = NULL
@@ -19,10 +19,10 @@ containing the at least the columns of origin \code{from_id}, destination \code{
 travel time \code{travel_time} from origin to destination, and number of
 opportunities in destination locations.}
 
-\item{opportunity_colname}{A \code{string} indicating the name of the column with
+\item{opportunity_col}{A \code{string} indicating the name of the column with
 data on the opportunities to be considered.}
 
-\item{by_colname}{A \code{string} with the name of the column of origin or
+\item{by_col}{A \code{string} with the name of the column of origin or
 destination that should be considered, indicating whether accessibility
 levels should by calculated by each origin (active accessibility) or
 destination (passive accessibility).}
@@ -56,16 +56,16 @@ data_path <- system.file("extdata/ttm_bho.rds", package = "accessibility")
 ttm <- readRDS(data_path)
 
 df_linear <- gravity_access(data = ttm,
-                           opportunity_colname = 'schools',
-                           by_colname = 'from_id',
+                           opportunity_col = 'schools',
+                           by_col = 'from_id',
                            decay_function = 'linear',
                            cutoff = 30)
 
 head(df_linear)
 
 df_neg_exp <- gravity_access(data = ttm,
-                            opportunity_colname = 'schools',
-                            by_colname = 'from_id',
+                            opportunity_col = 'schools',
+                            by_col = 'from_id',
                             decay_function = 'negative_exponential',
                             decay_value = 0.5)
 head(df_neg_exp)
