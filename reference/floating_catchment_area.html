@@ -152,15 +152,14 @@ calculating cumulative opportunities accessibility with the
 <span class="r-in">       decay_function <span class="op">=</span> <span class="st">'step'</span>,</span>
 <span class="r-in">       cutoff <span class="op">=</span> <span class="fl">30</span></span>
 <span class="r-in">       <span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in fca_fun(data = data, orig_col = orig_col, dest_col = dest_col,     population_col = population_col, opportunity_col = opportunity_col,     decay_function = decay_function, cutoff = cutoff, decay_value = decay_value):</span> could not find function "fca_fun"</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 function (x, df1, df2, ncp, log = FALSE)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 {                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     if (missing(ncp))                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4         .Call(C_df, x, df1, df2, log)       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     else .Call(C_dnf, x, df1, df2, ncp, log)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 }                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            from_id access_2sfca</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a88cdb57bffff    0.1135253</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a88cdb597ffff    0.4412146</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a88cdb5b3ffff    0.4645848</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a88cdb5cfffff    0.3579043</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a88cd909bffff    0.2067682</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a88cd90b7ffff    0.2601425</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># BFCA with a step decay function</span></span>
 <span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">floating_catchment_area</span><span class="op">(</span></span>
@@ -191,10 +190,15 @@ calculating cumulative opportunities accessibility with the
 <span class="r-in">        decay_function <span class="op">=</span> <span class="st">'negative_exponential'</span>,</span>
 <span class="r-in">        decay_value <span class="op">=</span> <span class="fl">0.5</span></span>
 <span class="r-in">        <span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in fca_fun(data = data, orig_col = orig_col, dest_col = dest_col,     population_col = population_col, opportunity_col = opportunity_col,     decay_function = decay_function, cutoff = cutoff, decay_value = decay_value):</span> could not find function "fca_fun"</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in head(df2):</span> object 'df2' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            from_id access_2sfca</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a88cdb57bffff   0.09719680</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a88cdb597ffff   0.25341503</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a88cdb5b3ffff   0.07677021</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a88cdb5cfffff   0.10922532</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a88cd909bffff   0.08838406</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a88cd90b7ffff   0.84150290</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
