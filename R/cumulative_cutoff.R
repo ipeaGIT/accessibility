@@ -1,5 +1,6 @@
-#' Cumulative access based on maximum travel time cutoff
+#' @title Cumulative access based on maximum travel time cutoff
 #'
+#' @description
 #' The function calculates the number of opportunities accessible under a given
 #' travel time cutoff specified by the user.
 #'

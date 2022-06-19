@@ -1,5 +1,6 @@
-#' Minimum travel time to closest opportunities
+#' @title Minimum travel time to closest opportunities
 #'
+#' @description
 #' The function calculates the minimum travel time to closest N number of
 #' opportunities.
 #'

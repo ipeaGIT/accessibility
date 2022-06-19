@@ -1,5 +1,6 @@
-#' Cumulative access based on time interval
+#' @title Cumulative access based on time interval
 #'
+#' @description
 #' The function calculates the average or median number of opportunities that
 #' can be reached considering multiple minute-by-minute time thresholds within a
 #' given travel time interval specified by the user.

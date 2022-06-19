@@ -1,6 +1,8 @@
-#' General impedance functions
+#' @title General impedance functions
 #'
-#' Provides a number of impedance functions to be used inside `accessibility` functions.
+#' @description
+#' Provides a number of impedance functions to be used inside `accessibility`
+#' functions.
 #'
 #' @param t_ij A number indicating the travel cost (time or money) between
 #'             origin (i) and destination (j).

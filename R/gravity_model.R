@@ -1,5 +1,6 @@
-#' Gravity-based accessibility measures
+#' @title Gravity-based accessibility measures
 #'
+#' @description
 #' The function calculates gravity-based accessibility measures...
 #'
 #' @param data A `data.frame` with a travel time matrix in long format,
