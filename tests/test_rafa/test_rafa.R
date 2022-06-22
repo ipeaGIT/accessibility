@@ -119,9 +119,9 @@ Sys.setenv(NOT_CRAN = "true")
 a <- covr::function_coverage(fun=accessibility::cumulative_time_cutoff, test_file("tests/testthat/test-cumulative_cutoff.R"))
 a <- covr::function_coverage(fun=accessibility::cumulative_time_interval, test_file("tests/testthat/test-cumulative_interval.R"))
 a <- covr::function_coverage(fun=accessibility::time_to_closest, test_file("tests/testthat/test-time_to_closest.R"))
-a <- covr::function_coverage(fun=accessibility::impedance_fun, test_file("tests/testthat/test-impedance_fun.R"))
 a <- covr::function_coverage(fun=accessibility::gravity_access, test_file("tests/testthat/test-gravity_access.R"))
 a <- covr::function_coverage(fun=accessibility::floating_catchment_area, test_file("tests/testthat/test-floating_catchment_area.R"))
+a <- covr::function_coverage(fun=accessibility::decay_binary, test_file("tests/testthat/test-decay_binary.R"))
 a
 
 accessibility::floating_catchment_area()

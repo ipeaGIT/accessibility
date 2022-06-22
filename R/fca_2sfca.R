@@ -16,18 +16,11 @@
 #'       population count.
 #' @param opportunity_col A `string` with the name of the column of destination
 #'        with  the number of opportunities / resources / services.
-#' @param decay_function A string. Which decay function to use when calculating
-#'            accessibility. One of step, exponential, fixed_exponential, linear
-#'            or logistic. Please see the details to understand how each
-#'            alternative works and how they relate to the `cutoffs` and
-#'            `decay_value` parameters.
-#' @param cutoff A numeric vector. This parameter has different effects for each
-#'               decay function: it indicates the cutoff times in minutes when
-#'               calculating cumulative opportunities accessibility with the
-#'               `step` function...
-#' @param decay_value A number. Extra parameter to be passed to the selected
-#'               `decay_function`. Has no effects when `decay_function` is either
-#'               `step` or `exponential`.
+#' @param decay_function A `fuction` that converts travel cost into and impedance
+#'   factor used to weigth opportunities. For convinence, the package currently
+#'   includes the following functions: [decay_bineary()], [decay_linear()] and
+#'   [decay_exponential()]. See the documentation of each function for more
+#'   details.
 #'
 #' @return A `numeric` estimate of accessibility.
 #'
@@ -51,8 +44,8 @@
 #'               dest_col = 'to_id',
 #'               opportunity_col = 'jobs',
 #'               population_col = 'population',
-#'               decay_function = 'step',
-#'               cutoff = 30)
+#'               decay_function = decay_linear(cutoff = 50)
+#'               )
 #'head(df)
 #'
 #'# 2SFCA with an exponential decay function
@@ -61,8 +54,7 @@
 #'         dest_col = 'to_id',
 #'         opportunity_col = 'jobs',
 #'         population_col = 'population',
-#'         decay_function = 'negative_exponential',
-#'         decay_value = 0.5
+#'         decay_function = decay_exponential(decay_value = 0.5)
 #'         )
 #'
 #'head(df2)
@@ -73,9 +65,7 @@ fca_2sfca <- function(data,
                      dest_col,
                      population_col,
                      opportunity_col,
-                     decay_function,
-                     cutoff=NULL,
-                     decay_value=NULL){
+                     decay_function){
 
   # orig_col <- 'from_id'
   # dest_col <- 'to_id'
@@ -84,12 +74,6 @@ fca_2sfca <- function(data,
 
 
   # check inputs ------------------------------------------------------------
-  checkmate::assert_string(decay_function, null.ok = FALSE)
-  checkmate::assert_number(cutoff, null.ok = TRUE, lower = 0)
-  checkmate::assert_number(decay_value, null.ok = TRUE, lower = 0, finite = TRUE)
-
-  decay_options <- c('negative_exponential', 'inverse_power', 'modified_gaussian', 'linear', 'step')
-  if (! decay_function %in% decay_options){stop("Parameter 'decay_function' must be one of the following: ", paste0(decay_options, collapse = ", "))}
 
 
   # calculate access -----------------------------------------------------------
@@ -101,7 +85,7 @@ fca_2sfca <- function(data,
   # population_col <- 'population'
 
   # calculate impedance
-  data[, impedance := impedance_fun(t_ij = travel_time, decay_function = decay_function, cutoff, decay_value),]
+  data[, impedance := decay_function(t_ij = travel_time),]
 
 
   ## Step 1a - allocate the demand to each destination proportionally to weight i

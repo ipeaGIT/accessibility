@@ -7,16 +7,12 @@ testthat::skip_on_cran()
 
 default_tester <- function(data = ttm,
                            opportunity_col = 'schools',
-                           decay_function = 'linear',
-                           cutoff = 30,
-                           decay_value=0.5,
+                           decay_function = decay_linear(cutoff = 50),
                            by_col='from_id') {
 
   results <- accessibility::gravity_access(data = data,
                                       opportunity_col = opportunity_col,
-                                      cutoff = cutoff,
                                       decay_function= decay_function,
-                                      decay_value=decay_value,
                                       by_col = by_col)
   return(results)
   }
@@ -36,8 +32,10 @@ test_that("adequately raises errors", {
   expect_error(default_tester(opportunity_col = 999))
   expect_error(default_tester(by_col = 999))
 
-})
+  # not a decay function
+  expect_error(default_tester(decay_function = 999))
 
+})
 
 
 # adequate behavior ------------------------------------------------------
@@ -55,7 +53,7 @@ test_that("output is correct", {
   expect_is( default_tester(by_col = 'from_id'), "data.table")
 
   # different cutoff values
-  expect_is( default_tester(cutoff = 1), "data.table")
-  expect_is( default_tester(cutoff = 1000), "data.table")
+  expect_is( default_tester(decay_function= decay_linear(cutoff = 50)), "data.table")
+  expect_is( default_tester(decay_function= decay_exponential(decay_value = 0.5)), "data.table")
 
 })

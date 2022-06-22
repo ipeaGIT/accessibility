@@ -22,7 +22,7 @@
 decay_power <- function(decay_value) {
 
   # check inputs ------------------------------------------------------------
-  checkmate::assert_number(decay_value, null.ok = FALSE, lower = 0)
+  checkmate::assert_number(decay_value, null.ok = FALSE, lower = 0, finite = TRUE)
 
   # decay function ------------------------------------------------------------
   impedance <- function(t_ij) {

@@ -17,18 +17,11 @@
 #'       population count.
 #' @param opportunity_col A `string` with the name of the column of destination
 #'        with  the number of opportunities / resources / services.
-#' @param decay_function A string. Which decay function to use when calculating
-#'            accessibility. One of step, exponential, fixed_exponential, linear
-#'            or logistic. Please see the details to understand how each
-#'            alternative works and how they relate to the `cutoffs` and
-#'            `decay_value` parameters.
-#' @param cutoff A numeric vector. This parameter has different effects for each
-#'               decay function: it indicates the cutoff times in minutes when
-#'               calculating cumulative opportunities accessibility with the
-#'               `step` function...
-#' @param decay_value A number. Extra parameter to be passed to the selected
-#'               `decay_function`. Has no effects when `decay_function` is either
-#'               `step` or `exponential`.
+#' @param decay_function A `fuction` that converts travel cost into and impedance
+#'   factor used to weigth opportunities. For convinence, the package currently
+#'   includes the following functions: [decay_bineary()], [decay_linear()] and
+#'   [decay_exponential()]. See the documentation of each function for more
+#'   details.
 #'
 #' @return A `data.table` object.
 #' @family Floating catchment area
@@ -84,9 +77,7 @@ floating_catchment_area <- function(data,
                                     dest_col,
                                     population_col,
                                     opportunity_col,
-                                    decay_function,
-                                    cutoff=NULL,
-                                    decay_value=NULL){
+                                    decay_function){
 
   # orig_col <- 'from_id'
   # dest_col <- 'to_id'
@@ -106,9 +97,7 @@ floating_catchment_area <- function(data,
   checkmate::assert_names(names(data), must.include = opportunity_col, .var.name = "data")
   checkmate::assert_names(names(data), must.include = population_col, .var.name = "data")
 
-  checkmate::assert_string(decay_function, null.ok = FALSE)
-  checkmate::assert_number(cutoff, null.ok = TRUE, lower = 0)
-  checkmate::assert_number(decay_value, null.ok = TRUE, lower = 0, finite = TRUE)
+  checkmate::assert_function(decay_function)
 
   fca_options <- c('2SFCA', 'BFCA')
   if (! fca_metric %in% fca_options){stop("Parameter 'fca_metric' must be one of the following: ", paste0(fca_options, collapse = ", "))}
@@ -125,9 +114,8 @@ floating_catchment_area <- function(data,
   #                      dest_col = dest_col,
   #                      population_col = population_col,
   #                      opportunity_col = opportunity_col,
-  #                      decay_function = decay_function,
-  #                      cutoff = cutoff,
-  #                      decay_value = decay_value)
+  #                      decay_function = decay_function
+  #                      )
 
   # calculate access -----------------------------------------------------------
   data.table::setDT(data)
@@ -139,9 +127,7 @@ floating_catchment_area <- function(data,
                        dest_col = dest_col,
                        population_col = population_col,
                        opportunity_col = opportunity_col,
-                       decay_function = decay_function,
-                       cutoff = cutoff,
-                       decay_value = decay_value)
+                       decay_function = decay_function)
     }
 
   # BFCA
@@ -151,9 +137,7 @@ floating_catchment_area <- function(data,
                        dest_col = dest_col,
                        population_col = population_col,
                        opportunity_col = opportunity_col,
-                       decay_function = decay_function,
-                       cutoff = cutoff,
-                       decay_value = decay_value)
+                       decay_function = decay_function)
     }
 
   return(access)

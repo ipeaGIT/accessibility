@@ -31,11 +31,10 @@ df <- cumulative_time_cutoff(
 df <- gravity_access(data = ttm,
                opportunity_colname = 'schools',
                by_colname = 'from_id',
-               decay_function = 'negative_exponential',
-               decay_value = 0.5
+               decay_function = decay_exponential(decay_value = 0.5)
                )
                        
-# 2SFCA with a step decay function
+# 2SFCA with a binary (step) decay function
 df <- floating_catchment_area(
               data = ttm,
               fca_metric = '2SFCA',
@@ -43,8 +42,8 @@ df <- floating_catchment_area(
               dest_col = 'to_id',
               opportunity_col = 'jobs',
               population_col = 'population',
-              decay_function = 'step',
-              cutoff = 30
+              decay_function = decay_binary(cutoff = 30)
+
               )
 ```
 

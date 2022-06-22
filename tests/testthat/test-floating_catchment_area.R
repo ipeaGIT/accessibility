@@ -11,9 +11,7 @@ default_tester <- function(data = ttm,
                            dest_col = 'to_id',
                            opportunity_col = 'jobs',
                            population_col = 'population',
-                           decay_function = 'linear',
-                           cutoff = 30,
-                           decay_value=0.5) {
+                           decay_function = decay_linear(cutoff = 50)) {
 
   results <- accessibility::floating_catchment_area(data = data,
                            fca_metric=fca_metric,
@@ -21,9 +19,7 @@ default_tester <- function(data = ttm,
                            dest_col <- dest_col,
                            opportunity_col <- opportunity_col,
                            population_col <- population_col,
-                           cutoff = cutoff,
-                           decay_function= decay_function,
-                           decay_value=decay_value
+                           decay_function= decay_function
                            )
   return(results)
   }
@@ -67,11 +63,8 @@ test_that("output is correct", {
   # different opportunity_colname
   expect_is( default_tester(opportunity_col = 'schools'), "data.table")
 
-  # different cutoff values
-  expect_is( default_tester(cutoff = 1), "data.table")
-  expect_is( default_tester(cutoff = 1000), "data.table")
-
   # different decay function
-  expect_is( default_tester(decay_function = 'negative_exponential'), "data.table")
+  expect_is( default_tester(decay_function= decay_linear(cutoff = 50)), "data.table")
+  expect_is( default_tester(decay_function= decay_exponential(decay_value = 0.5)), "data.table")
 
 })

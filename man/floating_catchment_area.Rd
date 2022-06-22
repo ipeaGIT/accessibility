@@ -11,9 +11,7 @@ floating_catchment_area(
   dest_col,
   population_col,
   opportunity_col,
-  decay_function,
-  cutoff = NULL,
-  decay_value = NULL
+  decay_function
 )
 }
 \arguments{
@@ -35,20 +33,11 @@ population count.}
 \item{opportunity_col}{A \code{string} with the name of the column of destination
 with  the number of opportunities / resources / services.}
 
-\item{decay_function}{A string. Which decay function to use when calculating
-accessibility. One of step, exponential, fixed_exponential, linear
-or logistic. Please see the details to understand how each
-alternative works and how they relate to the \code{cutoffs} and
-\code{decay_value} parameters.}
-
-\item{cutoff}{A numeric vector. This parameter has different effects for each
-decay function: it indicates the cutoff times in minutes when
-calculating cumulative opportunities accessibility with the
-\code{step} function...}
-
-\item{decay_value}{A number. Extra parameter to be passed to the selected
-\code{decay_function}. Has no effects when \code{decay_function} is either
-\code{step} or \code{exponential}.}
+\item{decay_function}{A \code{fuction} that converts travel cost into and impedance
+factor used to weigth opportunities. For convinence, the package currently
+includes the following functions: \code{\link[=decay_bineary]{decay_bineary()}}, \code{\link[=decay_linear]{decay_linear()}} and
+\code{\link[=decay_exponential]{decay_exponential()}}. See the documentation of each function for more
+details.}
 }
 \value{
 A \code{data.table} object.

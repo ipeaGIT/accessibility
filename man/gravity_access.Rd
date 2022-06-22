@@ -20,11 +20,11 @@ destination that should be considered, indicating whether accessibility
 levels should by calculated by each origin (active accessibility) or
 destination (passive accessibility).}
 
-\item{decay_function}{A string. Which decay function to use when calculating
-accessibility. One of step, exponential, fixed_exponential, linear
-or logistic. Please see the details to understand how each
-alternative works and how they relate to the \code{cutoffs} and
-\code{decay_value} parameters.}
+\item{decay_function}{A \code{fuction} that converts travel cost into and impedance
+factor used to weigth opportunities. For convinence, the package currently
+includes the following functions: \code{\link[=decay_bineary]{decay_bineary()}}, \code{\link[=decay_linear]{decay_linear()}} and
+\code{\link[=decay_exponential]{decay_exponential()}}. See the documentation of each function for more
+details.}
 }
 \value{
 A \code{data.table} object.
@@ -42,17 +42,17 @@ ttm <- readRDS(data_path)
 df_linear <- gravity_access(data = ttm,
                            opportunity_col = 'schools',
                            by_col = 'from_id',
-                           decay_function = 'linear',
-                           cutoff = 30)
+                           decay_function = decay_linear(cutoff = 50)
+                           )
 
 head(df_linear)
 
-df_neg_exp <- gravity_access(data = ttm,
-                            opportunity_col = 'schools',
-                            by_col = 'from_id',
-                            decay_function = 'negative_exponential',
-                            decay_value = 0.5)
-head(df_neg_exp)
+df_exp <- gravity_access(data = ttm,
+                        opportunity_col = 'schools',
+                        by_col = 'from_id',
+                        decay_function = decay_exponential(decay_value = 0.5)
+                        )
+head(df_exp)
 
 }
 \concept{Gravity-based accessibility}
