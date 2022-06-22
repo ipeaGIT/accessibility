@@ -31,9 +31,9 @@ with  the number of opportunities / resources / services.}
 
 \item{decay_function}{A \code{fuction} that converts travel cost into and impedance
 factor used to weigth opportunities. For convinence, the package currently
-includes the following functions: \code{\link[=decay_bineary]{decay_bineary()}}, \code{\link[=decay_linear]{decay_linear()}} and
-\code{\link[=decay_exponential]{decay_exponential()}}. See the documentation of each function for more
-details.}
+includes the following functions: \code{decay_bineary}, \code{decay_linear},
+\code{decay_exponential} and \code{decay_power.} See the documentation of
+each function for more details.}
 }
 \value{
 A \code{numeric} estimate of accessibility.
@@ -71,7 +71,7 @@ df <- fca_bfca(data = ttm,
        dest_col = 'to_id',
        opportunity_col = 'jobs',
        population_col = 'population',
-       decay_function = decay_linear(cutoff = 50)
+       decay_function = decay_binary(cutoff = 50)
        )
 
 head(df)

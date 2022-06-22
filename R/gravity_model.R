@@ -15,9 +15,9 @@
 #'   destination (passive accessibility).
 #' @param decay_function A `fuction` that converts travel cost into and impedance
 #'   factor used to weigth opportunities. For convinence, the package currently
-#'   includes the following functions: [decay_bineary()], [decay_linear()] and
-#'   [decay_exponential()]. See the documentation of each function for more
-#'   details.
+#'   includes the following functions: `decay_bineary`, `decay_linear`,
+#'   `decay_exponential` and `decay_power.` See the documentation of
+#'   each function for more details.
 #'
 #' @return A `data.table` object.
 #' @family Gravity-based accessibility

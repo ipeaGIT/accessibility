@@ -19,9 +19,9 @@
 #'        with  the number of opportunities / resources / services.
 #' @param decay_function A `fuction` that converts travel cost into and impedance
 #'   factor used to weigth opportunities. For convinence, the package currently
-#'   includes the following functions: [decay_bineary()], [decay_linear()] and
-#'   [decay_exponential()]. See the documentation of each function for more
-#'   details.
+#'   includes the following functions: `decay_bineary`, `decay_linear`,
+#'   `decay_exponential` and `decay_power.` See the documentation of
+#'   each function for more details.
 #'
 #' @return A `data.table` object.
 #' @family Floating catchment area
@@ -40,12 +40,11 @@
 #'        dest_col = 'to_id',
 #'        opportunity_col = 'jobs',
 #'        population_col = 'population',
-#'        decay_function = 'step',
-#'        cutoff = 30
+#'        decay_function = decay_binary(cutoff = 50)
 #'        )
 #'head(df)
 #'
-#'# BFCA with a step decay function
+#'# BFCA with an exponential decay function
 #'df <- floating_catchment_area(
 #'        data = ttm,
 #'        fca_metric = 'BFCA',
@@ -53,22 +52,10 @@
 #'        dest_col = 'to_id',
 #'        opportunity_col = 'jobs',
 #'        population_col = 'population',
-#'        decay_function = 'step',
-#'        cutoff = 30
+#'        decay_function = decay_exponential(decay_value = 0.5)
 #'        )
 #'head(df)
 #'
-#'df2 <- floating_catchment_area(data = ttm,
-#'         fca_metric = '2SFCA',
-#'         orig_col = 'from_id',
-#'         dest_col = 'to_id',
-#'         opportunity_col = 'jobs',
-#'         population_col = 'population',
-#'         decay_function = 'negative_exponential',
-#'         decay_value = 0.5
-#'         )
-#'
-#'head(df2)
 #'
 #' @export
 floating_catchment_area <- function(data,

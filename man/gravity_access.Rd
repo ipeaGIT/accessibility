@@ -22,9 +22,9 @@ destination (passive accessibility).}
 
 \item{decay_function}{A \code{fuction} that converts travel cost into and impedance
 factor used to weigth opportunities. For convinence, the package currently
-includes the following functions: \code{\link[=decay_bineary]{decay_bineary()}}, \code{\link[=decay_linear]{decay_linear()}} and
-\code{\link[=decay_exponential]{decay_exponential()}}. See the documentation of each function for more
-details.}
+includes the following functions: \code{decay_bineary}, \code{decay_linear},
+\code{decay_exponential} and \code{decay_power.} See the documentation of
+each function for more details.}
 }
 \value{
 A \code{data.table} object.
