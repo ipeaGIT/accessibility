@@ -22,6 +22,18 @@
     <loc>/reference/cumulative_time_interval.html</loc>
   </url>
   <url>
+    <loc>/reference/decay_binary.html</loc>
+  </url>
+  <url>
+    <loc>/reference/decay_exponential.html</loc>
+  </url>
+  <url>
+    <loc>/reference/decay_linear.html</loc>
+  </url>
+  <url>
+    <loc>/reference/decay_power.html</loc>
+  </url>
+  <url>
     <loc>/reference/fca_2sfca.html</loc>
   </url>
   <url>
@@ -32,9 +44,6 @@
   </url>
   <url>
     <loc>/reference/gravity_access.html</loc>
-  </url>
-  <url>
-    <loc>/reference/impedance_fun.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>

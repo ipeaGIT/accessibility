@@ -19,7 +19,7 @@ The function currently includes 2SFCA and BFCA"><meta property="og:image" conten
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">accessibility</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.09</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.099</span>
       </span>
     </div>
 
@@ -61,9 +61,7 @@ The function currently includes 2SFCA and BFCA</p>
   <span class="va">dest_col</span>,
   <span class="va">population_col</span>,
   <span class="va">opportunity_col</span>,
-  <span class="va">decay_function</span>,
-  cutoff <span class="op">=</span> <span class="cn">NULL</span>,
-  decay_value <span class="op">=</span> <span class="cn">NULL</span>
+  <span class="va">decay_function</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -100,24 +98,11 @@ with  the number of opportunities / resources / services.</p></dd>
 
 
 <dt>decay_function</dt>
-<dd><p>A string. Which decay function to use when calculating
-accessibility. One of step, exponential, fixed_exponential, linear
-or logistic. Please see the details to understand how each
-alternative works and how they relate to the <code>cutoffs</code> and
-<code>decay_value</code> parameters.</p></dd>
-
-
-<dt>cutoff</dt>
-<dd><p>A numeric vector. This parameter has different effects for each
-decay function: it indicates the cutoff times in minutes when
-calculating cumulative opportunities accessibility with the
-<code>step</code> function...</p></dd>
-
-
-<dt>decay_value</dt>
-<dd><p>A number. Extra parameter to be passed to the selected
-<code>decay_function</code>. Has no effects when <code>decay_function</code> is either
-<code>step</code> or <code>exponential</code>.</p></dd>
+<dd><p>A <code>fuction</code> that converts travel cost into and impedance
+factor used to weigth opportunities. For convinence, the package currently
+includes the following functions: <code>decay_bineary</code>, <code>decay_linear</code>,
+<code>decay_exponential</code> and <code>decay_power.</code> See the documentation of
+each function for more details.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -149,19 +134,18 @@ calculating cumulative opportunities accessibility with the
 <span class="r-in">       dest_col <span class="op">=</span> <span class="st">'to_id'</span>,</span>
 <span class="r-in">       opportunity_col <span class="op">=</span> <span class="st">'jobs'</span>,</span>
 <span class="r-in">       population_col <span class="op">=</span> <span class="st">'population'</span>,</span>
-<span class="r-in">       decay_function <span class="op">=</span> <span class="st">'step'</span>,</span>
-<span class="r-in">       cutoff <span class="op">=</span> <span class="fl">30</span></span>
+<span class="r-in">       decay_function <span class="op">=</span> <span class="fu"><a href="decay_binary.html">decay_binary</a></span><span class="op">(</span>cutoff <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
 <span class="r-in">       <span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            from_id access_2sfca</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a88cdb57bffff    0.1135253</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a88cdb597ffff    0.4412146</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a88cdb5b3ffff    0.4645848</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a88cdb5cfffff    0.3579043</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a88cd909bffff    0.2067682</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a88cd90b7ffff    0.2601425</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a88cdb57bffff    0.4357418</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a88cdb597ffff    0.3938630</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a88cdb5b3ffff    0.4589910</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a88cdb5cfffff    0.5469433</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a88cd909bffff    0.4358530</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a88cd90b7ffff    0.5271746</span>
 <span class="r-in"></span>
-<span class="r-in"><span class="co"># BFCA with a step decay function</span></span>
+<span class="r-in"><span class="co"># BFCA with an exponential decay function</span></span>
 <span class="r-in"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">floating_catchment_area</span><span class="op">(</span></span>
 <span class="r-in">       data <span class="op">=</span> <span class="va">ttm</span>,</span>
 <span class="r-in">       fca_metric <span class="op">=</span> <span class="st">'BFCA'</span>,</span>
@@ -169,36 +153,17 @@ calculating cumulative opportunities accessibility with the
 <span class="r-in">       dest_col <span class="op">=</span> <span class="st">'to_id'</span>,</span>
 <span class="r-in">       opportunity_col <span class="op">=</span> <span class="st">'jobs'</span>,</span>
 <span class="r-in">       population_col <span class="op">=</span> <span class="st">'population'</span>,</span>
-<span class="r-in">       decay_function <span class="op">=</span> <span class="st">'step'</span>,</span>
-<span class="r-in">       cutoff <span class="op">=</span> <span class="fl">30</span></span>
+<span class="r-in">       decay_function <span class="op">=</span> <span class="fu"><a href="decay_exponential.html">decay_exponential</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span class="r-in">       <span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            from_id access_bfca</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a88cdb57bffff   0.1045731</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a88cdb597ffff   0.5069667</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a88cdb5b3ffff   0.5192616</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a88cdb5cfffff   0.4011974</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a88cd909bffff   0.2317942</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a88cd90b7ffff   0.2539631</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a88cdb57bffff  0.11894791</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a88cdb597ffff  0.24251324</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a88cdb5b3ffff  0.07459233</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a88cdb5cfffff  0.10470062</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a88cd909bffff  0.07549538</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a88cd90b7ffff  0.82935888</span>
 <span class="r-in"></span>
-<span class="r-in"><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu">floating_catchment_area</span><span class="op">(</span>data <span class="op">=</span> <span class="va">ttm</span>,</span>
-<span class="r-in">        fca_metric <span class="op">=</span> <span class="st">'2SFCA'</span>,</span>
-<span class="r-in">        orig_col <span class="op">=</span> <span class="st">'from_id'</span>,</span>
-<span class="r-in">        dest_col <span class="op">=</span> <span class="st">'to_id'</span>,</span>
-<span class="r-in">        opportunity_col <span class="op">=</span> <span class="st">'jobs'</span>,</span>
-<span class="r-in">        population_col <span class="op">=</span> <span class="st">'population'</span>,</span>
-<span class="r-in">        decay_function <span class="op">=</span> <span class="st">'negative_exponential'</span>,</span>
-<span class="r-in">        decay_value <span class="op">=</span> <span class="fl">0.5</span></span>
-<span class="r-in">        <span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            from_id access_2sfca</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a88cdb57bffff   0.09719680</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a88cdb597ffff   0.25341503</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a88cdb5b3ffff   0.07677021</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a88cdb5cfffff   0.10922532</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a88cd909bffff   0.08838406</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a88cd90b7ffff   0.84150290</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
