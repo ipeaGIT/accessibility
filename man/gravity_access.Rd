@@ -4,14 +4,7 @@
 \alias{gravity_access}
 \title{Gravity-based accessibility measures}
 \usage{
-gravity_access(
-  data,
-  opportunity_col,
-  by_col,
-  decay_function,
-  cutoff = NULL,
-  decay_value = NULL
-)
+gravity_access(data, opportunity_col, by_col, decay_function)
 }
 \arguments{
 \item{data}{A \code{data.frame} with a travel time matrix in long format,
@@ -32,15 +25,6 @@ accessibility. One of step, exponential, fixed_exponential, linear
 or logistic. Please see the details to understand how each
 alternative works and how they relate to the \code{cutoffs} and
 \code{decay_value} parameters.}
-
-\item{cutoff}{A numeric vector. This parameter has different effects for each
-decay function: it indicates the cutoff times in minutes when
-calculating cumulative opportunities accessibility with the
-\code{step} function...}
-
-\item{decay_value}{A number. Extra parameter to be passed to the selected
-\code{decay_function}. Has no effects when \code{decay_function} is either
-\code{step} or \code{exponential}.}
 }
 \value{
 A \code{data.table} object.
