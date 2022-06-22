@@ -29,11 +29,11 @@ population count.}
 \item{opportunity_col}{A \code{string} with the name of the column of destination
 with  the number of opportunities / resources / services.}
 
-\item{decay_function}{A \code{fuction} that converts travel cost into and impedance
-factor used to weigth opportunities. For convinence, the package currently
-includes the following functions: \code{decay_bineary}, \code{decay_linear},
-\code{decay_exponential} and \code{decay_power.} See the documentation of
-each function for more details.}
+\item{decay_function}{A \code{fuction} that converts travel cost (t_ij) into an
+impedance factor used to weight opportunities. For convinence, the package
+currently includes the following functions: \code{decay_bineary},
+\code{decay_exponential}, \code{decay_exponential} and \code{decay_power.}.
+See the documentation of each function for more details.}
 }
 \value{
 A \code{numeric} estimate of accessibility.
