@@ -18,8 +18,8 @@ containing the at least the columns of origin \code{from_id}, destination \code{
 travel time \code{travel_time} from origin to destination, and number of
 opportunities in destination locations.}
 
-\item{opportunity_col}{A \code{string} indicating the name of the column with
-data on the opportunities to be considered.}
+\item{opportunity_col}{A \code{string} indicating the name of the column with the
+number of opportunities / resources / services to be considered.}
 
 \item{interval}{An \verb{numeric vector} of length 2, indicating the start and end
 points of the interval of travel time thresholds to be used.}

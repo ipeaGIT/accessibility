@@ -4,12 +4,8 @@
 #' The function calculates the minimum travel time to closest N number of
 #' opportunities.
 #'
-#' @param data A `data.frame` with a travel time matrix in long format,
-#'   containing the at least the columns of origin `from_id`, destination `to_id`,
-#'   travel time `travel_time` from origin to destination, and number of
-#'   opportunities in destination locations.
-#' @param opportunity_col A `string` indicating the name of the column with
-#'   data on the opportunities to be considered.
+#' @template input_data
+#' @template opportunity_col
 #' @param by_col A `string` with the name of the column of origin or
 #'   destination that should be considered, indicating whether accessibility
 #'   levels should by calculated by each origin (active accessibility) or

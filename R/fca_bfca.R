@@ -7,22 +7,10 @@
 #' correcting for issues of inflation of demand and service levels that are
 #' present in other accessibility metrics in the floating catchment area family.
 #'
-#' @param data A `data.frame` with a travel time matrix in long format,
-#'   containing the at least the columns of origin `from_id`, destination `to_id`,
-#'   travel time `travel_time` from origin to destination, and number of
-#'   opportunities in destination locations.
-#'
-#' @param orig_col A `string` with the name of the column of origin ids.
-#' @param dest_col A `string` with the name of the column of destination ids.
-#' @param population_col A `string` with the name of the column of origin with
-#'       population count.
-#' @param opportunity_col A `string` with the name of the column of destination
-#'        with  the number of opportunities / resources / services.
-#' @param decay_function A `fuction` that converts travel cost (t_ij) into an
-#'   impedance factor used to weight opportunities. For convinence, the package
-#'    currently includes the following functions: \code{decay_bineary},
-#'    \code{decay_exponential}, \code{decay_exponential} and \code{decay_power.}.
-#'    See the documentation of each function for more details.
+#' @template input_data
+#' @template arguments_fca
+#' @template opportunity_col
+#' @template decay_function
 #'
 #' @return A `numeric` estimate of accessibility.
 #'

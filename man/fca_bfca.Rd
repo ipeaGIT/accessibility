@@ -26,8 +26,8 @@ opportunities in destination locations.}
 \item{population_col}{A \code{string} with the name of the column of origin with
 population count.}
 
-\item{opportunity_col}{A \code{string} with the name of the column of destination
-with  the number of opportunities / resources / services.}
+\item{opportunity_col}{A \code{string} indicating the name of the column with the
+number of opportunities / resources / services to be considered.}
 
 \item{decay_function}{A \code{fuction} that converts travel cost (t_ij) into an
 impedance factor used to weight opportunities. For convinence, the package
