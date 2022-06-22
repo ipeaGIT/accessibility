@@ -6,18 +6,24 @@ library(accessibility)
 # load a travel time matrix data in long format
 data_path <- system.file("extdata/ttm_bho.rds", package = "accessibility")
 ttm <- readRDS(data_path)
+ttm <- rbind(ttm, ttm, ttm, ttm, ttm)
+ttm <- rbind(ttm, ttm, ttm, ttm, ttm)
 
-df_linear <- gravity_access(data = ttm,
+
+system.time(df_linear <- gravity_access(data = ttm,
                           opportunity_col = 'schools',
                           by_col = 'from_id',
                           decay_function = 'linear',
-                          cutoff = 30)
-
-impedance_fun(decay_function = 'linear', cutoff=30)
+                          cutoff = 30))
 
 
+impedance_fun(decay_function = st_)
+
+data.table::fwrite(df_linear, 'df_linear_return_factor.csv')
 
 
+a <- data.table::fread('df_linear_return_fun.csv')
+b <- data.table::fread('df_linear_return_factor.csv')
 
 
 ##### example map ------------------------

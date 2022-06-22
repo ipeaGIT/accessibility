@@ -4,7 +4,7 @@
 \alias{impedance_fun}
 \title{General impedance functions}
 \usage{
-impedance_fun(t_ij, decay_function, cutoff = NULL, decay_value = NULL)
+impedance_fun(t_ij, decay_function, cutoff = NULL, decay_value = NULL, ...)
 }
 \arguments{
 \item{t_ij}{A number indicating the travel cost (time or money) between
