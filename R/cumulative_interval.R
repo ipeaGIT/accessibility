@@ -7,10 +7,7 @@
 #'
 #' @template input_data
 #' @template opportunity_col
-#' @param by_col A `string` with the name of the column of origin or
-#'   destination that should be considered, indicating whether accessibility
-#'   levels should by calculated by each origin (active accessibility) or
-#'   destination (passive accessibility).
+#' @template by_col
 #' @param interval An `numeric vector` of length 2, indicating the start and end
 #'   points of the interval of travel time thresholds to be used.
 #' @param stat A `string` indicating the summary statistic used to aggregate the
