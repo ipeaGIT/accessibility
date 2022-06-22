@@ -22,15 +22,15 @@
 # Cumulative accessibility
 df <- cumulative_time_cutoff(
                data = ttm,
-               opportunity_colname = 'schools',
+               opportunity_col = 'schools',
                cutoff = 30,
-               by_colname = 'from_id'
+               by_col = 'from_id'
                )
 
 # Gravity model
 df <- gravity_access(data = ttm,
-               opportunity_colname = 'schools',
-               by_colname = 'from_id',
+               opportunity_col = 'schools',
+               by_col = 'from_id',
                decay_function = decay_exponential(decay_value = 0.5)
                )
                        
