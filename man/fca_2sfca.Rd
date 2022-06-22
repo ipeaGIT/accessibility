@@ -31,9 +31,9 @@ with  the number of opportunities / resources / services.}
 
 \item{decay_function}{A \code{fuction} that converts travel cost (t_ij) into an
 impedance factor used to weight opportunities. For convinence, the package
-currently includes the following functions: \link{decay_bineary},
-\link{decay_exponential}, \link{decay_exponential} and \link{decay_power.}.
-See the documentation of each function for more details.}
+currently includes the following functions: \code{decay_bineary},
+\code{decay_exponential}, \code{decay_exponential} and \code{decay_power}. See the
+documentation of each function for more details.}
 }
 \value{
 A \code{numeric} estimate of accessibility.
