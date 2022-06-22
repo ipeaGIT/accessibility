@@ -45,6 +45,12 @@ test_that("adequately raises errors", {
   expect_error(default_tester(opportunity_col = 999))
   expect_error(default_tester(population_col = 999))
 
+  # invalid
+  expect_error( default_tester(fca_metric = 'banana'))
+  expect_error( default_tester(fca_metric = 999))
+  expect_error( default_tester(fca_metric = NULL))
+
+
 })
 
 
@@ -59,6 +65,7 @@ test_that("output is correct", {
 
   # different fca_metric
   expect_is( default_tester(fca_metric = 'BFCA'), "data.table")
+  expect_is( default_tester(fca_metric = '2SFCA'), "data.table")
 
   # different opportunity_colname
   expect_is( default_tester(opportunity_col = 'schools'), "data.table")

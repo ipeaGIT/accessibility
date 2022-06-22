@@ -114,6 +114,16 @@ library(testthat)
 Sys.setenv(NOT_CRAN = "true")
 
 
+# the whole package
+Sys.setenv(NOT_CRAN = "true")
+cov <- covr::package_coverage(path = ".", type = "tests")
+cov
+
+
+x <- as.data.frame(cov)
+
+
+
 # each function separately
 
 a <- covr::function_coverage(fun=accessibility::cumulative_time_cutoff, test_file("tests/testthat/test-cumulative_cutoff.R"))
@@ -122,21 +132,11 @@ a <- covr::function_coverage(fun=accessibility::time_to_closest, test_file("test
 a <- covr::function_coverage(fun=accessibility::gravity_access, test_file("tests/testthat/test-gravity_access.R"))
 a <- covr::function_coverage(fun=accessibility::floating_catchment_area, test_file("tests/testthat/test-floating_catchment_area.R"))
 a <- covr::function_coverage(fun=accessibility::decay_binary, test_file("tests/testthat/test-decay_binary.R"))
+a <- covr::function_coverage(fun=accessibility::decay_power, test_file("tests/testthat/test-decay_power.R"))
 a
-
-accessibility::floating_catchment_area()
-
-# the whole package
-Sys.setenv(NOT_CRAN = "true")
-cov <- covr::package_coverage(path = ".", type = "tests")
-cov
-
-
 
 zeroCov <- covr::zero_coverage(a)
 
-
-x <- as.data.frame(r5r_cov)
 
 
 
