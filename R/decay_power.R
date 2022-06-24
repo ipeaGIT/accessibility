@@ -23,7 +23,8 @@
 #'- \eqn{t_{ij}} is the travel cost between origin *i* and destination *j*.
 #'- \eqn{\beta} is the `decay_value`.
 #'
-#' @examples#' library(accessibility)
+#' @examples
+#' library(accessibility)
 #'
 #'# Create an inverse power impedance function
 #'impedance <- decay_power(decay_value = 0.1)

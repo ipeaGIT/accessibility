@@ -32,7 +32,7 @@ Where:
 }
 }
 \examples{
-#' library(accessibility)
+library(accessibility)
 
 # Create an inverse power impedance function
 impedance <- decay_power(decay_value = 0.1)
@@ -45,6 +45,7 @@ impedance(t_ij = 35)
 \seealso{
 Other Impedance functions: 
 \code{\link{decay_binary}()},
-\code{\link{decay_exponential}()}
+\code{\link{decay_exponential}()},
+\code{\link{decay_linear}()}
 }
 \concept{Impedance functions}

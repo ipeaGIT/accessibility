@@ -11,7 +11,7 @@
 #'
 #' @family Impedance functions
 #'
-#' #' @details
+#' @details
 #' Linear decay function
 #'
 #'\deqn{f(t_{ij})\leq T\begin{Bmatrix}

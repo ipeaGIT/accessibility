@@ -41,6 +41,7 @@ impedance(t_ij = 35)
 \seealso{
 Other Impedance functions: 
 \code{\link{decay_binary}()},
+\code{\link{decay_linear}()},
 \code{\link{decay_power}()}
 }
 \concept{Impedance functions}
