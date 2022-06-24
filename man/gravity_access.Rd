@@ -4,7 +4,13 @@
 \alias{gravity_access}
 \title{Gravity-based accessibility measures}
 \usage{
-gravity_access(data, opportunity_col, by_col, decay_function)
+gravity_access(
+  data,
+  opportunity_col,
+  decay_function,
+  travel_cost_col = "travel_time",
+  by_col
+)
 }
 \arguments{
 \item{data}{A \code{data.frame} with a travel time matrix in long format,
@@ -15,16 +21,20 @@ opportunities in destination locations.}
 \item{opportunity_col}{A \code{string} indicating the name of the column with the
 number of opportunities / resources / services to be considered.}
 
-\item{by_col}{A \code{string} with the name of the column of origin or
-destination that should be considered, indicating whether accessibility
-levels should by calculated by each origin (active accessibility) or
-destination (passive accessibility).}
-
 \item{decay_function}{A \code{fuction} that converts travel cost (t_ij) into an
 impedance factor used to weight opportunities. For convinence, the package
 currently includes the following functions: \code{decay_bineary},
 \code{decay_exponential}, \code{decay_exponential} and \code{decay_power.}.
 See the documentation of each function for more details.}
+
+\item{travel_cost_col}{A \code{string} with the name of the column with travel
+cost between origns and destinations. It can be either either travel time,
+distance or monetary costs. Defaults to \code{travel_ime}.}
+
+\item{by_col}{A \code{string} with the name of the column of origin or
+destination that should be considered, indicating whether accessibility
+levels should by calculated by each origin (active accessibility) or
+destination (passive accessibility).}
 }
 \value{
 A \code{data.table} object.
@@ -41,16 +51,18 @@ ttm <- readRDS(data_path)
 
 df_linear <- gravity_access(data = ttm,
                            opportunity_col = 'schools',
-                           by_col = 'from_id',
-                           decay_function = decay_linear(cutoff = 50)
+                           decay_function = decay_linear(cutoff = 50),
+                           travel_cost_col = 'travel_time',
+                           by_col = 'from_id'
                            )
 
 head(df_linear)
 
 df_exp <- gravity_access(data = ttm,
                         opportunity_col = 'schools',
-                        by_col = 'from_id',
-                        decay_function = decay_exponential(decay_value = 0.5)
+                        decay_function = decay_exponential(decay_value = 0.5),
+                        travel_cost_col = 'travel_time',
+                        by_col = 'from_id'
                         )
 head(df_exp)
 
