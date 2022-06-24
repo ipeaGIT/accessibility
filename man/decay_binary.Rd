@@ -17,6 +17,21 @@ A \code{function}
 Returns a step a number of impedance function to be used inside \code{accessibility}
 functions.
 }
+\details{
+Binary (aka step) function commonly used in cumulative opportunity measures.
+
+\deqn{f(t_{ij})\leq T\begin{Bmatrix}
+     1 & for & t_{ij}\leq T \\
+     0 & for & t_{ij}>  T
+     \end{Bmatrix}
+     }
+
+Where:
+\itemize{
+\item \emph{tij} is the travel cost between origin * and destination \emph{j}.
+\item \emph{T} is the \code{cutoff} of maximu travel cost.
+}
+}
 \examples{
 library(accessibility)
 

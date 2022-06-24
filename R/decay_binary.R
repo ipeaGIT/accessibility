@@ -8,7 +8,22 @@
 #'        travel cost.
 #'
 #' @return A `function`
+#'
 #' @family Impedance functions
+#'
+#' @details
+#' Binary (aka step) function commonly used in cumulative opportunity measures.
+#'
+#'\deqn{f(t_{ij})\leq T\begin{Bmatrix}
+#'      1 & for & t_{ij}\leq T \\
+#'      0 & for & t_{ij}>  T
+#'      \end{Bmatrix}
+#'      }
+#'
+#'Where:
+#'- *tij* is the travel cost between origin * and destination *j*.
+#'- *T* is the `cutoff` of maximu travel cost.
+#'
 #' @examples
 #' library(accessibility)
 #'
