@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">accessibility</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.099</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0999</span>
       </span>
     </div>
 
@@ -101,16 +101,18 @@
 <span class="co"># Cumulative accessibility</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cumulative_time_cutoff.html">cumulative_time_cutoff</a></span><span class="op">(</span>
                data <span class="op">=</span> <span class="va">ttm</span>,
-               opportunity_col <span class="op">=</span> <span class="st">'schools'</span>,
                cutoff <span class="op">=</span> <span class="fl">30</span>,
+               opportunity_col <span class="op">=</span> <span class="st">'jobs'</span>,
+               travel_cost_col <span class="op">=</span> <span class="st">'travel_time'</span>,
                by_col <span class="op">=</span> <span class="st">'from_id'</span>
                <span class="op">)</span>
 
 <span class="co"># Gravity model</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gravity_access.html">gravity_access</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">ttm</span>,
                opportunity_col <span class="op">=</span> <span class="st">'schools'</span>,
-               by_col <span class="op">=</span> <span class="st">'from_id'</span>,
-               decay_function <span class="op">=</span> <span class="fu"><a href="reference/decay_exponential.html">decay_exponential</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
+               decay_function <span class="op">=</span> <span class="fu"><a href="reference/decay_exponential.html">decay_exponential</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>,
+               travel_cost_col<span class="op">=</span><span class="st">'travel_time'</span>,
+               by_col <span class="op">=</span> <span class="st">'from_id'</span>
                <span class="op">)</span>
                        
 <span class="co"># 2SFCA with a binary (step) decay function</span>
@@ -121,7 +123,8 @@
               dest_col <span class="op">=</span> <span class="st">'to_id'</span>,
               opportunity_col <span class="op">=</span> <span class="st">'jobs'</span>,
               population_col <span class="op">=</span> <span class="st">'population'</span>,
-              decay_function <span class="op">=</span> <span class="fu"><a href="reference/decay_binary.html">decay_binary</a></span><span class="op">(</span>cutoff <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>
+              decay_function <span class="op">=</span> <span class="fu"><a href="reference/decay_binary.html">decay_binary</a></span><span class="op">(</span>cutoff <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>,
+              travel_cost_col<span class="op">=</span><span class="st">'travel_time'</span>
               <span class="op">)</span></code></pre>
 <div class="section level2">
 <h2 id="related-work">Related work:<a class="anchor" aria-label="anchor" href="#related-work"></a>
