@@ -1,7 +1,9 @@
 #' @title Gravity-based accessibility measures
 #'
 #' @description
-#' The function calculates gravity-based accessibility measures...
+#' The function calculates gravity-based accessibility measures. Accessibility
+#' can be calculated using multiple alternative decay functions passed through
+#' the `decay_function` parameter.
 #'
 #' @template input_data
 #' @template opportunity_col

@@ -21,7 +21,7 @@ fca_2sfca <- function(data,
                      population_col,
                      opportunity_col,
                      decay_function,
-                     travel_cost_col='travel_time'){
+                     travel_cost_col){
 
   # orig_col <- 'from_id'
   # dest_col <- 'to_id'

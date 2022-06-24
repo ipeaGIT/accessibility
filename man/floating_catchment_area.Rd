@@ -38,8 +38,8 @@ number of opportunities / resources / services to be considered.}
 \item{decay_function}{A \code{fuction} that converts travel cost (t_ij) into an
 impedance factor used to weight opportunities. For convenience, the package
 currently includes the following functions: \code{decay_bineary},
-\code{decay_exponential}, \code{decay_exponential} and \code{decay_power.}.
-See the documentation of each function for more details.}
+\code{decay_exponential}, \code{decay_exponential} and \code{decay_power}.
+See the documentation of each decay function for more details.}
 
 \item{travel_cost_col}{A \code{string} with the name of the column with travel
 cost between origins and destinations. It can be either either travel time,
@@ -51,7 +51,9 @@ A \code{data.table} object.
 \description{
 Calculates accessibility accounting for the competition of resources using one
 of the multiple accessibility metrics in the floating catchment area family.
-The function currently includes 2SFCA and BFCA
+The function currently includes \verb{2SFCA} and \code{BFCA}. Accessibility can be
+calculated using multiple alternative decay functions passed through
+the \code{decay_function} parameter.
 }
 \section{2SFCA}{
 The 2SFCA measure was the first accessibility metric in the floating

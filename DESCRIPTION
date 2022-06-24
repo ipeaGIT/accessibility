@@ -1,7 +1,7 @@
 Type: Package
 Package: accessibility
 Title: Transport Accessibility Metrics
-Version: 0.0.099
+Version: 0.0.0999
 Authors@R: 
     c(person(given = "Rafael H. M.",
              family = "Pereira",

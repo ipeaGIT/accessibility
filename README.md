@@ -22,16 +22,18 @@
 # Cumulative accessibility
 df <- cumulative_time_cutoff(
                data = ttm,
-               opportunity_col = 'schools',
                cutoff = 30,
+               opportunity_col = 'jobs',
+               travel_cost_col = 'travel_time',
                by_col = 'from_id'
                )
 
 # Gravity model
 df <- gravity_access(data = ttm,
                opportunity_col = 'schools',
-               by_col = 'from_id',
-               decay_function = decay_exponential(decay_value = 0.5)
+               decay_function = decay_exponential(decay_value = 0.2),
+               travel_cost_col='travel_time',
+               by_col = 'from_id'
                )
                        
 # 2SFCA with a binary (step) decay function
@@ -42,7 +44,8 @@ df <- floating_catchment_area(
               dest_col = 'to_id',
               opportunity_col = 'jobs',
               population_col = 'population',
-              decay_function = decay_binary(cutoff = 30)
+              decay_function = decay_binary(cutoff = 30),
+              travel_cost_col='travel_time'
               )
 ```
 
