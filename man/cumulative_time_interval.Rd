@@ -6,10 +6,11 @@
 \usage{
 cumulative_time_interval(
   data,
-  opportunity_col,
   interval,
-  by_col,
-  stat = "mean"
+  stat = "mean",
+  opportunity_col,
+  travel_cost_col = "travel_time",
+  by_col
 )
 }
 \arguments{
@@ -18,20 +19,24 @@ containing the at least the columns of origin \code{from_id}, destination \code{
 travel time \code{travel_time} from origin to destination, and number of
 opportunities in destination locations.}
 
+\item{interval}{An \verb{numeric vector} of length 2, indicating the start and end
+points of the interval of travel time thresholds to be used.}
+
+\item{stat}{A \code{string} indicating the summary statistic used to aggregate the
+accessibility estimates within the time interval. It accepts either \code{median}
+(Default) or \code{mean}.}
+
 \item{opportunity_col}{A \code{string} indicating the name of the column with the
 number of opportunities / resources / services to be considered.}
 
-\item{interval}{An \verb{numeric vector} of length 2, indicating the start and end
-points of the interval of travel time thresholds to be used.}
+\item{travel_cost_col}{A \code{string} with the name of the column with travel
+cost between origns and destinations. It can be either either travel time,
+distance or monetary costs. Defaults to \code{travel_ime}.}
 
 \item{by_col}{A \code{string} with the name of the column of origin or
 destination that should be considered, indicating whether accessibility
 levels should by calculated by each origin (active accessibility) or
 destination (passive accessibility).}
-
-\item{stat}{A \code{string} indicating the summary statistic used to aggregate the
-accessibility estimates within the time interval. It accepts either \code{median}
-(Default) or \code{mean}.}
 }
 \value{
 A \code{data.table} object.
@@ -49,10 +54,19 @@ data_path <- system.file("extdata/ttm_bho.rds", package = "accessibility")
 ttm <- readRDS(data_path)
 
 df <- cumulative_time_interval(data = ttm,
-                              opportunity_col = 'schools',
                               interval = c(20, 30),
-                              by_col = 'from_id',
-                              stat ='mean')
+                              stat ='mean',
+                              opportunity_col = 'schools',
+                              travel_cost_col='travel_time',
+                              by_col = 'from_id')
+head(df)
+
+df <- cumulative_time_interval(data = ttm,
+                              interval = c(40, 80),
+                              stat ='mean',
+                              opportunity_col = 'jobs',
+                              travel_cost_col='travel_time',
+                              by_col = 'from_id')
 head(df)
 
 }

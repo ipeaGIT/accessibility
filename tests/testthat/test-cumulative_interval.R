@@ -6,16 +6,19 @@ context("Cumulative interval function")
 testthat::skip_on_cran()
 
 default_tester <- function(data = ttm,
-                           opportunity_col = 'schools',
                            interval = c(20, 25),
                            stat = 'mean',
+                           opportunity_col = 'schools',
+                           travel_cost_col = 'travel_time',
                            by_col='from_id') {
 
   results <- accessibility::cumulative_time_interval(data = data,
-                                      opportunity_col = opportunity_col,
                                       interval = interval,
                                       stat = stat,
-                                      by_col = by_col)
+                                      opportunity_col = opportunity_col,
+                                      travel_cost_col = travel_cost_col,
+                                      by_col = by_col
+                                      )
   return(results)
   }
 
@@ -28,11 +31,13 @@ test_that("adequately raises errors", {
   # input data is not a data.frame
   expect_error(default_tester(data = list(ttm)))
 
-  # opportunity_col and by_col do not exist in data input
+  # vars with col names do not exist in data input
   expect_error(default_tester(opportunity_col = 'banana'))
   expect_error(default_tester(by_col = 'banana'))
+  expect_error(default_tester(travel_cost_col = 'banana'))
   expect_error(default_tester(opportunity_col = 999))
   expect_error(default_tester(by_col = 999))
+  expect_error(default_tester(travel_cost_col = 999))
 
   # invalid summary stat
   expect_error(default_tester(stat = 'banana'))
