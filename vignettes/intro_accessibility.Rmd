@@ -53,7 +53,7 @@ The `accessibility` package currently includes:
 6. `floating_catchment_area()` Floating catchment area accessibility using `BFCA`
 
 
-The `gravity_access()` and `floating_catchment_area()` funcatios can use any custom decay function that converts travel cost `t_ij` to and impedance factor. For convenience, the package currently includes the following decay functions:
+The `gravity_access()` and `floating_catchment_area()` functations can use any custom decay function that converts travel cost `t_ij` to and impedance factor. For convenience, the package currently includes the following decay functions:
 
 1. `decay_binary()` Binary (aka step) decay function
 2. `decay_exponential()` Negative exponential decay function
@@ -149,7 +149,7 @@ head(cum_interval)
 ## 5.3 Gravity-based accessibility:
 
 
-The  `gravity_access()` allows one to continuously discount the weight of opportunities as the travel cost becomes larger. See the [vignette on decay functions](add_link) for more information on the decay functions available in the package and how to use custom functions. In this case here, we use a negative exponential function with a `decay_value` \eqn{\beta} of 0.2
+The  `gravity_access()` allows one to continuously discount the weight of opportunities as travel costs become larger. See the [vignette on decay functions](add_link) for more information on the decay functions available in the package and how to use custom functions. In this case here, we use a negative exponential function with a `decay_value` \eqn{\beta} of 0.2
 
 
 ```{r, message = FALSE, eval = FALSE}
