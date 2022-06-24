@@ -1,0 +1,246 @@
+---
+title: 'Intro to accessibility: Transport Accessibility Metrics'
+author: "Rafael H. M. Pereira, Daniel Herszenhut"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+urlcolor: blue
+vignette: >
+  %\VignetteIndexEntry{Intro to accessibility: Transport Accessibility Metrics} 
+  %\VignetteEngine{knitr::rmarkdown} 
+  \usepackage[utf8]{inputenc}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+options(scipen = 999)
+```
+
+# 1. Introduction 
+
+[**accessibility**](https://github.com/ipeaGIT/accessibility) is an R package that offers a set of fast and convenient functions to calculate multiple transport accessibility measures. Given a pre-computed travel cost matrix in long format combined with land-use data (e.g. location of jobs, healthcare, population), the package allows one to calculate active and passive accessibility levels using multiple accessibility metrics such as: cumulative opportunity measure (using either travel time cutoff or interval), minimum travel cost to closest N number of activities, gravitational measures and different floating catchment area methods.
+
+This vignette gives a brief introduction to the `accessibility` package with a reproducible example.
+
+
+# 2. Installation
+
+You can install `accessibility` from CRAN, or use the development version from github.
+
+```{r, eval = FALSE}
+# CRAN
+install.packages('accessibility')
+
+# github
+devtools::install_github("ipeaGIT/accessibility", subdir = "r-package")
+```
+
+
+
+# 3. Overview of the functions
+
+The `accessibility` package currently includes:
+
+* Six different **accessibility metrics**:
+
+1. `time_to_closest()` Minimum travel cost to closest *N* number of opportunities
+2. `cumulative_time_cutoff()`. Traditional time threshold-based cumulative opportunity metric
+3. `cumulative_time_interval()`. A novel time interval-based cumulative opportunity metric (*forthcoming paper*)
+4. `gravity_access()` Gravity-based accessibility 
+5. `floating_catchment_area()` Floating catchment area accessibility using `2SFCA`
+6. `floating_catchment_area()` Floating catchment area accessibility using `BFCA`
+
+
+The `gravity_access()` and `floating_catchment_area()` funcatios can use any custom decay function that converts travel cost `t_ij` to and impedance factor. For convenience, the package currently includes the following decay functions:
+
+1. `decay_binary()` Binary (aka step) decay function
+2. `decay_exponential()` Negative exponential decay function
+3. `decay_linear()` Linear decay function
+4. `decay_power()`. Inverse power decay function
+
+
+
+# 5. Demonstration on sample data
+
+Let's first load the libraries used in this vignette:
+```{r, message=FALSE, warning=FALSE}
+library(accessibility)
+library(data.table)
+library(ggplot2)
+library(sf)
+```
+
+## Data requirements:
+
+To use `accessibility`, you will need a pre-computed travel cost matrix in long format combined with land-use data (e.g. location of jobs, healthcare, population). Travel costs can be presented in terms of travel times, distances or monetary costs. This input data must be presented as a `data.frame` containing the columns with origin ids, destination ids, the travel cost between each origin-destination pair, and the number of opportunities located in each destination. Note that to to calculate `floating_catchment_area()`, your input data should also include a column with the size of the population in each origin.
+
+The data input should look similar to this:
+
+
+```{r}
+data_path <- system.file("extdata/ttm_bho.rds", package = "accessibility")
+ttm <- readRDS(data_path)
+head(ttm)
+
+```
+
+This is a small sample data with public transport travel times and land use data for the city of Belo Horizonte (Brazil) included in the package and that we will be using to illustrate its functionalities.
+
+
+
+## 5.1 Minimum travel cost:
+
+`time_to_closest()` allows you to easily calculate the minimum travel cost accessibility. In the example below, the output shows the minminimum travel cost from each origin to the closet school and the id of the destination where the school is located.
+
+```{r, message = FALSE, eval = FALSE}
+tmi <- time_to_closest(data = ttm,
+         opportunity_col = 'schools',
+         n_opportunities = 1,
+         travel_cost_col = 'travel_time',
+         by_col = 'from_id'
+         )
+
+head(tmi)
+```
+
+
+
+## 5.2 Cumulative opportunity measures:
+
+
+#### Time threshold
+
+The  `cumulative_time_cutoff()` functions calculates traditional cumulative opportunity accessibility, indicating the number of opportunities that are accessible in under a given travel cost threshold. In this example, we estimate the number of jobs accessible in up to 30 minutes.
+
+
+```{r, message = FALSE}
+cum_cutoff <- cumulative_time_cutoff(
+                data = ttm,
+                cutoff = 30,
+                opportunity_col = 'jobs',
+                travel_cost_col = 'travel_time',
+                by_col = 'from_id'
+                )
+
+head(cum_cutoff)
+```
+
+
+#### Time interval
+
+`cumulative_time_interval()` calculates the the time interval cumulative accessibility measure. This is a novel accessibility metric developed by Tomasiello et al. (*forthcoming paper*) to mitigate the impacts of arbitrary choices of trip duration in traditional threshold-based cumulative opportunity metrics. In the example below, we calculate the average number of jobs accessible considering multiple minute-by-minute time thresholds between 20 and 60 minutes.
+
+```{r, message = FALSE, eval = FALSE}
+cum_interval <- cumulative_time_interval(
+                  data = ttm,
+                  interval = c(20, 60),
+                  stat = 'mean',
+                  opportunity_col = 'jobs',
+                  travel_cost_col = 'travel_time',
+                  by_col = 'from_id'
+                  )
+
+head(cum_interval)
+```
+
+
+## 5.3 Gravity-based accessibility:
+
+
+The  `gravity_access()` allows one to continuously discount the weight of opportunities as the travel cost becomes larger. See the [vignette on decay functions](add_link) for more information on the decay functions available in the package and how to use custom functions. In this case here, we use a negative exponential function with a `decay_value` \eqn{\beta} of 0.2
+
+
+```{r, message = FALSE, eval = FALSE}
+grav_exp <- gravity_access(
+              data = ttm,
+              opportunity_col = 'jobs',
+              decay_function = decay_exponential(decay_value = 0.2),
+              travel_cost_col = 'travel_time',
+              by_col = 'from_id'
+              )
+
+head(grav_exp)
+```
+
+## 5.4 Floating catchment accessibility:
+
+The `floating_catchment_area()` functions provides users with floating catchment area (FCA) indicators that allow you to calculate accessibility accounting for the competition of resources. The use can use the parameter `fca_metric` to specify which indicator of the broad FCA family should be used. The package currently supports two FCA metrics.
+
+#### 2SFCA: 2-Step Floating Catchment Area
+
+2SFCA was the first accessibility metric in the floating catchment area family. It was originally proposed by Luo & Wang [@luo2003measures].
+
+
+
+```{r, message = FALSE, eval = FALSE}
+fca_2sfca <- floating_catchment_area(
+                data = ttm,
+                fca_metric = '2SFCA',
+                population_col = 'population', 
+                opportunity_col = 'schools',
+                decay_function = decay_exponential(decay_value = 0.2),
+                travel_cost_col = 'travel_time',
+                orig_col = 'from_id',
+                dest_col = 'to_id'
+                )
+
+head(fca_2sfca)
+```
+#### BFCA - Balanced Floating Catchment Area
+
+The BFCA metric calculates accessibility accounting for competition effects while simultaneously correcting for issues of inflation of demand and service levels that are present in previous floating  catchment area measures. It is the most recen FCA metric and it was originally proposed by Paez et al. [@paez2019fca] and named in Pereira et al. [@pereira2020geographic].
+
+```{r, message = FALSE, eval = FALSE}
+fca_bfca <- floating_catchment_area(
+                data = ttm,
+                fca_metric = 'BFCA',
+                population_col = 'population', 
+                opportunity_col = 'schools',
+                decay_function = decay_exponential(decay_value = 0.2),
+                travel_cost_col = 'travel_time',
+                orig_col = 'from_id',
+                dest_col = 'to_id'
+                )
+
+head(fca_bfca)
+```
+
+#### Visualize results
+
+If you have a spatial data with the geometries of your origin/destination data set, you can easily `merge` it with the accessibility to map the results. Here is a quick example using `ggplot2`.
+
+
+
+```{r}
+library(ggplot2)
+library(sf)
+library(data.table)
+
+# load spatial data
+grid <- system.file("extdata/grid_bho.rds", package = "accessibility")
+grid <- readRDS(grid)
+
+# merge accessibility output to spatial data
+df <- merge(grid, cum_cutoff, by.x='id', by.y='from_id')
+
+# for large data sets, this can be done much faster with `data.table` as follows:
+df2 <- setDT(grid)[cum_cutoff, on=c('id'='from_id'), access := i.access]
+df2 <- st_sf(df2)
+
+
+
+# plot
+ggplot() +
+  geom_sf(data = df2, aes(fill = access), color=NA, alpha=0.9) +
+  labs(title = 'Employment accessibility by transit in under 30 min.', 
+       fill='Number of jobs\naccessible') +
+  scale_fill_viridis_c() + 
+  theme_void()
+
+```
+
+If you have any suggestions or want to report an error, please visit [the package GitHub page](https://github.com/ipeaGIT/accessibility).
+
+## References

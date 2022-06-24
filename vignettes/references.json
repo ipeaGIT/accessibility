@@ -1,0 +1,158 @@
+[
+	{
+		"id": "luo2003measures",
+		"type": "article-journal",
+		"container-title": "Environment and Planning B: Planning and Design",
+		"DOI": "10.1068/b29120",
+		"ISSN": "0265-8135",
+		"issue": "6",
+		"journalAbbreviation": "Environ Plann B Plann Des",
+		"language": "en",
+		"note": "publisher: SAGE Publications Ltd STM",
+		"page": "865-884",
+		"source": "SAGE Journals",
+		"title": "Measures of Spatial Accessibility to Health Care in a GIS Environment: Synthesis and a Case Study in the Chicago Region",
+		"title-short": "Measures of Spatial Accessibility to Health Care in a GIS Environment",
+		"URL": "https://doi.org/10.1068/b29120",
+		"volume": "30",
+		"author": [
+			{
+				"family": "Luo",
+				"given": "Wei"
+			},
+			{
+				"family": "Wang",
+				"given": "Fahui"
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2020",
+					5,
+					18
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2003",
+					12,
+					1
+				]
+			]
+		}
+	},
+
+	{
+		"id": "paez2019fca",
+		"type": "article-journal",
+		"container-title": "PLOS ONE",
+		"DOI": "10.1371/journal.pone.0218773",
+		"ISSN": "1932-6203",
+		"issue": "6",
+		"journalAbbreviation": "PLOS ONE",
+		"language": "en",
+		"note": "publisher: Public Library of Science",
+		"page": "e0218773",
+		"source": "PLoS Journals",
+		"title": "Demand and level of service inflation in Floating Catchment Area (FCA) methods",
+		"URL": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0218773",
+		"volume": "14",
+		"author": [
+			{
+				"family": "Paez",
+				"given": "Antonio"
+			},
+			{
+				"family": "Higgins",
+				"given": "Christopher D."
+			},
+			{
+				"family": "Vivona",
+				"given": "Salvatore F."
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2020",
+					4,
+					1
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2019",
+					6,
+					27
+				]
+			]
+		}
+	},
+
+		{
+		"id": "pereira2020geographic",
+		"type": "article-journal",
+		"container-title": "Social Science & Medicine",
+		"DOI": "10.1016/j.socscimed.2021.113773",
+		"ISSN": "0277-9536",
+		"journalAbbreviation": "Social Science & Medicine",
+		"language": "en",
+		"source": "ScienceDirect",
+		"title": "Geographic access to COVID-19 healthcare in Brazil using a balanced float catchment area approach",
+		"URL": "https://www.sciencedirect.com/science/article/pii/S0277953621001052",
+		"volume": "273",
+		"author": [
+			{
+				"family": "Pereira",
+				"given": "Rafael H. M."
+			},
+			{
+				"family": "Braga",
+				"given": "Carlos Kauê Vieira"
+			},
+			{
+				"family": "Servo",
+				"given": "Luciana Mendes"
+			},
+			{
+				"family": "Serra",
+				"given": "Bernardo"
+			},
+			{
+				"family": "Amaral",
+				"given": "Pedro"
+			},
+			{
+				"family": "Gouveia",
+				"given": "Nelson"
+			},
+			{
+				"family": "Paez",
+				"given": "Antonio"
+			}
+		],
+		"accessed": {
+			"date-parts": [
+				[
+					"2021",
+					2,
+					17
+				]
+			]
+		},
+		"issued": {
+			"date-parts": [
+				[
+					"2021",
+					3,
+					1
+				]
+			]
+		}
+	}
+]
