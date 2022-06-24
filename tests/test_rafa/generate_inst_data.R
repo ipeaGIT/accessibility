@@ -88,6 +88,7 @@ grid$code_muni <- NULL
 names(grid)[1] <- 'id'
 
 grid2 <- subset(grid, id %in% unique(inter$id_hex) )
+grid2 <- unique(grid2)
 class(grid2)
 plot(grid2)
 head(grid2)

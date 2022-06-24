@@ -54,8 +54,7 @@
 #' # 2SFCA
 #' The 2SFCA measure was the first accessibility metric in the floating
 #' catchment area family. It was originally proposed by Luo & Wang (2003).
-
-
+#'
 #' # BFCA
 #' The balanced floating catchment area (BFCA) metric calculates accessibility
 #' accounting for competition effects while simultaneously correcting for issues
