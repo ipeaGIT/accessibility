@@ -4,7 +4,13 @@
 \alias{cumulative_time_cutoff}
 \title{Cumulative access based on maximum travel time cutoff}
 \usage{
-cumulative_time_cutoff(data, opportunity_col, cutoff, by_col)
+cumulative_time_cutoff(
+  data,
+  cutoff,
+  opportunity_col,
+  travel_cost_col = "travel_time",
+  by_col
+)
 }
 \arguments{
 \item{data}{A \code{data.frame} with a travel time matrix in long format,
@@ -12,10 +18,14 @@ containing the at least the columns of origin \code{from_id}, destination \code{
 travel time \code{travel_time} from origin to destination, and number of
 opportunities in destination locations.}
 
+\item{cutoff}{A \code{numeric} value indicating the maximum travel time considered.}
+
 \item{opportunity_col}{A \code{string} indicating the name of the column with the
 number of opportunities / resources / services to be considered.}
 
-\item{cutoff}{A \code{numeric} value indicating the maximum travel time considered.}
+\item{travel_cost_col}{A \code{string} with the name of the column with travel
+cost between origns and destinations. It can be either either travel time,
+distance or monetary costs. Defaults to \code{travel_ime}.}
 
 \item{by_col}{A \code{string} with the name of the column of origin or
 destination that should be considered, indicating whether accessibility
@@ -38,15 +48,17 @@ ttm <- readRDS(data_path)
 
 # Active accessibility: number of schools accessible from each origin
 df <- cumulative_time_cutoff(data = ttm,
-                            opportunity_col = 'schools',
                             cutoff = 30,
+                            opportunity_col = 'schools',
+                            travel_cost_col='travel_time',
                             by_col = 'from_id')
 head(df)
 
 # Passive accessibility: number of people that can reach each destination
 df <- cumulative_time_cutoff(data = ttm,
-                            opportunity_col = 'population',
                             cutoff = 30,
+                            opportunity_col = 'population',
+                            travel_cost_col='travel_time',
                             by_col = 'to_id')
 head(df)
 }
