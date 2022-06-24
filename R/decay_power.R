@@ -6,10 +6,24 @@
 #'
 #' @param decay_value A `numeric` value.
 #'
-#' @return A `function`
+#' @return A `function` that converts travel time cost t_id into an impedance factor.
+#'
 #' @family Impedance functions
-#' @examples
-#' library(accessibility)
+#'
+#' @details
+#' Inverse power:
+#'
+#'\deqn{f(t_{ij})\leq T\begin{Bmatrix}
+#'      1 & for & t_{ij}\leq 1 \\
+#'      t_{ij}^{-\beta} & for & t_{ij}>  1
+#'      \end{Bmatrix}
+#'      }
+#'
+#'Where:
+#'- \eqn{t_{ij}} is the travel cost between origin *i* and destination *j*.
+#'- \eqn{\beta} is the `decay_value`.
+#'
+#' @examples#' library(accessibility)
 #'
 #'# Create an inverse power impedance function
 #'impedance <- decay_power(decay_value = 0.1)

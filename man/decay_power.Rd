@@ -10,14 +10,29 @@ decay_power(decay_value)
 \item{decay_value}{A \code{numeric} value.}
 }
 \value{
-A \code{function}
+A \code{function} that converts travel time cost t_id into an impedance factor.
 }
 \description{
 Returns an inverse power impedance function to be used inside
 \code{accessibility} functions.
 }
+\details{
+Inverse power:
+
+\deqn{f(t_{ij})\leq T\begin{Bmatrix}
+     1 & for & t_{ij}\leq 1 \\
+     t_{ij}^{-\beta} & for & t_{ij}>  1
+     \end{Bmatrix}
+     }
+
+Where:
+\itemize{
+\item \eqn{t_{ij}} is the travel cost between origin \emph{i} and destination \emph{j}.
+\item \eqn{\beta} is the \code{decay_value}.
+}
+}
 \examples{
-library(accessibility)
+#' library(accessibility)
 
 # Create an inverse power impedance function
 impedance <- decay_power(decay_value = 0.1)
@@ -30,7 +45,6 @@ impedance(t_ij = 35)
 \seealso{
 Other Impedance functions: 
 \code{\link{decay_binary}()},
-\code{\link{decay_exponential}()},
-\code{\link{decay_linear}()}
+\code{\link{decay_exponential}()}
 }
 \concept{Impedance functions}

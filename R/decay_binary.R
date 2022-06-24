@@ -7,7 +7,7 @@
 #' @param cutoff A `numeric` value. A number indicating the max cutoff point of
 #'        travel cost.
 #'
-#' @return A `function`
+#' @return A `function` that converts travel time cost t_id into an impedance factor.
 #'
 #' @family Impedance functions
 #'
@@ -21,8 +21,8 @@
 #'      }
 #'
 #'Where:
-#'- *tij* is the travel cost between origin * and destination *j*.
-#'- *T* is the `cutoff` of maximu travel cost.
+#'- \eqn{t_{ij}} is the travel cost between origin *i* and destination *j*.
+#'- \eqn{T} is the `cutoff` of maximum travel cost.
 #'
 #' @examples
 #' library(accessibility)

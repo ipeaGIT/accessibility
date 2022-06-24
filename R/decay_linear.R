@@ -7,8 +7,23 @@
 #' @param cutoff A `numeric` value. A number indicating the max cutoff point of
 #'        travel cost.
 #'
-#' @return A `function`
+#' @return A `function` that converts travel time cost t_id into an impedance factor.
+#'
 #' @family Impedance functions
+#'
+#' #' @details
+#' Linear decay function
+#'
+#'\deqn{f(t_{ij})\leq T\begin{Bmatrix}
+#'      (1 - t_{ij}/ T) & for & t_{ij}\leq T \\
+#'      0 & for & t_{ij}>  T
+#'      \end{Bmatrix}
+#'      }
+#'
+#'Where:
+#'- \eqn{t_{ij}} is the travel cost between origin *i* and destination *j*.
+#'- \eqn{T} is the `cutoff` of maximu travel cost.
+#'
 #' @examples
 #' library(accessibility)
 #'

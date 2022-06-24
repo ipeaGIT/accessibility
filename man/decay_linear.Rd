@@ -11,7 +11,7 @@ decay_linear(cutoff)
 travel cost.}
 }
 \value{
-A \code{function}
+A \code{function} that converts travel time cost t_id into an impedance factor.
 }
 \description{
 Returns a linear impedance function to be used inside \code{accessibility}
@@ -28,10 +28,19 @@ impedance(t_ij = 25)
 impedance(t_ij = 35)
 
 }
-\seealso{
-Other Impedance functions: 
-\code{\link{decay_binary}()},
-\code{\link{decay_exponential}()},
-\code{\link{decay_power}()}
-}
-\concept{Impedance functions}
+\concept{Impedance functions
+
+#' @details
+Linear decay function
+
+\deqn{f(t_{ij})\leq T\begin{Bmatrix}
+     (1 - t_{ij}/ T) & for & t_{ij}\leq T \\
+     0 & for & t_{ij}>  T
+     \end{Bmatrix}
+     }
+
+Where:
+\itemize{
+\item \eqn{t_{ij}} is the travel cost between origin \emph{i} and destination \emph{j}.
+\item \eqn{T} is the \code{cutoff} of maximu travel cost.
+}}

@@ -10,11 +10,22 @@ decay_exponential(decay_value)
 \item{decay_value}{A \code{numeric} value.}
 }
 \value{
-A \code{function}
+A \code{function} that converts travel time cost t_id into an impedance factor.
 }
 \description{
 Returns a negative exponential impedance function to be used inside
 \code{accessibility} functions.
+}
+\details{
+Negative exponential.
+
+\deqn{ f(t_{ij}) = e^{(-\beta t_{ij})} }
+
+Where:
+\itemize{
+\item \eqn{t_{ij}} is the travel cost between origin \emph{i} and destination \emph{j}.
+\item \eqn{\beta} is the \code{decay_value} that tells the speed of decay.
+}
 }
 \examples{
 library(accessibility)
@@ -30,7 +41,6 @@ impedance(t_ij = 35)
 \seealso{
 Other Impedance functions: 
 \code{\link{decay_binary}()},
-\code{\link{decay_linear}()},
 \code{\link{decay_power}()}
 }
 \concept{Impedance functions}

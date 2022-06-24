@@ -11,7 +11,7 @@ decay_binary(cutoff)
 travel cost.}
 }
 \value{
-A \code{function}
+A \code{function} that converts travel time cost t_id into an impedance factor.
 }
 \description{
 Returns a step a number of impedance function to be used inside \code{accessibility}
@@ -28,8 +28,8 @@ Binary (aka step) function commonly used in cumulative opportunity measures.
 
 Where:
 \itemize{
-\item \emph{tij} is the travel cost between origin * and destination \emph{j}.
-\item \emph{T} is the \code{cutoff} of maximu travel cost.
+\item \eqn{t_{ij}} is the travel cost between origin \emph{i} and destination \emph{j}.
+\item \eqn{T} is the \code{cutoff} of maximum travel cost.
 }
 }
 \examples{
@@ -46,7 +46,6 @@ impedance(t_ij = 35)
 \seealso{
 Other Impedance functions: 
 \code{\link{decay_exponential}()},
-\code{\link{decay_linear}()},
 \code{\link{decay_power}()}
 }
 \concept{Impedance functions}
