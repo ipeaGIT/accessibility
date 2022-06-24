@@ -49,9 +49,4 @@ Calculates accessibility levels using the two-step floating catchment area
 (2SFCA) proposed by Luo and Wang (2003). The 2SFCA metric was the first
 accessibility metric in the floating catchment area family.
 }
-\seealso{
-Other Floating catchment area: 
-\code{\link{fca_bfca}()},
-\code{\link{floating_catchment_area}()}
-}
-\concept{Floating catchment area}
+\keyword{internal}

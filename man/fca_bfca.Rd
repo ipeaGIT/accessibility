@@ -51,9 +51,4 @@ accessibility accounting for the competition of resources and simultaneously
 correcting for issues of inflation of demand and service levels that are
 present in other accessibility metrics in the floating catchment area family.
 }
-\seealso{
-Other Floating catchment area: 
-\code{\link{fca_2sfca}()},
-\code{\link{floating_catchment_area}()}
-}
-\concept{Floating catchment area}
+\keyword{internal}

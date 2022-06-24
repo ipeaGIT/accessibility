@@ -116,9 +116,4 @@ df <- floating_catchment_area(
 head(df)
 
 }
-\seealso{
-Other Floating catchment area: 
-\code{\link{fca_2sfca}()},
-\code{\link{fca_bfca}()}
-}
 \concept{Floating catchment area}

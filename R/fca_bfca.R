@@ -15,8 +15,7 @@
 #'
 #' @return A `numeric` estimate of accessibility.
 #'
-#' @family Floating catchment area
-#'
+#' @keywords internal
 fca_bfca <- function(data,
                      orig_col,
                      dest_col,
