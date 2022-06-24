@@ -49,37 +49,6 @@ Calculates accessibility levels using the two-step floating catchment area
 (2SFCA) proposed by Luo and Wang (2003). The 2SFCA metric was the first
 accessibility metric in the floating catchment area family.
 }
-\examples{
-library(accessibility)
-
-# load a travel time matrix data in long format
-data_path <- system.file("extdata/ttm_bho.rds", package = "accessibility")
-ttm <- readRDS(data_path)
-
-# 2SFCA with a step decay function
-df <- fca_2sfca(data = ttm,
-              orig_col = 'from_id',
-              dest_col = 'to_id',
-              opportunity_col = 'jobs',
-              population_col = 'population',
-              decay_function = decay_binary(cutoff = 50),
-              travel_cost_col = 'travel_time'
-              )
-head(df)
-
-# 2SFCA with an exponential decay function
-df2 <- fca_2sfca(data = ttm,
-        orig_col = 'from_id',
-        dest_col = 'to_id',
-        opportunity_col = 'jobs',
-        population_col = 'population',
-        decay_function = decay_exponential(decay_value = 0.5),
-        travel_cost_col = 'travel_time'
-        )
-
-head(df2)
-
-}
 \seealso{
 Other Floating catchment area: 
 \code{\link{fca_bfca}()},

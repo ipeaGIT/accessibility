@@ -51,37 +51,6 @@ accessibility accounting for the competition of resources and simultaneously
 correcting for issues of inflation of demand and service levels that are
 present in other accessibility metrics in the floating catchment area family.
 }
-\examples{
-library(accessibility)
-
-# load a travel time matrix data in long format
-data_path <- system.file("extdata/ttm_bho.rds", package = "accessibility")
-ttm <- readRDS(data_path)
-
-# BFCA with a step decay function
-df <- fca_bfca(data = ttm,
-       orig_col = 'from_id',
-       dest_col = 'to_id',
-       opportunity_col = 'jobs',
-       population_col = 'population',
-       decay_function = decay_binary(cutoff = 50),
-       travel_cost_col = 'travel_time'
-       )
-
-head(df)
-
-df2 <- fca_bfca(data = ttm,
-        orig_col = 'from_id',
-        dest_col = 'to_id',
-        opportunity_col = 'jobs',
-        population_col = 'population',
-        decay_function = decay_exponential(decay_value = 0.5),
-        travel_cost_col = 'travel_time'
-        )
-
-head(df2)
-
-}
 \seealso{
 Other Floating catchment area: 
 \code{\link{fca_2sfca}()},

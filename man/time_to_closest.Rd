@@ -2,9 +2,15 @@
 % Please edit documentation in R/time_to_closest.R
 \name{time_to_closest}
 \alias{time_to_closest}
-\title{Minimum travel time to closest opportunities}
+\title{Minimum travel cost to closest N number of opportunities}
 \usage{
-time_to_closest(data, opportunity_col, by_col, n_opportunities = 1)
+time_to_closest(
+  data,
+  opportunity_col,
+  n_opportunities = 1,
+  travel_cost_col = "travel_time",
+  by_col
+)
 }
 \arguments{
 \item{data}{A \code{data.frame} with a travel cost matrix in long format,
@@ -16,13 +22,17 @@ opportunities located in each origin and destination.}
 \item{opportunity_col}{A \code{string} indicating the name of the column with the
 number of opportunities / resources / services to be considered.}
 
+\item{n_opportunities}{A \code{numeric} value with the minimum N number of
+opportunities that should be considered. Defaults to \code{1}}
+
+\item{travel_cost_col}{A \code{string} with the name of the column with travel
+cost between origins and destinations. It can be either either travel time,
+distance or monetary costs. Defaults to \code{travel_ime}.}
+
 \item{by_col}{A \code{string} with the name of the column of origin or
 destination that should be considered, indicating whether accessibility
 levels should by calculated by each origin (active accessibility) or
 destination (passive accessibility).}
-
-\item{n_opportunities}{A \code{numeric} value with the minimum N number of
-opportunities that should be considered. Defaults to \code{1}}
 }
 \value{
 A \code{data.table} object indicating for each origin the travel time to
@@ -30,7 +40,7 @@ the closest opportunity and the id of the destination where it is
 located.
 }
 \description{
-The function calculates the minimum travel time to closest N number of
+The function calculates the minimum travel cost to closest N number of
 opportunities.
 }
 \examples{
@@ -42,15 +52,17 @@ ttm <- readRDS(data_path)
 
 df <- time_to_closest(data = ttm,
                      opportunity_col = 'schools',
-                     by_col = 'from_id',
-                     n_opportunities = 1)
+                     n_opportunities = 1,
+                     travel_cost_col = 'travel_time',
+                     by_col = 'from_id')
 head(df)
 
 df <- time_to_closest(data = ttm,
                      opportunity_col = 'schools',
-                     by_col = 'from_id',
-                     n_opportunities = 2)
+                     n_opportunities = 2,
+                     travel_cost_col = 'travel_time',
+                     by_col = 'from_id')
 head(df)
 
 }
-\concept{Minimum travel time}
+\concept{Minimum travel cost}

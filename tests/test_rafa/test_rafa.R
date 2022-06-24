@@ -151,13 +151,13 @@ Sys.setenv(NOT_CRAN = "true")
 devtools::check(pkg = ".",  cran = FALSE, env_vars = c(NOT_CRAN = "true"))
 tictoc::toc()
 
-
-
-# CRAN
-tictoc::tic()
-Sys.setenv(NOT_CRAN = "false")
-devtools::check(pkg = ".",  cran = TRUE, env_vars = c(NOT_CRAN = "false"))
-tictoc::toc()
+#
+#
+# # CRAN
+# tictoc::tic()
+# Sys.setenv(NOT_CRAN = "false")
+# devtools::check(pkg = ".",  cran = TRUE, env_vars = c(NOT_CRAN = "false"))
+# tictoc::toc()
 
 
 devtools::check_win_release(pkg = ".")
