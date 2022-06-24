@@ -3,7 +3,7 @@
 #' @description
 #' Calculates accessibility levels using the two-step floating catchment area
 #' (2SFCA) proposed by Luo and Wang (2003). The 2SFCA metric was the first
-#' accessibility metric in the the floating catchment area family.
+#' accessibility metric in the floating catchment area family.
 #'
 #' @template input_data
 #' @template arguments_fca

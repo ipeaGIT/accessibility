@@ -46,7 +46,7 @@ A \code{numeric} estimate of accessibility.
 }
 \description{
 Calculates accessibility levels using the balanced floating catchment area
-(BFCA) measure proposed by Paez et al. (2019). The BFCS metric calculate
+(BFCA) measure proposed by Paez et al. (2019). The BFCA metric calculate
 accessibility accounting for the competition of resources and simultaneously
 correcting for issues of inflation of demand and service levels that are
 present in other accessibility metrics in the floating catchment area family.

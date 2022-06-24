@@ -54,18 +54,21 @@ of the multiple accessibility metrics in the floating catchment area family.
 The function currently includes 2SFCA and BFCA
 }
 \section{2SFCA}{
-The 2SFCA measure was originally proposed by Luo & Wang (2003):
+The 2SFCA measure was the first accessibility metric in the floating
+catchment area family. It was originally proposed by Luo & Wang (2003).
+}
+
+\section{BFCA}{
+The balanced floating catchment area (BFCA) metric calculates accessibility
+accounting for competition effects while simultaneously correcting for issues
+of inflation of demand and service levels that are present in previous
+floating  catchment area measures. BFCA was  was originally proposed by Paez
+et al. (2019) and named in Pereira et al. (2021).
+\subsection{References:}{
 \itemize{
 \item Luo, W., & Wang, F. (2003). Measures of spatial accessibility to health
 care in a GIS environment: synthesis and a case study in the Chicago region.
 Environment and planning B: planning and design, 30(6), 865-884. \doi{10.1068/b29120}.
-}
-}
-
-\section{BFCA}{
-The balanced floating catchment area (BFCA) measure was originally proposed
-by Paez et al. (2019):
-\itemize{
 \item Paez, A., Higgins, C. D., & Vivona, S. F. (2019). Demand and level of
 service inflation in Floating Catchment Area (FCA) methods. Plos one, 14(6),
 e0218773. \doi{10.1371/journal.pone.0218773}
@@ -73,6 +76,7 @@ e0218773. \doi{10.1371/journal.pone.0218773}
 Gouveia, N., & Paez, A. (2021). Geographic access to COVID-19 healthcare in
 Brazil using a balanced float catchment area approach. Social Science &
 Medicine, 273. \doi{10.1016/j.socscimed.2021.113773}
+}
 }
 }
 
