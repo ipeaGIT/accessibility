@@ -50,16 +50,23 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">gravity_access</span><span class="op">(</span><span class="va">data</span>, <span class="va">opportunity_col</span>, <span class="va">by_col</span>, <span class="va">decay_function</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">gravity_access</span><span class="op">(</span>
+  <span class="va">data</span>,
+  <span class="va">opportunity_col</span>,
+  <span class="va">decay_function</span>,
+  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span>,
+  <span class="va">by_col</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
-<dd><p>A <code>data.frame</code> with a travel time matrix in long format,
-containing the at least the columns of origin <code>from_id</code>, destination <code>to_id</code>,
-travel time <code>travel_time</code> from origin to destination, and number of
-opportunities in destination locations.</p></dd>
+<dd><p>A <code>data.frame</code> with a travel cost matrix in long format,
+containing the columns with origin ids, destination ids, the travel cost
+between each origin-destination pair (this can be either in  terms of
+travel time, distance or monetary costs), and number of population and
+opportunities located in each origin and destination.</p></dd>
 
 
 <dt>opportunity_col</dt>
@@ -67,19 +74,25 @@ opportunities in destination locations.</p></dd>
 number of opportunities / resources / services to be considered.</p></dd>
 
 
+<dt>decay_function</dt>
+<dd><p>A <code>fuction</code> that converts travel cost (t_ij) into an
+impedance factor used to weight opportunities. For convenience, the package
+currently includes the following functions: <code>decay_bineary</code>,
+<code>decay_exponential</code>, <code>decay_exponential</code> and <code>decay_power.</code>.
+See the documentation of each function for more details.</p></dd>
+
+
+<dt>travel_cost_col</dt>
+<dd><p>A <code>string</code> with the name of the column with travel
+cost between origins and destinations. It can be either either travel time,
+distance or monetary costs. Defaults to <code>travel_ime</code>.</p></dd>
+
+
 <dt>by_col</dt>
 <dd><p>A <code>string</code> with the name of the column of origin or
 destination that should be considered, indicating whether accessibility
 levels should by calculated by each origin (active accessibility) or
 destination (passive accessibility).</p></dd>
-
-
-<dt>decay_function</dt>
-<dd><p>A <code>fuction</code> that converts travel cost (t_ij) into an
-impedance factor used to weight opportunities. For convinence, the package
-currently includes the following functions: <code>decay_bineary</code>,
-<code>decay_exponential</code>, <code>decay_exponential</code> and <code>decay_power.</code>.
-See the documentation of each function for more details.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -99,8 +112,9 @@ See the documentation of each function for more details.</p></dd>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">df_linear</span> <span class="op">&lt;-</span> <span class="fu">gravity_access</span><span class="op">(</span>data <span class="op">=</span> <span class="va">ttm</span>,</span>
 <span class="r-in">                           opportunity_col <span class="op">=</span> <span class="st">'schools'</span>,</span>
-<span class="r-in">                           by_col <span class="op">=</span> <span class="st">'from_id'</span>,</span>
-<span class="r-in">                           decay_function <span class="op">=</span> <span class="fu"><a href="decay_linear.html">decay_linear</a></span><span class="op">(</span>cutoff <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
+<span class="r-in">                           decay_function <span class="op">=</span> <span class="fu"><a href="decay_linear.html">decay_linear</a></span><span class="op">(</span>cutoff <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>,</span>
+<span class="r-in">                           travel_cost_col <span class="op">=</span> <span class="st">'travel_time'</span>,</span>
+<span class="r-in">                           by_col <span class="op">=</span> <span class="st">'from_id'</span></span>
 <span class="r-in">                           <span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_linear</span><span class="op">)</span></span>
@@ -114,8 +128,9 @@ See the documentation of each function for more details.</p></dd>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">df_exp</span> <span class="op">&lt;-</span> <span class="fu">gravity_access</span><span class="op">(</span>data <span class="op">=</span> <span class="va">ttm</span>,</span>
 <span class="r-in">                        opportunity_col <span class="op">=</span> <span class="st">'schools'</span>,</span>
-<span class="r-in">                        by_col <span class="op">=</span> <span class="st">'from_id'</span>,</span>
-<span class="r-in">                        decay_function <span class="op">=</span> <span class="fu"><a href="decay_exponential.html">decay_exponential</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
+<span class="r-in">                        decay_function <span class="op">=</span> <span class="fu"><a href="decay_exponential.html">decay_exponential</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span class="r-in">                        travel_cost_col <span class="op">=</span> <span class="st">'travel_time'</span>,</span>
+<span class="r-in">                        by_col <span class="op">=</span> <span class="st">'from_id'</span></span>
 <span class="r-in">                        <span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_exp</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            from_id       access</span>
