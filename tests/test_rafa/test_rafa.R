@@ -78,34 +78,6 @@ ggplot() +
   scale_fill_viridis_c()
 
 
-##### gravity ------------------------
-
-library(accessibility)
-library(data.table)
-library(ggplot2)
-
-vec <- 0:100
-decay_value <- 0.5
-cutoff <- 50
-
-df <- data.table(
-  minutes = vec,
-  step = impedance_fun(t_ij=vec, decay_function='step', cutoff=cutoff),
-  linear = impedance_fun(t_ij=vec, decay_function='linear', cutoff=cutoff),
-  exponential = impedance_fun(t_ij=vec, decay_function='negative_exponential', decay_value = decay_value),
-  inverse_power = impedance_fun(t_ij=vec, decay_function='inverse_power', decay_value = decay_value),
-  modified_gaussian = impedance_fun(t_ij=vec, decay_function='modified_gaussian', decay_value = 50)
-)
-
-df2 <- data.table::melt.data.table(data = df, id.vars = 'minutes', variable.name = 'decay_function', value.name = 'impedance_factor')
-
-ggplot() +
-  geom_line(data=df2, aes(x=minutes, y=impedance_factor, color=decay_function), show.legend = FALSE) +
-  facet_wrap(.~decay_function, ncol = 2)
-
-
-ggsave('decay_functions.png', width = 10, height = 10, units = 'cm')
-
 
 
 ##### Coverage ------------------------
