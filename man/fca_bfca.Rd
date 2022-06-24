@@ -10,14 +10,16 @@ fca_bfca(
   dest_col,
   population_col,
   opportunity_col,
-  decay_function
+  decay_function,
+  travel_cost_col = "travel_time"
 )
 }
 \arguments{
-\item{data}{A \code{data.frame} with a travel time matrix in long format,
-containing the at least the columns of origin \code{from_id}, destination \code{to_id},
-travel time \code{travel_time} from origin to destination, and number of
-opportunities in destination locations.}
+\item{data}{A \code{data.frame} with a travel cost matrix in long format,
+containing the columns with origin ids, destination ids, the travel cost
+between each origin-destination pair (this can be either in  terms of
+travel time, distance or monetary costs), and number of population and
+opportunities located in each origin and destination.}
 
 \item{orig_col}{A \code{string} with the name of the column of origin ids.}
 
@@ -30,10 +32,14 @@ population count.}
 number of opportunities / resources / services to be considered.}
 
 \item{decay_function}{A \code{fuction} that converts travel cost (t_ij) into an
-impedance factor used to weight opportunities. For convinence, the package
+impedance factor used to weight opportunities. For convenience, the package
 currently includes the following functions: \code{decay_bineary},
 \code{decay_exponential}, \code{decay_exponential} and \code{decay_power.}.
 See the documentation of each function for more details.}
+
+\item{travel_cost_col}{A \code{string} with the name of the column with travel
+cost between origins and destinations. It can be either either travel time,
+distance or monetary costs. Defaults to \code{travel_ime}.}
 }
 \value{
 A \code{numeric} estimate of accessibility.
@@ -41,22 +47,9 @@ A \code{numeric} estimate of accessibility.
 \description{
 Calculates accessibility levels using the balanced floating catchment area
 (BFCA) measure proposed by Paez et al. (2019). The BFCS metric calculate
-accessibility accouting for the competition of resources and simultaneously
+accessibility accounting for the competition of resources and simultaneously
 correcting for issues of inflation of demand and service levels that are
 present in other accessibility metrics in the floating catchment area family.
-}
-\details{
-The balanced floating catchment area (BFCA) measure was originally proposed
-by Paez et al. (2019) and
-\itemize{
-\item Paez, A., Higgins, C. D., & Vivona, S. F. (2019). Demand and level of
-service inflation in Floating Catchment Area (FCA) methods. Plos one, 14(6),
-e0218773. \doi{10.1371/journal.pone.0218773}
-\item Pereira, R. H., Braga, C. K. V., Servo, L. M., Serra, B., Amaral, P.,
-Gouveia, N., & Paez, A. (2021). Geographic access to COVID-19 healthcare in
-Brazil using a balanced float catchment area approach. Social Science &
-Medicine, 273. \doi{10.1016/j.socscimed.2021.113773}
-}
 }
 \examples{
 library(accessibility)
@@ -71,7 +64,8 @@ df <- fca_bfca(data = ttm,
        dest_col = 'to_id',
        opportunity_col = 'jobs',
        population_col = 'population',
-       decay_function = decay_binary(cutoff = 50)
+       decay_function = decay_binary(cutoff = 50),
+       travel_cost_col = 'travel_time'
        )
 
 head(df)
@@ -81,7 +75,8 @@ df2 <- fca_bfca(data = ttm,
         dest_col = 'to_id',
         opportunity_col = 'jobs',
         population_col = 'population',
-        decay_function = decay_exponential(decay_value = 0.5)
+        decay_function = decay_exponential(decay_value = 0.5),
+        travel_cost_col = 'travel_time'
         )
 
 head(df2)

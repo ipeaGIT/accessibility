@@ -7,16 +7,11 @@
 #'
 #' @template input_data
 #' @template arguments_fca
-#' @template opportunity_col
 #' @template decay_function
+#' @template opportunity_col
+#' @template travel_cost_col
 #'
 #' @return A `numeric` estimate of accessibility.
-#'
-#' @details
-#' References:
-#' - Luo, W., & Wang, F. (2003). Measures of spatial accessibility to health
-#' care in a GIS environment: synthesis and a case study in the Chicago region.
-#' Environment and planning B: planning and design, 30(6), 865-884. \doi{10.1068/b29120}.
 #'
 #' @family Floating catchment area
 #' @examples
@@ -32,7 +27,8 @@
 #'               dest_col = 'to_id',
 #'               opportunity_col = 'jobs',
 #'               population_col = 'population',
-#'               decay_function = decay_binary(cutoff = 50)
+#'               decay_function = decay_binary(cutoff = 50),
+#'               travel_cost_col = 'travel_time'
 #'               )
 #'head(df)
 #'
@@ -42,18 +38,19 @@
 #'         dest_col = 'to_id',
 #'         opportunity_col = 'jobs',
 #'         population_col = 'population',
-#'         decay_function = decay_exponential(decay_value = 0.5)
+#'         decay_function = decay_exponential(decay_value = 0.5),
+#'         travel_cost_col = 'travel_time'
 #'         )
 #'
 #'head(df2)
 #'
-#' @export
 fca_2sfca <- function(data,
                      orig_col,
                      dest_col,
                      population_col,
                      opportunity_col,
-                     decay_function){
+                     decay_function,
+                     travel_cost_col='travel_time'){
 
   # orig_col <- 'from_id'
   # dest_col <- 'to_id'
@@ -65,7 +62,6 @@ fca_2sfca <- function(data,
 
 
   # calculate access -----------------------------------------------------------
-  data.table::setDT(data)
 
   # orig_col <- 'from_id'
   # dest_col <- 'to_id'
@@ -73,7 +69,7 @@ fca_2sfca <- function(data,
   # population_col <- 'population'
 
   # calculate impedance
-  data[, impedance := decay_function(t_ij = travel_time),]
+  data[, impedance := decay_function(t_ij = get(travel_cost_col)),]
 
 
   ## Step 1a - allocate the demand to each destination proportionally to weight i

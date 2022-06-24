@@ -3,27 +3,17 @@
 #' @description
 #' Calculates accessibility levels using the balanced floating catchment area
 #' (BFCA) measure proposed by Paez et al. (2019). The BFCS metric calculate
-#' accessibility accouting for the competition of resources and simultaneously
+#' accessibility accounting for the competition of resources and simultaneously
 #' correcting for issues of inflation of demand and service levels that are
 #' present in other accessibility metrics in the floating catchment area family.
 #'
 #' @template input_data
 #' @template arguments_fca
-#' @template opportunity_col
 #' @template decay_function
+#' @template opportunity_col
+#' @template travel_cost_col
 #'
 #' @return A `numeric` estimate of accessibility.
-#'
-#' @details
-#' The balanced floating catchment area (BFCA) measure was originally proposed
-#' by Paez et al. (2019) and
-#' - Paez, A., Higgins, C. D., & Vivona, S. F. (2019). Demand and level of
-#' service inflation in Floating Catchment Area (FCA) methods. Plos one, 14(6),
-#' e0218773. \doi{10.1371/journal.pone.0218773}
-#' - Pereira, R. H., Braga, C. K. V., Servo, L. M., Serra, B., Amaral, P.,
-#' Gouveia, N., & Paez, A. (2021). Geographic access to COVID-19 healthcare in
-#' Brazil using a balanced float catchment area approach. Social Science &
-#' Medicine, 273. \doi{10.1016/j.socscimed.2021.113773}
 #'
 #' @family Floating catchment area
 #' @examples
@@ -39,7 +29,8 @@
 #'        dest_col = 'to_id',
 #'        opportunity_col = 'jobs',
 #'        population_col = 'population',
-#'        decay_function = decay_binary(cutoff = 50)
+#'        decay_function = decay_binary(cutoff = 50),
+#'        travel_cost_col = 'travel_time'
 #'        )
 #'
 #'head(df)
@@ -49,18 +40,19 @@
 #'         dest_col = 'to_id',
 #'         opportunity_col = 'jobs',
 #'         population_col = 'population',
-#'         decay_function = decay_exponential(decay_value = 0.5)
+#'         decay_function = decay_exponential(decay_value = 0.5),
+#'         travel_cost_col = 'travel_time'
 #'         )
 #'
 #'head(df2)
 #'
-#' @export
 fca_bfca <- function(data,
                      orig_col,
                      dest_col,
                      population_col,
                      opportunity_col,
-                     decay_function){
+                     decay_function,
+                     travel_cost_col='travel_time'){
 
   # orig_col <- 'from_id'
   # dest_col <- 'to_id'
@@ -73,7 +65,6 @@ fca_bfca <- function(data,
 
 
   # calculate access -----------------------------------------------------------
-  data.table::setDT(data)
 
   # orig_col <- 'from_id'
   # dest_col <- 'to_id'
@@ -81,7 +72,7 @@ fca_bfca <- function(data,
   # population_col <- 'population'
 
   # calculate impedance
-  data[, impedance := decay_function(t_ij = travel_time),]
+  data[, impedance := decay_function(t_ij = get(travel_cost_col)),]
 
   # calculate balanced impedance i (normalizing impedance by origin)
   data[, balanced_impedance_i := impedance/sum(impedance),

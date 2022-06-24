@@ -13,10 +13,11 @@ cumulative_time_cutoff(
 )
 }
 \arguments{
-\item{data}{A \code{data.frame} with a travel time matrix in long format,
-containing the at least the columns of origin \code{from_id}, destination \code{to_id},
-travel time \code{travel_time} from origin to destination, and number of
-opportunities in destination locations.}
+\item{data}{A \code{data.frame} with a travel cost matrix in long format,
+containing the columns with origin ids, destination ids, the travel cost
+between each origin-destination pair (this can be either in  terms of
+travel time, distance or monetary costs), and number of population and
+opportunities located in each origin and destination.}
 
 \item{cutoff}{A \code{numeric} value indicating the maximum travel time considered.}
 
@@ -24,7 +25,7 @@ opportunities in destination locations.}
 number of opportunities / resources / services to be considered.}
 
 \item{travel_cost_col}{A \code{string} with the name of the column with travel
-cost between origns and destinations. It can be either either travel time,
+cost between origins and destinations. It can be either either travel time,
 distance or monetary costs. Defaults to \code{travel_ime}.}
 
 \item{by_col}{A \code{string} with the name of the column of origin or
@@ -50,7 +51,7 @@ ttm <- readRDS(data_path)
 df <- cumulative_time_cutoff(data = ttm,
                             cutoff = 30,
                             opportunity_col = 'schools',
-                            travel_cost_col='travel_time',
+                            travel_cost_col = 'travel_time',
                             by_col = 'from_id')
 head(df)
 
@@ -58,7 +59,7 @@ head(df)
 df <- cumulative_time_cutoff(data = ttm,
                             cutoff = 30,
                             opportunity_col = 'population',
-                            travel_cost_col='travel_time',
+                            travel_cost_col = 'travel_time',
                             by_col = 'to_id')
 head(df)
 }

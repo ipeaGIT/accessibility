@@ -2,7 +2,7 @@
 % Please edit documentation in R/floating_catchment_area.R
 \name{floating_catchment_area}
 \alias{floating_catchment_area}
-\title{Floating catchment area accessibilitt}
+\title{Floating catchment area accessibility}
 \usage{
 floating_catchment_area(
   data,
@@ -11,17 +11,19 @@ floating_catchment_area(
   dest_col,
   population_col,
   opportunity_col,
-  decay_function
+  decay_function,
+  travel_cost_col = "travel_time"
 )
 }
 \arguments{
-\item{data}{A \code{data.frame} with a travel time matrix in long format,
-containing the at least the columns of origin \code{from_id}, destination \code{to_id},
-travel time \code{travel_time} from origin to destination, and number of
-opportunities in destination locations.}
+\item{data}{A \code{data.frame} with a travel cost matrix in long format,
+containing the columns with origin ids, destination ids, the travel cost
+between each origin-destination pair (this can be either in  terms of
+travel time, distance or monetary costs), and number of population and
+opportunities located in each origin and destination.}
 
-\item{fca_metric}{A \code{string} indicating which floating cacthment area
-accessibility measure to use. Options avaiblable: \code{"2SFCA"} and \code{"BFCA"}.}
+\item{fca_metric}{A \code{string} indicating which floating catchment area
+accessibility measure to use. Options available: \code{"2SFCA"} and \code{"BFCA"}.}
 
 \item{orig_col}{A \code{string} with the name of the column of origin ids.}
 
@@ -34,19 +36,46 @@ population count.}
 number of opportunities / resources / services to be considered.}
 
 \item{decay_function}{A \code{fuction} that converts travel cost (t_ij) into an
-impedance factor used to weight opportunities. For convinence, the package
+impedance factor used to weight opportunities. For convenience, the package
 currently includes the following functions: \code{decay_bineary},
 \code{decay_exponential}, \code{decay_exponential} and \code{decay_power.}.
 See the documentation of each function for more details.}
+
+\item{travel_cost_col}{A \code{string} with the name of the column with travel
+cost between origins and destinations. It can be either either travel time,
+distance or monetary costs. Defaults to \code{travel_ime}.}
 }
 \value{
 A \code{data.table} object.
 }
 \description{
-Calculates accessibility accouting for the competition of resources using one
+Calculates accessibility accounting for the competition of resources using one
 of the multiple accessibility metrics in the floating catchment area family.
 The function currently includes 2SFCA and BFCA
 }
+\section{2SFCA}{
+The 2SFCA measure was originally proposed by Luo & Wang (2003):
+\itemize{
+\item Luo, W., & Wang, F. (2003). Measures of spatial accessibility to health
+care in a GIS environment: synthesis and a case study in the Chicago region.
+Environment and planning B: planning and design, 30(6), 865-884. \doi{10.1068/b29120}.
+}
+}
+
+\section{BFCA}{
+The balanced floating catchment area (BFCA) measure was originally proposed
+by Paez et al. (2019):
+\itemize{
+\item Paez, A., Higgins, C. D., & Vivona, S. F. (2019). Demand and level of
+service inflation in Floating Catchment Area (FCA) methods. Plos one, 14(6),
+e0218773. \doi{10.1371/journal.pone.0218773}
+\item Pereira, R. H., Braga, C. K. V., Servo, L. M., Serra, B., Amaral, P.,
+Gouveia, N., & Paez, A. (2021). Geographic access to COVID-19 healthcare in
+Brazil using a balanced float catchment area approach. Social Science &
+Medicine, 273. \doi{10.1016/j.socscimed.2021.113773}
+}
+}
+
 \examples{
 library(accessibility)
 
@@ -62,7 +91,8 @@ df <- floating_catchment_area(
        dest_col = 'to_id',
        opportunity_col = 'jobs',
        population_col = 'population',
-       decay_function = decay_binary(cutoff = 50)
+       decay_function = decay_binary(cutoff = 50),
+       travel_cost_col = 'travel_time'
        )
 head(df)
 
@@ -74,10 +104,10 @@ df <- floating_catchment_area(
        dest_col = 'to_id',
        opportunity_col = 'jobs',
        population_col = 'population',
-       decay_function = decay_exponential(decay_value = 0.5)
+       decay_function = decay_exponential(decay_value = 0.5),
+       travel_cost_col = 'travel_time'
        )
 head(df)
-
 
 }
 \seealso{

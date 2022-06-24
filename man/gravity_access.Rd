@@ -13,22 +13,23 @@ gravity_access(
 )
 }
 \arguments{
-\item{data}{A \code{data.frame} with a travel time matrix in long format,
-containing the at least the columns of origin \code{from_id}, destination \code{to_id},
-travel time \code{travel_time} from origin to destination, and number of
-opportunities in destination locations.}
+\item{data}{A \code{data.frame} with a travel cost matrix in long format,
+containing the columns with origin ids, destination ids, the travel cost
+between each origin-destination pair (this can be either in  terms of
+travel time, distance or monetary costs), and number of population and
+opportunities located in each origin and destination.}
 
 \item{opportunity_col}{A \code{string} indicating the name of the column with the
 number of opportunities / resources / services to be considered.}
 
 \item{decay_function}{A \code{fuction} that converts travel cost (t_ij) into an
-impedance factor used to weight opportunities. For convinence, the package
+impedance factor used to weight opportunities. For convenience, the package
 currently includes the following functions: \code{decay_bineary},
 \code{decay_exponential}, \code{decay_exponential} and \code{decay_power.}.
 See the documentation of each function for more details.}
 
 \item{travel_cost_col}{A \code{string} with the name of the column with travel
-cost between origns and destinations. It can be either either travel time,
+cost between origins and destinations. It can be either either travel time,
 distance or monetary costs. Defaults to \code{travel_ime}.}
 
 \item{by_col}{A \code{string} with the name of the column of origin or

@@ -1,16 +1,17 @@
-#' @title Floating catchment area accessibilitt
+#' @title Floating catchment area accessibility
 #'
 #' @description
-#' Calculates accessibility accouting for the competition of resources using one
+#' Calculates accessibility accounting for the competition of resources using one
 #' of the multiple accessibility metrics in the floating catchment area family.
 #' The function currently includes 2SFCA and BFCA
 #'
 #' @template input_data
-#' @param fca_metric A `string` indicating which floating cacthment area
-#'        accessibility measure to use. Options avaiblable: `"2SFCA"` and `"BFCA"`.
+#' @param fca_metric A `string` indicating which floating catchment area
+#'        accessibility measure to use. Options available: `"2SFCA"` and `"BFCA"`.
 #' @template arguments_fca
-#' @template opportunity_col
 #' @template decay_function
+#' @template opportunity_col
+#' @template travel_cost_col
 #'
 #' @return A `data.table` object.
 #' @family Floating catchment area
@@ -29,7 +30,8 @@
 #'        dest_col = 'to_id',
 #'        opportunity_col = 'jobs',
 #'        population_col = 'population',
-#'        decay_function = decay_binary(cutoff = 50)
+#'        decay_function = decay_binary(cutoff = 50),
+#'        travel_cost_col = 'travel_time'
 #'        )
 #'head(df)
 #'
@@ -41,10 +43,29 @@
 #'        dest_col = 'to_id',
 #'        opportunity_col = 'jobs',
 #'        population_col = 'population',
-#'        decay_function = decay_exponential(decay_value = 0.5)
+#'        decay_function = decay_exponential(decay_value = 0.5),
+#'        travel_cost_col = 'travel_time'
 #'        )
 #'head(df)
 #'
+#' @details
+#'
+#' # 2SFCA
+#' The 2SFCA measure was originally proposed by Luo & Wang (2003):
+#' - Luo, W., & Wang, F. (2003). Measures of spatial accessibility to health
+#' care in a GIS environment: synthesis and a case study in the Chicago region.
+#' Environment and planning B: planning and design, 30(6), 865-884. \doi{10.1068/b29120}.
+#'
+#' # BFCA
+#' The balanced floating catchment area (BFCA) measure was originally proposed
+#' by Paez et al. (2019):
+#' - Paez, A., Higgins, C. D., & Vivona, S. F. (2019). Demand and level of
+#' service inflation in Floating Catchment Area (FCA) methods. Plos one, 14(6),
+#' e0218773. \doi{10.1371/journal.pone.0218773}
+#' - Pereira, R. H., Braga, C. K. V., Servo, L. M., Serra, B., Amaral, P.,
+#' Gouveia, N., & Paez, A. (2021). Geographic access to COVID-19 healthcare in
+#' Brazil using a balanced float catchment area approach. Social Science &
+#' Medicine, 273. \doi{10.1016/j.socscimed.2021.113773}
 #'
 #' @export
 floating_catchment_area <- function(data,
@@ -53,7 +74,8 @@ floating_catchment_area <- function(data,
                                     dest_col,
                                     population_col,
                                     opportunity_col,
-                                    decay_function){
+                                    decay_function,
+                                    travel_cost_col = 'travel_time'){
 
   # orig_col <- 'from_id'
   # dest_col <- 'to_id'
@@ -68,10 +90,12 @@ floating_catchment_area <- function(data,
   checkmate::assert_string(dest_col)
   checkmate::assert_string(opportunity_col)
   checkmate::assert_string(population_col)
+  checkmate::assert_string(travel_cost_col)
   checkmate::assert_names(names(data), must.include = orig_col, .var.name = "data")
   checkmate::assert_names(names(data), must.include = dest_col, .var.name = "data")
   checkmate::assert_names(names(data), must.include = opportunity_col, .var.name = "data")
   checkmate::assert_names(names(data), must.include = population_col, .var.name = "data")
+  checkmate::assert_names(names(data), must.include = travel_cost_col, .var.name = "data")
 
   checkmate::assert_function(decay_function)
 
@@ -90,7 +114,8 @@ floating_catchment_area <- function(data,
   #                      dest_col = dest_col,
   #                      population_col = population_col,
   #                      opportunity_col = opportunity_col,
-  #                      decay_function = decay_function
+  #                      decay_function = decay_function,
+  #                      travel_cost_col = travel_cost_col
   #                      )
 
   # calculate access -----------------------------------------------------------
@@ -103,7 +128,8 @@ floating_catchment_area <- function(data,
                        dest_col = dest_col,
                        population_col = population_col,
                        opportunity_col = opportunity_col,
-                       decay_function = decay_function)
+                       decay_function = decay_function,
+                       travel_cost_col = travel_cost_col)
     }
 
   # BFCA
@@ -113,7 +139,8 @@ floating_catchment_area <- function(data,
                        dest_col = dest_col,
                        population_col = population_col,
                        opportunity_col = opportunity_col,
-                       decay_function = decay_function)
+                       decay_function = decay_function,
+                       travel_cost_col = travel_cost_col)
     }
 
   return(access)

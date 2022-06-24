@@ -28,7 +28,7 @@
 #'                               interval = c(20, 30),
 #'                               stat ='mean',
 #'                               opportunity_col = 'schools',
-#'                               travel_cost_col='travel_time',
+#'                               travel_cost_col = 'travel_time',
 #'                               by_col = 'from_id')
 #'head(df)
 #'
@@ -36,7 +36,7 @@
 #'                               interval = c(40, 80),
 #'                               stat ='mean',
 #'                               opportunity_col = 'jobs',
-#'                               travel_cost_col='travel_time',
+#'                               travel_cost_col = 'travel_time',
 #'                               by_col = 'from_id')
 #'head(df)
 #'

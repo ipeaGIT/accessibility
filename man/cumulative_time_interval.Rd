@@ -14,10 +14,11 @@ cumulative_time_interval(
 )
 }
 \arguments{
-\item{data}{A \code{data.frame} with a travel time matrix in long format,
-containing the at least the columns of origin \code{from_id}, destination \code{to_id},
-travel time \code{travel_time} from origin to destination, and number of
-opportunities in destination locations.}
+\item{data}{A \code{data.frame} with a travel cost matrix in long format,
+containing the columns with origin ids, destination ids, the travel cost
+between each origin-destination pair (this can be either in  terms of
+travel time, distance or monetary costs), and number of population and
+opportunities located in each origin and destination.}
 
 \item{interval}{An \verb{numeric vector} of length 2, indicating the start and end
 points of the interval of travel time thresholds to be used.}
@@ -30,7 +31,7 @@ accessibility estimates within the time interval. It accepts either \code{median
 number of opportunities / resources / services to be considered.}
 
 \item{travel_cost_col}{A \code{string} with the name of the column with travel
-cost between origns and destinations. It can be either either travel time,
+cost between origins and destinations. It can be either either travel time,
 distance or monetary costs. Defaults to \code{travel_ime}.}
 
 \item{by_col}{A \code{string} with the name of the column of origin or
@@ -57,7 +58,7 @@ df <- cumulative_time_interval(data = ttm,
                               interval = c(20, 30),
                               stat ='mean',
                               opportunity_col = 'schools',
-                              travel_cost_col='travel_time',
+                              travel_cost_col = 'travel_time',
                               by_col = 'from_id')
 head(df)
 
@@ -65,7 +66,7 @@ df <- cumulative_time_interval(data = ttm,
                               interval = c(40, 80),
                               stat ='mean',
                               opportunity_col = 'jobs',
-                              travel_cost_col='travel_time',
+                              travel_cost_col = 'travel_time',
                               by_col = 'from_id')
 head(df)
 

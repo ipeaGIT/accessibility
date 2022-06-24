@@ -10,14 +10,16 @@ fca_2sfca(
   dest_col,
   population_col,
   opportunity_col,
-  decay_function
+  decay_function,
+  travel_cost_col = "travel_time"
 )
 }
 \arguments{
-\item{data}{A \code{data.frame} with a travel time matrix in long format,
-containing the at least the columns of origin \code{from_id}, destination \code{to_id},
-travel time \code{travel_time} from origin to destination, and number of
-opportunities in destination locations.}
+\item{data}{A \code{data.frame} with a travel cost matrix in long format,
+containing the columns with origin ids, destination ids, the travel cost
+between each origin-destination pair (this can be either in  terms of
+travel time, distance or monetary costs), and number of population and
+opportunities located in each origin and destination.}
 
 \item{orig_col}{A \code{string} with the name of the column of origin ids.}
 
@@ -30,10 +32,14 @@ population count.}
 number of opportunities / resources / services to be considered.}
 
 \item{decay_function}{A \code{fuction} that converts travel cost (t_ij) into an
-impedance factor used to weight opportunities. For convinence, the package
+impedance factor used to weight opportunities. For convenience, the package
 currently includes the following functions: \code{decay_bineary},
 \code{decay_exponential}, \code{decay_exponential} and \code{decay_power.}.
 See the documentation of each function for more details.}
+
+\item{travel_cost_col}{A \code{string} with the name of the column with travel
+cost between origins and destinations. It can be either either travel time,
+distance or monetary costs. Defaults to \code{travel_ime}.}
 }
 \value{
 A \code{numeric} estimate of accessibility.
@@ -42,14 +48,6 @@ A \code{numeric} estimate of accessibility.
 Calculates accessibility levels using the two-step floating catchment area
 (2SFCA) proposed by Luo and Wang (2003). The 2SFCA metric was the first
 accessibility metric in the the floating catchment area family.
-}
-\details{
-References:
-\itemize{
-\item Luo, W., & Wang, F. (2003). Measures of spatial accessibility to health
-care in a GIS environment: synthesis and a case study in the Chicago region.
-Environment and planning B: planning and design, 30(6), 865-884. \doi{10.1068/b29120}.
-}
 }
 \examples{
 library(accessibility)
@@ -64,7 +62,8 @@ df <- fca_2sfca(data = ttm,
               dest_col = 'to_id',
               opportunity_col = 'jobs',
               population_col = 'population',
-              decay_function = decay_binary(cutoff = 50)
+              decay_function = decay_binary(cutoff = 50),
+              travel_cost_col = 'travel_time'
               )
 head(df)
 
@@ -74,7 +73,8 @@ df2 <- fca_2sfca(data = ttm,
         dest_col = 'to_id',
         opportunity_col = 'jobs',
         population_col = 'population',
-        decay_function = decay_exponential(decay_value = 0.5)
+        decay_function = decay_exponential(decay_value = 0.5),
+        travel_cost_col = 'travel_time'
         )
 
 head(df2)

@@ -7,10 +7,11 @@
 time_to_closest(data, opportunity_col, by_col, n_opportunities = 1)
 }
 \arguments{
-\item{data}{A \code{data.frame} with a travel time matrix in long format,
-containing the at least the columns of origin \code{from_id}, destination \code{to_id},
-travel time \code{travel_time} from origin to destination, and number of
-opportunities in destination locations.}
+\item{data}{A \code{data.frame} with a travel cost matrix in long format,
+containing the columns with origin ids, destination ids, the travel cost
+between each origin-destination pair (this can be either in  terms of
+travel time, distance or monetary costs), and number of population and
+opportunities located in each origin and destination.}
 
 \item{opportunity_col}{A \code{string} indicating the name of the column with the
 number of opportunities / resources / services to be considered.}
@@ -20,7 +21,7 @@ destination that should be considered, indicating whether accessibility
 levels should by calculated by each origin (active accessibility) or
 destination (passive accessibility).}
 
-\item{n_opportunities}{A \code{numeric} value with the mininum N number of
+\item{n_opportunities}{A \code{numeric} value with the minimum N number of
 opportunities that should be considered. Defaults to \code{1}}
 }
 \value{

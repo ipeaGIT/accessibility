@@ -1,4 +1,5 @@
-#' @param data A `data.frame` with a travel time matrix in long format,
-#'   containing the at least the columns of origin `from_id`, destination `to_id`,
-#'   travel time `travel_time` from origin to destination, and number of
-#'   opportunities in destination locations.
+#' @param data A `data.frame` with a travel cost matrix in long format,
+#'   containing the columns with origin ids, destination ids, the travel cost
+#'   between each origin-destination pair (this can be either in  terms of
+#'   travel time, distance or monetary costs), and number of population and
+#'   opportunities located in each origin and destination.

@@ -7,7 +7,7 @@
 #' @template input_data
 #' @template opportunity_col
 #' @template by_col
-#' @param n_opportunities A `numeric` value with the mininum N number of
+#' @param n_opportunities A `numeric` value with the minimum N number of
 #'   opportunities that should be considered. Defaults to `1`
 #'
 
@@ -43,11 +43,9 @@ time_to_closest <- function(data, opportunity_col, by_col, n_opportunities = 1){
   checkmate::test_string(by_col)
   checkmate::assert_number(n_opportunities, lower = 1, finite = TRUE)
 
-  checkmate::assert_names(names(data), must.include = opportunity_col,
-                          .var.name = "data")
+  checkmate::assert_names(names(data), must.include = opportunity_col, .var.name = "data")
+  checkmate::assert_names(names(data), must.include = by_col, .var.name = "data")
 
-  checkmate::assert_names(names(data), must.include = by_col,
-                          .var.name = "data")
 
   # calculate access -----------------------------------------------------------
   data.table::setDT(data)

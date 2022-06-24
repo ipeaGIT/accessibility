@@ -23,7 +23,7 @@
 #'df <- cumulative_time_cutoff(data = ttm,
 #'                             cutoff = 30,
 #'                             opportunity_col = 'schools',
-#'                             travel_cost_col='travel_time',
+#'                             travel_cost_col = 'travel_time',
 #'                             by_col = 'from_id')
 #'head(df)
 #'
@@ -31,7 +31,7 @@
 #'df <- cumulative_time_cutoff(data = ttm,
 #'                             cutoff = 30,
 #'                             opportunity_col = 'population',
-#'                             travel_cost_col='travel_time',
+#'                             travel_cost_col = 'travel_time',
 #'                             by_col = 'to_id')
 #'head(df)
 #' @export
@@ -44,12 +44,9 @@ cumulative_time_cutoff <- function(data, cutoff, opportunity_col, travel_cost_co
   checkmate::assert_string(by_col)
   checkmate::assert_number(cutoff, lower = 0, finite = TRUE)
 
-  checkmate::assert_names(names(data), must.include = opportunity_col,
-                          .var.name = "data")
-  checkmate::assert_names(names(data), must.include = by_col,
-                          .var.name = "data")
-  checkmate::assert_names(names(data), must.include = travel_cost_col,
-                          .var.name = "data")
+  checkmate::assert_names(names(data), must.include = opportunity_col, .var.name = "data")
+  checkmate::assert_names(names(data), must.include = travel_cost_col, .var.name = "data")
+  checkmate::assert_names(names(data), must.include = by_col, .var.name = "data")
 
 
   # calculate access -----------------------------------------------------------
