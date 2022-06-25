@@ -23,7 +23,8 @@ travel time, distance or monetary costs), and number of population and
 opportunities located in each origin and destination.}
 
 \item{fca_metric}{A \code{string} indicating which floating catchment area
-accessibility measure to use. Options available: \code{"2SFCA"} and \code{"BFCA"}.}
+accessibility measure to use. Options available: \code{"2SFCA"} and \code{"BFCA"}.
+More info in the details.}
 
 \item{orig_col}{A \code{string} with the name of the column of origin ids.}
 
@@ -51,9 +52,10 @@ A \code{data.table} object.
 \description{
 Calculates accessibility accounting for the competition of resources using one
 of the multiple accessibility metrics in the floating catchment area family.
-The function currently includes \verb{2SFCA} and \code{BFCA}. Accessibility can be
-calculated using multiple alternative decay functions passed through
-the \code{decay_function} parameter.
+The function currently includes \verb{2SFCA} 2-Step Floating Catchment Area and
+\code{BFCA} Balanced Floating Catchment Area. Accessibility can be calculated using
+multiple alternative decay functions passed through the \code{decay_function}
+parameter.
 }
 \section{2SFCA}{
 The 2SFCA measure was the first accessibility metric in the floating

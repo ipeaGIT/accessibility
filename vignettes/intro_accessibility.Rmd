@@ -88,6 +88,12 @@ head(ttm)
 
 This is a small sample data with public transport travel times and land use data for the city of Belo Horizonte (Brazil) included in the package and that we will be using to illustrate its functionalities.
 
+If you would like to estimate such travel cost matrices, there are several computational packages to do that in R, such as:
+- [r5r](https://github.com/ipeaGIT/r5r)
+- [dodgr](https://github.com/ATFutures/dodgr)
+- [gtfsrouter](https://github.com/ATFutures/gtfs-router)
+- [hereR](https://github.com/munterfinger/hereR)
+- [opentripplanner](https://github.com/ropensci/opentripplanner)
 
 
 ## 5.1 Minimum travel cost:
@@ -149,7 +155,7 @@ head(cum_interval)
 ## 5.3 Gravity-based accessibility:
 
 
-The  `gravity_access()` allows one to continuously discount the weight of opportunities as travel costs become larger. See the [vignette on decay functions](add_link) for more information on the decay functions available in the package and how to use custom functions. In this case here, we use a negative exponential function with a `decay_value` \eqn{\beta} of 0.2
+The  `gravity_access()` allows one to continuously discount the weight of opportunities as travel costs become larger. See the [vignette on decay functions](https://ipeagit.github.io/accessibility/articles/decay_functions.html) for more information on the decay functions available in the package and how to use custom functions. In this case here, we use a negative exponential function with a `decay_value` \eqn{\beta} of 0.2
 
 
 ```{r, message = FALSE, eval = FALSE}
