@@ -217,7 +217,7 @@
 <span class="co">#&gt; 4: 89a88cdb57bffff 89a88cdb5cfffff        47.0        606  109       0</span>
 <span class="co">#&gt; 5: 89a88cdb57bffff 89a88cd909bffff        64.0        606    0       0</span>
 <span class="co">#&gt; 6: 89a88cdb57bffff 89a88cd90b7ffff        59.0        606  480       0</span></code></pre></div>
-<p>Now let’s create a very simples custom decay function that uses a parameter <code>k</code> to convert the travel cost <code>t_ij</code> between origin <code>i</code> and destination <code>j</code> into an impedance factor.</p>
+<p>Now let’s create a very simple custom decay function that uses a parameter <code>k</code> to convert the travel cost <code>t_ij</code> between origin <code>i</code> and destination <code>j</code> into an impedance factor.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># create custom decay function</span>
 <span class="va">custom_decay_fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">k</span><span class="op">)</span> <span class="op">{</span>
