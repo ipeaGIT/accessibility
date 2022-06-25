@@ -17,7 +17,7 @@ Authors@R:
              role = c("cph", "fnd")))
 Description: accessibility offers a set of fast and convenient functions to 
              calculate multiple transport accessibility measures. Given a 
-             pre-computed travel cost matrix in long format combined with 
+             precomputed travel cost matrix in long format combined with 
              land-use  data (e.g. location of  jobs, healthcare, population), 
              the package  allows one to calculate active and passive 
              accessibility levels using multiple accessibility metrics such as: 

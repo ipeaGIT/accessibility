@@ -29,7 +29,7 @@ Linear decay function
 Where:
 \itemize{
 \item \eqn{t_{ij}} is the travel cost between origin \emph{i} and destination \emph{j}.
-\item \eqn{T} is the \code{cutoff} of maximu travel cost.
+\item \eqn{T} is the \code{cutoff} of maximum travel cost.
 }
 }
 \examples{

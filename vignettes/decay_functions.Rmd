@@ -143,7 +143,7 @@ head(ttm)
 
 ```
 
-Now let's create a very simples custom decay function that uses a parameter `k` to convert the travel cost `t_ij` between origin `i` and destination `j` into an impedance factor.
+Now let's create a very simple custom decay function that uses a parameter `k` to convert the travel cost `t_ij` between origin `i` and destination `j` into an impedance factor.
 
 
 ```{r}

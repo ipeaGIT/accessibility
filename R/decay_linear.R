@@ -22,7 +22,7 @@
 #'
 #'Where:
 #'- \eqn{t_{ij}} is the travel cost between origin *i* and destination *j*.
-#'- \eqn{T} is the `cutoff` of maximu travel cost.
+#'- \eqn{T} is the `cutoff` of maximum travel cost.
 #'
 #' @examples
 #' library(accessibility)

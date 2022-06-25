@@ -53,7 +53,7 @@ The `accessibility` package currently includes:
 6. `floating_catchment_area()` Floating catchment area accessibility using `BFCA`
 
 
-The `gravity_access()` and `floating_catchment_area()` functations can use any custom decay function that converts travel cost `t_ij` to and impedance factor. For convenience, the package currently includes the following decay functions:
+The `gravity_access()` and `floating_catchment_area()` functions can use any custom decay function that converts travel cost `t_ij` to and impedance factor. For convenience, the package currently includes the following decay functions:
 
 1. `decay_binary()` Binary (aka step) decay function
 2. `decay_exponential()` Negative exponential decay function
@@ -98,7 +98,7 @@ If you would like to estimate such travel cost matrices, there are several compu
 
 ## 5.1 Minimum travel cost:
 
-`time_to_closest()` allows you to easily calculate the minimum travel cost accessibility. In the example below, the output shows the minminimum travel cost from each origin to the closet school and the id of the destination where the school is located.
+`time_to_closest()` allows you to easily calculate the minimum travel cost accessibility. In the example below, the output shows the minimum travel cost from each origin to the closet school and the id of the destination where the school is located.
 
 ```{r, message = FALSE}
 tmi <- time_to_closest(data = ttm,
@@ -196,7 +196,7 @@ head(fca_2sfca)
 ```
 #### BFCA - Balanced Floating Catchment Area
 
-The BFCA metric calculates accessibility accounting for competition effects while simultaneously correcting for issues of inflation of demand and service levels that are present in previous floating  catchment area measures. It is the most recen FCA metric and it was originally proposed by Paez et al. [@paez2019fca] and named in Pereira et al. [@pereira2020geographic].
+The BFCA metric calculates accessibility accounting for competition effects while simultaneously correcting for issues of inflation of demand and service levels that are present in previous floating  catchment area measures. It is the most recent FCA metric and it was originally proposed by Paez et al. [@paez2019fca] and named in Pereira et al. [@pereira2020geographic].
 
 ```{r, message = FALSE}
 fca_bfca <- floating_catchment_area(
