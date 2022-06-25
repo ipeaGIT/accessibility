@@ -189,7 +189,14 @@
          by_col <span class="op">=</span> <span class="st">'from_id'</span>
          <span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tmi</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tmi</span><span class="op">)</span>
+<span class="co">#&gt;            from_id travel_cost     destination</span>
+<span class="co">#&gt; 1: 89a88cdb57bffff        28.0 89a88cdb53bffff</span>
+<span class="co">#&gt; 2: 89a88cdb597ffff         5.8 89a88cdb597ffff</span>
+<span class="co">#&gt; 3: 89a88cdb5b3ffff        11.0 89a88cdb5bbffff</span>
+<span class="co">#&gt; 4: 89a88cdb5cfffff        13.0 89a88cdb5c7ffff</span>
+<span class="co">#&gt; 5: 89a88cd909bffff         7.0 89a88cd9093ffff</span>
+<span class="co">#&gt; 6: 89a88cd90b7ffff         6.0 89a88cd90a7ffff</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="cumulative-opportunity-measures">5.2 Cumulative opportunity measures:<a class="anchor" aria-label="anchor" href="#cumulative-opportunity-measures"></a>
@@ -230,7 +237,14 @@
                   by_col <span class="op">=</span> <span class="st">'from_id'</span>
                   <span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cum_interval</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cum_interval</span><span class="op">)</span>
+<span class="co">#&gt;            from_id   access</span>
+<span class="co">#&gt; 1: 89a88cdb57bffff 177395.5</span>
+<span class="co">#&gt; 2: 89a88cdb597ffff 145321.4</span>
+<span class="co">#&gt; 3: 89a88cdb5b3ffff 178228.1</span>
+<span class="co">#&gt; 4: 89a88cdb5cfffff 229087.1</span>
+<span class="co">#&gt; 5: 89a88cd909bffff 179526.9</span>
+<span class="co">#&gt; 6: 89a88cd90b7ffff 204975.2</span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -246,7 +260,14 @@
               by_col <span class="op">=</span> <span class="st">'from_id'</span>
               <span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">grav_exp</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">grav_exp</span><span class="op">)</span>
+<span class="co">#&gt;            from_id    access</span>
+<span class="co">#&gt; 1: 89a88cdb57bffff  413.5854</span>
+<span class="co">#&gt; 2: 89a88cdb597ffff  729.7845</span>
+<span class="co">#&gt; 3: 89a88cdb5b3ffff  744.2263</span>
+<span class="co">#&gt; 4: 89a88cdb5cfffff  886.9436</span>
+<span class="co">#&gt; 5: 89a88cd909bffff  543.4047</span>
+<span class="co">#&gt; 6: 89a88cd90b7ffff 1947.6067</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="floating-catchment-accessibility">5.4 Floating catchment accessibility:<a class="anchor" aria-label="anchor" href="#floating-catchment-accessibility"></a>
@@ -268,7 +289,14 @@
                 dest_col <span class="op">=</span> <span class="st">'to_id'</span>
                 <span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fca_2sfca</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fca_2sfca</span><span class="op">)</span>
+<span class="co">#&gt;            from_id   access_2sfca</span>
+<span class="co">#&gt; 1: 89a88cdb57bffff 0.000008219232</span>
+<span class="co">#&gt; 2: 89a88cdb597ffff 0.000392296809</span>
+<span class="co">#&gt; 3: 89a88cdb5b3ffff 0.000181524093</span>
+<span class="co">#&gt; 4: 89a88cdb5cfffff 0.000099700375</span>
+<span class="co">#&gt; 5: 89a88cd909bffff 0.000142171505</span>
+<span class="co">#&gt; 6: 89a88cd90b7ffff 0.000221000580</span></code></pre></div>
 </div>
 <div class="section level5">
 <h5 id="bfca---balanced-floating-catchment-area">BFCA - Balanced Floating Catchment Area<a class="anchor" aria-label="anchor" href="#bfca---balanced-floating-catchment-area"></a>
@@ -286,7 +314,14 @@
                 dest_col <span class="op">=</span> <span class="st">'to_id'</span>
                 <span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fca_bfca</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fca_bfca</span><span class="op">)</span>
+<span class="co">#&gt;            from_id    access_bfca</span>
+<span class="co">#&gt; 1: 89a88cdb57bffff 0.000008953755</span>
+<span class="co">#&gt; 2: 89a88cdb597ffff 0.000357273221</span>
+<span class="co">#&gt; 3: 89a88cdb5b3ffff 0.000171592450</span>
+<span class="co">#&gt; 4: 89a88cdb5cfffff 0.000121565261</span>
+<span class="co">#&gt; 5: 89a88cd909bffff 0.000143809692</span>
+<span class="co">#&gt; 6: 89a88cd90b7ffff 0.000203323698</span></code></pre></div>
 </div>
 <div class="section level5">
 <h5 id="visualize-results">Visualize results<a class="anchor" aria-label="anchor" href="#visualize-results"></a>
