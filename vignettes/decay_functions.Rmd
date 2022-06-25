@@ -157,7 +157,7 @@ custom_decay_fun <- function(k) {
 ```
 You can use your `custom_decay_fun()` inside the `floating_catchment_area()` and `gravity_access()` functions like this:
 
-```{r, message = FALSE, eval = FALSE}
+```{r, message = FALSE}
 # calculate gravity-based accessibility
 grav_custom <- gravity_access(
                   data = ttm,

@@ -100,7 +100,7 @@ If you would like to estimate such travel cost matrices, there are several compu
 
 `time_to_closest()` allows you to easily calculate the minimum travel cost accessibility. In the example below, the output shows the minminimum travel cost from each origin to the closet school and the id of the destination where the school is located.
 
-```{r, message = FALSE, eval = FALSE}
+```{r, message = FALSE}
 tmi <- time_to_closest(data = ttm,
          opportunity_col = 'schools',
          n_opportunities = 1,
@@ -138,7 +138,7 @@ head(cum_cutoff)
 
 `cumulative_time_interval()` calculates the the time interval cumulative accessibility measure. This is a novel accessibility metric developed by Tomasiello et al. (*forthcoming paper*) to mitigate the impacts of arbitrary choices of trip duration in traditional threshold-based cumulative opportunity metrics. In the example below, we calculate the average number of jobs accessible considering multiple minute-by-minute time thresholds between 20 and 60 minutes.
 
-```{r, message = FALSE, eval = FALSE}
+```{r, message = FALSE}
 cum_interval <- cumulative_time_interval(
                   data = ttm,
                   interval = c(20, 60),
@@ -158,7 +158,7 @@ head(cum_interval)
 The  `gravity_access()` allows one to continuously discount the weight of opportunities as travel costs become larger. See the [vignette on decay functions](https://ipeagit.github.io/accessibility/articles/decay_functions.html) for more information on the decay functions available in the package and how to use custom functions. In this case here, we use a negative exponential function with a `decay_value` \eqn{\beta} of 0.2
 
 
-```{r, message = FALSE, eval = FALSE}
+```{r, message = FALSE}
 grav_exp <- gravity_access(
               data = ttm,
               opportunity_col = 'jobs',
@@ -180,7 +180,7 @@ The `floating_catchment_area()` functions provides users with floating catchment
 
 
 
-```{r, message = FALSE, eval = FALSE}
+```{r, message = FALSE}
 fca_2sfca <- floating_catchment_area(
                 data = ttm,
                 fca_metric = '2SFCA',
@@ -198,7 +198,7 @@ head(fca_2sfca)
 
 The BFCA metric calculates accessibility accounting for competition effects while simultaneously correcting for issues of inflation of demand and service levels that are present in previous floating  catchment area measures. It is the most recen FCA metric and it was originally proposed by Paez et al. [@paez2019fca] and named in Pereira et al. [@pereira2020geographic].
 
-```{r, message = FALSE, eval = FALSE}
+```{r, message = FALSE}
 fca_bfca <- floating_catchment_area(
                 data = ttm,
                 fca_metric = 'BFCA',
