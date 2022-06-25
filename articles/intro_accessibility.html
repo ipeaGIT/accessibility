@@ -175,6 +175,7 @@
 <span class="co">#&gt; 5: 89a88cdb57bffff 89a88cd909bffff        64.0        606    0       0</span>
 <span class="co">#&gt; 6: 89a88cdb57bffff 89a88cd90b7ffff        59.0        606  480       0</span></code></pre></div>
 <p>This is a small sample data with public transport travel times and land use data for the city of Belo Horizonte (Brazil) included in the package and that we will be using to illustrate its functionalities.</p>
+<p>If you would like to estimate such travel cost matrices, there are several computational packages to do that in R, such as: - <a href="https://github.com/ipeaGIT/r5r" class="external-link">r5r</a> - <a href="https://github.com/ATFutures/dodgr" class="external-link">dodgr</a> - <a href="https://github.com/ATFutures/gtfs-router" class="external-link">gtfsrouter</a> - <a href="https://github.com/munterfinger/hereR" class="external-link">hereR</a> - <a href="https://github.com/ropensci/opentripplanner" class="external-link">opentripplanner</a></p>
 </div>
 <div class="section level3">
 <h3 id="minimum-travel-cost">5.1 Minimum travel cost:<a class="anchor" aria-label="anchor" href="#minimum-travel-cost"></a>
@@ -235,7 +236,7 @@
 <div class="section level3">
 <h3 id="gravity-based-accessibility">5.3 Gravity-based accessibility:<a class="anchor" aria-label="anchor" href="#gravity-based-accessibility"></a>
 </h3>
-<p>The <code><a href="../reference/gravity_access.html">gravity_access()</a></code> allows one to continuously discount the weight of opportunities as travel costs become larger. See the <a href="add_link">vignette on decay functions</a> for more information on the decay functions available in the package and how to use custom functions. In this case here, we use a negative exponential function with a <code>decay_value</code>  of 0.2</p>
+<p>The <code><a href="../reference/gravity_access.html">gravity_access()</a></code> allows one to continuously discount the weight of opportunities as travel costs become larger. See the <a href="https://ipeagit.github.io/accessibility/articles/decay_functions.html" class="external-link">vignette on decay functions</a> for more information on the decay functions available in the package and how to use custom functions. In this case here, we use a negative exponential function with a <code>decay_value</code>  of 0.2</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">grav_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gravity_access.html">gravity_access</a></span><span class="op">(</span>
               data <span class="op">=</span> <span class="va">ttm</span>,
