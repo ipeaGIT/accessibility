@@ -69,4 +69,35 @@ ggplot() +
 
 # 3. Using a custom decay function
 
-## References
+Let's use the sample data available in the `accessibility` package o demonstrante how you could use a custom decay function. Let's load the data first.
+
+```{r, message=FALSE, warning=FALSE}
+
+# load input data
+data_path <- system.file("extdata/ttm_bho.rds", package = "accessibility")
+ttm <- readRDS(data_path)
+head(ttm)
+
+```
+
+
+custom_decay_fun = function(z){}
+
+
+
+
+```{r, message = FALSE, eval = FALSE}
+grav_exp <- gravity_access(
+              data = ttm,
+              opportunity_col = 'jobs',
+              decay_function = decay_exponential(decay_value = 0.2),
+              travel_cost_col = 'travel_time',
+              by_col = 'from_id'
+              )
+
+head(grav_exp)
+
+
+
+
+

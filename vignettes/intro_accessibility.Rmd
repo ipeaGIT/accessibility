@@ -227,7 +227,7 @@ df <- merge(grid, cum_cutoff, by.x='id', by.y='from_id')
 
 # for large data sets, this can be done much faster with `data.table` as follows:
 df2 <- setDT(grid)[cum_cutoff, on=c('id'='from_id'), access := i.access]
-df2 <- st_sf(df2)
+df2 <- st_sf(df2, crs = 4326)
 
 
 
