@@ -57,6 +57,21 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/decay_functions.html">Decay functions</a>
+    </li>
+    <li>
+      <a href="articles/intro_accessibility.html">Intro to accessibility: Transport Accessibility Metrics</a>
+    </li>
+  </ul>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -94,9 +109,11 @@
 <div class="section level1">
 <h1 id="basic-usage">Basic usage<a class="anchor" aria-label="anchor" href="#basic-usage"></a>
 </h1>
-<pre><code><span class="co"># load a travel time matrix data in long format</span>
- <span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/ttm_bho.rds"</span>, package <span class="op">=</span> <span class="st">"accessibility"</span><span class="op">)</span>
- <span class="va">ttm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">data_path</span><span class="op">)</span>
+<pre><code><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/accessibility" class="external-link">accessibility</a></span><span class="op">)</span>
+
+<span class="co"># load a travel time matrix data in long format</span>
+<span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/ttm_bho.rds"</span>, package <span class="op">=</span> <span class="st">"accessibility"</span><span class="op">)</span>
+<span class="va">ttm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">data_path</span><span class="op">)</span>
  
 <span class="co"># Cumulative accessibility</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cumulative_time_cutoff.html">cumulative_time_cutoff</a></span><span class="op">(</span>
