@@ -16,17 +16,6 @@ A \code{function} that converts travel time cost t_id into an impedance factor.
 Returns a negative exponential impedance function to be used inside
 \code{accessibility} functions.
 }
-\details{
-Negative exponential.
-
-\deqn{ f(t_{ij}) = e^{(-\beta t_{ij})} }
-
-Where:
-\itemize{
-\item \eqn{t_{ij}} is the travel cost between origin \emph{i} and destination \emph{j}.
-\item \eqn{\beta} is the \code{decay_value} that tells the speed of decay.
-}
-}
 \examples{
 library(accessibility)
 

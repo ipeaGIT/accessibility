@@ -1,7 +1,10 @@
-## -- R CMD check results ----------------- accessibility 0.1.0 ----
-Duration: 57.4s
+## -- R CMD check results -------------------- accessibility 0.1.0 ----
+Duration: 52.9s
 
 0 errors √ | 0 warnings √ | 0 notes √
 
-
-* This is a new release.
+# Resubmission after CRAN checks
+* Fixed typo
+* Fixed one link. the other link works fine
+* Removed Latex code from R functions
+* Passing all tests

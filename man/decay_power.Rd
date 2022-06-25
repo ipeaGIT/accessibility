@@ -16,21 +16,6 @@ A \code{function} that converts travel time cost t_id into an impedance factor.
 Returns an inverse power impedance function to be used inside
 \code{accessibility} functions.
 }
-\details{
-Inverse power:
-
-\deqn{f(t_{ij})\leq T\begin{Bmatrix}
-     1 & for & t_{ij}\leq 1 \\
-     t_{ij}^{-\beta} & for & t_{ij}>  1
-     \end{Bmatrix}
-     }
-
-Where:
-\itemize{
-\item \eqn{t_{ij}} is the travel cost between origin \emph{i} and destination \emph{j}.
-\item \eqn{\beta} is the \code{decay_value}.
-}
-}
 \examples{
 library(accessibility)
 

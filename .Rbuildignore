@@ -2,3 +2,5 @@
 ^\.Rproj\.user$
 ^\.github$
 ^tests_rafa$
+^cran-comments\.md$
+^CRAN-SUBMISSION$

@@ -10,19 +10,6 @@
 #'
 #' @family Impedance functions
 #'
-#' @details
-#' Inverse power:
-#'
-#'\deqn{f(t_{ij})\leq T\begin{Bmatrix}
-#'      1 & for & t_{ij}\leq 1 \\
-#'      t_{ij}^{-\beta} & for & t_{ij}>  1
-#'      \end{Bmatrix}
-#'      }
-#'
-#'Where:
-#'- \eqn{t_{ij}} is the travel cost between origin *i* and destination *j*.
-#'- \eqn{\beta} is the `decay_value`.
-#'
 #' @examples
 #' library(accessibility)
 #'

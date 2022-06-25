@@ -17,21 +17,6 @@ A \code{function} that converts travel time cost t_id into an impedance factor.
 Returns a linear impedance function to be used inside \code{accessibility}
 functions.
 }
-\details{
-Linear decay function
-
-\deqn{f(t_{ij})\leq T\begin{Bmatrix}
-     (1 - t_{ij}/ T) & for & t_{ij}\leq T \\
-     0 & for & t_{ij}>  T
-     \end{Bmatrix}
-     }
-
-Where:
-\itemize{
-\item \eqn{t_{ij}} is the travel cost between origin \emph{i} and destination \emph{j}.
-\item \eqn{T} is the \code{cutoff} of maximum travel cost.
-}
-}
 \examples{
 library(accessibility)
 

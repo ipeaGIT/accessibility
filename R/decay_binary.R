@@ -11,19 +11,6 @@
 #'
 #' @family Impedance functions
 #'
-#' @details
-#' Binary (aka step) function commonly used in cumulative opportunity measures.
-#'
-#'\deqn{f(t_{ij})\leq T\begin{Bmatrix}
-#'      1 & for & t_{ij}\leq T \\
-#'      0 & for & t_{ij}>  T
-#'      \end{Bmatrix}
-#'      }
-#'
-#'Where:
-#'- \eqn{t_{ij}} is the travel cost between origin *i* and destination *j*.
-#'- \eqn{T} is the `cutoff` of maximum travel cost.
-#'
 #' @examples
 #' library(accessibility)
 #'

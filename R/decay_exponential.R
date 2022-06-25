@@ -10,15 +10,6 @@
 #'
 #' @family Impedance functions
 #'
-#' @details
-#' Negative exponential.
-#'
-#'\deqn{ f(t_{ij}) = e^{(-\beta t_{ij})} }
-#'
-#'Where:
-#'- \eqn{t_{ij}} is the travel cost between origin *i* and destination *j*.
-#'- \eqn{\beta} is the `decay_value` that tells the speed of decay.
-#'
 #' @examples
 #' library(accessibility)
 #'

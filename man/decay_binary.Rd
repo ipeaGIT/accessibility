@@ -17,21 +17,6 @@ A \code{function} that converts travel time cost t_id into an impedance factor.
 Returns a step a number of impedance function to be used inside \code{accessibility}
 functions.
 }
-\details{
-Binary (aka step) function commonly used in cumulative opportunity measures.
-
-\deqn{f(t_{ij})\leq T\begin{Bmatrix}
-     1 & for & t_{ij}\leq T \\
-     0 & for & t_{ij}>  T
-     \end{Bmatrix}
-     }
-
-Where:
-\itemize{
-\item \eqn{t_{ij}} is the travel cost between origin \emph{i} and destination \emph{j}.
-\item \eqn{T} is the \code{cutoff} of maximum travel cost.
-}
-}
 \examples{
 library(accessibility)
 

@@ -8,15 +8,17 @@ data_path <- system.file("extdata/ttm_bho.rds", package = "accessibility")
 ttm <- readRDS(data_path)
 ttm <- rbind(ttm, ttm, ttm, ttm, ttm)
 ttm <- rbind(ttm, ttm, ttm, ttm, ttm)
+ttm <- rbind(ttm, ttm, ttm, ttm, ttm)
+nrow(ttm)
 
-
-system.time(df_linear <- gravity_access(data = ttm,
-                          opportunity_col = 'schools',
-                          by_col = 'from_id',
-                          decay_function = 'linear',
-                          cutoff = 30))
-
-
+system.time(df <- gravity_access(data = ttm,
+                                 opportunity_col = 'schools',
+                                 decay_function = decay_exponential(decay_value = 0.2),
+                                 travel_cost_col='travel_time',
+                                 by_col = 'from_id'
+))
+9.83
+9.69
 impedance_fun(decay_function = st_)
 
 data.table::fwrite(df_linear, 'df_linear_return_factor.csv')
@@ -184,4 +186,9 @@ system("R CMD build . --resave-data") # build tar.gz
 
 
 
+# submit to CRAN -----------------
+usethis::use_cran_comments('teste 2222, , asdadsad')
+
+
+devtools::submit_cran()
 

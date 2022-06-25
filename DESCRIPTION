@@ -1,7 +1,7 @@
 Type: Package
 Package: accessibility
 Title: Transport Accessibility Metrics
-Version: 0.0.0999
+Version: 0.1.0
 Authors@R: 
     c(person(given = "Rafael H. M.",
              family = "Pereira",
@@ -17,7 +17,7 @@ Authors@R:
              role = c("cph", "fnd")))
 Description: accessibility offers a set of fast and convenient functions to 
              calculate multiple transport accessibility measures. Given a 
-             precomputed travel cost matrix in long format combined with 
+             pre-computed travel cost matrix in long format combined with 
              land-use  data (e.g. location of  jobs, healthcare, population), 
              the package  allows one to calculate active and passive 
              accessibility levels using multiple accessibility metrics such as: 
