@@ -45,7 +45,18 @@ A \code{data.table} object.
 \description{
 The function calculates the average or median number of opportunities that
 can be reached considering multiple minute-by-minute maximum travel time
-thresholds within a given travel time interval specified by the user.
+thresholds within a given travel time interval specified by the user. The
+time interval cumulative accessibility measures was originally proposed by
+Tomasiello et al. (\emph{forthcoming}).
+}
+\details{
+\subsection{References:}{
+\itemize{
+\item Tomasiello, D. B.; Herszenhut, D.; Oliveira, J. L. A.; Braga, C. K. V.;
+Pereira, R. H. M. (\emph{forthcoming}). A time interval metric for cumulative
+opportunity accessibility.
+}
+}
 }
 \examples{
 library(accessibility)

@@ -17,15 +17,21 @@ system.time(df <- gravity_access(data = ttm,
                                  travel_cost_col='travel_time',
                                  by_col = 'from_id'
 ))
-9.83
-9.69
-impedance_fun(decay_function = st_)
 
-data.table::fwrite(df_linear, 'df_linear_return_factor.csv')
+system.time(
+  df <- floating_catchment_area(
+    data = ttm,
+    fca_metric = '2SFCA',
+    orig_col = 'from_id',
+    dest_col = 'to_id',
+    opportunity_col = 'jobs',
+    population_col = 'population',
+    decay_function = decay_binary(cutoff = 50),
+    travel_cost_col = 'travel_time'
+  )
+  )
+26.12
 
-
-a <- data.table::fread('df_linear_return_fun.csv')
-b <- data.table::fread('df_linear_return_factor.csv')
 
 
 ##### example map ------------------------
@@ -187,7 +193,7 @@ system("R CMD build . --resave-data") # build tar.gz
 
 
 # submit to CRAN -----------------
-usethis::use_cran_comments('teste 2222, , asdadsad')
+# usethis::use_cran_comments('teste 2222, , asdadsad')
 
 
 devtools::submit_cran()

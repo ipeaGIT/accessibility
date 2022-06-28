@@ -3,10 +3,10 @@
 #' @description
 #' Calculates accessibility accounting for the competition of resources using one
 #' of the multiple accessibility metrics in the floating catchment area family.
-#' The function currently includes `2SFCA` 2-Step Floating Catchment Area and
-#' `BFCA` Balanced Floating Catchment Area. Accessibility can be calculated using
-#' multiple alternative decay functions passed through the `decay_function`
-#'  parameter.
+#' The function currently includes `2SFCA` 2-Step Floating Catchment Area (Luo &
+#' Wang, 2003), and `BFCA` Balanced Floating Catchment Area (Paez et al. 2021).
+#' Accessibility can be calculated using multiple alternative decay functions
+#' passed through the `decay_function` parameter.
 #'
 #' @template input_data
 #' @param fca_metric A `string` indicating which floating catchment area
@@ -130,7 +130,6 @@ floating_catchment_area <- function(data,
   #                      )
 
   # calculate access -----------------------------------------------------------
-  data.table::setDT(data)
 
   # 2SFCA
   if (fca_metric=='2SFCA') {

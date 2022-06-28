@@ -3,7 +3,9 @@
 #' @description
 #' The function calculates the average or median number of opportunities that
 #' can be reached considering multiple minute-by-minute maximum travel time
-#' thresholds within a given travel time interval specified by the user.
+#' thresholds within a given travel time interval specified by the user. The
+#' time interval cumulative accessibility measures was originally proposed by
+#' Tomasiello et al. (*forthcoming*).
 #'
 #' @template input_data
 #' @param interval An `numeric vector` of length 2, indicating the start and end
@@ -16,7 +18,15 @@
 #' @template by_col
 #'
 #' @return A `data.table` object.
+#'
 #' @family Cumulative access
+#'
+#' @details
+#' ## References:
+#' - Tomasiello, D. B.; Herszenhut, D.; Oliveira, J. L. A.; Braga, C. K. V.;
+#' Pereira, R. H. M. (*forthcoming*). A time interval metric for cumulative
+#' opportunity accessibility.
+#'
 #' @examples
 #' library(accessibility)
 #'

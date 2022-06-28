@@ -52,10 +52,10 @@ A \code{data.table} object.
 \description{
 Calculates accessibility accounting for the competition of resources using one
 of the multiple accessibility metrics in the floating catchment area family.
-The function currently includes \verb{2SFCA} 2-Step Floating Catchment Area and
-\code{BFCA} Balanced Floating Catchment Area. Accessibility can be calculated using
-multiple alternative decay functions passed through the \code{decay_function}
-parameter.
+The function currently includes \verb{2SFCA} 2-Step Floating Catchment Area (Luo &
+Wang, 2003), and \code{BFCA} Balanced Floating Catchment Area (Paez et al. 2021).
+Accessibility can be calculated using multiple alternative decay functions
+passed through the \code{decay_function} parameter.
 }
 \section{2SFCA}{
 The 2SFCA measure was the first accessibility metric in the floating

@@ -1,6 +1,9 @@
 # accessibility <img align="right" src="man/figures/logo.png?raw=true" alt="logo" width="180">
 
-[![R-CMD-check](https://github.com/ipeaGIT/accessibility/workflows/R-CMD-check/badge.svg)](https://github.com/ipeaGIT/accessibility/actions) [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html) [![Codecov test coverage](https://codecov.io/gh/ipeaGIT/accessibility/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ipeaGIT/accessibility?branch=main)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/accessibility)](https://CRAN.R-project.org/package=accessibility) [![R-CMD-check](https://github.com/ipeaGIT/accessibility/workflows/R-CMD-check/badge.svg)](https://github.com/ipeaGIT/accessibility/actions) [![CRAN/METACRAN Total
+   downloads](http://cranlogs.r-pkg.org/badges/grand-total/accessibility?color=yellow)](https://CRAN.R-project.org/package=accessibility) [![Codecov test coverage](https://codecov.io/gh/ipeaGIT/accessibility/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ipeaGIT/accessibility?branch=main) [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html) 
+
 
 **accessibility** offers a set of fast and convenient functions to calculate multiple transport accessibility measures. Given a pre-computed travel cost matrix in long format combined with land-use data (e.g. location of jobs, healthcare, population), the package allows one to calculate active and passive accessibility levels using multiple accessibility metrics such as: cumulative opportunity measure (using either travel time *cutoff* or *interval*), minimum travel cost to closest *N* number of activities, gravitational measures and different floating catchment area methods.
 
