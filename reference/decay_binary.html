@@ -18,7 +18,7 @@ functions."><meta property="og:image" content="/logo.png"><!-- mathjax --><scrip
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">accessibility</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
       </span>
     </div>
 
@@ -65,7 +65,7 @@ functions.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">decay_binary</span><span class="op">(</span><span class="va">cutoff</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">decay_binary</span><span class="op">(</span><span class="va">cutoff</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -81,17 +81,6 @@ travel cost.</p></dd>
 
 <p>A <code>function</code> that converts travel time cost t_id into an impedance factor.</p>
     </div>
-    <div id="details">
-    <h2>Details</h2>
-    <p>Binary (aka step) function commonly used in cumulative opportunity measures.</p>
-<p>$$f(t_{ij})\leq T\begin{Bmatrix}
-     1 &amp; for &amp; t_{ij}\leq T \\
-     0 &amp; for &amp; t_{ij}&gt;  T
-     \end{Bmatrix}
-     $$</p>
-<p>Where:</p><ul><li><p>\(t_{ij}\) is the travel cost between origin <em>i</em> and destination <em>j</em>.</p></li>
-<li><p>\(T\) is the <code>cutoff</code> of maximum travel cost.</p></li>
-</ul></div>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p>Other Impedance functions: 
@@ -102,17 +91,17 @@ travel cost.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/accessibility" class="external-link">accessibility</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Create a binary impedance function</span></span>
-<span class="r-in"><span class="va">impedance</span> <span class="op">&lt;-</span> <span class="fu">decay_binary</span><span class="op">(</span>cutoff <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">impedance</span><span class="op">(</span>t_ij <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/accessibility" class="external-link">accessibility</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Create a binary impedance function</span></span></span>
+<span class="r-in"><span><span class="va">impedance</span> <span class="op">&lt;-</span> <span class="fu">decay_binary</span><span class="op">(</span>cutoff <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">impedance</span><span class="op">(</span>t_ij <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">impedance</span><span class="op">(</span>t_ij <span class="op">=</span> <span class="fl">35</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">impedance</span><span class="op">(</span>t_ij <span class="op">=</span> <span class="fl">35</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>

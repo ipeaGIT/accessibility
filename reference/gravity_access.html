@@ -19,7 +19,7 @@ the decay_function parameter."><meta property="og:image" content="/logo.png"><!-
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">accessibility</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
       </span>
     </div>
 
@@ -67,13 +67,13 @@ the <code>decay_function</code> parameter.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">gravity_access</span><span class="op">(</span>
-  <span class="va">data</span>,
-  <span class="va">opportunity_col</span>,
-  <span class="va">decay_function</span>,
-  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span>,
-  <span class="va">by_col</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gravity_access</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">opportunity_col</span>,</span>
+<span>  <span class="va">decay_function</span>,</span>
+<span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
+<span>  <span class="va">by_col</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -121,20 +121,20 @@ destination (passive accessibility).</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/accessibility" class="external-link">accessibility</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># load a travel time matrix data in long format</span></span>
-<span class="r-in"><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/ttm_bho.rds"</span>, package <span class="op">=</span> <span class="st">"accessibility"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ttm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">data_path</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">df_linear</span> <span class="op">&lt;-</span> <span class="fu">gravity_access</span><span class="op">(</span>data <span class="op">=</span> <span class="va">ttm</span>,</span>
-<span class="r-in">                           opportunity_col <span class="op">=</span> <span class="st">'schools'</span>,</span>
-<span class="r-in">                           decay_function <span class="op">=</span> <span class="fu"><a href="decay_linear.html">decay_linear</a></span><span class="op">(</span>cutoff <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>,</span>
-<span class="r-in">                           travel_cost_col <span class="op">=</span> <span class="st">'travel_time'</span>,</span>
-<span class="r-in">                           by_col <span class="op">=</span> <span class="st">'from_id'</span></span>
-<span class="r-in">                           <span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_linear</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/accessibility" class="external-link">accessibility</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># load a travel time matrix data in long format</span></span></span>
+<span class="r-in"><span><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/ttm_bho.rds"</span>, package <span class="op">=</span> <span class="st">"accessibility"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ttm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">data_path</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">df_linear</span> <span class="op">&lt;-</span> <span class="fu">gravity_access</span><span class="op">(</span>data <span class="op">=</span> <span class="va">ttm</span>,</span></span>
+<span class="r-in"><span>                           opportunity_col <span class="op">=</span> <span class="st">'schools'</span>,</span></span>
+<span class="r-in"><span>                           decay_function <span class="op">=</span> <span class="fu"><a href="decay_linear.html">decay_linear</a></span><span class="op">(</span>cutoff <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                           travel_cost_col <span class="op">=</span> <span class="st">'travel_time'</span>,</span></span>
+<span class="r-in"><span>                           by_col <span class="op">=</span> <span class="st">'from_id'</span></span></span>
+<span class="r-in"><span>                           <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_linear</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            from_id access</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a88cdb57bffff  9.260</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a88cdb597ffff 18.748</span>
@@ -142,14 +142,14 @@ destination (passive accessibility).</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a88cdb5cfffff 13.660</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a88cd909bffff 18.980</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a88cd90b7ffff 24.780</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">df_exp</span> <span class="op">&lt;-</span> <span class="fu">gravity_access</span><span class="op">(</span>data <span class="op">=</span> <span class="va">ttm</span>,</span>
-<span class="r-in">                        opportunity_col <span class="op">=</span> <span class="st">'schools'</span>,</span>
-<span class="r-in">                        decay_function <span class="op">=</span> <span class="fu"><a href="decay_exponential.html">decay_exponential</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
-<span class="r-in">                        travel_cost_col <span class="op">=</span> <span class="st">'travel_time'</span>,</span>
-<span class="r-in">                        by_col <span class="op">=</span> <span class="st">'from_id'</span></span>
-<span class="r-in">                        <span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_exp</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">df_exp</span> <span class="op">&lt;-</span> <span class="fu">gravity_access</span><span class="op">(</span>data <span class="op">=</span> <span class="va">ttm</span>,</span></span>
+<span class="r-in"><span>                        opportunity_col <span class="op">=</span> <span class="st">'schools'</span>,</span></span>
+<span class="r-in"><span>                        decay_function <span class="op">=</span> <span class="fu"><a href="decay_exponential.html">decay_exponential</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                        travel_cost_col <span class="op">=</span> <span class="st">'travel_time'</span>,</span></span>
+<span class="r-in"><span>                        by_col <span class="op">=</span> <span class="st">'from_id'</span></span></span>
+<span class="r-in"><span>                        <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_exp</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            from_id       access</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a88cdb57bffff 2.705781e-06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a88cdb597ffff 1.249277e-01</span>
@@ -157,7 +157,7 @@ destination (passive accessibility).</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a88cdb5cfffff 3.023943e-03</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a88cd909bffff 3.059679e-02</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a88cd90b7ffff 8.581966e-02</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
