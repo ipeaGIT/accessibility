@@ -35,6 +35,7 @@ fca_bfca <- function(data,
 
 
   # calculate access -----------------------------------------------------------
+  dt <- data.table::copy(data)
 
   # orig_col <- 'from_id'
   # dest_col <- 'to_id'
@@ -42,35 +43,32 @@ fca_bfca <- function(data,
   # population_col <- 'population'
 
   # calculate impedance
-  data[, impedance := decay_function(t_ij = get(travel_cost_col)),]
+  dt[, impedance := decay_function(t_ij = get(travel_cost_col)),]
 
   # calculate balanced impedance i (normalizing impedance by origin)
-  data[, balanced_impedance_i := impedance/sum(impedance),
+  dt[, balanced_impedance_i := impedance/sum(impedance),
        by= c(orig_col)]
 
 
   # calculate balanced impedance j (normalizing impedance by destination)
-  data[, balanced_impedance_j := impedance/sum(impedance),
+  dt[, balanced_impedance_j := impedance/sum(impedance),
        by= c(dest_col)]
 
 
   ## Step 1 - allocate the demand to each destination proportionally to weight i
-  data[, pop_served := sum( get(population_col) * balanced_impedance_i, na.rm = TRUE),
+  dt[, pop_served := sum( get(population_col) * balanced_impedance_i, na.rm = TRUE),
        by= c(dest_col)]
 
   ## Step 2 - calculate provider-to-population ration (ppr) at each destination
   # The level of service of an area is the number of opportunities/resources in the area, divided by the population it serves:
   # level of service == provider-to-population ratio (PPR)
-  data[, ppr := data.table::first( get(opportunity_col)) / pop_served,
+  dt[, ppr := data.table::first( get(opportunity_col)) / pop_served,
        by= c(dest_col)]
 
 
   ## Step 3 - reaportion ppr at each origin proportionally to weight j
-  bfca <- data[, .(access_bfca = sum(ppr * balanced_impedance_j, na.rm=T)),
+  bfca <- dt[, .(access_bfca = sum(ppr * balanced_impedance_j, na.rm=T)),
                by= c(orig_col)]
-
-  # delete temp columns
-  data[, c('impedance', 'balanced_impedance_i', 'balanced_impedance_j', 'pop_served', 'ppr') := NULL]
 
   return(bfca)
 }

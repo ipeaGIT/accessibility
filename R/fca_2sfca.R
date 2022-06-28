@@ -32,18 +32,20 @@ fca_2sfca <- function(data,
 
 
   # calculate access -----------------------------------------------------------
+  dt <- data.table::copy(data)
 
   # orig_col <- 'from_id'
   # dest_col <- 'to_id'
   # opportunity_col <- 'jobs'
   # population_col <- 'population'
 
+
   # calculate impedance
-  data[, impedance := decay_function(t_ij = get(travel_cost_col)),]
+  dt[, impedance := decay_function(t_ij = get(travel_cost_col)),]
 
 
   ## Step 1a - allocate the demand to each destination proportionally to weight i
-  data[ impedance > 0,
+  dt[ impedance > 0,
         pop_served := sum( get(population_col) * impedance, na.rm = TRUE),
         by= c(dest_col)]
 
@@ -51,17 +53,14 @@ fca_2sfca <- function(data,
   ## Step 1b - calculate provider-to-population ration (ppr) at each destination
   # The level of service of an area is the number of opportunities/resources in the area, divided by the population it serves:
   # level of service == provider-to-population ratio (PPR)
-  data[, ppr := data.table::first( get(opportunity_col)) / pop_served,
+  dt[, ppr := data.table::first( get(opportunity_col)) / pop_served,
          by= c(dest_col)]
 
 
   ## Step 2 - reaportion ppr at each origin proportionally to weight j
-  access_2sfca <- data[ impedance > 0,
+  access_2sfca <- dt[ impedance > 0,
                        .(access_2sfca = sum(ppr * impedance, na.rm=T)),
                        by= c(orig_col)]
-
-  # delete temp columns
-  data[, c('impedance', 'pop_served', 'ppr') := NULL]
 
   return(access_2sfca)
 }
