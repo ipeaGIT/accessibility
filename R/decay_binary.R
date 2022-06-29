@@ -1,38 +1,32 @@
-#' @title Binary (aka step) decay function
+#' Binary (a.k.a. step) decay function
 #'
-#' @description
-#' Returns a step a number of impedance function to be used inside `accessibility`
-#' functions.
+#' Returns a binary impedance function (frequently used to calculate cumulative
+#' opportunities measures) to be used inside accessibility calculating
+#' functions. This function is generic over any kind of numeric travel cost,
+#' such as distance, time and money.
 #'
-#' @param cutoff A `numeric` value. A number indicating the max cutoff point of
-#'        travel cost.
+#' @param cutoff A `numeric`. A number indicating the travel cost cutoff.
 #'
-#' @return A `function` that converts travel time cost t_id into an impedance factor.
+#' @return A `function` that takes a generic travel cost (`numeric`) as an input
+#'   and returns an impedance factor (`numeric`).
 #'
 #' @family Impedance functions
 #'
 #' @examples
-#' library(accessibility)
+#' impedance <- decay_binary(cutoff = 30)
 #'
-#'# Create a binary impedance function
-#'impedance <- decay_binary(cutoff = 30)
+#' impedance(t_ij = 20)
 #'
-#'impedance(t_ij = 20)
-#'
-#'impedance(t_ij = 35)
+#' impedance(t_ij = 35)
 #'
 #' @export
 decay_binary <- function(cutoff) {
+  checkmate::assert_number(cutoff, lower = 0, finite = TRUE)
 
-  # check inputs ------------------------------------------------------------
-  checkmate::assert_number(cutoff, null.ok = FALSE, lower = 0)
-
-  # decay function ------------------------------------------------------------
   impedance <- function(t_ij) {
-    f <- data.table::fifelse(t_ij <= cutoff, 1, 0)
-    return(f)
+    impedance_value <- as.integer(t_ij <= cutoff)
+    return(impedance_value)
   }
 
   return(impedance)
-
 }

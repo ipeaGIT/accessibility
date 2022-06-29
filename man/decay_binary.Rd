@@ -2,25 +2,24 @@
 % Please edit documentation in R/decay_binary.R
 \name{decay_binary}
 \alias{decay_binary}
-\title{Binary (aka step) decay function}
+\title{Binary (a.k.a. step) decay function}
 \usage{
 decay_binary(cutoff)
 }
 \arguments{
-\item{cutoff}{A \code{numeric} value. A number indicating the max cutoff point of
-travel cost.}
+\item{cutoff}{A \code{numeric}. A number indicating the travel cost cutoff.}
 }
 \value{
-A \code{function} that converts travel time cost t_id into an impedance factor.
+A \code{function} that takes a generic travel cost (\code{numeric}) as an input
+and returns an impedance factor (\code{numeric}).
 }
 \description{
-Returns a step a number of impedance function to be used inside \code{accessibility}
-functions.
+Returns a binary impedance function (frequently used to calculate cumulative
+opportunities measures) to be used inside accessibility calculating
+functions. This function is generic over any kind of numeric travel cost,
+such as distance, time and money.
 }
 \examples{
-library(accessibility)
-
-# Create a binary impedance function
 impedance <- decay_binary(cutoff = 30)
 
 impedance(t_ij = 20)
