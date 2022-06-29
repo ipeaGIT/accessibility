@@ -87,7 +87,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Decay functions</h1>
             
-            <h4 data-toc-skip class="date">2022-06-28</h4>
+            <h4 data-toc-skip class="date">2022-06-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/accessibility/blob/HEAD/vignettes/decay_functions.Rmd" class="external-link"><code>vignettes/decay_functions.Rmd</code></a></small>
       <div class="hidden name"><code>decay_functions.Rmd</code></div>
@@ -99,7 +99,7 @@
 <div class="section level2">
 <h2 id="introduction">1. Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>Some functions of the <code>accessibility</code> package, such as <code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code> and <code><a href="../reference/gravity_access.html">gravity_access()</a></code>, use decay functions to continuously discount the weight of opportunities as travel costs become larger. For convenience, the package currently includes the following decay functions (details in section 2). Additionally, the package also allows users to pass any custom decay function that converts travel cost <code>t_ij</code> to an impedance factor (see section 3).</p>
+<p>Some functions of the <code>accessibility</code> package, such as <code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code> and <code><a href="../reference/gravity_access.html">gravity_access()</a></code>, use decay functions to continuously discount the weight of opportunities as travel costs become larger. For convenience, the package currently includes four decay functions discussed in <span class="citation">(Kwan 1998)</span>. See the implemented functions below. Additionally, the package also allows users to pass any custom decay function that converts travel cost <code>t_ij</code> to an impedance factor (see section 3).</p>
 </div>
 <div class="section level2">
 <h2 id="currently-available-decay-functions">2. Currently available decay functions<a class="anchor" aria-label="anchor" href="#currently-available-decay-functions"></a>
@@ -245,6 +245,15 @@
 <span><span class="co">#&gt; 4: 89a88cdb5cfffff 78470.00</span></span>
 <span><span class="co">#&gt; 5: 89a88cd909bffff 74298.70</span></span>
 <span><span class="co">#&gt; 6: 89a88cd90b7ffff 77323.59</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h3>
+<div id="refs" class="references">
+<div id="ref-kwan1998space">
+<p>Kwan, Mei-Po. 1998. “Space-Time and Integral Measures of Individual Accessibility: A Comparative Analysis Using a Point-Based Framework.” <em>Geographical Analysis</em> 30 (3): 191–216.</p>
+</div>
+</div>
+</div>
 </div>
   </div>
 
