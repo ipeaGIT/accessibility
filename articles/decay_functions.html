@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">accessibility</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0.9000</span>
       </span>
     </div>
 
@@ -190,6 +190,12 @@
 <span>                                   id.vars <span class="op">=</span> <span class="st">'minutes'</span>, </span>
 <span>                                   variable.name <span class="op">=</span> <span class="st">'decay_function'</span>, </span>
 <span>                                   value.name <span class="op">=</span> <span class="st">'impedance_factor'</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in data.table::melt.data.table(data = df, id.vars = "minutes",</span></span>
+<span><span class="co">#&gt; variable.name = "decay_function", : 'measure.vars' [binary, linear, exponential,</span></span>
+<span><span class="co">#&gt; inverse_power, ...] are not all of the same type. By order of hierarchy, the</span></span>
+<span><span class="co">#&gt; molten data value column will be of type 'double'. All measure variables not of</span></span>
+<span><span class="co">#&gt; type 'double' will be coerced too. Check DETAILS in ?melt.data.table for more on</span></span>
+<span><span class="co">#&gt; coercion.</span></span>
 <span></span>
 <span><span class="co"># plot</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
