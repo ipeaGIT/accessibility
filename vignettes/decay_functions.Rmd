@@ -8,7 +8,6 @@ vignette: >
   %\VignetteIndexEntry{Decay functions} 
   %\VignetteEngine{knitr::rmarkdown} 
   \usepackage[utf8]{inputenc}
-bibliography: references.json
 ---
 
 ```{r, include = FALSE}
