@@ -7,20 +7,20 @@
 decay_linear(cutoff)
 }
 \arguments{
-\item{cutoff}{A \code{numeric} value. A number indicating the max cutoff point of
-travel cost.}
+\item{cutoff}{A \code{numeric}. A number indicating the travel cost cutoff until
+which the impedance factor decays linearly. From this point onward the
+impedance factor is equal to 0.}
 }
 \value{
-A \code{function} that converts travel time cost t_id into an impedance factor.
+A \code{function} that takes a generic travel cost (\code{numeric}) as an input
+and returns an impedance factor (\code{numeric}).
 }
 \description{
-Returns a linear impedance function to be used inside \code{accessibility}
-functions.
+Returns a linear impedance function to be used inside accessibility
+calculating functions. This function is generic over any kind of numeric
+travel cost, such as distance, time and money.
 }
 \examples{
-library(accessibility)
-
-# Create a linear impedance function
 impedance <- decay_linear(cutoff = 30)
 
 impedance(t_ij = 20)
