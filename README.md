@@ -1,4 +1,6 @@
-# accessibility <img align="right" src="man/figures/logo.png?raw=true" alt="logo" width="180">
+# accessibility: Transport Accessibility Metrics
+
+<img align="right" src="man/figures/logo.png?raw=true" alt="logo" width="180">
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/accessibility)](https://CRAN.R-project.org/package=accessibility) [![R-CMD-check](https://github.com/ipeaGIT/accessibility/workflows/R-CMD-check/badge.svg)](https://github.com/ipeaGIT/accessibility/actions) [![CRAN/METACRAN Total
