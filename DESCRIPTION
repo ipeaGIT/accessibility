@@ -1,29 +1,23 @@
 Type: Package
 Package: accessibility
 Title: Transport Accessibility Metrics
-Version: 0.1.0
-Authors@R: 
-    c(person(given = "Rafael H. M.",
-             family = "Pereira",
-             role = c("aut", "cre"),
-             email = "rafa.pereira.br@gmail.com",
-             comment = c(ORCID = "0000-0003-2125-7465")),
-     person(given = "Daniel",
-             family = "Herszenhut",
-             role = "aut",
-             email = "dhersz@gmail.com",
-             comment = c(ORCID = "0000-0001-8066-1105")),
-      person(given = "Ipea - Institute for Applied Economic Research",
-             role = c("cph", "fnd")))
-Description: A set of fast and convenient functions to calculate multiple 
-             transport accessibility measures. Given a pre-computed travel cost 
-             matrix in long format combined with land-use  data (e.g. location 
-             of  jobs, healthcare, population), the package  allows one to 
-             calculate active and passive accessibility levels using multiple 
-             accessibility metrics such as: cumulative opportunity measure 
-             (using either travel time cutoff or interval), minimum travel cost 
-             to closest N number of activities, gravitational measures and 
-             different floating catchment area methods.
+Version: 0.1.0.9000
+Authors@R: c(
+    person("Rafael H. M.", "Pereira", , "rafa.pereira.br@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-2125-7465")),
+    person("Daniel", "Herszenhut", , "dhersz@gmail.com", role = "aut",
+           comment = c(ORCID = "0000-0001-8066-1105")),
+    person("Ipea - Institute for Applied Economic Research", role = c("cph", "fnd"))
+  )
+Description: A set of fast and convenient functions to calculate multiple
+    transport accessibility measures. Given a pre-computed travel cost
+    matrix in long format combined with land-use data (e.g. location of
+    jobs, healthcare, population), the package allows one to calculate
+    active and passive accessibility levels using multiple accessibility
+    metrics such as: cumulative opportunity measure (using either travel
+    time cutoff or interval), minimum travel cost to closest N number of
+    activities, gravitational measures and different floating catchment
+    area methods.
 License: MIT + file LICENSE
 URL: https://github.com/ipeaGIT/accessibility
 BugReports: https://github.com/ipeaGIT/accessibility/issues
