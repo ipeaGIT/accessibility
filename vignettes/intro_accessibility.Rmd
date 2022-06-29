@@ -3,6 +3,7 @@ title: 'Intro to accessibility: Transport Accessibility Metrics'
 author: "Rafael H. M. Pereira, Daniel Herszenhut"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+bibliography: "references.bib"
 urlcolor: blue
 vignette: >
   %\VignetteIndexEntry{Intro to accessibility: Transport Accessibility Metrics} 
@@ -15,7 +16,9 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-# options(scipen = 999)
+
+old <- options()
+options(scipen = 999)
 ```
 
 # 1. Introduction 
@@ -154,7 +157,6 @@ head(cum_interval)
 
 ## 5.3 Gravity-based accessibility:
 
-
 The  `gravity_access()` allows one to continuously discount the weight of opportunities as travel costs become larger. See the [vignette on decay functions](https://ipeagit.github.io/accessibility/articles/decay_functions.html) for more information on the decay functions available in the package and how to use custom functions. In this case here, we use a negative exponential function with a `decay_value` \eqn{\beta} of 0.2
 
 
@@ -179,7 +181,6 @@ The `floating_catchment_area()` functions provides users with floating catchment
 2SFCA was the first accessibility metric in the floating catchment area family. It was originally proposed by Luo & Wang [@luo2003measures].
 
 
-
 ```{r, message = FALSE}
 fca_2sfca <- floating_catchment_area(
                 data = ttm,
@@ -196,7 +197,7 @@ head(fca_2sfca)
 ```
 #### BFCA - Balanced Floating Catchment Area
 
-The BFCA metric calculates accessibility accounting for competition effects while simultaneously correcting for issues of inflation of demand and service levels that are present in previous floating  catchment area measures. It is the most recent FCA metric and it was originally proposed by Paez et al. [@paez2019fca] and named in Pereira et al. [@pereira2020geographic].
+The BFCA metric calculates accessibility accounting for competition effects while simultaneously correcting for issues of inflation of demand and service levels that are present in previous floating  catchment area measures. It is the most recent FCA metric and it was originally proposed by Paez et al. [@paez2019demand] and named in Pereira et al. [@pereira2021geographic].
 
 ```{r, message = FALSE}
 fca_bfca <- floating_catchment_area(
@@ -219,7 +220,7 @@ If you have a spatial data with the geometries of your origin/destination data s
 
 
 
-```{r}
+```{r, out.width='100%', fig.width=6, fig.height=6}
 library(ggplot2)
 library(sf)
 library(data.table)
@@ -236,7 +237,6 @@ df2 <- setDT(grid)[cum_cutoff, on=c('id'='from_id'), access := i.access]
 df2 <- st_sf(df2, crs = 4326)
 
 
-
 # plot
 ggplot() +
   geom_sf(data = df2, aes(fill = access), color=NA, alpha=0.9) +
@@ -248,5 +248,10 @@ ggplot() +
 ```
 
 If you have any suggestions or want to report an error, please visit [the package GitHub page](https://github.com/ipeaGIT/accessibility).
+
+
+```{r, include = FALSE}
+options(old)
+```
 
 ## References

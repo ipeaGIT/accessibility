@@ -2,6 +2,7 @@
 title: 'Decay functions'
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+bibliography: "references.bib"
 urlcolor: blue
 vignette: >
   %\VignetteIndexEntry{Decay functions} 
@@ -19,11 +20,9 @@ knitr::opts_chunk$set(
 
 # 1. Introduction
 
-Some functions of the `accessibility` package, such as `floating_catchment_area()` and `gravity_access()`, use decay functions to continuously discount the weight of opportunities as travel costs become larger. For convenience, the package currently includes the following decay functions (details in section 2). Additionally, the package also allows users to pass any custom decay function that converts travel cost `t_ij` to an impedance factor (see section 3).
+Some functions of the `accessibility` package, such as `floating_catchment_area()` and `gravity_access()`, use decay functions to continuously discount the weight of opportunities as travel costs become larger. For convenience, the package currently includes four decay functions discussed in [@kwan1998space]. See the implemented functions below. Additionally, the package also allows users to pass any custom decay function that converts travel cost `t_ij` to an impedance factor (see section 3).
 
 # 2. Currently available decay functions
-
-
 
 
 ## 2.1 Binary decay function
@@ -169,4 +168,4 @@ grav_custom <- gravity_access(
 
 head(grav_custom)
 ```
-
+## References

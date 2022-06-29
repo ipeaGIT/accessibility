@@ -11,7 +11,6 @@
 #' @param n_opportunities A `numeric` value with the minimum N number of
 #'   opportunities that should be considered. Defaults to `1`
 #'
-
 #' @return A `data.table` object indicating for each origin the travel time to
 #'         the closest opportunity and the id of the destination where it is
 #'         located.
