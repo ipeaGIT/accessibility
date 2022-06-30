@@ -10,14 +10,14 @@
 #'
 #' @template return_decay_function
 #'
-#' @family Impedance functions
+#' @family decay functions
 #'
 #' @examples
 #' impedance <- decay_linear(cutoff = 30)
 #'
-#' impedance(t_ij = 20)
-#' impedance(t_ij = 25)
-#' impedance(t_ij = 35)
+#' impedance(20)
+#'
+#' impedance(35)
 #'
 #' @export
 decay_linear <- function(cutoff) {

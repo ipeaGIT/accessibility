@@ -30,9 +30,9 @@ impedance(35)
 
 }
 \seealso{
-Other Impedance functions: 
+Other decay functions: 
 \code{\link{decay_binary}()},
 \code{\link{decay_exponential}()},
 \code{\link{decay_linear}()}
 }
-\concept{Impedance functions}
+\concept{decay functions}

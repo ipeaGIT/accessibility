@@ -9,7 +9,7 @@
 #'
 #' @template return_decay_function
 #'
-#' @family Impedance functions
+#' @family decay functions
 #'
 #' @examples
 #' impedance <- decay_power(decay_value = 0.1)

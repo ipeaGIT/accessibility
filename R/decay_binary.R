@@ -9,14 +9,14 @@
 #'
 #' @template return_decay_function
 #'
-#' @family Impedance functions
+#' @family decay functions
 #'
 #' @examples
 #' impedance <- decay_binary(cutoff = 30)
 #'
-#' impedance(t_ij = 20)
+#' impedance(20)
 #'
-#' impedance(t_ij = 35)
+#' impedance(35)
 #'
 #' @export
 decay_binary <- function(cutoff) {

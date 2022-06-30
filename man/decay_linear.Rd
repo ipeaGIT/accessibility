@@ -25,15 +25,15 @@ such as distance, time and money.
 \examples{
 impedance <- decay_linear(cutoff = 30)
 
-impedance(t_ij = 20)
-impedance(t_ij = 25)
-impedance(t_ij = 35)
+impedance(20)
+
+impedance(35)
 
 }
 \seealso{
-Other Impedance functions: 
+Other decay functions: 
 \code{\link{decay_binary}()},
 \code{\link{decay_exponential}()},
 \code{\link{decay_power}()}
 }
-\concept{Impedance functions}
+\concept{decay functions}
