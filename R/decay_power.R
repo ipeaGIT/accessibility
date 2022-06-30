@@ -1,37 +1,32 @@
-#' @title Inverse power decay function
+#' Inverse power decay function
 #'
-#' @description
-#' Returns an inverse power impedance function to be used inside
-#' `accessibility` functions.
+#' Returns an inverse power impedance function  to be used inside accessibility
+#' calculating functions.
+#' @template description_generic_cost
 #'
-#' @param decay_value A `numeric` value.
+#' @param decay_value A `numeric`. The calibration parameter to be used as the
+#'   exponent in the inverse power function.
 #'
-#' @return A `function` that converts travel time cost t_id into an impedance factor.
+#' @template return_decay_function
 #'
 #' @family Impedance functions
 #'
 #' @examples
-#' library(accessibility)
+#' impedance <- decay_power(decay_value = 0.1)
 #'
-#'# Create an inverse power impedance function
-#'impedance <- decay_power(decay_value = 0.1)
+#' impedance(20)
 #'
-#'impedance(t_ij = 20)
-#'impedance(t_ij = 25)
-#'impedance(t_ij = 35)
+#' impedance(35)
 #'
 #' @export
 decay_power <- function(decay_value) {
+  checkmate::assert_number(decay_value, lower = 0, finite = TRUE)
 
-  # check inputs ------------------------------------------------------------
-  checkmate::assert_number(decay_value, null.ok = FALSE, lower = 0, finite = TRUE)
-
-  # decay function ------------------------------------------------------------
   impedance <- function(t_ij) {
-    f <- data.table::fifelse(t_ij < 1, 1, t_ij^-decay_value)
-    return(f)
+    impedance_value <- t_ij ^ (-decay_value)
+    impedance_value[impedance_value > 1] <- 1
+    return(impedance_value)
   }
 
   return(impedance)
-
 }
