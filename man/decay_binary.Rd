@@ -16,7 +16,9 @@ and returns an impedance factor (\code{numeric}).
 \description{
 Returns a binary impedance function (frequently used to calculate cumulative
 opportunities measures) to be used inside accessibility calculating
-functions. This function is generic over any kind of numeric travel cost,
+functions.
+
+This function is generic over any kind of numeric travel cost,
 such as distance, time and money.
 }
 \examples{

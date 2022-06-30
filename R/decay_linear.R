@@ -1,15 +1,14 @@
 #' Linear decay function
 #'
 #' Returns a linear impedance function to be used inside accessibility
-#' calculating functions. This function is generic over any kind of numeric
-#' travel cost, such as distance, time and money.
+#' calculating functions.
+#' @template description_generic_cost
 #'
 #' @param cutoff A `numeric`. A number indicating the travel cost cutoff until
 #'   which the impedance factor decays linearly. From this point onward the
 #'   impedance factor is equal to 0.
 #'
-#' @return A `function` that takes a generic travel cost (`numeric`) as an input
-#'   and returns an impedance factor (`numeric`).
+#' @template return_decay_function
 #'
 #' @family Impedance functions
 #'

@@ -17,8 +17,10 @@ and returns an impedance factor (\code{numeric}).
 }
 \description{
 Returns a linear impedance function to be used inside accessibility
-calculating functions. This function is generic over any kind of numeric
-travel cost, such as distance, time and money.
+calculating functions.
+
+This function is generic over any kind of numeric travel cost,
+such as distance, time and money.
 }
 \examples{
 impedance <- decay_linear(cutoff = 30)

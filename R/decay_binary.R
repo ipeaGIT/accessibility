@@ -2,13 +2,12 @@
 #'
 #' Returns a binary impedance function (frequently used to calculate cumulative
 #' opportunities measures) to be used inside accessibility calculating
-#' functions. This function is generic over any kind of numeric travel cost,
-#' such as distance, time and money.
+#' functions.
+#' @template description_generic_cost
 #'
 #' @param cutoff A `numeric`. A number indicating the travel cost cutoff.
 #'
-#' @return A `function` that takes a generic travel cost (`numeric`) as an input
-#'   and returns an impedance factor (`numeric`).
+#' @template return_decay_function
 #'
 #' @family Impedance functions
 #'
