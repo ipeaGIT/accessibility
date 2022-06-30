@@ -1,37 +1,32 @@
-#' @title Negative exponential decay function
+#' Negative exponential decay function
 #'
-#' @description
-#' Returns a negative exponential impedance function to be used inside
-#' `accessibility` functions.
+#' Returns a negative exponential impedance function  to be used inside
+#' accessibility calculating functions.
+#' @template description_generic_cost
 #'
-#' @param decay_value A `numeric` value.
+#' @param decay_value A `numeric`. The calibration parameter that, when
+#'   multiplied by the travel cost, is used as the exponent of `e` in the
+#'   negative exponential function.
 #'
-#' @return A `function` that converts travel time cost t_id into an impedance factor.
+#' @template return_decay_function
 #'
-#' @family Impedance functions
+#' @family impedance functions
 #'
 #' @examples
-#' library(accessibility)
+#' impedance <- decay_exponential(decay_value = 0.1)
 #'
-#'# Create an exponential impedance function
-#'impedance <- decay_exponential(decay_value = 0.1)
+#' impedance(20)
 #'
-#'impedance(t_ij = 20)
-#'impedance(t_ij = 25)
-#'impedance(t_ij = 35)
+#' impedance(35)
 #'
 #' @export
 decay_exponential <- function(decay_value) {
+  checkmate::assert_number(decay_value, lower = 0, finite = TRUE)
 
-  # check inputs ------------------------------------------------------------
-  checkmate::assert_number(decay_value, null.ok = FALSE, lower = 0, finite = TRUE)
-
-  # decay function ------------------------------------------------------------
   impedance <- function(t_ij) {
-    f <- exp(-decay_value * t_ij)
-    return(f)
+    impedance_value <- exp(-decay_value * t_ij)
+    return(impedance_value)
   }
 
   return(impedance)
-
 }

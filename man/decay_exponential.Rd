@@ -7,24 +7,27 @@
 decay_exponential(decay_value)
 }
 \arguments{
-\item{decay_value}{A \code{numeric} value.}
+\item{decay_value}{A \code{numeric}. The calibration parameter that, when
+multiplied by the travel cost, is used as the exponent of \code{e} in the
+negative exponential function.}
 }
 \value{
-A \code{function} that converts travel time cost t_id into an impedance factor.
+A \code{function} that takes a generic travel cost (\code{numeric}) as an input
+and returns an impedance factor (\code{numeric}).
 }
 \description{
-Returns a negative exponential impedance function to be used inside
-\code{accessibility} functions.
+Returns a negative exponential impedance function  to be used inside
+accessibility calculating functions.
+
+This function is generic over any kind of numeric travel cost,
+such as distance, time and money.
 }
 \examples{
-library(accessibility)
-
-# Create an exponential impedance function
 impedance <- decay_exponential(decay_value = 0.1)
 
-impedance(t_ij = 20)
-impedance(t_ij = 25)
-impedance(t_ij = 35)
+impedance(20)
+
+impedance(35)
 
 }
 \seealso{

@@ -1,41 +1,33 @@
-context("Decay exponential")
-
-# if running manually, please run the following line first:
-# source("tests/testthat/setup.R")
-
-testthat::skip_on_cran()
-
-
-
-default_tester <- function(decay_value = 0.5) {
-
-  results <- accessibility::decay_exponential(decay_value =  decay_value)
-  return(results)
-}
-
-
-# errors and warnings -----------------------------------------------------
-
+tester <- function(decay_value = 0.1) decay_exponential(decay_value)
 
 test_that("adequately raises errors", {
-
-  # incorrect input
-  expect_error( default_tester(decay_value = -1) )
-  expect_error( default_tester(decay_value = 'banana') )
-  expect_error( default_tester(decay_value = NULL) )
-
+  expect_error(tester("banana"))
+  expect_error(tester(c(0.1, 0.1)))
+  expect_error(tester(-0.1))
+  expect_error(tester(Inf))
+  expect_error(tester(NULL))
 })
 
+test_that("output is a decay function that returns a numeric", {
+  expect_is(tester(), "function")
 
+  value_test <- tester()
+  expect_equal(value_test(0), 1)
+  expect_equal(value_test(10), 1 / exp(1))
+  expect_equal(value_test(20), 1 / exp(2))
+  expect_equal(value_test(60), 1 / exp(6))
 
-# adequate behavior ------------------------------------------------------
+  value_test <- tester(0.05)
+  expect_equal(value_test(0), 1)
+  expect_equal(value_test(20), 1 / exp(1))
+  expect_equal(value_test(40), 1 / exp(2))
+  expect_equal(value_test(120), 1 / exp(6))
+})
 
-
-test_that("output is correct", {
-
-f_test  <- default_tester(decay_value = 0.5)
-
-  expect_is( f_test(.5), 'numeric')
-  expect_equal( round(f_test(.5), digits = 4), 0.7788)
-
+test_that("accepts a numeric vector", {
+  value_test <- tester()
+  expect_equal(
+    value_test(c(0, 10, 20, 60)),
+    c(1, 1 / exp(1), 1 / exp(2), 1 / exp(6))
+  )
 })
