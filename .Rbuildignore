@@ -4,3 +4,5 @@
 ^tests_rafa$
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
+^README\.Rmd$
+^README\.html$
