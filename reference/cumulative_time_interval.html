@@ -103,21 +103,24 @@ accessibility estimates within the time interval. It accepts either <code>median
 
 
 <dt>opportunity_col</dt>
-<dd><p>A <code>string</code> indicating the name of the column with the
-number of opportunities / resources / services to be considered.</p></dd>
+<dd><p>A string. The name of the column in <code>land_use_data</code>
+with the number of opportunities/resources/services to be considered when
+calculating accessibility levels.</p></dd>
 
 
 <dt>travel_cost_col</dt>
-<dd><p>A <code>string</code> with the name of the column with travel
-cost between origins and destinations. It can be either either travel time,
-distance or monetary costs. Defaults to <code>travel_ime</code>.</p></dd>
+<dd><p>A string. The name of the column in <code>travel_matrix</code>
+with the travel cost between origins and destinations. Defaults to
+<code>"travel_time"</code>.</p></dd>
 
 
 <dt>by_col</dt>
-<dd><p>A <code>string</code> with the name of the column of origin or
-destination that should be considered, indicating whether accessibility
-levels should by calculated by each origin (active accessibility) or
-destination (passive accessibility).</p></dd>
+<dd><p>Either <code>NULL</code> (the default) or a <code>character</code> vector. When not
+<code>NULL</code>, indicates the <code>travel_matrix</code> columns that should be used to group
+the accessibility estimates by. For example, if <code>travel_matrix</code> includes a
+departure time column, that specifies the departure time of each entry in
+the data frame, passing <code>"departure_time"</code> to this argument results in
+accessibility estimates grouped by origin and by departure time.</p></dd>
 
 </dl></div>
     <div id="value">

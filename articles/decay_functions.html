@@ -87,7 +87,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Decay functions</h1>
             
-            <h4 data-toc-skip class="date">2022-06-30</h4>
+            <h4 data-toc-skip class="date">2022-07-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/accessibility/blob/HEAD/vignettes/decay_functions.Rmd" class="external-link"><code>vignettes/decay_functions.Rmd</code></a></small>
       <div class="hidden name"><code>decay_functions.Rmd</code></div>
@@ -99,7 +99,7 @@
 <div class="section level2">
 <h2 id="introduction">1. Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>Some functions of the <code>accessibility</code> package, such as <code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code> and <code><a href="../reference/gravity_access.html">gravity_access()</a></code>, use decay functions to continuously discount the weight of opportunities as travel costs become larger. For convenience, the package currently includes four decay functions discussed in <span class="citation">(Kwan 1998)</span>. See the implemented functions below. Additionally, the package also allows users to pass any custom decay function that converts travel cost <code>t_ij</code> to an impedance factor (see section 3).</p>
+<p>Some functions of the <code>accessibility</code> package, such as <code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code> and <code><a href="../reference/gravity_access.html">gravity_access()</a></code>, use decay functions to continuously discount the weight of opportunities as travel costs become larger. For convenience, the package currently includes four decay functions discussed in <span class="citation">(Kwan 1998)</span>. See the implemented functions below. Additionally, the package also allows users to pass any custom decay function that converts travel cost <code>travel_cost</code> to an impedance factor (see section 3).</p>
 </div>
 <div class="section level2">
 <h2 id="currently-available-decay-functions">2. Currently available decay functions<a class="anchor" aria-label="anchor" href="#currently-available-decay-functions"></a>
@@ -223,12 +223,12 @@
 <span><span class="co">#&gt; 4: 89a88cdb57bffff 89a88cdb5cfffff        47.0        606  109       0</span></span>
 <span><span class="co">#&gt; 5: 89a88cdb57bffff 89a88cd909bffff        64.0        606    0       0</span></span>
 <span><span class="co">#&gt; 6: 89a88cdb57bffff 89a88cd90b7ffff        59.0        606  480       0</span></span></code></pre></div>
-<p>Now let’s create a very simple custom decay function that uses a parameter <code>k</code> to convert the travel cost <code>t_ij</code> between origin <code>i</code> and destination <code>j</code> into an impedance factor.</p>
+<p>Now let’s create a very simple custom decay function that uses a parameter <code>k</code> to convert the travel cost <code>travel_cost</code> between origin <code>i</code> and destination <code>j</code> into an impedance factor.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create custom decay function</span></span>
 <span><span class="va">custom_decay_fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">k</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">impedance</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t_ij</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">f</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">/</span> <span class="va">t_ij</span> <span class="op">^</span> <span class="va">k</span></span>
+<span>  <span class="va">impedance</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">travel_cost</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">f</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">/</span> <span class="va">travel_cost</span> <span class="op">^</span> <span class="va">k</span></span>
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
 <span><span class="op">}</span></span></code></pre></div>
