@@ -1,8 +1,8 @@
-#' @title Cumulative access based on maximum travel time cutoff
+#' Cumulative access based on a travel cost cutoff
 #'
-#' @description
-#' The function calculates the number of opportunities accessible under a given
-#' travel time cutoff specified by the user.
+#' Calculates the number of opportunities accessible under a given specified
+#' travel cost cutoff.
+#' @template description_generic_cost
 #'
 #' @template input_data
 #' @param cutoff A `numeric` value indicating the maximum travel time considered.
@@ -10,7 +10,9 @@
 #' @template travel_cost_col
 #' @template by_col
 #'
-#' @return A `data.table` object.
+#' @return A `data.table` containing the accessibility estimate for each origin
+#'   in the travel matrix.
+#'
 #' @family Cumulative access
 #' @examples
 #' library(accessibility)

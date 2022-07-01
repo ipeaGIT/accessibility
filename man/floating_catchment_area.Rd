@@ -33,8 +33,9 @@ More info in the details.}
 \item{population_col}{A \code{string} with the name of the column of origin with
 population count.}
 
-\item{opportunity_col}{A \code{string} indicating the name of the column with the
-number of opportunities / resources / services to be considered.}
+\item{opportunity_col}{A string. The name of the column in \code{land_use_data}
+with the number of opportunities/resources/services to be considered when
+calculating accessibility levels.}
 
 \item{decay_function}{A \code{fuction} that converts travel cost (t_ij) into an
 impedance factor used to weight opportunities. For convenience, the package
@@ -42,9 +43,9 @@ currently includes the following functions: \code{decay_bineary},
 \code{decay_exponential}, \code{decay_exponential} and \code{decay_power}.
 See the documentation of each decay function for more details.}
 
-\item{travel_cost_col}{A \code{string} with the name of the column with travel
-cost between origins and destinations. It can be either either travel time,
-distance or monetary costs. Defaults to \code{travel_ime}.}
+\item{travel_cost_col}{A string. The name of the column in \code{travel_matrix}
+with the travel cost between origins and destinations. Defaults to
+\code{"travel_time"}.}
 }
 \value{
 A \code{data.table} object.

@@ -1,4 +1,6 @@
-#' @param by_col A `string` with the name of the column of origin or
-#'   destination that should be considered, indicating whether accessibility
-#'   levels should by calculated by each origin (active accessibility) or
-#'   destination (passive accessibility).
+#' @param by_col Either `NULL` (the default) or a `character` vector. When not
+#'   `NULL`, indicates the `travel_matrix` columns that should be used to group
+#'   the accessibility estimates by. For example, if `travel_matrix` includes a
+#'   departure time column, that specifies the departure time of each entry in
+#'   the data frame, passing `"departure_time"` to this argument results in
+#'   accessibility estimates grouped by origin and by departure time.

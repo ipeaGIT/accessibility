@@ -1,3 +1,3 @@
-#' @param travel_cost_col A `string` with the name of the column with travel
-#'   cost between origins and destinations. It can be either either travel time,
-#'   distance or monetary costs. Defaults to `travel_ime`.
+#' @param travel_cost_col A string. The name of the column in `travel_matrix`
+#'   with the travel cost between origins and destinations. Defaults to
+#'   `"travel_time"`.

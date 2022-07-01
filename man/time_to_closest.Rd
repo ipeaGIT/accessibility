@@ -19,20 +19,23 @@ between each origin-destination pair (this can be either in  terms of
 travel time, distance or monetary costs), and number of population and
 opportunities located in each origin and destination.}
 
-\item{opportunity_col}{A \code{string} indicating the name of the column with the
-number of opportunities / resources / services to be considered.}
+\item{opportunity_col}{A string. The name of the column in \code{land_use_data}
+with the number of opportunities/resources/services to be considered when
+calculating accessibility levels.}
 
 \item{n_opportunities}{A \code{numeric} value with the minimum N number of
 opportunities that should be considered. Defaults to \code{1}}
 
-\item{travel_cost_col}{A \code{string} with the name of the column with travel
-cost between origins and destinations. It can be either either travel time,
-distance or monetary costs. Defaults to \code{travel_ime}.}
+\item{travel_cost_col}{A string. The name of the column in \code{travel_matrix}
+with the travel cost between origins and destinations. Defaults to
+\code{"travel_time"}.}
 
-\item{by_col}{A \code{string} with the name of the column of origin or
-destination that should be considered, indicating whether accessibility
-levels should by calculated by each origin (active accessibility) or
-destination (passive accessibility).}
+\item{by_col}{Either \code{NULL} (the default) or a \code{character} vector. When not
+\code{NULL}, indicates the \code{travel_matrix} columns that should be used to group
+the accessibility estimates by. For example, if \code{travel_matrix} includes a
+departure time column, that specifies the departure time of each entry in
+the data frame, passing \code{"departure_time"} to this argument results in
+accessibility estimates grouped by origin and by departure time.}
 }
 \value{
 A \code{data.table} object indicating for each origin the travel time to
