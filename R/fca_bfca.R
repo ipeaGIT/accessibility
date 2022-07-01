@@ -43,7 +43,7 @@ fca_bfca <- function(data,
   # population_col <- 'population'
 
   # calculate impedance
-  dt[, impedance := decay_function(t_ij = get(travel_cost_col)),]
+  dt[, impedance := decay_function(travel_cost = get(travel_cost_col)),]
 
   # calculate balanced impedance i (normalizing impedance by origin)
   dt[, balanced_impedance_i := impedance/sum(impedance),

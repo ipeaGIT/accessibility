@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 # 1. Introduction
 
-Some functions of the `accessibility` package, such as `floating_catchment_area()` and `gravity_access()`, use decay functions to continuously discount the weight of opportunities as travel costs become larger. For convenience, the package currently includes four decay functions discussed in [@kwan1998space]. See the implemented functions below. Additionally, the package also allows users to pass any custom decay function that converts travel cost `t_ij` to an impedance factor (see section 3).
+Some functions of the `accessibility` package, such as `floating_catchment_area()` and `gravity_access()`, use decay functions to continuously discount the weight of opportunities as travel costs become larger. For convenience, the package currently includes four decay functions discussed in [@kwan1998space]. See the implemented functions below. Additionally, the package also allows users to pass any custom decay function that converts travel cost `travel_cost` to an impedance factor (see section 3).
 
 # 2. Currently available decay functions
 
@@ -141,14 +141,14 @@ head(ttm)
 
 ```
 
-Now let's create a very simple custom decay function that uses a parameter `k` to convert the travel cost `t_ij` between origin `i` and destination `j` into an impedance factor.
+Now let's create a very simple custom decay function that uses a parameter `k` to convert the travel cost `travel_cost` between origin `i` and destination `j` into an impedance factor.
 
 
 ```{r}
 # create custom decay function
 custom_decay_fun <- function(k) {
-  impedance <- function(t_ij) {
-    f <- 1 / t_ij ^ k
+  impedance <- function(travel_cost) {
+    f <- 1 / travel_cost ^ k
     return(f)
   }
 }

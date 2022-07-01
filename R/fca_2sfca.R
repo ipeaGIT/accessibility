@@ -41,7 +41,7 @@ fca_2sfca <- function(data,
 
 
   # calculate impedance
-  dt[, impedance := decay_function(t_ij = get(travel_cost_col)),]
+  dt[, impedance := decay_function(travel_cost = get(travel_cost_col)),]
 
 
   ## Step 1a - allocate the demand to each destination proportionally to weight i

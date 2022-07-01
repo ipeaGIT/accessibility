@@ -23,8 +23,8 @@
 decay_exponential <- function(decay_value) {
   checkmate::assert_number(decay_value, lower = 0, finite = TRUE)
 
-  impedance <- function(t_ij) {
-    impedance_value <- exp(-decay_value * t_ij)
+  impedance <- function(travel_cost) {
+    impedance_value <- exp(-decay_value * travel_cost)
     return(impedance_value)
   }
 

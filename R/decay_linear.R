@@ -23,8 +23,8 @@
 decay_linear <- function(cutoff) {
   checkmate::assert_number(cutoff, lower = 0, finite = TRUE)
 
-  impedance <- function(t_ij) {
-    impedance_value <- 1 - t_ij / cutoff
+  impedance <- function(travel_cost) {
+    impedance_value <- 1 - travel_cost / cutoff
     impedance_value[impedance_value < 0] <- 0
     return(impedance_value)
   }

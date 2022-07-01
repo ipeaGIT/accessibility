@@ -22,8 +22,8 @@
 decay_power <- function(decay_value) {
   checkmate::assert_number(decay_value, lower = 0, finite = TRUE)
 
-  impedance <- function(t_ij) {
-    impedance_value <- t_ij ^ (-decay_value)
+  impedance <- function(travel_cost) {
+    impedance_value <- travel_cost ^ (-decay_value)
     impedance_value[impedance_value > 1] <- 1
     return(impedance_value)
   }

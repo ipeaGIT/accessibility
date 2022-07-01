@@ -22,8 +22,8 @@
 decay_binary <- function(cutoff) {
   checkmate::assert_number(cutoff, lower = 0, finite = TRUE)
 
-  impedance <- function(t_ij) {
-    impedance_value <- as.integer(t_ij <= cutoff)
+  impedance <- function(travel_cost) {
+    impedance_value <- as.integer(travel_cost <= cutoff)
     return(impedance_value)
   }
 

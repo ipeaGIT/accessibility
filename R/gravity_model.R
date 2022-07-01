@@ -57,8 +57,13 @@ gravity_access <- function(data,
   # calculate access -----------------------------------------------------------
   data.table::setDT(data)
 
-  access <- data[, .(access = sum( get(opportunity_col) * decay_function(t_ij=get(travel_cost_col)))),
-                 by= c(by_col)]
+  access <- data[
+    ,
+    .(
+      access = sum(get(opportunity_col) * decay_function(get(travel_cost_col)))
+    ),
+    by = by_col
+  ]
 
   return(access)
 }

@@ -56,7 +56,7 @@ The `accessibility` package currently includes:
 6. `floating_catchment_area()` Floating catchment area accessibility using `BFCA`
 
 
-The `gravity_access()` and `floating_catchment_area()` functions can use any custom decay function that converts travel cost `t_ij` to and impedance factor. For convenience, the package currently includes the following decay functions:
+The `gravity_access()` and `floating_catchment_area()` functions can use any custom decay function that converts travel cost `travel_cost` to and impedance factor. For convenience, the package currently includes the following decay functions:
 
 1. `decay_binary()` Binary (aka step) decay function
 2. `decay_exponential()` Negative exponential decay function
