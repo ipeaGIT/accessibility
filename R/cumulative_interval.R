@@ -27,7 +27,7 @@
 #' Pereira, R. H. M. (*forthcoming*). A time interval metric for cumulative
 #' opportunity accessibility.
 #'
-#' @examples
+#' @examplesIf FALSE
 #' library(accessibility)
 #'
 #' # load a travel time matrix data in long format
@@ -52,6 +52,7 @@
 #'
 #' @export
 cumulative_time_interval <- function(data, interval, stat='mean', opportunity_col, travel_cost_col='travel_time', by_col){
+  return("to be changed")
 
   # check inputs ------------------------------------------------------------
 
@@ -72,11 +73,11 @@ cumulative_time_interval <- function(data, interval, stat='mean', opportunity_co
   # calculate cumulative access for every minute in the interval
   access_list <- lapply(X=vct,
                         FUN= function(i){
-                          temp <-  cumulative_time_cutoff(data = data,
-                                                          cutoff = i,
-                                                          opportunity_col = opportunity_col,
-                                                          travel_cost_col = travel_cost_col,
-                                                          by_col = by_col)
+                          temp <-  cumulative_time_cutoff(data,
+                                                          i,
+                                                          opportunity_col,
+                                                          travel_cost_col,
+                                                          by_col)
                           return(temp)
                         }
   )

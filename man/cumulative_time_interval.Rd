@@ -62,6 +62,7 @@ opportunity accessibility.
 }
 }
 \examples{
+\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(accessibility)
 
 # load a travel time matrix data in long format
@@ -83,7 +84,7 @@ df <- cumulative_time_interval(data = ttm,
                               travel_cost_col = 'travel_time',
                               by_col = 'from_id')
 head(df)
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other Cumulative access: 

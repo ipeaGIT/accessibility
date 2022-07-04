@@ -5,21 +5,26 @@
 \title{Cumulative access based on a travel cost cutoff}
 \usage{
 cumulative_time_cutoff(
-  data,
+  travel_matrix,
+  land_use_data,
   cutoff,
   opportunity_col,
   travel_cost_col = "travel_time",
-  by_col
+  by_col = NULL,
+  active = TRUE
 )
 }
 \arguments{
-\item{data}{A \code{data.frame} with a travel cost matrix in long format,
-containing the columns with origin ids, destination ids, the travel cost
-between each origin-destination pair (this can be either in  terms of
-travel time, distance or monetary costs), and number of population and
-opportunities located in each origin and destination.}
+\item{travel_matrix}{A data frame. The travel matrix describing the costs
+(i.e. travel time, distance, monetary cost, etc.) between the origins and
+destinations in the study area. Must contain the columns \code{from_id}, \code{to_id}
+and any others specified in \code{travel_cost_col}.}
 
-\item{cutoff}{A \code{numeric} value indicating the maximum travel time considered.}
+\item{land_use_data}{A data frame. The distribution of opportunities within
+the study area cells. Must contain the columns \code{id} and any others
+specified in \code{opportunity_col}.}
+
+\item{cutoff}{A \code{numeric}. A number indicating the travel cost cutoff.}
 
 \item{opportunity_col}{A string. The name of the column in \code{land_use_data}
 with the number of opportunities/resources/services to be considered when
@@ -35,6 +40,11 @@ the accessibility estimates by. For example, if \code{travel_matrix} includes a
 departure time column, that specifies the departure time of each entry in
 the data frame, passing \code{"departure_time"} to this argument results in
 accessibility estimates grouped by origin and by departure time.}
+
+\item{active}{A logical. Whether to calculate active accessibility (the
+of opportunities that can be reached from a given origin, the default) or
+passive accessibility (how many opportunities/people can reach a given
+destination).}
 }
 \value{
 A \code{data.table} containing the accessibility estimate for each origin
@@ -48,27 +58,31 @@ This function is generic over any kind of numeric travel cost,
 such as distance, time and money.
 }
 \examples{
-library(accessibility)
+data_dir <- system.file("extdata", package = "accessibility")
+travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
+land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
 
-# load a travel time matrix data in long format
-data_path <- system.file("extdata/ttm_bho.rds", package = "accessibility")
-ttm <- readRDS(data_path)
-
-# Active accessibility: number of schools accessible from each origin
-df <- cumulative_time_cutoff(data = ttm,
-                            cutoff = 30,
-                            opportunity_col = 'schools',
-                            travel_cost_col = 'travel_time',
-                            by_col = 'from_id')
+# active accessibility: number of schools accessible from each origin
+df <- cumulative_time_cutoff(
+  travel_matrix = travel_matrix,
+  land_use_data = land_use_data,
+  cutoff = 30,
+  opportunity_col = "schools",
+  travel_cost_col = "travel_time"
+)
 head(df)
 
-# Passive accessibility: number of people that can reach each destination
-df <- cumulative_time_cutoff(data = ttm,
-                            cutoff = 30,
-                            opportunity_col = 'population',
-                            travel_cost_col = 'travel_time',
-                            by_col = 'to_id')
+# passive accessibility: number of people that can reach each destination
+df <- cumulative_time_cutoff(
+  travel_matrix = travel_matrix,
+  land_use_data = land_use_data,
+  cutoff = 30,
+  opportunity_col = "population",
+  travel_cost_col = "travel_time",
+  active = FALSE
+)
 head(df)
+
 }
 \seealso{
 Other Cumulative access: 
