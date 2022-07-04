@@ -87,7 +87,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Decay functions</h1>
             
-            <h4 data-toc-skip class="date">2022-07-01</h4>
+            <h4 data-toc-skip class="date">2022-07-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/accessibility/blob/HEAD/vignettes/decay_functions.Rmd" class="external-link"><code>vignettes/decay_functions.Rmd</code></a></small>
       <div class="hidden name"><code>decay_functions.Rmd</code></div>
@@ -190,19 +190,12 @@
 <span>                                   id.vars <span class="op">=</span> <span class="st">'minutes'</span>, </span>
 <span>                                   variable.name <span class="op">=</span> <span class="st">'decay_function'</span>, </span>
 <span>                                   value.name <span class="op">=</span> <span class="st">'impedance_factor'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in data.table::melt.data.table(data = df, id.vars = "minutes",</span></span>
-<span><span class="co">#&gt; variable.name = "decay_function", : 'measure.vars' [binary, linear, exponential,</span></span>
-<span><span class="co">#&gt; inverse_power, ...] are not all of the same type. By order of hierarchy, the</span></span>
-<span><span class="co">#&gt; molten data value column will be of type 'double'. All measure variables not of</span></span>
-<span><span class="co">#&gt; type 'double' will be coerced too. Check DETAILS in ?melt.data.table for more on</span></span>
-<span><span class="co">#&gt; coercion.</span></span>
 <span></span>
 <span><span class="co"># plot</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">df2</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">minutes</span>, y<span class="op">=</span><span class="va">impedance_factor</span>, color<span class="op">=</span><span class="va">decay_function</span><span class="op">)</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="va">.</span><span class="op">~</span><span class="va">decay_function</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="decay_functions_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 </div>
 </div>
 </div>
@@ -215,14 +208,7 @@
 <span><span class="co"># load input data</span></span>
 <span><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/ttm_bho.rds"</span>, package <span class="op">=</span> <span class="st">"accessibility"</span><span class="op">)</span></span>
 <span><span class="va">ttm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">data_path</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ttm</span><span class="op">)</span></span>
-<span><span class="co">#&gt;            from_id           to_id travel_time population jobs schools</span></span>
-<span><span class="co">#&gt; 1: 89a88cdb57bffff 89a88cdb57bffff         5.8        606   82       0</span></span>
-<span><span class="co">#&gt; 2: 89a88cdb57bffff 89a88cdb597ffff        47.0        606  308       2</span></span>
-<span><span class="co">#&gt; 3: 89a88cdb57bffff 89a88cdb5b3ffff        48.0        606  100       0</span></span>
-<span><span class="co">#&gt; 4: 89a88cdb57bffff 89a88cdb5cfffff        47.0        606  109       0</span></span>
-<span><span class="co">#&gt; 5: 89a88cdb57bffff 89a88cd909bffff        64.0        606    0       0</span></span>
-<span><span class="co">#&gt; 6: 89a88cdb57bffff 89a88cd90b7ffff        59.0        606  480       0</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ttm</span><span class="op">)</span></span></code></pre></div>
 <p>Now let’s create a very simple custom decay function that uses a parameter <code>k</code> to convert the travel cost <code>travel_cost</code> between origin <code>i</code> and destination <code>j</code> into an impedance factor.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create custom decay function</span></span>
@@ -243,14 +229,7 @@
 <span>                  by_col <span class="op">=</span> <span class="st">'from_id'</span></span>
 <span>                  <span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">grav_custom</span><span class="op">)</span></span>
-<span><span class="co">#&gt;            from_id   access</span></span>
-<span><span class="co">#&gt; 1: 89a88cdb57bffff 73936.42</span></span>
-<span><span class="co">#&gt; 2: 89a88cdb597ffff 72088.42</span></span>
-<span><span class="co">#&gt; 3: 89a88cdb5b3ffff 74512.95</span></span>
-<span><span class="co">#&gt; 4: 89a88cdb5cfffff 78470.00</span></span>
-<span><span class="co">#&gt; 5: 89a88cd909bffff 74298.70</span></span>
-<span><span class="co">#&gt; 6: 89a88cd90b7ffff 77323.59</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">grav_custom</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h3>
