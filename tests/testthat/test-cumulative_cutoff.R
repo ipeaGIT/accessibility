@@ -7,7 +7,7 @@ tester <- function(
   cutoff = 30,
   opportunity_col = "jobs",
   travel_cost_col = "travel_time",
-  by_col = NULL,
+  by_col = "mode",
   active = TRUE
 ) {
   cumulative_time_cutoff(
@@ -63,6 +63,11 @@ test_that("raises errors due to incorrect input", {
   )
 })
 
+test_that("throws warning if travel_matrix extra col", {
+  # i.e. col not listed in travel_cost_col and by_col
+  expect_warning(tester(by_col = NULL))
+})
+
 test_that("returns a dataframe whose class is the same as travel_matrix's", {
   result <- tester()
   expect_is(result, "data.table")
@@ -82,19 +87,20 @@ test_that("returns a dataframe whose class is the same as travel_matrix's", {
 
 test_that("result has correct structure", {
   result <- tester()
-  expect_true(ncol(result) == 2)
-  expect_is(result$id, "character")
-  expect_is(result$jobs, "integer")
-
-  result <- tester(opportunity_col = "schools")
-  expect_true(ncol(result) == 2)
-  expect_is(result$id, "character")
-  expect_is(result$schools, "integer")
-
-  result <- tester(by_col = "mode")
   expect_true(ncol(result) == 3)
   expect_is(result$id, "character")
   expect_is(result$mode, "character")
+  expect_is(result$jobs, "integer")
+
+  result <- tester(opportunity_col = "schools")
+  expect_true(ncol(result) == 3)
+  expect_is(result$id, "character")
+  expect_is(result$mode, "character")
+  expect_is(result$schools, "integer")
+
+  suppressWarnings(result <- tester(by_col = NULL))
+  expect_true(ncol(result) == 2)
+  expect_is(result$id, "character")
   expect_is(result$jobs, "integer")
 })
 
