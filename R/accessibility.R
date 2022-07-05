@@ -4,7 +4,12 @@
 #'
 #' @section Usage:
 #' Please check the vignettes for more on the package usage:
-
+#' - Introduction to accessibility: calculating accessibility metrics. Run
+#' `vignette("accessibility")` or check it on the [website](
+#' https://ipeagit.github.io/accessibility/articles/accessibility.html).
+#' - Decay functions. Run `vignette("decay_functions", package =
+#' "accessibility")` or check it on the [website](
+#' https://ipeagit.github.io/accessibility/articles/decay_binary.html).
 #'
 #' @docType package
 #' @name accessibility
@@ -32,7 +37,7 @@ utils::globalVariables(
     "balanced_impedance_j",
     "pop_served",
     "ppr"
-    )
+  )
 )
 
 

@@ -1,12 +1,10 @@
 ---
-title: 'Intro to accessibility: Transport Accessibility Metrics'
-author: "Rafael H. M. Pereira, Daniel Herszenhut"
-date: "`r Sys.Date()`"
+title: "Introduction to accessibility: calculating accessibility metrics"
 output: rmarkdown::html_vignette
 bibliography: "references.bib"
 urlcolor: blue
 vignette: >
-  %\VignetteIndexEntry{Intro to accessibility: Transport Accessibility Metrics} 
+  %\VignetteIndexEntry{Introduction to accessibility: calculating accessibility metrics} 
   %\VignetteEngine{knitr::rmarkdown} 
   \usepackage[utf8]{inputenc}
 ---

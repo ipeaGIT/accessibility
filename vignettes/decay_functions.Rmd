@@ -1,6 +1,5 @@
 ---
-title: 'Decay functions'
-date: "`r Sys.Date()`"
+title: "Decay functions"
 output: rmarkdown::html_vignette
 bibliography: "references.bib"
 urlcolor: blue
