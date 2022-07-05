@@ -63,6 +63,12 @@ cumulative_time_cutoff <- function(travel_matrix,
     by_col
   }
 
+  checkmate::assert_names(
+    by_col_char,
+    disjunct.from = c("from_id", "to_id"),
+    .var.name = "by_col"
+  )
+
   travel_matrix_req_names <- c("from_id", "to_id", travel_cost_col, by_col_char)
   checkmate::assert_data_frame(travel_matrix)
   checkmate::assert_names(

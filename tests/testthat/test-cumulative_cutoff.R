@@ -1,65 +1,64 @@
 # if running manually, please run the following line first:
 # source("tests/testthat/setup.R")
 
-testthat::skip_on_cran()
-testthat::skip("skipping for now")
+tester <- function(
+  travel_matrix = get("travel_matrix", envir = parent.frame()),
+  land_use_data = get("land_use_data", envir = parent.frame()),
+  cutoff = 30,
+  opportunity_col = "jobs",
+  travel_cost_col = "travel_time",
+  by_col = NULL,
+  active = TRUE
+) {
+  cumulative_time_cutoff(
+    travel_matrix,
+    land_use_data,
+    cutoff,
+    opportunity_col,
+    travel_cost_col,
+    by_col,
+    active
+  )
+}
 
-default_tester <- function(data = ttm,
-                           cutoff = 20,
-                           opportunity_col = 'schools',
-                           travel_cost_col = 'travel_time',
-                           by_col='from_id') {
+test_that("raises errors due to incorrect input", {
+  expect_error(tester(cutoff = "banana"))
+  expect_error(tester(cutoff = -3))
+  expect_error(tester(cutoff = c(1, 1)))
+  expect_error(tester(cutoff = Inf))
 
-  results <- accessibility::cumulative_time_cutoff(data = data,
-                                      cutoff = cutoff,
-                                      opportunity_col = opportunity_col,
-                                      travel_cost_col = travel_cost_col,
-                                      by_col = by_col)
-  return(results)
-  }
+  expect_error(tester(opportunity_col = 1))
+  expect_error(tester(opportunity_col = c("schools", "jobs")))
 
+  expect_error(tester(travel_cost_col = 1))
+  expect_error(tester(travel_cost_col = c("travel_time", "monetary_cost")))
 
-# errors and warnings -----------------------------------------------------
+  expect_error(tester(by_col = 1))
+  expect_error(tester(by_col = c("mode", "departure_time")))
+  expect_error(tester(by_col = "from_id"))
 
+  expect_error(tester(as.list(travel_matrix)))
+  expect_error(tester(travel_matrix[, .(oi = from_id, to_id, travel_time)]))
+  expect_error(tester(travel_matrix[, .(from_id, oi = to_id, travel_time)]))
+  expect_error(
+    tester(
+      travel_matrix[, .(from_id, to_id, oi = travel_time)],
+      travel_cost_col = "travel_time"
+    )
+  )
+  expect_error(
+    tester(
+      travel_matrix[, .(from_id, to_id, travel_time, oi = mode)],
+      by_col = "mode"
+    )
+  )
 
-test_that("adequately raises errors", {
-
-  # input data is not a data.frame
-  expect_error(default_tester(data = list(ttm)))
-
-  # vars with col names do not exist in data input
-  expect_error(default_tester(opportunity_col = 'banana'))
-  expect_error(default_tester(by_col = 'banana'))
-  expect_error(default_tester(travel_cost_col = 'banana'))
-  expect_error(default_tester(opportunity_col = 999))
-  expect_error(default_tester(by_col = 999))
-  expect_error(default_tester(travel_cost_col = 999))
-
-  # cutoff value is not positive numeric
-  expect_error(default_tester(cutoff = "banana"))
-  expect_error(default_tester(cutoff = -3))
-  expect_error(is(default_tester(cutoff = Inf), "data.table"))
-
-})
-
-
-
-# adequate behavior ------------------------------------------------------
-
-
-test_that("output is correct", {
-
-  # TO DO:
-  #> test output values
-
-  # different opportunity_col
-  expect_is( default_tester(opportunity_col = 'population'), "data.table")
-
-  # different by_col
-  expect_is( default_tester(by_col = 'from_id'), "data.table")
-
-  # different cutoff values
-  expect_is( default_tester(cutoff = 1), "data.table")
-  expect_is( default_tester(cutoff = 1000), "data.table")
-
+  expect_error(tester(as.list(land_use_data)))
+  expect_error(tester(land_use_data = land_use_data[, .(oi = id, jobs)]))
+  expect_error(
+    tester(
+      land_use_data = land_use_data[, .(id, oi = jobs)],
+      opportunity_col = "jobs"
+    )
+  )
 })
