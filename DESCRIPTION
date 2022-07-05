@@ -31,7 +31,6 @@ Suggests:
     covr,
     ggplot2,
     knitr,
-    r5r,
     rmarkdown,
     sf,
     stats,
