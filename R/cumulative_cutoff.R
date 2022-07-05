@@ -91,7 +91,7 @@ cumulative_time_cutoff <- function(travel_matrix,
     original_class <- class(travel_matrix)
     data <- data.table::as.data.table(travel_matrix)
   } else {
-    data <- data.table::copy(travel_matrix)
+    data <- travel_matrix
   }
 
   if (!inherits(land_use_data, "data.table")) {
