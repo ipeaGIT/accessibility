@@ -51,39 +51,13 @@ cumulative_time_cutoff <- function(travel_matrix,
                                    travel_cost_col = "travel_time",
                                    by_col = NULL,
                                    active = TRUE) {
+  by_col_char <- assert_and_assign_by_col(by_col)
   checkmate::assert_number(cutoff, lower = 0, finite = TRUE)
   checkmate::assert_string(opportunity_col)
   checkmate::assert_string(travel_cost_col)
-  checkmate::assert_string(by_col, null.ok = TRUE)
   checkmate::assert_logical(active, len = 1, any.missing = FALSE)
-
-  by_col_char <- if (is.null(by_col)) {
-    character(0)
-  } else {
-    by_col
-  }
-
-  checkmate::assert_names(
-    by_col_char,
-    disjunct.from = c("from_id", "to_id"),
-    .var.name = "by_col"
-  )
-
-  travel_matrix_req_names <- c("from_id", "to_id", travel_cost_col, by_col_char)
-  checkmate::assert_data_frame(travel_matrix)
-  checkmate::assert_names(
-    names(travel_matrix),
-    must.include = travel_matrix_req_names,
-    .var.name = "travel_matrix"
-  )
-
-  land_use_data_req_names <- c("id", opportunity_col)
-  checkmate::assert_data_frame(land_use_data)
-  checkmate::assert_names(
-    names(land_use_data),
-    must.include = land_use_data_req_names,
-    .var.name = "land_use_data"
-  )
+  assert_travel_matrix(travel_matrix, travel_cost_col, by_col_char)
+  assert_land_use_data(land_use_data, opportunity_col)
 
   # if not a dt, keep original class to assign later when returning result
 
