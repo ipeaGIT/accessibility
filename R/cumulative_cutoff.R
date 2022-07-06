@@ -106,12 +106,7 @@ cumulative_time_cutoff <- function(travel_matrix,
   names(join_vector) <- join_id
 
   data <- data[get(travel_cost_col) <= cutoff]
-
-  data[
-    land_use_data,
-    on = join_vector,
-    eval(opportunity_col) := get(paste0("i.", opportunity_col))
-  ]
+  merge_by_reference(data, land_use_data, join_vector, opportunity_col)
 
   group_id <- ifelse(active, "from_id", "to_id")
   groups <- c(group_id, by_col_char)
