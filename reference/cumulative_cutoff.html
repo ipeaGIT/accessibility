@@ -76,7 +76,8 @@ such as distance, time and money.</p>
 <span>  <span class="va">opportunity_col</span>,</span>
 <span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
 <span>  by_col <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  active <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  active <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  fill_missing_ids <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -125,6 +126,17 @@ accessibility estimates grouped by origin and by departure time.</p></dd>
 of opportunities that can be reached from a given origin, the default) or
 passive accessibility (how many opportunities/people can reach a given
 destination).</p></dd>
+
+
+<dt>fill_missing_ids</dt>
+<dd><p>A <code>logical</code>. Calculating cumulative accessibility may
+result in missing ids if the they cannot reach any of the destinations
+within the specified travel cost cutoff. For example, using a travel time
+cutoff of 20 minutes, when estimating the accessibility of origin <code>A</code> that
+can only reach destinations with more than 40 minutes results in id <code>A</code>
+not being included in the output. When <code>TRUE</code> (the default), the function
+identifies which origins would be left out and fills their respective
+accessibility values with 0, which incurs in a performance penalty.</p></dd>
 
 </dl></div>
     <div id="value">
