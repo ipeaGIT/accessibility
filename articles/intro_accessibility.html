@@ -123,9 +123,9 @@
 <li>
 <code><a href="../reference/time_to_closest.html">time_to_closest()</a></code> Minimum travel cost to closest <em>N</em> number of opportunities</li>
 <li>
-<code><a href="../reference/cumulative_time_cutoff.html">cumulative_time_cutoff()</a></code>. Traditional time threshold-based cumulative opportunity metric</li>
+<code>cumulative_time_cutoff()</code>. Traditional time threshold-based cumulative opportunity metric</li>
 <li>
-<code><a href="../reference/cumulative_time_interval.html">cumulative_time_interval()</a></code>. A novel time interval-based cumulative opportunity metric (<em>forthcoming paper</em>)</li>
+<code>cumulative_time_interval()</code>. A novel time interval-based cumulative opportunity metric (<em>forthcoming paper</em>)</li>
 <li>
 <code><a href="../reference/gravity_access.html">gravity_access()</a></code> Gravity-based accessibility</li>
 <li>
@@ -188,9 +188,9 @@
 <div class="section level5">
 <h5 id="time-threshold">Time threshold<a class="anchor" aria-label="anchor" href="#time-threshold"></a>
 </h5>
-<p>The <code><a href="../reference/cumulative_time_cutoff.html">cumulative_time_cutoff()</a></code> functions calculates traditional cumulative opportunity accessibility, indicating the number of opportunities that are accessible in under a given travel cost threshold. In this example, we estimate the number of jobs accessible in up to 30 minutes.</p>
+<p>The <code>cumulative_time_cutoff()</code> functions calculates traditional cumulative opportunity accessibility, indicating the number of opportunities that are accessible in under a given travel cost threshold. In this example, we estimate the number of jobs accessible in up to 30 minutes.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cum_cutoff</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cumulative_time_cutoff.html">cumulative_time_cutoff</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">cum_cutoff</span> <span class="op">&lt;-</span> <span class="fu">cumulative_time_cutoff</span><span class="op">(</span></span>
 <span>                data <span class="op">=</span> <span class="va">ttm</span>,</span>
 <span>                cutoff <span class="op">=</span> <span class="fl">30</span>,</span>
 <span>                opportunity_col <span class="op">=</span> <span class="st">'jobs'</span>,</span>
@@ -203,9 +203,9 @@
 <div class="section level5">
 <h5 id="time-interval">Time interval<a class="anchor" aria-label="anchor" href="#time-interval"></a>
 </h5>
-<p><code><a href="../reference/cumulative_time_interval.html">cumulative_time_interval()</a></code> calculates the the time interval cumulative accessibility measure. This is a novel accessibility metric developed by Tomasiello et al. (<em>forthcoming paper</em>) to mitigate the impacts of arbitrary choices of trip duration in traditional threshold-based cumulative opportunity metrics. In the example below, we calculate the average number of jobs accessible considering multiple minute-by-minute time thresholds between 20 and 60 minutes.</p>
+<p><code>cumulative_time_interval()</code> calculates the the time interval cumulative accessibility measure. This is a novel accessibility metric developed by Tomasiello et al. (<em>forthcoming paper</em>) to mitigate the impacts of arbitrary choices of trip duration in traditional threshold-based cumulative opportunity metrics. In the example below, we calculate the average number of jobs accessible considering multiple minute-by-minute time thresholds between 20 and 60 minutes.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cum_interval</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cumulative_time_interval.html">cumulative_time_interval</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">cum_interval</span> <span class="op">&lt;-</span> <span class="fu">cumulative_time_interval</span><span class="op">(</span></span>
 <span>                  data <span class="op">=</span> <span class="va">ttm</span>,</span>
 <span>                  interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">60</span><span class="op">)</span>,</span>
 <span>                  stat <span class="op">=</span> <span class="st">'mean'</span>,</span>
