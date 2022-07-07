@@ -5,27 +5,35 @@
 \title{Cumulative access based on maximum travel time interval}
 \usage{
 cumulative_time_interval(
-  data,
+  travel_matrix,
+  land_use_data,
   interval,
-  stat = "mean",
+  summary_function = stats::median,
   opportunity_col,
   travel_cost_col = "travel_time",
-  by_col
+  by_col = NULL,
+  active = TRUE
 )
 }
 \arguments{
-\item{data}{A \code{data.frame} with a travel cost matrix in long format,
-containing the columns with origin ids, destination ids, the travel cost
-between each origin-destination pair (this can be either in  terms of
-travel time, distance or monetary costs), and number of population and
-opportunities located in each origin and destination.}
+\item{travel_matrix}{A data frame. The travel matrix describing the costs
+(i.e. travel time, distance, monetary cost, etc.) between the origins and
+destinations in the study area. Must contain the columns \code{from_id}, \code{to_id}
+and any others specified in \code{travel_cost_col}.}
 
-\item{interval}{An \verb{numeric vector} of length 2, indicating the start and end
-points of the interval of travel time thresholds to be used.}
+\item{land_use_data}{A data frame. The distribution of opportunities within
+the study area cells. Must contain the columns \code{id} and any others
+specified in \code{opportunity_col}.}
 
-\item{stat}{A \code{string} indicating the summary statistic used to aggregate the
-accessibility estimates within the time interval. It accepts either \code{median}
-(Default) or \code{mean}.}
+\item{interval}{A \code{numeric} vector of length 2. Indicates the start and end
+points of the interval of travel cost thresholds to be used. The first
+entry must be lower than the second.}
+
+\item{summary_function}{A function. This function is used to summarize a
+distribution of accessibility estimates within a travel cost interval as a
+single value. Can be any function that takes an arbitrary number of
+numeric values as as input and returns a single number as output. Defaults
+to \code{\link[stats:median]{stats::median()}}.}
 
 \item{opportunity_col}{A string. The name of the column in \code{land_use_data}
 with the number of opportunities/resources/services to be considered when
@@ -41,16 +49,25 @@ the accessibility estimates by. For example, if \code{travel_matrix} includes a
 departure time column, that specifies the departure time of each entry in
 the data frame, passing \code{"departure_time"} to this argument results in
 accessibility estimates grouped by origin and by departure time.}
+
+\item{active}{A logical. Whether to calculate active accessibility (the
+of opportunities that can be reached from a given origin, the default) or
+passive accessibility (how many opportunities/people can reach a given
+destination).}
 }
 \value{
-A \code{data.table} object.
+A data frame containing the accessibility estimates for each origin
+in the travel matrix.
 }
 \description{
-The function calculates the average or median number of opportunities that
-can be reached considering multiple minute-by-minute maximum travel time
-thresholds within a given travel time interval specified by the user. The
-time interval cumulative accessibility measures was originally proposed by
-Tomasiello et al. (\emph{forthcoming}).
+Calculates the average or median number of opportunities that can be reached
+considering multiple minute-by-minute maximum travel cost thresholds within
+a given travel cost interval specified by the user. The time interval
+cumulative accessibility measures was originally proposed by Tomasiello et
+al. (\emph{forthcoming}).
+
+This function is generic over any kind of numeric travel cost,
+such as distance, time and money.
 }
 \details{
 \subsection{References:}{
@@ -62,29 +79,28 @@ opportunity accessibility.
 }
 }
 \examples{
-\dontshow{if (FALSE) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-library(accessibility)
+data_dir <- system.file("extdata", package = "accessibility")
+travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
+land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
 
-# load a travel time matrix data in long format
-data_path <- system.file("extdata/ttm_bho.rds", package = "accessibility")
-ttm <- readRDS(data_path)
-
-df <- cumulative_time_interval(data = ttm,
-                              interval = c(20, 30),
-                              stat ='mean',
-                              opportunity_col = 'schools',
-                              travel_cost_col = 'travel_time',
-                              by_col = 'from_id')
+df <- cumulative_time_interval(
+  travel_matrix = travel_matrix,
+  land_use_data = land_use_data,
+  interval = c(20, 30),
+  opportunity_col = "schools",
+  travel_cost_col = "travel_time"
+)
 head(df)
 
-df <- cumulative_time_interval(data = ttm,
-                              interval = c(40, 80),
-                              stat ='mean',
-                              opportunity_col = 'jobs',
-                              travel_cost_col = 'travel_time',
-                              by_col = 'from_id')
+df <- cumulative_time_interval(
+  travel_matrix = travel_matrix,
+  land_use_data = land_use_data,
+  interval = c(40, 80),
+  opportunity_col = "jobs",
+  travel_cost_col = "travel_time"
+)
 head(df)
-\dontshow{\}) # examplesIf}
+
 }
 \seealso{
 Other Cumulative access: 

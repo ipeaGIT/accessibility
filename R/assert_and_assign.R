@@ -44,3 +44,35 @@ assert_land_use_data <- function(land_use_data, opportunity_col) {
 
   return(invisible(TRUE))
 }
+
+
+#' @keywords internal
+assert_summary_function <- function(summary_function) {
+  checkmate::assert_function(summary_function)
+
+  result <- tryCatch(
+    summary_function(1:100),
+    error = function(cnd) cnd
+  )
+
+  if (inherits(result, "error")) {
+    stop(
+      "Assertion on 'summary_function' failed: Must be a function that ",
+      "takes a numeric vector as input. Instead, failed with message: ",
+      "'", result$message, "'",
+      call. = FALSE
+    )
+  }
+
+  if (!is.numeric(result) || length(result) != 1) {
+    stop(
+      "Assertion on 'summary_function' failed: Must be a function that takes ",
+      "a numeric vector as input and returns a single numeric as output. ",
+      "Instead, returned: ",
+      "{", paste0(result, collapse = ","), "}",
+      call. = FALSE
+    )
+  }
+
+  return(invisible(TRUE))
+}
