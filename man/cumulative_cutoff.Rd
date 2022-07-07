@@ -11,7 +11,8 @@ cumulative_cutoff(
   opportunity_col,
   travel_cost_col = "travel_time",
   by_col = NULL,
-  active = TRUE
+  active = TRUE,
+  fill_missing_ids = TRUE
 )
 }
 \arguments{
@@ -45,6 +46,15 @@ accessibility estimates grouped by origin and by departure time.}
 of opportunities that can be reached from a given origin, the default) or
 passive accessibility (how many opportunities/people can reach a given
 destination).}
+
+\item{fill_missing_ids}{A \code{logical}. Calculating cumulative accessibility may
+result in missing ids if the they cannot reach any of the destinations
+within the specified travel cost cutoff. For example, using a travel time
+cutoff of 20 minutes, when estimating the accessibility of origin \code{A} that
+can only reach destinations with more than 40 minutes results in id \code{A}
+not being included in the output. When \code{TRUE} (the default), the function
+identifies which origins would be left out and fills their respective
+accessibility values with 0, which incurs in a performance penalty.}
 }
 \value{
 A data frame containing the accessibility estimates for each origin

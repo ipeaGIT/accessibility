@@ -171,13 +171,11 @@ fill_access_list <- function(access, travel_matrix, groups) {
     FUN = function(do_fill, access_df) {
       if (!do_fill) return(access_df)
 
-      filled_access_df <- merge(
-        possible_combinations,
+      filled_access_df <- fill_missing_ids(
         access_df,
-        by = groups,
-        all.x = TRUE
+        possible_combinations,
+        groups
       )
-      filled_access_df[is.na(access), access := 0]
 
       return(filled_access_df[])
     }

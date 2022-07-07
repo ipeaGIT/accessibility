@@ -36,7 +36,8 @@ utils::globalVariables(
     "balanced_impedance_i",
     "balanced_impedance_j",
     "pop_served",
-    "ppr"
+    "ppr",
+    "access"
   )
 )
 
