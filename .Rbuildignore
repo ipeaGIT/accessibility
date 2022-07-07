@@ -2,6 +2,7 @@
 ^\.Rproj\.user$
 ^\.github$
 ^tests_rafa$
+^codecov\.yml$
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
 ^README\.Rmd$
