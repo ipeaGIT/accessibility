@@ -24,7 +24,7 @@
 #'
 #' @template return_accessibility
 #'
-#' @family Cumulative access
+#' @family cumulative access
 #'
 #' @details
 #' ## References:
@@ -37,7 +37,7 @@
 #' travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
 #' land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
 #'
-#' df <- cumulative_time_interval(
+#' df <- cumulative_interval(
 #'   travel_matrix = travel_matrix,
 #'   land_use_data = land_use_data,
 #'   interval = c(20, 30),
@@ -46,7 +46,7 @@
 #' )
 #' head(df)
 #'
-#' df <- cumulative_time_interval(
+#' df <- cumulative_interval(
 #'   travel_matrix = travel_matrix,
 #'   land_use_data = land_use_data,
 #'   interval = c(40, 80),
@@ -56,14 +56,14 @@
 #' head(df)
 #'
 #' @export
-cumulative_time_interval <- function(travel_matrix,
-                                     land_use_data,
-                                     interval,
-                                     summary_function = stats::median,
-                                     opportunity_col,
-                                     travel_cost_col = "travel_time",
-                                     by_col = NULL,
-                                     active = TRUE) {
+cumulative_interval <- function(travel_matrix,
+                                land_use_data,
+                                interval,
+                                summary_function = stats::median,
+                                opportunity_col,
+                                travel_cost_col = "travel_time",
+                                by_col = NULL,
+                                active = TRUE) {
   by_col_char <- assert_and_assign_by_col(by_col)
   checkmate::assert_numeric(
     interval,

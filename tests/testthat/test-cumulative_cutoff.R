@@ -10,7 +10,7 @@ tester <- function(
   by_col = "mode",
   active = TRUE
 ) {
-  cumulative_time_cutoff(
+  cumulative_cutoff(
     travel_matrix,
     land_use_data,
     cutoff,

@@ -14,7 +14,7 @@
 #'
 #' @template return_accessibility
 #'
-#' @family Cumulative access
+#' @family cumulative access
 #'
 #' @examples
 #' data_dir <- system.file("extdata", package = "accessibility")
@@ -22,7 +22,7 @@
 #' land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
 #'
 #' # active accessibility: number of schools accessible from each origin
-#' df <- cumulative_time_cutoff(
+#' df <- cumulative_cutoff(
 #'   travel_matrix = travel_matrix,
 #'   land_use_data = land_use_data,
 #'   cutoff = 30,
@@ -32,7 +32,7 @@
 #' head(df)
 #'
 #' # passive accessibility: number of people that can reach each destination
-#' df <- cumulative_time_cutoff(
+#' df <- cumulative_cutoff(
 #'   travel_matrix = travel_matrix,
 #'   land_use_data = land_use_data,
 #'   cutoff = 30,
@@ -43,13 +43,13 @@
 #' head(df)
 #'
 #' @export
-cumulative_time_cutoff <- function(travel_matrix,
-                                   land_use_data,
-                                   cutoff,
-                                   opportunity_col,
-                                   travel_cost_col = "travel_time",
-                                   by_col = NULL,
-                                   active = TRUE) {
+cumulative_cutoff <- function(travel_matrix,
+                              land_use_data,
+                              cutoff,
+                              opportunity_col,
+                              travel_cost_col = "travel_time",
+                              by_col = NULL,
+                              active = TRUE) {
   by_col_char <- assert_and_assign_by_col(by_col)
   checkmate::assert_number(cutoff, lower = 0, finite = TRUE)
   checkmate::assert_string(opportunity_col)
