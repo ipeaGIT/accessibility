@@ -12,8 +12,7 @@
 #' @template by_col
 #' @template active
 #'
-#' @return A `data.table` containing the accessibility estimate for each origin
-#'   in the travel matrix.
+#' @template return_accessibility
 #'
 #' @family Cumulative access
 #'
