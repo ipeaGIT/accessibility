@@ -119,13 +119,69 @@ cumulative_interval <- function(travel_matrix,
       ]
     }
   )
+
+  # some of the estimates for lower thresholds may have less number of rows
+  # because some origins may not reach any destinations when the travel cost
+  # restrictions are harder. in such case, we have to fill these datasets with
+  # the missing combinations having accessibility 0, otherwise the summary
+  # measure would be miscalculated (e.g. think of median of 1 3 5 and median of
+  # 0 1 3 5)
+
+  nrow_more_restrictive <- nrow(access[[1]])
+  nrow_less_restrictive <- nrow(access[[length(access)]])
+
+  if (nrow_more_restrictive < nrow_less_restrictive) {
+    access <- fill_access_list(access, travel_matrix, groups)
+  }
   access <- data.table::rbindlist(access, idcol = "cutoffs")
+
+  # the as.integer() call below makes sure that, even though the summary
+  # function may return doubles, the result is an integer (afterall when using
+  # a cumulative measure you cannot reach half of an opportunity) and that the
+  # float is rounded down to the integer (if you reach 2.8 opportunities you do
+  # reach 2, but you can't reach 3)
 
   access <- access[
     ,
-    .(access = as.numeric(summary_function(access))),
+    .(access = as.integer(summary_function(access))),
     by = eval(groups, envir = env)
   ]
+  data.table::setnames(access, c(group_id, "access"), c("id", opportunity_col))
+
+  if (exists("original_class")) class(access) <- original_class
 
   return(access)
+}
+
+
+#' @keywords internal
+fill_access_list <- function(access, travel_matrix, groups) {
+  unique_values <- lapply(groups, function(x) unique(travel_matrix[[x]]))
+  names(unique_values) <- groups
+  possible_combinations <- do.call(data.table::CJ, unique_values)
+
+  access_nrows <- vapply(access, nrow, integer(1))
+  possible_nrows <- nrow(possible_combinations)
+  should_fill <- access_nrows < possible_nrows
+
+  filled_access <- mapply(
+    do_fill = should_fill,
+    access_df = access,
+    SIMPLIFY = FALSE,
+    FUN = function(do_fill, access_df) {
+      if (!do_fill) return(access_df)
+
+      filled_access_df <- merge(
+        possible_combinations,
+        access_df,
+        by = groups,
+        all.x = TRUE
+      )
+      filled_access_df[is.na(access), access := 0]
+
+      return(filled_access_df[])
+    }
+  )
+
+  return(filled_access)
 }
