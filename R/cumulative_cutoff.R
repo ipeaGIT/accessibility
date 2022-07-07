@@ -64,22 +64,15 @@ cumulative_time_cutoff <- function(travel_matrix,
     original_class <- class(travel_matrix)
     data <- data.table::as.data.table(travel_matrix)
   } else {
-    data <- travel_matrix
+    data <- data.table::copy(travel_matrix)
   }
 
   if (!inherits(land_use_data, "data.table")) {
     land_use_data <- data.table::as.data.table(land_use_data)
   }
 
-  # when calculating active accessibility, we want the number of opportunities
-  # in the destination. if passive, the number of opportunities in the origin
-
-  join_id <- ifelse(active, "to_id", "from_id")
-  join_vector <- "id"
-  names(join_vector) <- join_id
-
   data <- data[get(travel_cost_col) <= cutoff]
-  merge_by_reference(data, land_use_data, join_vector, opportunity_col)
+  merge_by_reference(data, land_use_data, opportunity_col, active)
 
   group_id <- ifelse(active, "from_id", "to_id")
   groups <- c(group_id, by_col_char)
