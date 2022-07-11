@@ -8,7 +8,8 @@ tester <- function(
   opportunity_col = "jobs",
   travel_cost_col = "travel_time",
   by_col = "mode",
-  active = TRUE
+  active = TRUE,
+  fill_missing_ids = TRUE
 ) {
   cumulative_cutoff(
     travel_matrix,
@@ -17,7 +18,8 @@ tester <- function(
     opportunity_col,
     travel_cost_col,
     by_col,
-    active
+    active,
+    fill_missing_ids
   )
 }
 
@@ -36,6 +38,14 @@ test_that("raises errors due to incorrect input", {
   expect_error(tester(by_col = 1))
   expect_error(tester(by_col = c("mode", "departure_time")))
   expect_error(tester(by_col = "from_id"))
+
+  expect_error(tester(active = 1))
+  expect_error(tester(active = c(TRUE, TRUE)))
+  expect_error(tester(active = NA))
+
+  expect_error(tester(fill_missing_ids = 1))
+  expect_error(tester(fill_missing_ids = c(TRUE, TRUE)))
+  expect_error(tester(fill_missing_ids = NA))
 
   expect_error(tester(as.list(travel_matrix)))
   expect_error(tester(travel_matrix[, .(oi = from_id, to_id, travel_time)]))
@@ -102,6 +112,20 @@ test_that("result has correct structure", {
   expect_true(ncol(result) == 2)
   expect_is(result$id, "character")
   expect_is(result$jobs, "integer")
+
+  result <- tester(
+    data.table::data.table(
+      mode = character(),
+      from_id = character(),
+      to_id = character(),
+      travel_time = integer()
+    )
+  )
+  expect_true(ncol(result) == 3)
+  expect_true(nrow(result) == 0)
+  expect_is(result$id, "character")
+  expect_is(result$mode, "character")
+  expect_is(result$jobs, "integer")
 })
 
 test_that("input data sets remain unchanged", {
@@ -150,4 +174,43 @@ test_that("active and passive accessibility is correctly calculated", {
     population = rep(as.integer(c(4874, 4268, 2404, 4268, 29)), 2)
   )
   expect_identical(result, expected_result)
+})
+
+test_that("fill_missing_ids arg works correctly", {
+  small_travel_matrix <- travel_matrix[
+    from_id %in% c("89a88cdb57bffff", "89a88cdb597ffff")
+  ]
+  small_travel_matrix <- small_travel_matrix[
+    from_id != "89a88cdb57bffff" | travel_time > 40
+  ]
+
+  result <- tester(
+    small_travel_matrix,
+    land_use_data,
+    fill_missing_ids = TRUE
+  )
+  data.table::setkey(result, NULL)
+  expect_identical(
+    result,
+    data.table::data.table(
+      id = rep(c("89a88cdb57bffff", "89a88cdb597ffff"), each = 2),
+      mode = rep(c("transit", "transit2"), times = 2),
+      jobs = rep(as.integer(c(0, 36567)), each = 2)
+    )
+  )
+
+  result <- tester(
+    small_travel_matrix,
+    land_use_data,
+    fill_missing_ids = FALSE
+  )
+  data.table::setkey(result, NULL)
+  expect_identical(
+    result,
+    data.table::data.table(
+      id = rep("89a88cdb597ffff", each = 2),
+      mode = c("transit", "transit2"),
+      jobs = rep(36567L, each = 2)
+    )
+  )
 })
