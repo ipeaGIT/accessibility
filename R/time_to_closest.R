@@ -88,7 +88,9 @@ time_to_closest <- function(travel_matrix,
     access <- data[
       get(opportunity_col) > 0,
       .(
-        min_cost = min(get(travel_cost_col)[get(opportunity_col) > 0]),
+        min_cost = suppressWarnings(
+          min(get(travel_cost_col)[get(opportunity_col) > 0])
+        ),
         destination = to_id[which.min(get(travel_cost_col))]
       ),
       by = eval(groups, envir = env)
