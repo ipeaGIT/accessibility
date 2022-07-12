@@ -171,7 +171,7 @@ fill_access_list <- function(access, travel_matrix, groups) {
     FUN = function(do_fill, access_df) {
       if (!do_fill) return(access_df)
 
-      filled_access_df <- fill_missing_ids(
+      filled_access_df <- do_fill_missing_ids(
         access_df,
         possible_combinations,
         groups
