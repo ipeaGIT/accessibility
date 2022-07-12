@@ -1,82 +1,248 @@
 # if running manually, please run the following line first:
 # source("tests/testthat/setup.R")
 
-testthat::skip_on_cran()
-testthat::skip("skipping for now")
+tester <- function(
+  travel_matrix = get("travel_matrix", envir = parent.frame()),
+  land_use_data = get("land_use_data", envir = parent.frame()),
+  interval = c(10, 30),
+  summary_function = stats::median,
+  opportunity_col = "jobs",
+  travel_cost_col = "travel_time",
+  by_col = "mode",
+  active = TRUE
+) {
+  cumulative_interval(
+    travel_matrix,
+    land_use_data,
+    interval,
+    summary_function,
+    opportunity_col,
+    travel_cost_col,
+    by_col,
+    active
+  )
+}
 
-default_tester <- function(data = ttm,
-                           interval = c(20, 25),
-                           stat = 'mean',
-                           opportunity_col = 'schools',
-                           travel_cost_col = 'travel_time',
-                           by_col='from_id') {
+test_that("raises errors due to incorrect input", {
+  expect_error(tester(interval = "banana"))
+  expect_error(tester(interval = 3))
+  expect_error(tester(interval = c(-1, 10)))
+  expect_error(tester(interval = c(11, 10)))
+  expect_error(tester(interval = c(10, 10)))
+  expect_error(tester(interval = c(1, Inf)))
+  expect_error(tester(interval = c(1, NA)))
 
-  results <- accessibility::cumulative_time_interval(data = data,
-                                      interval = interval,
-                                      stat = stat,
-                                      opportunity_col = opportunity_col,
-                                      travel_cost_col = travel_cost_col,
-                                      by_col = by_col
-                                      )
-  return(results)
-  }
+  expect_error(tester(summary_function = "test"))
+  expect_error(tester(summary_function = readRDS))
+  expect_error(tester(summary_function = identity))
 
+  expect_error(tester(opportunity_col = 1))
+  expect_error(tester(opportunity_col = c("schools", "jobs")))
 
-# errors and warnings -----------------------------------------------------
+  expect_error(tester(travel_cost_col = 1))
+  expect_error(tester(travel_cost_col = c("travel_time", "monetary_cost")))
 
+  expect_error(tester(by_col = 1))
+  expect_error(tester(by_col = c("mode", "departure_time")))
+  expect_error(tester(by_col = "from_id"))
 
-test_that("adequately raises errors", {
+  expect_error(tester(active = 1))
+  expect_error(tester(active = c(TRUE, TRUE)))
+  expect_error(tester(active = NA))
 
-  # input data is not a data.frame
-  expect_error(default_tester(data = list(ttm)))
+  expect_error(tester(as.list(travel_matrix)))
+  expect_error(tester(travel_matrix[, .(oi = from_id, to_id, travel_time)]))
+  expect_error(tester(travel_matrix[, .(from_id, oi = to_id, travel_time)]))
+  expect_error(
+    tester(
+      travel_matrix[, .(from_id, to_id, oi = travel_time)],
+      travel_cost_col = "travel_time"
+    )
+  )
+  expect_error(
+    tester(
+      travel_matrix[, .(from_id, to_id, travel_time, oi = mode)],
+      by_col = "mode"
+    )
+  )
 
-  # vars with col names do not exist in data input
-  expect_error(default_tester(opportunity_col = 'banana'))
-  expect_error(default_tester(by_col = 'banana'))
-  expect_error(default_tester(travel_cost_col = 'banana'))
-  expect_error(default_tester(opportunity_col = 999))
-  expect_error(default_tester(by_col = 999))
-  expect_error(default_tester(travel_cost_col = 999))
-
-  # invalid summary stat
-  expect_error(default_tester(stat = 'banana'))
-  expect_error(default_tester(stat = 999))
-
-
-  # interval values are not positive numeric
-  expect_error(default_tester(interval = c(1,2,3)))
-  expect_error(default_tester(interval = c(5,5)))
-  expect_error(default_tester(interval = c(1,-2)))
-  expect_error(default_tester(interval = c(1,Inf)))
-  expect_error(default_tester(interval = "banana"))
-  expect_error(default_tester(interval = -3))
-  expect_error(is(default_tester(interval = Inf), "data.table"))
-
+  expect_error(tester(as.list(land_use_data)))
+  expect_error(tester(land_use_data = land_use_data[, .(oi = id, jobs)]))
+  expect_error(
+    tester(
+      land_use_data = land_use_data[, .(id, oi = jobs)],
+      opportunity_col = "jobs"
+    )
+  )
 })
 
+test_that("throws warning if travel_matrix extra col", {
+  # i.e. col not listed in travel_cost_col and by_col
+  expect_warning(tester(by_col = NULL))
+})
 
+test_that("returns a dataframe whose class is the same as travel_matrix's", {
+  result <- tester()
+  expect_is(result, "data.table")
+  result <- tester(land_use_data = as.data.frame(land_use_data))
+  expect_is(result, "data.table")
 
-# adequate behavior ------------------------------------------------------
+  result <- tester(as.data.frame(travel_matrix))
+  expect_false(inherits(result, "data.table"))
+  expect_is(result, "data.frame")
+  result <- tester(
+    as.data.frame(travel_matrix),
+    land_use_data = as.data.frame(land_use_data)
+  )
+  expect_false(inherits(result, "data.table"))
+  expect_is(result, "data.frame")
+})
 
+test_that("result has correct structure", {
+  result <- tester()
+  expect_true(ncol(result) == 3)
+  expect_is(result$id, "character")
+  expect_is(result$mode, "character")
+  expect_is(result$jobs, "integer")
 
-test_that("output is correct", {
+  result <- tester(opportunity_col = "schools")
+  expect_true(ncol(result) == 3)
+  expect_is(result$id, "character")
+  expect_is(result$mode, "character")
+  expect_is(result$schools, "integer")
 
-  # TO DO:
-  #> test output values
+  suppressWarnings(result <- tester(by_col = NULL))
+  expect_true(ncol(result) == 2)
+  expect_is(result$id, "character")
+  expect_is(result$jobs, "integer")
 
+  result <- tester(
+    data.table::data.table(
+      mode = character(),
+      from_id = character(),
+      to_id = character(),
+      travel_time = integer()
+    )
+  )
+  expect_true(ncol(result) == 3)
+  expect_true(nrow(result) == 0)
+  expect_is(result$id, "character")
+  expect_is(result$mode, "character")
+  expect_is(result$jobs, "integer")
+})
 
-  # different opportunity_col
-  expect_is( default_tester(opportunity_col = 'jobs'), "data.table")
+test_that("input data sets remain unchanged", {
+  original_travel_matrix <- data.table::rbindlist(
+    travel_matrix_list,
+    idcol = "mode"
+  )
+  original_land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
 
-  # different by_col
-  expect_is( default_tester(by_col = 'from_id'), "data.table")
+  result <- tester()
 
-  # different interval values
-  expect_is( default_tester(interval = c(10, 15)), "data.table")
-  expect_is( default_tester(interval = c(0, 15)), "data.table")
-  expect_is( default_tester(interval = c(20, 10)), "data.table")
+  # subsets in other functions tests set travel_matrix index
+  data.table::setindex(travel_matrix, NULL)
 
-  # different summary stat
-  expect_is( default_tester(stat = 'median'), "data.table")
+  expect_identical(original_travel_matrix, travel_matrix)
+  expect_identical(original_land_use_data, land_use_data)
+})
 
+test_that("active and passive accessibility is correctly calculated", {
+  selected_ids <- c(
+    "89a88cdb57bffff",
+    "89a88cdb597ffff",
+    "89a88cdb5b3ffff",
+    "89a88cdb5cfffff",
+    "89a88cd909bffff"
+  )
+  smaller_travel_matrix <- travel_matrix[
+    from_id %in% selected_ids & to_id %in% selected_ids
+  ]
+
+  result <- tester(smaller_travel_matrix, interval = c(40, 45), by_col = "mode")
+  expected_result <- data.table::data.table(
+    id = rep(selected_ids, 2),
+    mode = rep(c("transit", "transit2"), each = 5),
+    jobs = rep(as.integer(c(82, 517, 517, 304, 0)), 2)
+  )
+  expect_identical(result, expected_result)
+
+  result <- tester(
+    smaller_travel_matrix,
+    interval = c(40, 45),
+    opportunity_col = "population",
+    by_col = "mode",
+    active = FALSE
+  )
+  expected_result <- data.table::data.table(
+    id = rep(selected_ids, 2),
+    mode = rep(c("transit", "transit2"), each = 5),
+    population = rep(as.integer(c(1538, 3336, 2404, 4268, 29)), 2)
+  )
+  expect_identical(result, expected_result)
+})
+
+test_that("summarizes the result according to summary function", {
+  selected_ids <- c(
+    "89a88cdb57bffff",
+    "89a88cdb597ffff",
+    "89a88cdb5b3ffff",
+    "89a88cdb5cfffff",
+    "89a88cd909bffff"
+  )
+  smaller_travel_matrix <- travel_matrix[
+    from_id %in% selected_ids & to_id %in% selected_ids
+  ]
+
+  result <- tester(
+    smaller_travel_matrix,
+    interval = c(40, 45),
+    summary_function = min,
+    by_col = "mode"
+  )
+  expected_result <- data.table::data.table(
+    id = rep(selected_ids, 2),
+    mode = rep(c("transit", "transit2"), each = 5),
+    jobs = rep(as.integer(c(82, 408, 408, 109, 0)), 2)
+  )
+  expect_identical(result, expected_result)
+
+  result <- tester(
+    smaller_travel_matrix,
+    interval = c(40, 45),
+    summary_function = mean,
+    by_col = "mode"
+  )
+  expected_result <- data.table::data.table(
+    id = rep(selected_ids, 2),
+    mode = rep(c("transit", "transit2"), each = 5),
+    jobs = rep(as.integer(c(82, 512, 508, 304, 0)), 2)
+  )
+  expect_identical(result, expected_result)
+})
+
+test_that("accessibility is correctly calculated when ids are missing", {
+  selected_ids <- c(
+    "89a88cdb57bffff",
+    "89a88cdb597ffff",
+    "89a88cdb5b3ffff",
+    "89a88cdb5cfffff",
+    "89a88cd909bffff"
+  )
+  smaller_travel_matrix <- travel_matrix[
+    from_id %in% selected_ids & to_id %in% selected_ids
+  ]
+
+  result <- tester(
+    smaller_travel_matrix,
+    interval = c(5, 6),
+    summary_function = min,
+    by_col = "mode"
+  )
+  expected_result <- data.table::data.table(
+    id = rep(selected_ids[order(selected_ids)], each = 2),
+    mode = rep(c("transit", "transit2"), 5),
+    jobs = rep(as.integer(c(0, 0, 0, 0, 0)), 2)
+  )
+  expect_identical(result, expected_result)
 })
