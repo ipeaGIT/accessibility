@@ -5,26 +5,32 @@
 \title{Minimum travel cost to closest N number of opportunities}
 \usage{
 time_to_closest(
-  data,
+  travel_matrix,
+  land_use_data,
+  n = 1,
   opportunity_col,
-  n_opportunities = 1,
   travel_cost_col = "travel_time",
-  by_col
+  by_col = NULL,
+  active = TRUE,
+  fill_missing_ids = TRUE
 )
 }
 \arguments{
-\item{data}{A \code{data.frame} with a travel cost matrix in long format,
-containing the columns with origin ids, destination ids, the travel cost
-between each origin-destination pair (this can be either in  terms of
-travel time, distance or monetary costs), and number of population and
-opportunities located in each origin and destination.}
+\item{travel_matrix}{A data frame. The travel matrix describing the costs
+(i.e. travel time, distance, monetary cost, etc.) between the origins and
+destinations in the study area. Must contain the columns \code{from_id}, \code{to_id}
+and any others specified in \code{travel_cost_col}.}
+
+\item{land_use_data}{A data frame. The distribution of opportunities within
+the study area cells. Must contain the columns \code{id} and any others
+specified in \code{opportunity_col}.}
+
+\item{n}{A \code{numeric}. A number indicating the minimum number of opportunities
+that should be considered. Defaults to 1.}
 
 \item{opportunity_col}{A string. The name of the column in \code{land_use_data}
 with the number of opportunities/resources/services to be considered when
 calculating accessibility levels.}
-
-\item{n_opportunities}{A \code{numeric} value with the minimum N number of
-opportunities that should be considered. Defaults to \code{1}}
 
 \item{travel_cost_col}{A string. The name of the column in \code{travel_matrix}
 with the travel cost between origins and destinations. Defaults to
@@ -36,36 +42,51 @@ the accessibility estimates by. For example, if \code{travel_matrix} includes a
 departure time column, that specifies the departure time of each entry in
 the data frame, passing \code{"departure_time"} to this argument results in
 accessibility estimates grouped by origin and by departure time.}
+
+\item{active}{A logical. Whether to calculate active accessibility (the
+of opportunities that can be reached from a given origin, the default) or
+passive accessibility (how many opportunities/people can reach a given
+destination).}
+
+\item{fill_missing_ids}{A \code{logical}. Calculating minimum travle cost to
+closest N number of opportunities may result in missing ids in the output
+if they cannot reach the specified amount of opportunities across all
+destinations they can reach. When \code{TRUE} (the default), the function
+identifies which origins would be left out from the output and fill their
+respective minimum travel costs with \code{Inf} and the \code{destination} column
+with \code{NA}.}
 }
 \value{
-A \code{data.table} object indicating for each origin the travel time to
-the closest opportunity and the id of the destination where it is
-located.
+A data frame containing the travel time to the closest opportunities
+and the ids of the destination where they are located.
 }
 \description{
-The function calculates the minimum travel cost to closest N number of
-opportunities.
+Calculates the minimum travel cost to the closest N number of opportunities.
+
+This function is generic over any kind of numeric travel cost,
+such as distance, time and money.
 }
 \examples{
-library(accessibility)
+data_dir <- system.file("extdata", package = "accessibility")
+travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
+land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
 
-# load a travel time matrix data in long format
-data_path <- system.file("extdata/ttm_bho.rds", package = "accessibility")
-ttm <- readRDS(data_path)
-
-df <- time_to_closest(data = ttm,
-                     opportunity_col = 'schools',
-                     n_opportunities = 1,
-                     travel_cost_col = 'travel_time',
-                     by_col = 'from_id')
+df <- time_to_closest(
+  travel_matrix,
+  land_use_data,
+  n = 1,
+  opportunity_col = "schools",
+  travel_cost_col = "travel_time"
+)
 head(df)
 
-df <- time_to_closest(data = ttm,
-                     opportunity_col = 'schools',
-                     n_opportunities = 2,
-                     travel_cost_col = 'travel_time',
-                     by_col = 'from_id')
+df <- time_to_closest(
+  travel_matrix,
+  land_use_data,
+  n = 2,
+  opportunity_col = "schools",
+  travel_cost_col = "travel_time"
+)
 head(df)
 
 }
-\concept{Minimum travel cost}

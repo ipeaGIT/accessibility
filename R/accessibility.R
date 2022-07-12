@@ -27,8 +27,6 @@ utils::globalVariables(
     "from_id",
     "schools",
     "df",
-    "median",
-    "mean",
     "travel_time",
     "to_id",
     "cum_opport",
@@ -37,7 +35,9 @@ utils::globalVariables(
     "balanced_impedance_j",
     "pop_served",
     "ppr",
-    "access"
+    "access",
+    "min_cost",
+    "destination"
   )
 )
 

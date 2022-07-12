@@ -1,83 +1,146 @@
-#' @title Minimum travel cost to closest N number of opportunities
+#' Minimum travel cost to closest N number of opportunities
 #'
-#' @description
-#' The function calculates the minimum travel cost to closest N number of
-#' opportunities.
+#' Calculates the minimum travel cost to the closest N number of opportunities.
+#' @template description_generic_cost
 #'
-#' @template input_data
+#' @template travel_matrix
+#' @template land_use_data
+#' @param n A `numeric`. A number indicating the minimum number of opportunities
+#'   that should be considered. Defaults to 1.
 #' @template opportunity_col
 #' @template travel_cost_col
 #' @template by_col
-#' @param n_opportunities A `numeric` value with the minimum N number of
-#'   opportunities that should be considered. Defaults to `1`
+#' @template active
+#' @param fill_missing_ids A `logical`. Calculating minimum travle cost to
+#'   closest N number of opportunities may result in missing ids in the output
+#'   if they cannot reach the specified amount of opportunities across all
+#'   destinations they can reach. When `TRUE` (the default), the function
+#'   identifies which origins would be left out from the output and fill their
+#'   respective minimum travel costs with `Inf` and the `destination` column
+#'   with `NA`.
 #'
-#' @return A `data.table` object indicating for each origin the travel time to
-#'         the closest opportunity and the id of the destination where it is
-#'         located.
-#' @family Minimum travel cost
+#' @return A data frame containing the travel time to the closest opportunities
+#'   and the ids of the destination where they are located.
+#'
 #' @examples
-#' library(accessibility)
+#' data_dir <- system.file("extdata", package = "accessibility")
+#' travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
+#' land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
 #'
-#' # load a travel time matrix data in long format
-#' data_path <- system.file("extdata/ttm_bho.rds", package = "accessibility")
-#' ttm <- readRDS(data_path)
+#' df <- time_to_closest(
+#'   travel_matrix,
+#'   land_use_data,
+#'   n = 1,
+#'   opportunity_col = "schools",
+#'   travel_cost_col = "travel_time"
+#' )
+#' head(df)
 #'
-#'df <- time_to_closest(data = ttm,
-#'                      opportunity_col = 'schools',
-#'                      n_opportunities = 1,
-#'                      travel_cost_col = 'travel_time',
-#'                      by_col = 'from_id')
-#'head(df)
-#'
-#'df <- time_to_closest(data = ttm,
-#'                      opportunity_col = 'schools',
-#'                      n_opportunities = 2,
-#'                      travel_cost_col = 'travel_time',
-#'                      by_col = 'from_id')
-#'head(df)
+#' df <- time_to_closest(
+#'   travel_matrix,
+#'   land_use_data,
+#'   n = 2,
+#'   opportunity_col = "schools",
+#'   travel_cost_col = "travel_time"
+#' )
+#' head(df)
 #'
 #' @export
-time_to_closest <- function(data, opportunity_col, n_opportunities = 1, travel_cost_col = 'travel_time', by_col){
-
-  # check inputs ------------------------------------------------------------
-  checkmate::assert_data_frame(data)
+time_to_closest <- function(travel_matrix,
+                            land_use_data,
+                            n = 1,
+                            opportunity_col,
+                            travel_cost_col = "travel_time",
+                            by_col = NULL,
+                            active = TRUE,
+                            fill_missing_ids = TRUE) {
+  by_col_char <- assert_and_assign_by_col(by_col)
+  checkmate::assert_number(n, lower = 1, finite = TRUE)
   checkmate::assert_string(opportunity_col)
   checkmate::assert_string(travel_cost_col)
-  checkmate::assert_string(by_col)
-  checkmate::assert_number(n_opportunities, lower = 1, finite = TRUE)
+  checkmate::assert_logical(active, len = 1, any.missing = FALSE)
+  checkmate::assert_logical(fill_missing_ids, len = 1, any.missing = FALSE)
+  assert_travel_matrix(travel_matrix, travel_cost_col, by_col_char)
+  assert_land_use_data(land_use_data, opportunity_col)
 
-  checkmate::assert_names(names(data), must.include = opportunity_col, .var.name = "data")
-  checkmate::assert_names(names(data), must.include = travel_cost_col, .var.name = "data")
-  checkmate::assert_names(names(data), must.include = by_col, .var.name = "data")
+  # if not a dt, keep original class to assign later when returning result
 
-
-  # calculate access -----------------------------------------------------------
-  data.table::setDT(data)
-
-
- if (n_opportunities == 1) {
-
-   access <- data[ get(opportunity_col) > 0,
-                   .(travel_cost = min(get(travel_cost_col)[which(get(opportunity_col) > 0 )])
-                     , destination = to_id[which.min( get(travel_cost_col) )]
-                     ), by = c(by_col)]
-
- } else {
-
-  # keep only destinations with at least one opportunity
-  temp <- data[ get(opportunity_col) > 0,]
-
-  # sort by shortest to longets travel times
-  temp <- temp[order(get(by_col), get(travel_cost_col))]
-
-  # cumsum of opportunities
-  temp[, cum_opport := cumsum(get(opportunity_col)), by = c(by_col)]
-
-  access <- temp[,
-                 .(travel_cost = get(travel_cost_col)[which(cum_opport == n_opportunities)]
-                   , destination = paste(to_id[which(cum_opport <= n_opportunities)], collapse  = ";")
-                 ), by = c(by_col)]
+  if (!inherits(travel_matrix, "data.table")) {
+    original_class <- class(travel_matrix)
+    data <- data.table::as.data.table(travel_matrix)
+  } else {
+    data <- data.table::copy(travel_matrix)
   }
+
+  if (!inherits(land_use_data, "data.table")) {
+    land_use_data <- data.table::as.data.table(land_use_data)
+  }
+
+  merge_by_reference(data, land_use_data, opportunity_col, active)
+
+  group_id <- ifelse(active, "from_id", "to_id")
+  groups <- c(group_id, by_col_char)
+  env <- environment()
+
+  warn_extra_cols(travel_matrix, travel_cost_col, group_id, groups)
+
+  if (n == 1) {
+    access <- data[
+      get(opportunity_col) > 0,
+      .(
+        min_cost = min(get(travel_cost_col)[get(opportunity_col) > 0]),
+        destination = to_id[which.min(get(travel_cost_col))]
+      ),
+      by = eval(groups, envir = env)
+    ]
+  } else {
+    opport_cumsum <- data[get(opportunity_col) > 0, ]
+    opport_cumsum <- opport_cumsum[order(get(groups), get(travel_cost_col))]
+    opport_cumsum[
+      ,
+      cum_opport := cumsum(get(opportunity_col)),
+      by = eval(groups, envir = env)
+    ]
+
+    access <- opport_cumsum[
+      ,
+      .(
+        min_cost = suppressWarnings(min(get(travel_cost_col)[cum_opport >= n])),
+        destination = paste(to_id[cum_opport <= n], collapse  = ";")
+      ),
+      by = eval(groups, envir = env)
+    ]
+
+    if (fill_missing_ids) {
+      access[is.infinite(min_cost), destination := NA]
+    } else {
+      access <- access[is.finite(min_cost)]
+    }
+  }
+
+  if (fill_missing_ids) {
+    unique_values <- lapply(groups, function(x) unique(travel_matrix[[x]]))
+    names(unique_values) <- groups
+    possible_combinations <- do.call(data.table::CJ, unique_values)
+
+    if (nrow(access) < nrow(possible_combinations)) {
+      access <- do_fill_missing_ids(
+        access,
+        possible_combinations,
+        groups,
+        access_col = "min_cost",
+        fill_value = Inf
+      )
+    }
+  }
+
+  data.table::setnames(
+    access,
+    c(group_id, "min_cost"),
+    c("id", opportunity_col)
+  )
+
+  if (exists("original_class")) class(access) <- original_class
 
   return(access)
 }
