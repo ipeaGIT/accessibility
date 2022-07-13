@@ -19,8 +19,9 @@
 #'   respective minimum travel costs with `Inf` and the `destination` column
 #'   with `NA`.
 #'
-#' @return A data frame containing the travel time to the closest opportunities
-#'   and the ids of the destination where they are located.
+#' @return A data frame containing the travel cost to the closest opportunities.
+#'   and the ids of the destination/origin where they are located (depending if
+#'   `active` is `TRUE` or `FALSE`).
 #'
 #' @examples
 #' data_dir <- system.file("extdata", package = "accessibility")
@@ -80,24 +81,30 @@ cost_to_closest <- function(travel_matrix,
 
   group_id <- ifelse(active, "from_id", "to_id")
   groups <- c(group_id, by_col_char)
+  dest_or_orig_id <- setdiff(c("from_id", "to_id"), group_id)
   env <- environment()
 
   warn_extra_cols(travel_matrix, travel_cost_col, group_id, groups)
 
   if (n == 1) {
     access <- data[
-      get(opportunity_col) > 0,
+      data[
+        get(opportunity_col) > 0,
+        .I[get(travel_cost_col) == suppressWarnings(min(get(travel_cost_col)))],
+        by = eval(groups, envir = env)
+      ]$V1
+    ]
+    access <- access[
+      ,
       .(
-        min_cost = suppressWarnings(
-          min(get(travel_cost_col)[get(opportunity_col) > 0])
-        ),
-        destination = to_id[which.min(get(travel_cost_col))]
+        min_cost = get(travel_cost_col)[1],
+        dest_or_orig = paste(eval(as.name(dest_or_orig_id)), collapse = ";")
       ),
       by = eval(groups, envir = env)
     ]
   } else {
     opport_cumsum <- data[get(opportunity_col) > 0, ]
-    opport_cumsum <- opport_cumsum[order(get(groups), get(travel_cost_col))]
+    data.table::setorderv(opport_cumsum, c(groups, travel_cost_col))
     opport_cumsum[
       ,
       cum_opport := cumsum(get(opportunity_col)),
@@ -108,13 +115,16 @@ cost_to_closest <- function(travel_matrix,
       ,
       .(
         min_cost = suppressWarnings(min(get(travel_cost_col)[cum_opport >= n])),
-        destination = paste(to_id[cum_opport <= n], collapse  = ";")
+        dest_or_orig = paste(
+          eval(as.name(dest_or_orig_id))[cum_opport <= n],
+          collapse  = ";"
+        )
       ),
       by = eval(groups, envir = env)
     ]
 
     if (fill_missing_ids) {
-      access[is.infinite(min_cost), destination := NA]
+      access[is.infinite(min_cost), dest_or_orig := NA]
     } else {
       access <- access[is.finite(min_cost)]
     }
@@ -136,14 +146,20 @@ cost_to_closest <- function(travel_matrix,
     }
   }
 
+  dest_or_orig_name <- ifelse(
+    dest_or_orig_id == "to_id",
+    "destination",
+    "origin"
+  )
+
   data.table::setnames(
     access,
-    c(group_id, "min_cost"),
-    c("id", opportunity_col)
+    c(group_id, "min_cost", "dest_or_orig"),
+    c("id", travel_cost_col, dest_or_orig_name)
   )
 
   if (exists("original_class")) class(access) <- original_class
 
-  return(access)
+  return(access[])
 }
 

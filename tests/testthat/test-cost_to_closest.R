@@ -100,20 +100,20 @@ test_that("result has correct structure", {
   expect_true(ncol(result) == 4)
   expect_is(result$id, "character")
   expect_is(result$mode, "character")
-  expect_is(result$schools, "numeric")
+  expect_is(result$travel_time, "numeric")
   expect_is(result$destination, "character")
 
-  result <- tester(opportunity_col = "jobs")
+  result <- tester(active = FALSE)
   expect_true(ncol(result) == 4)
   expect_is(result$id, "character")
   expect_is(result$mode, "character")
-  expect_is(result$jobs, "numeric")
-  expect_is(result$destination, "character")
+  expect_is(result$travel_time, "numeric")
+  expect_is(result$origin, "character")
 
   suppressWarnings(result <- tester(by_col = NULL))
   expect_true(ncol(result) == 3)
   expect_is(result$id, "character")
-  expect_is(result$schools, "numeric")
+  expect_is(result$travel_time, "numeric")
   expect_is(result$destination, "character")
 
   result <- tester(
@@ -128,7 +128,7 @@ test_that("result has correct structure", {
   expect_true(nrow(result) == 0)
   expect_is(result$id, "character")
   expect_is(result$mode, "character")
-  expect_is(result$schools, "numeric")
+  expect_is(result$travel_time, "integer")
   expect_is(result$destination, "character")
 })
 
@@ -148,10 +148,120 @@ test_that("input data sets remain unchanged", {
   expect_identical(original_land_use_data, land_use_data)
 })
 
-test_that("active and passive accessibility is correctly calculated", {
-  # TODO: add tests
+test_that("active and passive accessibility is correctly calculated: n = 1", {
+  selected_ids <- c(
+    "89a88cdb57bffff",
+    "89a88cdb597ffff",
+    "89a88cdb5b3ffff",
+    "89a88cdb5cfffff",
+    "89a88cd909bffff"
+  )
+  smaller_travel_matrix <- travel_matrix[
+    from_id %in% selected_ids & to_id %in% selected_ids
+  ]
+
+  result <- tester(smaller_travel_matrix, by_col = "mode")
+  expected_result <- data.table::data.table(
+    id = rep(selected_ids, 2),
+    mode = rep(c("transit", "transit2"), each = 5),
+    travel_time = rep(c(47, 5.8, 13, 43, 70), 2),
+    destination = "89a88cdb597ffff"
+  )
+  expect_identical(result, expected_result)
+
+  result <- tester(
+    smaller_travel_matrix,
+    opportunity_col = "population",
+    by_col = "mode",
+    active = FALSE
+  )
+  expected_result <- data.table::data.table(
+    id = rep(selected_ids, 2),
+    mode = rep(c("transit", "transit2"), each = 5),
+    travel_time = 5.8,
+    origin = rep(selected_ids, 2)
+  )
+  expect_identical(result, expected_result)
 })
 
-test_that("output is as expected when ids are missing", {
-  # TODO: add tests
+test_that("output is as expected when ids are missing - n=1", {
+  selected_ids <- c(
+    "89a88cdb57bffff",
+    "89a88cdb597ffff",
+    "89a88cdb5b3ffff",
+    "89a88cdb5cfffff",
+    "89a88cd909bffff"
+  )
+  smaller_travel_matrix <- travel_matrix[
+    from_id %in% selected_ids & to_id %in% selected_ids
+  ]
+  smaller_travel_matrix <- rbind(
+    smaller_travel_matrix,
+    data.table::data.table(
+      mode = "transit",
+      from_id = "fake_id",
+      to_id = "89a88cdb57bffff",
+      travel_time = 50
+    )
+  )
+
+  result <- tester(smaller_travel_matrix, n = 1)
+  fake_id_result <- result[id == "fake_id"]
+  data.table::setkey(fake_id_result, NULL)
+  expected_result <- data.table::data.table(
+    id = "fake_id",
+    mode = c("transit", "transit2"),
+    travel_time = Inf,
+    destination = NA_character_
+  )
+  expect_identical(fake_id_result, expected_result)
+
+  result <- tester(smaller_travel_matrix, n = 1, fill_missing_ids = FALSE)
+  fake_id_result <- result[id == "fake_id"]
+  data.table::setkey(fake_id_result, NULL)
+  expected_result <- data.table::data.table(
+    id = character(0),
+    mode = character(0),
+    travel_time = numeric(0),
+    destination = character(0)
+  )
+  expect_identical(fake_id_result, expected_result)
+})
+
+test_that("output is as expected when ids are missing - n>1", {
+  selected_ids <- c(
+    "89a88cdb57bffff",
+    "89a88cdb597ffff",
+    "89a88cdb5b3ffff",
+    "89a88cdb5cfffff",
+    "89a88cd909bffff"
+  )
+  smaller_travel_matrix <- travel_matrix[
+    from_id %in% selected_ids & to_id %in% selected_ids
+  ]
+  smaller_travel_matrix <- smaller_travel_matrix[
+    !(from_id == "89a88cd909bffff" & to_id == "89a88cdb597ffff")
+  ]
+
+  result <- tester(smaller_travel_matrix, n = 2)
+  missing_id_result <- result[id == "89a88cd909bffff"]
+  data.table::setkey(missing_id_result, NULL)
+  expected_result <- data.table::data.table(
+    id = "89a88cd909bffff",
+    mode = c("transit", "transit2"),
+    travel_time = Inf,
+    destination = NA_character_
+  )
+  expect_identical(missing_id_result, expected_result)
+
+  result <- tester(smaller_travel_matrix, n = 2, fill_missing_ids = FALSE)
+  missing_id_result <- result[id == "89a88cd909bffff"]
+  data.table::setkey(missing_id_result, NULL)
+  expected_result <- data.table::data.table(
+    id = character(0),
+    mode = character(0),
+    travel_time = numeric(0),
+    destination = character(0)
+  )
+  expect_identical(missing_id_result, expected_result)
 })
