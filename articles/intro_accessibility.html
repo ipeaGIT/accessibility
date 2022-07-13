@@ -121,7 +121,7 @@
 </ul>
 <ol style="list-style-type: decimal">
 <li>
-<code><a href="../reference/time_to_closest.html">time_to_closest()</a></code> Minimum travel cost to closest <em>N</em> number of opportunities</li>
+<code>time_to_closest()</code> Minimum travel cost to closest <em>N</em> number of opportunities</li>
 <li>
 <code>cumulative_time_cutoff()</code>. Traditional time threshold-based cumulative opportunity metric</li>
 <li>
@@ -171,9 +171,9 @@
 <div class="section level3">
 <h3 id="minimum-travel-cost">5.1 Minimum travel cost:<a class="anchor" aria-label="anchor" href="#minimum-travel-cost"></a>
 </h3>
-<p><code><a href="../reference/time_to_closest.html">time_to_closest()</a></code> allows you to easily calculate the minimum travel cost accessibility. In the example below, the output shows the minimum travel cost from each origin to the closet school and the id of the destination where the school is located.</p>
+<p><code>time_to_closest()</code> allows you to easily calculate the minimum travel cost accessibility. In the example below, the output shows the minimum travel cost from each origin to the closet school and the id of the destination where the school is located.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tmi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/time_to_closest.html">time_to_closest</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">ttm</span>,</span>
+<code class="sourceCode R"><span><span class="va">tmi</span> <span class="op">&lt;-</span> <span class="fu">time_to_closest</span><span class="op">(</span>data <span class="op">=</span> <span class="va">ttm</span>,</span>
 <span>         opportunity_col <span class="op">=</span> <span class="st">'schools'</span>,</span>
 <span>         n_opportunities <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>         travel_cost_col <span class="op">=</span> <span class="st">'travel_time'</span>,</span>

@@ -25,6 +25,9 @@
     <loc>/reference/accessibility.html</loc>
   </url>
   <url>
+    <loc>/reference/cost_to_closest.html</loc>
+  </url>
+  <url>
     <loc>/reference/cumulative_cutoff.html</loc>
   </url>
   <url>
@@ -56,8 +59,5 @@
   </url>
   <url>
     <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/time_to_closest.html</loc>
   </url>
 </urlset>
