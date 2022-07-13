@@ -11,13 +11,15 @@
 #' @template travel_cost_col
 #' @template by_col
 #' @template active
-#' @param fill_missing_ids A `logical`. Calculating minimum travle cost to
+#' @param fill_missing_ids A `logical`. Calculating minimum trave cost to
 #'   closest N number of opportunities may result in missing ids in the output
 #'   if they cannot reach the specified amount of opportunities across all
-#'   destinations they can reach. When `TRUE` (the default), the function
-#'   identifies which origins would be left out from the output and fill their
-#'   respective minimum travel costs with `Inf` and the `destination` column
-#'   with `NA`.
+#'   destinations they can reach. For example, estimating the minimum travel
+#'   time that an origin that can only reach 4 opportunities takes to reach 5
+#'   opportunities resulting in such origin not being included in the output.
+#'   When `TRUE` (the default), the function identifies which ids would be left
+#'   out from the output and fill their respective minimum travel costs with
+#'   `Inf`, which incurs in a performance penalty.
 #'
 #' @template return_accessibility
 #'
@@ -79,25 +81,14 @@ cost_to_closest <- function(travel_matrix,
 
   group_id <- ifelse(active, "from_id", "to_id")
   groups <- c(group_id, by_col_char)
-  dest_or_orig_id <- setdiff(c("from_id", "to_id"), group_id)
   env <- environment()
 
   warn_extra_cols(travel_matrix, travel_cost_col, group_id, groups)
 
   if (n == 1) {
     access <- data[
-      data[
-        get(opportunity_col) > 0,
-        .I[get(travel_cost_col) == suppressWarnings(min(get(travel_cost_col)))],
-        by = eval(groups, envir = env)
-      ]$V1
-    ]
-    access <- access[
-      ,
-      .(
-        min_cost = get(travel_cost_col)[1],
-        dest_or_orig = paste(eval(as.name(dest_or_orig_id)), collapse = ";")
-      ),
+      get(opportunity_col) > 0,
+      .(min_cost = suppressWarnings(min(get(travel_cost_col)))),
       by = eval(groups, envir = env)
     ]
   } else {
@@ -110,22 +101,10 @@ cost_to_closest <- function(travel_matrix,
     ]
 
     access <- opport_cumsum[
-      ,
-      .(
-        min_cost = suppressWarnings(min(get(travel_cost_col)[cum_opport >= n])),
-        dest_or_orig = paste(
-          eval(as.name(dest_or_orig_id))[cum_opport <= n],
-          collapse  = ";"
-        )
-      ),
+      cum_opport >= n,
+      .(min_cost = suppressWarnings(min(get(travel_cost_col)))),
       by = eval(groups, envir = env)
     ]
-
-    if (fill_missing_ids) {
-      access[is.infinite(min_cost), dest_or_orig := NA]
-    } else {
-      access <- access[is.finite(min_cost)]
-    }
   }
 
   if (fill_missing_ids) {
@@ -144,16 +123,10 @@ cost_to_closest <- function(travel_matrix,
     }
   }
 
-  dest_or_orig_name <- ifelse(
-    dest_or_orig_id == "to_id",
-    "destination",
-    "origin"
-  )
-
   data.table::setnames(
     access,
-    c(group_id, "min_cost", "dest_or_orig"),
-    c("id", travel_cost_col, dest_or_orig_name)
+    c(group_id, "min_cost"),
+    c("id", travel_cost_col)
   )
 
   if (exists("original_class")) class(access) <- original_class

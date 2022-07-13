@@ -48,13 +48,15 @@ of opportunities that can be reached from a given origin, the default) or
 passive accessibility (how many opportunities/people can reach a given
 destination).}
 
-\item{fill_missing_ids}{A \code{logical}. Calculating minimum travle cost to
+\item{fill_missing_ids}{A \code{logical}. Calculating minimum trave cost to
 closest N number of opportunities may result in missing ids in the output
 if they cannot reach the specified amount of opportunities across all
-destinations they can reach. When \code{TRUE} (the default), the function
-identifies which origins would be left out from the output and fill their
-respective minimum travel costs with \code{Inf} and the \code{destination} column
-with \code{NA}.}
+destinations they can reach. For example, estimating the minimum travel
+time that an origin that can only reach 4 opportunities takes to reach 5
+opportunities resulting in such origin not being included in the output.
+When \code{TRUE} (the default), the function identifies which ids would be left
+out from the output and fill their respective minimum travel costs with
+\code{Inf}, which incurs in a performance penalty.}
 }
 \value{
 A data frame containing the accessibility estimates for each
