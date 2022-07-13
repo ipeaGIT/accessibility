@@ -137,6 +137,9 @@ test_that("input data sets remain unchanged", {
 
   result <- tester()
 
+  # subsets in other functions tests set travel_matrix index
+  data.table::setindex(travel_matrix, NULL)
+
   expect_identical(original_travel_matrix, travel_matrix)
   expect_identical(original_land_use_data, land_use_data)
 })

@@ -11,7 +11,7 @@ tester <- function(
   active = TRUE,
   fill_missing_ids = TRUE
 ) {
-  time_to_closest(
+  cost_to_closest(
     travel_matrix,
     land_use_data,
     n,

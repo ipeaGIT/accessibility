@@ -27,7 +27,7 @@
 #' travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
 #' land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
 #'
-#' df <- time_to_closest(
+#' df <- cost_to_closest(
 #'   travel_matrix,
 #'   land_use_data,
 #'   n = 1,
@@ -36,7 +36,7 @@
 #' )
 #' head(df)
 #'
-#' df <- time_to_closest(
+#' df <- cost_to_closest(
 #'   travel_matrix,
 #'   land_use_data,
 #'   n = 2,
@@ -46,7 +46,7 @@
 #' head(df)
 #'
 #' @export
-time_to_closest <- function(travel_matrix,
+cost_to_closest <- function(travel_matrix,
                             land_use_data,
                             n = 1,
                             opportunity_col,
