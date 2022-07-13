@@ -127,7 +127,7 @@
 <li>
 <code>cumulative_time_interval()</code>. A novel time interval-based cumulative opportunity metric (<em>forthcoming paper</em>)</li>
 <li>
-<code><a href="../reference/gravity_access.html">gravity_access()</a></code> Gravity-based accessibility</li>
+<code>gravity_access()</code> Gravity-based accessibility</li>
 <li>
 <code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code> Floating catchment area accessibility using <code>2SFCA</code>
 </li>
@@ -135,7 +135,7 @@
 <code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code> Floating catchment area accessibility using <code>BFCA</code>
 </li>
 </ol>
-<p>The <code><a href="../reference/gravity_access.html">gravity_access()</a></code> and <code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code> functions can use any custom decay function that converts travel cost <code>travel_cost</code> to and impedance factor. For convenience, the package currently includes the following decay functions:</p>
+<p>The <code>gravity_access()</code> and <code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code> functions can use any custom decay function that converts travel cost <code>travel_cost</code> to and impedance factor. For convenience, the package currently includes the following decay functions:</p>
 <ol style="list-style-type: decimal">
 <li>
 <code><a href="../reference/decay_binary.html">decay_binary()</a></code> Binary (aka step) decay function</li>
@@ -220,9 +220,9 @@
 <div class="section level3">
 <h3 id="gravity-based-accessibility">5.3 Gravity-based accessibility:<a class="anchor" aria-label="anchor" href="#gravity-based-accessibility"></a>
 </h3>
-<p>The <code><a href="../reference/gravity_access.html">gravity_access()</a></code> allows one to continuously discount the weight of opportunities as travel costs become larger. See the <a href="https://ipeagit.github.io/accessibility/articles/decay_functions.html" class="external-link">vignette on decay functions</a> for more information on the decay functions available in the package and how to use custom functions. In this case here, we use a negative exponential function with a <code>decay_value</code>  of 0.2</p>
+<p>The <code>gravity_access()</code> allows one to continuously discount the weight of opportunities as travel costs become larger. See the <a href="https://ipeagit.github.io/accessibility/articles/decay_functions.html" class="external-link">vignette on decay functions</a> for more information on the decay functions available in the package and how to use custom functions. In this case here, we use a negative exponential function with a <code>decay_value</code>  of 0.2</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">grav_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gravity_access.html">gravity_access</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">grav_exp</span> <span class="op">&lt;-</span> <span class="fu">gravity_access</span><span class="op">(</span></span>
 <span>              data <span class="op">=</span> <span class="va">ttm</span>,</span>
 <span>              opportunity_col <span class="op">=</span> <span class="st">'jobs'</span>,</span>
 <span>              decay_function <span class="op">=</span> <span class="fu"><a href="../reference/decay_exponential.html">decay_exponential</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>,</span>

@@ -108,11 +108,13 @@ calculating accessibility levels.</p></dd>
 
 
 <dt>decay_function</dt>
-<dd><p>A <code>fuction</code> that converts travel cost (t_ij) into an
-impedance factor used to weight opportunities. For convenience, the package
-currently includes the following functions: <code>decay_bineary</code>,
-<code>decay_exponential</code>, <code>decay_exponential</code> and <code>decay_power</code>.
-See the documentation of each decay function for more details.</p></dd>
+<dd><p>A <code>fuction</code> that converts travel cost into an
+impedance factor used to weight opportunities. This function should take a
+<code>numeric</code> vector and also return a <code>numeric</code> vector as output, with the
+same length as the input. For convenience, the package currently includes
+the following functions: <code><a href="decay_binary.html">decay_binary()</a></code>, <code><a href="decay_exponential.html">decay_exponential()</a></code>,
+<code><a href="decay_exponential.html">decay_exponential()</a></code> and <code><a href="decay_power.html">decay_power()</a></code>. See the documentation of each
+decay function for more details.</p></dd>
 
 
 <dt>travel_cost_col</dt>
