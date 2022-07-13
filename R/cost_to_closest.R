@@ -19,9 +19,7 @@
 #'   respective minimum travel costs with `Inf` and the `destination` column
 #'   with `NA`.
 #'
-#' @return A data frame containing the travel cost to the closest opportunities.
-#'   and the ids of the destination/origin where they are located (depending if
-#'   `active` is `TRUE` or `FALSE`).
+#' @template return_accessibility
 #'
 #' @examples
 #' data_dir <- system.file("extdata", package = "accessibility")

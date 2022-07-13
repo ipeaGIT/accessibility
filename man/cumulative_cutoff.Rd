@@ -57,8 +57,9 @@ identifies which origins would be left out and fills their respective
 accessibility values with 0, which incurs in a performance penalty.}
 }
 \value{
-A data frame containing the accessibility estimates for each origin
-in the travel matrix.
+A data frame containing the accessibility estimates for each
+origin/destination (depending if \code{active} is \code{TRUE} or \code{FALSE}) in the
+travel matrix.
 }
 \description{
 Calculates the number of opportunities accessible under a given specified

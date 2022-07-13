@@ -56,8 +56,9 @@ passive accessibility (how many opportunities/people can reach a given
 destination).}
 }
 \value{
-A data frame containing the accessibility estimates for each origin
-in the travel matrix.
+A data frame containing the accessibility estimates for each
+origin/destination (depending if \code{active} is \code{TRUE} or \code{FALSE}) in the
+travel matrix.
 }
 \description{
 Calculates the average or median number of opportunities that can be reached

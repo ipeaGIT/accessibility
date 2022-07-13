@@ -57,9 +57,9 @@ respective minimum travel costs with \code{Inf} and the \code{destination} colum
 with \code{NA}.}
 }
 \value{
-A data frame containing the travel cost to the closest opportunities.
-and the ids of the destination/origin where they are located (depending if
-\code{active} is \code{TRUE} or \code{FALSE}).
+A data frame containing the accessibility estimates for each
+origin/destination (depending if \code{active} is \code{TRUE} or \code{FALSE}) in the
+travel matrix.
 }
 \description{
 Calculates the minimum travel cost to the closest N number of opportunities.
