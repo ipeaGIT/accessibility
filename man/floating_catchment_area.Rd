@@ -37,11 +37,13 @@ population count.}
 with the number of opportunities/resources/services to be considered when
 calculating accessibility levels.}
 
-\item{decay_function}{A \code{fuction} that converts travel cost (t_ij) into an
-impedance factor used to weight opportunities. For convenience, the package
-currently includes the following functions: \code{decay_bineary},
-\code{decay_exponential}, \code{decay_exponential} and \code{decay_power}.
-See the documentation of each decay function for more details.}
+\item{decay_function}{A \code{fuction} that converts travel cost into an
+impedance factor used to weight opportunities. This function should take a
+\code{numeric} vector and also return a \code{numeric} vector as output, with the
+same length as the input. For convenience, the package currently includes
+the following functions: \code{\link[=decay_binary]{decay_binary()}}, \code{\link[=decay_exponential]{decay_exponential()}},
+\code{\link[=decay_exponential]{decay_exponential()}} and \code{\link[=decay_power]{decay_power()}}. See the documentation of each
+decay function for more details.}
 
 \item{travel_cost_col}{A string. The name of the column in \code{travel_matrix}
 with the travel cost between origins and destinations. Defaults to

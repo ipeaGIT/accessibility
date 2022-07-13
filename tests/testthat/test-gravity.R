@@ -1,9 +1,7 @@
-context("Gravity access")
+testthat::skip("skipping for now")
 
 # if running manually, please run the following line first:
 # source("tests/testthat/setup.R")
-
-testthat::skip_on_cran()
 
 default_tester <- function(data = ttm,
                            opportunity_col = 'schools',

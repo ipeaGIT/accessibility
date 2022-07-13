@@ -76,3 +76,35 @@ assert_summary_function <- function(summary_function) {
 
   return(invisible(TRUE))
 }
+
+
+#' @keywords internal
+assert_decay_function <- function(decay_function) {
+  checkmate::assert_function(decay_function)
+
+  result <- tryCatch(
+    decay_function(1:100),
+    error = function(cnd) cnd
+  )
+
+  if (inherits(result, "error")) {
+    stop(
+      "Assertion on 'decay_function' failed: Must be a function that ",
+      "takes a numeric vector as input. Instead, failed with message: ",
+      "'", result$message, "'",
+      call. = FALSE
+    )
+  }
+
+  if (!is.numeric(result) || length(result) != length(1:100)) {
+    stop(
+      "Assertion on 'decay_function' failed: Must be a function that takes ",
+      "a numeric vector as input and returns a numeric vector as output, with ",
+      "the same length of input. Instead, with input 1:100 it returned: ",
+      "{", paste0(result, collapse = ","), "}",
+      call. = FALSE
+    )
+  }
+
+  return(invisible(TRUE))
+}
