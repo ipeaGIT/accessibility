@@ -52,8 +52,7 @@ accessibility estimates grouped by origin and by departure time.}
 
 \item{active}{A logical. Whether to calculate active accessibility (the
 of opportunities that can be reached from a given origin, the default) or
-passive accessibility (how many opportunities/people can reach a given
-destination).}
+passive accessibility (by how many people each destination can be reached).}
 }
 \value{
 A data frame containing the accessibility estimates for each
