@@ -1,6 +1,4 @@
-tester <- function(cutoff = 20) {
-  decay_linear(cutoff = cutoff)
-}
+tester <- function(cutoff = 20) decay_linear(cutoff)
 
 test_that("adequately raises errors", {
   expect_error(tester("banana"))
@@ -31,4 +29,10 @@ test_that("output is a decay function that returns a numeric", {
 test_that("accepts a numeric vector", {
   value_test <- tester()
   expect_equal(value_test(c(0, 5, 10, 20, 60)), c(1, 0.75, 0.5, 0, 0))
+})
+
+test_that("returns empty numeric if receives empty integer/integer", {
+  value_test <- tester()
+  expect_identical(value_test(integer()), numeric())
+  expect_identical(value_test(numeric()), numeric())
 })

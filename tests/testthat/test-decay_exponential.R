@@ -31,3 +31,9 @@ test_that("accepts a numeric vector", {
     c(1, 1 / exp(1), 1 / exp(2), 1 / exp(6))
   )
 })
+
+test_that("returns empty numeric if receives empty numeric/integer", {
+  value_test <- tester()
+  expect_identical(value_test(integer()), numeric())
+  expect_identical(value_test(numeric()), numeric())
+})
