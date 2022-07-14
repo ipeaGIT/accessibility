@@ -17,6 +17,7 @@
 #'
 #' @importFrom data.table := .I .SD %chin% .GRP .N
 #' @importFrom utils globalVariables
+#' @importFrom Rdpack reprompt
 #'
 #' @keywords internal
 "_PACKAGE"

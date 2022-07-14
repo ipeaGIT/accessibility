@@ -26,6 +26,7 @@ Depends:
 Imports:
     checkmate,
     data.table,
+    Rdpack (>= 0.7),
     utils
 Suggests: 
     covr,
@@ -37,6 +38,8 @@ Suggests:
     testthat
 VignetteBuilder: 
     knitr
+RdMacros: 
+    Rdpack
 Encoding: UTF-8
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)

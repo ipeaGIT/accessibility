@@ -1,10 +1,10 @@
-#' @title Floating catchment area accessibility
+#' Floating catchment area accessibility
 #'
-#' @description
-#' Calculates accessibility accounting for the competition of resources using one
-#' of the multiple accessibility metrics in the floating catchment area family.
-#' The function currently includes `2SFCA` 2-Step Floating Catchment Area (Luo &
-#' Wang, 2003), and `BFCA` Balanced Floating Catchment Area (Paez et al. 2021).
+#' Calculates accessibility accounting for the competition of resources using
+#' one of the multiple accessibility metrics in the floating catchment area
+#' family. The function currently includes `2SFCA` 2-Step Floating Catchment
+#' Area \insertCite{luo2003measures}{accessibility}, and `BFCA` Balanced
+#' Floating Catchment Area \insertCite{paez2019demand}{accessibility}.
 #' Accessibility can be calculated using multiple alternative decay functions
 #' passed through the `decay_function` parameter.
 #'
@@ -18,7 +18,26 @@
 #' @template travel_cost_col
 #'
 #' @return A `data.table` object.
+#'
+#' @details
+#' # 2SFCA
+#' The 2SFCA measure was the first accessibility metric in the floating
+#' catchment area family. It was originally proposed by
+#' \insertCite{luo2003measures;textual}{accessibility}.
+#'
+#' # BFCA
+#' The balanced floating catchment area (BFCA) metric calculates accessibility
+#' accounting for competition effects while simultaneously correcting for
+#' issues of inflation of demand and service levels that are present in
+#' previous floating  catchment area measures. BFCA was  was originally
+#' proposed by \insertCite{paez2019demand;textual}{accessibility} and named in
+#' \insertCite{pereira2021geographic;textual}{accessibility}.
+#'
+#' @references
+#' \insertAllCited{}
+#'
 #' @family Floating catchment area
+#'
 #' @examples
 #' library(accessibility)
 #'
@@ -52,31 +71,6 @@
 #'        )
 #'head(df)
 #'
-#' @details
-#' # 2SFCA
-#' The 2SFCA measure was the first accessibility metric in the floating
-#' catchment area family. It was originally proposed by Luo & Wang (2003).
-#'
-#' # BFCA
-#' The balanced floating catchment area (BFCA) metric calculates accessibility
-#' accounting for competition effects while simultaneously correcting for issues
-#' of inflation of demand and service levels that are present in previous
-#' floating  catchment area measures. BFCA was  was originally proposed by Paez
-#' et al. (2019) and named in Pereira et al. (2021).
-#'
-#' ## References:
-#' - Luo, W., & Wang, F. (2003). Measures of spatial accessibility to health
-#' care in a GIS environment: synthesis and a case study in the Chicago region.
-#' Environment and planning B: planning and design, 30(6), 865-884. \doi{10.1068/b29120}.
-#'
-#' - Paez, A., Higgins, C. D., & Vivona, S. F. (2019). Demand and level of
-#' service inflation in Floating Catchment Area (FCA) methods. Plos one, 14(6),
-#' e0218773. \doi{10.1371/journal.pone.0218773}
-#'
-#' - Pereira, R. H., Braga, C. K. V., Servo, L. M., Serra, B., Amaral, P.,
-#' Gouveia, N., & Paez, A. (2021). Geographic access to COVID-19 healthcare in
-#' Brazil using a balanced float catchment area approach. Social Science &
-#' Medicine, 273. \doi{10.1016/j.socscimed.2021.113773}
 #'
 #' @export
 floating_catchment_area <- function(data,
@@ -112,24 +106,6 @@ floating_catchment_area <- function(data,
 
   fca_options <- c('2SFCA', 'BFCA')
   if (! fca_metric %in% fca_options){stop("Parameter 'fca_metric' must be one of the following: ", paste0(fca_options, collapse = ", "))}
-
-
-  # # select FCA metric  ---------------------------------------------------------
-  ##> THIS throws error in testthat because tests cannot find the 'fca_fun' function
-  ##>
-  # fca_fun <- if(fca_metric=='2SFCA'){ accessibility::fca_2sfca}
-  # fca_fun <- if(fca_metric=='BFCA'){ accessibility::fca_bfca}
-  #
-  #   access <- fca_fun(data = data,
-  #                      orig_col = orig_col,
-  #                      dest_col = dest_col,
-  #                      population_col = population_col,
-  #                      opportunity_col = opportunity_col,
-  #                      decay_function = decay_function,
-  #                      travel_cost_col = travel_cost_col
-  #                      )
-
-  # calculate access -----------------------------------------------------------
 
   # 2SFCA
   if (fca_metric=='2SFCA') {
