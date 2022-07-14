@@ -33,8 +33,14 @@ assert_travel_matrix <- function(travel_matrix, travel_cost_col, by_col_char) {
 
 
 #' @keywords internal
-assert_land_use_data <- function(land_use_data, opportunity_col) {
+assert_land_use_data <- function(land_use_data,
+                                 opportunity_col,
+                                 competition = NULL) {
   land_use_data_req_names <- c("id", opportunity_col)
+  if (!is.null(competition)) {
+    land_use_data_req_names <- c(land_use_data_req_names, competition)
+  }
+
   checkmate::assert_data_frame(land_use_data)
   checkmate::assert_names(
     names(land_use_data),
