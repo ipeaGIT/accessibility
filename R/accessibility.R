@@ -32,13 +32,16 @@ utils::globalVariables(
     "to_id",
     "cum_opport",
     "impedance",
-    "balanced_impedance_i",
-    "balanced_impedance_j",
     "pop_served",
     "ppr",
     "access",
     "min_cost",
-    "destination"
+    "destination",
+    "opp_weight",
+    "balanced_opp_weight_i",
+    "balanced_opp_weight_j",
+    "balanced_pop_served",
+    "balanced_ppr"
   )
 )
 
