@@ -11,7 +11,8 @@ gravity(
   opportunity_col,
   travel_cost_col = "travel_time",
   by_col = NULL,
-  active = TRUE
+  active = TRUE,
+  fill_missing_ids = TRUE
 )
 }
 \arguments{
@@ -50,6 +51,16 @@ accessibility estimates grouped by origin and by departure time.}
 \item{active}{A logical. Whether to calculate active accessibility (the
 of opportunities that can be reached from a given origin, the default) or
 passive accessibility (by how many people each destination can be reached).}
+
+\item{fill_missing_ids}{A \code{logical}. When calculating grouped accessibility
+estimates (i.e. when \code{by_col} is not \code{NULL}), some combinations of groups
+and origins may be missing. For example, if a single trip can depart from
+origin \code{A} at 7:15am and reach destination \code{B} within 55 minutes, but no
+trips departing from \code{A} at 7:30am can be completed at all, this second
+combination will not be included in the output. When \code{TRUE} (the default),
+the function identifies which combinations would be left out and fills
+their respective accessibility values with 0, which incurs in a
+performance penalty.}
 }
 \value{
 A data frame containing the accessibility estimates for each

@@ -11,6 +11,15 @@
 #' @template travel_cost_col
 #' @template by_col
 #' @template active
+#' @param fill_missing_ids A `logical`. When calculating grouped accessibility
+#'   estimates (i.e. when `by_col` is not `NULL`), some combinations of groups
+#'   and origins may be missing. For example, if a single trip can depart from
+#'   origin `A` at 7:15am and reach destination `B` within 55 minutes, but no
+#'   trips departing from `A` at 7:30am can be completed at all, this second
+#'   combination will not be included in the output. When `TRUE` (the default),
+#'   the function identifies which combinations would be left out and fills
+#'   their respective accessibility values with 0, which incurs in a
+#'   performance penalty.
 #'
 #' @template return_accessibility
 #'
@@ -44,11 +53,13 @@ gravity <- function(travel_matrix,
                     opportunity_col,
                     travel_cost_col = "travel_time",
                     by_col = NULL,
-                    active = TRUE) {
+                    active = TRUE,
+                    fill_missing_ids = TRUE) {
   by_col_char <- assert_and_assign_by_col(by_col)
   checkmate::assert_string(opportunity_col)
   checkmate::assert_string(travel_cost_col)
   checkmate::assert_logical(active, len = 1, any.missing = FALSE)
+  checkmate::assert_logical(fill_missing_ids, len = 1, any.missing = FALSE)
   assert_decay_function(decay_function)
   assert_travel_matrix(travel_matrix, travel_cost_col, by_col_char)
   assert_land_use_data(land_use_data, opportunity_col)
@@ -76,9 +87,21 @@ gravity <- function(travel_matrix,
 
   access <- data[
     ,
-    .(access = get(opportunity_col) * decay_function(get(travel_cost_col))),
+    .(
+      access = sum(get(opportunity_col) * decay_function(get(travel_cost_col)))
+    ),
     by = eval(groups, envir = env)
   ]
+
+  if (fill_missing_ids) {
+    unique_values <- lapply(groups, function(x) unique(travel_matrix[[x]]))
+    names(unique_values) <- groups
+    possible_combinations <- do.call(data.table::CJ, unique_values)
+
+    if (nrow(access) < nrow(possible_combinations)) {
+      access <- do_fill_missing_ids(access, possible_combinations, groups)
+    }
+  }
 
   data.table::setnames(access, c(group_id, "access"), c("id", opportunity_col))
 
