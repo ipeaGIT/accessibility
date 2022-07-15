@@ -5,7 +5,7 @@
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/accessibility)](https://CRAN.R-project.org/package=accessibility)
-[![R-CMD-check](https://github.com/ipeaGIT/accessibility/workflows/R-CMD-check/badge.svg)](https://github.com/ipeaGIT/accessibility/actions)
+[![rcmdcheck](https://github.com/ipeaGIT/accessibility/workflows/rcmdcheck/badge.svg)](https://github.com/ipeaGIT/accessibility/actions)
 [![CRAN/METACRAN Total
 downloads](http://cranlogs.r-pkg.org/badges/grand-total/accessibility?color=yellow)](https://CRAN.R-project.org/package=accessibility)
 [![Codecov test
@@ -38,77 +38,67 @@ remotes::install_github("ipeaGIT/accessibility")
 ``` r
 library(accessibility)
 
-# load a travel time matrix data in long format
-data_path <- system.file("extdata/ttm_bho.rds", package = "accessibility")
-ttm <- readRDS(data_path)
- 
-# Cumulative accessibility
-df <- cumulative_time_cutoff(
-               data = ttm,
-               cutoff = 30,
-               opportunity_col = 'jobs',
-               travel_cost_col = 'travel_time',
-               by_col = 'from_id'
-               )
-df
-#>              from_id access
-#>   1: 89a88cdb57bffff  22239
-#>   2: 89a88cdb597ffff  36567
-#>   3: 89a88cdb5b3ffff  42372
-#>   4: 89a88cdb5cfffff  55571
-#>   5: 89a88cd909bffff  26774
-#>  ---                       
-#> 894: 89a881acda3ffff  30743
-#> 895: 89a88cdb543ffff 140454
-#> 896: 89a88cda667ffff  41845
-#> 897: 89a88cd900fffff   5483
-#> 898: 89a881aebafffff      0
+# required data: a travel matrix and some land use data
 
-# Gravity model
-df <- gravity_access(data = ttm,
-               opportunity_col = 'schools',
-               decay_function = decay_exponential(decay_value = 0.2),
-               travel_cost_col='travel_time',
-               by_col = 'from_id'
-               )
-df
-#>              from_id     access
-#>   1: 89a88cdb57bffff 0.03041853
-#>   2: 89a88cdb597ffff 1.15549493
-#>   3: 89a88cdb5b3ffff 0.56519126
-#>   4: 89a88cdb5cfffff 0.19852152
-#>   5: 89a88cd909bffff 0.41378042
-#>  ---                           
-#> 894: 89a881acda3ffff 0.52732830
-#> 895: 89a88cdb543ffff 0.18683580
-#> 896: 89a88cda667ffff 0.81348400
-#> 897: 89a88cd900fffff 0.08713560
-#> 898: 89a881aebafffff 0.00000000
+data_dir <- system.file("extdata", package = "accessibility")
+travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
+land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
+ 
+# cumulative accessibility
+
+df <- cumulative_cutoff(
+  travel_matrix,
+  land_use_data,
+  cutoff = 30,
+  opportunity_col = "jobs",
+  travel_cost_col = "travel_time"
+)
+head(df)
+#>                 id  jobs
+#> 1: 89a88cdb57bffff 22239
+#> 2: 89a88cdb597ffff 36567
+#> 3: 89a88cdb5b3ffff 42372
+#> 4: 89a88cdb5cfffff 55571
+#> 5: 89a88cd909bffff 26774
+#> 6: 89a88cd90b7ffff 36991
+
+# gravity model
+
+df <- gravity(
+  travel_matrix,
+  land_use_data,
+  decay_function = decay_exponential(decay_value = 0.2),
+  opportunity_col = "schools",
+  travel_cost_col = "travel_time"
+)
+head(df)
+#>                 id    schools
+#> 1: 89a88cdb57bffff 0.03041853
+#> 2: 89a88cdb597ffff 1.15549493
+#> 3: 89a88cdb5b3ffff 0.56519126
+#> 4: 89a88cdb5cfffff 0.19852152
+#> 5: 89a88cd909bffff 0.41378042
+#> 6: 89a88cd90b7ffff 0.95737555
                        
 # 2SFCA with a binary (step) decay function
+
 df <- floating_catchment_area(
-              data = ttm,
-              fca_metric = '2SFCA',
-              orig_col = 'from_id',
-              dest_col = 'to_id',
-              opportunity_col = 'jobs',
-              population_col = 'population',
-              decay_function = decay_binary(cutoff = 30),
-              travel_cost_col='travel_time'
-              )
-df
-#>              from_id access_2sfca
-#>   1: 89a88cdb57bffff    0.1135253
-#>   2: 89a88cdb597ffff    0.4412146
-#>   3: 89a88cdb5b3ffff    0.4645848
-#>   4: 89a88cdb5cfffff    0.3579043
-#>   5: 89a88cd909bffff    0.2067682
-#>  ---                             
-#> 894: 89a881acda3ffff    0.1573290
-#> 895: 89a88cdb543ffff    0.6269116
-#> 896: 89a88cda667ffff    0.2801457
-#> 897: 89a88cd900fffff    0.0740655
-#> 898: 89a881aebafffff    0.0000000
+  travel_matrix,
+  land_use_data,
+  fca_metric = "2sfca",
+  decay_function = decay_binary(cutoff = 50),
+  opportunity_col = "jobs",
+  travel_cost_col = "travel_time",
+  competition_col = "population"
+)
+head(df)
+#>                 id      jobs
+#> 1: 89a88cdb57bffff 0.4357418
+#> 2: 89a88cdb597ffff 0.3938630
+#> 3: 89a88cdb5b3ffff 0.4589910
+#> 4: 89a88cdb5cfffff 0.5469433
+#> 5: 89a88cd909bffff 0.4358530
+#> 6: 89a88cd90b7ffff 0.5271746
 ```
 
 ## Related work:
