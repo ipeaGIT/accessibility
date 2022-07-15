@@ -32,7 +32,7 @@
 #' Pereira, R. H. M. (*forthcoming*). A time interval metric for cumulative
 #' opportunity accessibility.
 #'
-#' @examples
+#' @examplesIf requireNamespace("stats", quietly = TRUE)
 #' data_dir <- system.file("extdata", package = "accessibility")
 #' travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
 #' land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))

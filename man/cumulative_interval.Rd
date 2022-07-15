@@ -79,6 +79,7 @@ opportunity accessibility.
 }
 }
 \examples{
+\dontshow{if (requireNamespace("stats", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 data_dir <- system.file("extdata", package = "accessibility")
 travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
 land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
@@ -100,7 +101,7 @@ df <- cumulative_interval(
   travel_cost_col = "travel_time"
 )
 head(df)
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other cumulative access: 

@@ -1,6 +1,8 @@
 # if running manually, please run the following line first:
 # source("tests/testthat/setup.R")
 
+skip_if_not(requireNamespace("stats", quietly = TRUE))
+
 tester <- function(
   travel_matrix = get("travel_matrix", envir = parent.frame()),
   land_use_data = get("land_use_data", envir = parent.frame()),
