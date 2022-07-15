@@ -96,7 +96,7 @@
 <div class="page-header"><h1 id="accessibility-transport-accessibility-metrics">accessibility: Transport Accessibility Metrics<a class="anchor" aria-label="anchor" href="#accessibility-transport-accessibility-metrics"></a>
 </h1></div>
 <p><img align="right" src="reference/figures/logo.png?raw=true" alt="logo" width="180"></p>
-<p><a href="https://CRAN.R-project.org/package=accessibility" class="external-link"><img src="https://www.r-pkg.org/badges/version/accessibility" alt="CRAN status"></a> <a href="https://github.com/ipeaGIT/accessibility/actions" class="external-link"><img src="https://github.com/ipeaGIT/accessibility/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a> <a href="https://CRAN.R-project.org/package=accessibility" class="external-link"><img src="http://cranlogs.r-pkg.org/badges/grand-total/accessibility?color=yellow" alt="CRAN/METACRAN Total downloads"></a> <a href="https://app.codecov.io/gh/ipeaGIT/accessibility?branch=main" class="external-link"><img src="https://codecov.io/gh/ipeaGIT/accessibility/branch/main/graph/badge.svg" alt="Codecov test coverage"></a> <a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></p>
+<p><a href="https://CRAN.R-project.org/package=accessibility" class="external-link"><img src="https://www.r-pkg.org/badges/version/accessibility" alt="CRAN status"></a> <a href="https://github.com/ipeaGIT/accessibility/actions" class="external-link"><img src="https://github.com/ipeaGIT/accessibility/workflows/rcmdcheck/badge.svg" alt="rcmdcheck"></a> <a href="https://CRAN.R-project.org/package=accessibility" class="external-link"><img src="http://cranlogs.r-pkg.org/badges/grand-total/accessibility?color=yellow" alt="CRAN/METACRAN Total downloads"></a> <a href="https://app.codecov.io/gh/ipeaGIT/accessibility?branch=main" class="external-link"><img src="https://codecov.io/gh/ipeaGIT/accessibility/branch/main/graph/badge.svg" alt="Codecov test coverage"></a> <a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></p>
 <p><strong>accessibility</strong> offers a set of fast and convenient functions to calculate multiple transport accessibility measures. Given a pre-computed travel cost matrix in long format combined with land-use data (e.g. location of jobs, healthcare, population), the package allows one to calculate active and passive accessibility levels using multiple accessibility metrics such as: cumulative opportunity measure (using either travel time <em>cutoff</em> or <em>interval</em>), minimum travel cost to closest <em>N</em> number of activities, gravitational measures and different floating catchment area methods.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -112,77 +112,67 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/accessibility" class="external-link">accessibility</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># load a travel time matrix data in long format</span></span>
-<span><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/ttm_bho.rds"</span>, package <span class="op">=</span> <span class="st">"accessibility"</span><span class="op">)</span></span>
-<span><span class="va">ttm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">data_path</span><span class="op">)</span></span>
-<span> </span>
-<span><span class="co"># Cumulative accessibility</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">cumulative_time_cutoff</span><span class="op">(</span></span>
-<span>               data <span class="op">=</span> <span class="va">ttm</span>,</span>
-<span>               cutoff <span class="op">=</span> <span class="fl">30</span>,</span>
-<span>               opportunity_col <span class="op">=</span> <span class="st">'jobs'</span>,</span>
-<span>               travel_cost_col <span class="op">=</span> <span class="st">'travel_time'</span>,</span>
-<span>               by_col <span class="op">=</span> <span class="st">'from_id'</span></span>
-<span>               <span class="op">)</span></span>
-<span><span class="va">df</span></span>
-<span><span class="co">#&gt;              from_id access</span></span>
-<span><span class="co">#&gt;   1: 89a88cdb57bffff  22239</span></span>
-<span><span class="co">#&gt;   2: 89a88cdb597ffff  36567</span></span>
-<span><span class="co">#&gt;   3: 89a88cdb5b3ffff  42372</span></span>
-<span><span class="co">#&gt;   4: 89a88cdb5cfffff  55571</span></span>
-<span><span class="co">#&gt;   5: 89a88cd909bffff  26774</span></span>
-<span><span class="co">#&gt;  ---                       </span></span>
-<span><span class="co">#&gt; 894: 89a881acda3ffff  30743</span></span>
-<span><span class="co">#&gt; 895: 89a88cdb543ffff 140454</span></span>
-<span><span class="co">#&gt; 896: 89a88cda667ffff  41845</span></span>
-<span><span class="co">#&gt; 897: 89a88cd900fffff   5483</span></span>
-<span><span class="co">#&gt; 898: 89a881aebafffff      0</span></span>
+<span><span class="co"># required data: a travel matrix and some land use data</span></span>
 <span></span>
-<span><span class="co"># Gravity model</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">gravity_access</span><span class="op">(</span>data <span class="op">=</span> <span class="va">ttm</span>,</span>
-<span>               opportunity_col <span class="op">=</span> <span class="st">'schools'</span>,</span>
-<span>               decay_function <span class="op">=</span> <span class="fu"><a href="reference/decay_exponential.html">decay_exponential</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>,</span>
-<span>               travel_cost_col<span class="op">=</span><span class="st">'travel_time'</span>,</span>
-<span>               by_col <span class="op">=</span> <span class="st">'from_id'</span></span>
-<span>               <span class="op">)</span></span>
-<span><span class="va">df</span></span>
-<span><span class="co">#&gt;              from_id     access</span></span>
-<span><span class="co">#&gt;   1: 89a88cdb57bffff 0.03041853</span></span>
-<span><span class="co">#&gt;   2: 89a88cdb597ffff 1.15549493</span></span>
-<span><span class="co">#&gt;   3: 89a88cdb5b3ffff 0.56519126</span></span>
-<span><span class="co">#&gt;   4: 89a88cdb5cfffff 0.19852152</span></span>
-<span><span class="co">#&gt;   5: 89a88cd909bffff 0.41378042</span></span>
-<span><span class="co">#&gt;  ---                           </span></span>
-<span><span class="co">#&gt; 894: 89a881acda3ffff 0.52732830</span></span>
-<span><span class="co">#&gt; 895: 89a88cdb543ffff 0.18683580</span></span>
-<span><span class="co">#&gt; 896: 89a88cda667ffff 0.81348400</span></span>
-<span><span class="co">#&gt; 897: 89a88cd900fffff 0.08713560</span></span>
-<span><span class="co">#&gt; 898: 89a881aebafffff 0.00000000</span></span>
+<span><span class="va">data_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"accessibility"</span><span class="op">)</span></span>
+<span><span class="va">travel_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data_dir</span>, <span class="st">"travel_matrix.rds"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">land_use_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data_dir</span>, <span class="st">"land_use_data.rds"</span><span class="op">)</span><span class="op">)</span></span>
+<span> </span>
+<span><span class="co"># cumulative accessibility</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cumulative_cutoff.html">cumulative_cutoff</a></span><span class="op">(</span></span>
+<span>  <span class="va">travel_matrix</span>,</span>
+<span>  <span class="va">land_use_data</span>,</span>
+<span>  cutoff <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>  opportunity_col <span class="op">=</span> <span class="st">"jobs"</span>,</span>
+<span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                 id  jobs</span></span>
+<span><span class="co">#&gt; 1: 89a88cdb57bffff 22239</span></span>
+<span><span class="co">#&gt; 2: 89a88cdb597ffff 36567</span></span>
+<span><span class="co">#&gt; 3: 89a88cdb5b3ffff 42372</span></span>
+<span><span class="co">#&gt; 4: 89a88cdb5cfffff 55571</span></span>
+<span><span class="co">#&gt; 5: 89a88cd909bffff 26774</span></span>
+<span><span class="co">#&gt; 6: 89a88cd90b7ffff 36991</span></span>
+<span></span>
+<span><span class="co"># gravity model</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gravity.html">gravity</a></span><span class="op">(</span></span>
+<span>  <span class="va">travel_matrix</span>,</span>
+<span>  <span class="va">land_use_data</span>,</span>
+<span>  decay_function <span class="op">=</span> <span class="fu"><a href="reference/decay_exponential.html">decay_exponential</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>,</span>
+<span>  opportunity_col <span class="op">=</span> <span class="st">"schools"</span>,</span>
+<span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                 id    schools</span></span>
+<span><span class="co">#&gt; 1: 89a88cdb57bffff 0.03041853</span></span>
+<span><span class="co">#&gt; 2: 89a88cdb597ffff 1.15549493</span></span>
+<span><span class="co">#&gt; 3: 89a88cdb5b3ffff 0.56519126</span></span>
+<span><span class="co">#&gt; 4: 89a88cdb5cfffff 0.19852152</span></span>
+<span><span class="co">#&gt; 5: 89a88cd909bffff 0.41378042</span></span>
+<span><span class="co">#&gt; 6: 89a88cd90b7ffff 0.95737555</span></span>
 <span>                       </span>
 <span><span class="co"># 2SFCA with a binary (step) decay function</span></span>
+<span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/floating_catchment_area.html">floating_catchment_area</a></span><span class="op">(</span></span>
-<span>              data <span class="op">=</span> <span class="va">ttm</span>,</span>
-<span>              fca_metric <span class="op">=</span> <span class="st">'2SFCA'</span>,</span>
-<span>              orig_col <span class="op">=</span> <span class="st">'from_id'</span>,</span>
-<span>              dest_col <span class="op">=</span> <span class="st">'to_id'</span>,</span>
-<span>              opportunity_col <span class="op">=</span> <span class="st">'jobs'</span>,</span>
-<span>              population_col <span class="op">=</span> <span class="st">'population'</span>,</span>
-<span>              decay_function <span class="op">=</span> <span class="fu"><a href="reference/decay_binary.html">decay_binary</a></span><span class="op">(</span>cutoff <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>,</span>
-<span>              travel_cost_col<span class="op">=</span><span class="st">'travel_time'</span></span>
-<span>              <span class="op">)</span></span>
-<span><span class="va">df</span></span>
-<span><span class="co">#&gt;              from_id access_2sfca</span></span>
-<span><span class="co">#&gt;   1: 89a88cdb57bffff    0.1135253</span></span>
-<span><span class="co">#&gt;   2: 89a88cdb597ffff    0.4412146</span></span>
-<span><span class="co">#&gt;   3: 89a88cdb5b3ffff    0.4645848</span></span>
-<span><span class="co">#&gt;   4: 89a88cdb5cfffff    0.3579043</span></span>
-<span><span class="co">#&gt;   5: 89a88cd909bffff    0.2067682</span></span>
-<span><span class="co">#&gt;  ---                             </span></span>
-<span><span class="co">#&gt; 894: 89a881acda3ffff    0.1573290</span></span>
-<span><span class="co">#&gt; 895: 89a88cdb543ffff    0.6269116</span></span>
-<span><span class="co">#&gt; 896: 89a88cda667ffff    0.2801457</span></span>
-<span><span class="co">#&gt; 897: 89a88cd900fffff    0.0740655</span></span>
-<span><span class="co">#&gt; 898: 89a881aebafffff    0.0000000</span></span></code></pre></div>
+<span>  <span class="va">travel_matrix</span>,</span>
+<span>  <span class="va">land_use_data</span>,</span>
+<span>  fca_metric <span class="op">=</span> <span class="st">"2sfca"</span>,</span>
+<span>  decay_function <span class="op">=</span> <span class="fu"><a href="reference/decay_binary.html">decay_binary</a></span><span class="op">(</span>cutoff <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>,</span>
+<span>  opportunity_col <span class="op">=</span> <span class="st">"jobs"</span>,</span>
+<span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
+<span>  competition_col <span class="op">=</span> <span class="st">"population"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                 id      jobs</span></span>
+<span><span class="co">#&gt; 1: 89a88cdb57bffff 0.4357418</span></span>
+<span><span class="co">#&gt; 2: 89a88cdb597ffff 0.3938630</span></span>
+<span><span class="co">#&gt; 3: 89a88cdb5b3ffff 0.4589910</span></span>
+<span><span class="co">#&gt; 4: 89a88cdb5cfffff 0.5469433</span></span>
+<span><span class="co">#&gt; 5: 89a88cd909bffff 0.4358530</span></span>
+<span><span class="co">#&gt; 6: 89a88cd90b7ffff 0.5271746</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="related-work">Related work:<a class="anchor" aria-label="anchor" href="#related-work"></a>
