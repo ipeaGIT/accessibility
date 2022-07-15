@@ -34,6 +34,7 @@ impedance(35)
 Other decay functions: 
 \code{\link{decay_binary}()},
 \code{\link{decay_linear}()},
-\code{\link{decay_power}()}
+\code{\link{decay_power}()},
+\code{\link{decay_stepped}()}
 }
 \concept{decay functions}
