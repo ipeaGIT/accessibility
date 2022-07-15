@@ -89,6 +89,7 @@ floating_catchment_area <- function(travel_matrix,
   checkmate::assert_string(opportunity_col)
   checkmate::assert_string(travel_cost_col)
   checkmate::assert_string(competition_col)
+  checkmate::assert_logical(fill_missing_ids, len = 1, any.missing = FALSE)
   assert_decay_function(decay_function)
   assert_travel_matrix(travel_matrix, travel_cost_col, by_col_char)
   assert_land_use_data(
