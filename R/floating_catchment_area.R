@@ -2,7 +2,7 @@
 #'
 #' Calculates accessibility accounting for the competition of resources using a
 #' measure from the floating catchment area (FCA) family. Please see the
-#' details for the available FCA measures and an explanation on how to use them.
+#' details for the available FCA measures.
 #' @template description_generic_cost
 #'
 #' @template travel_matrix
@@ -17,6 +17,7 @@
 #'   with the number of people in each origin that will be considered potential
 #'   competitors. Defaults to `"population"`.
 #' @template by_col
+#' @template fill_missing_ids_combinations
 #'
 #' @template return_accessibility
 #'
@@ -77,7 +78,8 @@ floating_catchment_area <- function(travel_matrix,
                                     opportunity_col,
                                     travel_cost_col = "travel_time",
                                     competition_col = "population",
-                                    by_col = NULL) {
+                                    by_col = NULL,
+                                    fill_missing_ids = TRUE) {
   by_col_char <- assert_and_assign_by_col(by_col)
   checkmate::assert(
     checkmate::check_string(fca_metric),
@@ -112,10 +114,11 @@ floating_catchment_area <- function(travel_matrix,
   merge_by_reference(data, land_use_data, competition_col, active = FALSE)
   data[, opp_weight := decay_function(get(travel_cost_col))]
 
+  groups <- c("from_id", by_col_char)
   warn_extra_cols(
     travel_matrix,
     travel_cost_col, group_id = "from_id",
-    groups = c("from_id", by_col_char)
+    groups = groups
   )
 
   fca_function <- if (fca_metric == "2sfca") {
@@ -125,6 +128,16 @@ floating_catchment_area <- function(travel_matrix,
   }
 
   access <- fca_function(data, opportunity_col, competition_col, by_col_char)
+
+  if (fill_missing_ids) {
+    unique_values <- lapply(groups, function(x) unique(travel_matrix[[x]]))
+    names(unique_values) <- groups
+    possible_combinations <- do.call(data.table::CJ, unique_values)
+
+    if (nrow(access) < nrow(possible_combinations)) {
+      access <- do_fill_missing_ids(access, possible_combinations, groups)
+    }
+  }
 
   data.table::setnames(access, c("from_id", "access"), c("id", opportunity_col))
 

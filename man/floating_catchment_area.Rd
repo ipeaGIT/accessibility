@@ -12,7 +12,8 @@ floating_catchment_area(
   opportunity_col,
   travel_cost_col = "travel_time",
   competition_col = "population",
-  by_col = NULL
+  by_col = NULL,
+  fill_missing_ids = TRUE
 )
 }
 \arguments{
@@ -55,6 +56,16 @@ the accessibility estimates by. For example, if \code{travel_matrix} includes a
 departure time column, that specifies the departure time of each entry in
 the data frame, passing \code{"departure_time"} to this argument results in
 accessibility estimates grouped by origin and by departure time.}
+
+\item{fill_missing_ids}{A \code{logical}. When calculating grouped accessibility
+estimates (i.e. when \code{by_col} is not \code{NULL}), some combinations of groups
+and origins may be missing. For example, if a single trip can depart from
+origin \code{A} at 7:15am and reach destination \code{B} within 55 minutes, but no
+trips departing from \code{A} at 7:30am can be completed at all, this second
+combination will not be included in the output. When \code{TRUE} (the default),
+the function identifies which combinations would be left out and fills
+their respective accessibility values with 0, which incurs in a
+performance penalty.}
 }
 \value{
 A data frame containing the accessibility estimates for each
@@ -64,7 +75,7 @@ travel matrix.
 \description{
 Calculates accessibility accounting for the competition of resources using a
 measure from the floating catchment area (FCA) family. Please see the
-details for the available FCA measures and an explanation on how to use them.
+details for the available FCA measures.
 
 This function is generic over any kind of numeric travel cost,
 such as distance, time and money.
