@@ -13,16 +13,22 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-
-old <- options()
-options(scipen = 999)
 ```
 
-**accessibility** is an R package that offers a set of fast and convenient functions to calculate multiple transport accessibility measures. Given a pre-computed travel cost matrix and a land use dataset, the package allows one to calculate active and passive accessibility levels using multiple accessibility metrics, such as cumulative opportunities (using either a travel cost cutoff or an travel cost interval), minimum travel cost to closest N number of activities, gravitational measures and different floating catchment area methods. This vignette briefly overviews the package with a few reproducible example.
+**accessibility** is an R package that offers a set of fast and convenient
+functions to calculate multiple transport accessibility measures. Given a
+pre-computed travel cost matrix and a land use dataset, the package allows one
+to calculate active and passive accessibility levels using multiple
+accessibility metrics, such as cumulative opportunities (using either a travel
+cost cutoff or an travel cost interval), minimum travel cost to closest N
+number of activities, gravitational measures and different floating catchment
+area methods. This vignette briefly overviews the package with a few
+reproducible example.
 
 # Installation
 
-Before using **accessibility** please make sure that you have it installed in your computer. You can download either the most stable version from CRAN...
+Before using **accessibility** please make sure that you have it installed in
+your computer. You can download either the most stable version from CRAN...
 
 ```{r, eval = FALSE}
 install.packages("accessibility")
@@ -37,29 +43,51 @@ remotes::install_github("ipeaGIT/accessibility")
 
 # Overview of the package
 
-As of the time of writing this vignette, the **accessibility** package includes five different functions to calculate accessibility:
+As of the time of writing this vignette, the **accessibility** package includes
+five different functions to calculate accessibility:
 
-1. `cost_to_closest()` - calculates the mininimum travel cost to the closest *n* number of opportunities.
-2. `cumulative_cutoff()` - calculates the frenquently used threshold-based cumulative opportunities measure.
-3. `cumulative_interval()` - calculates accessibility as the median/mean (or any other summary measure, really) number of opportunities that can be reached within a cost interval. 
-4. `gravity()` - calculates gravity-based accessibility, taking a decay function specified by the user (more on that in a few paragraphs).
-5. `floating_catchment_area()` - calculates accessibility taking into account the effects of competition for opportunities with different floating catchment area measures.
+1. `cost_to_closest()` - calculates the mininimum travel cost to the closest
+   *n* number of opportunities.
+2. `cumulative_cutoff()` - calculates the frenquently used threshold-based
+   cumulative opportunities measure.
+3. `cumulative_interval()` - calculates accessibility as the median/mean (or
+   any other summary measure, really) number of opportunities that can be
+   reached within a cost interval. 
+4. `gravity()` - calculates gravity-based accessibility, taking a decay
+   function specified by the user (more on that in a few paragraphs).
+5. `floating_catchment_area()` - calculates accessibility taking into account
+   the effects of competition for opportunities with different floating
+   catchment area measures.
 
-You may have noticed that we've mentioned a few times that the functions calculate accessibility using travel *cost*, and not travel *time*. That's because we're treating *costs* here in its generic sense: anything that increases the impedance from an origin to a destination, such as travel time, monetary costs, risk perception, etc., can be considered a generic *cost*.
+You may have noticed that we've mentioned a few times that the functions
+calculate accessibility using travel *cost*, and not travel *time*. That's
+because we're treating *costs* here in its generic sense: anything that
+increases the impedance from an origin to a destination, such as travel time,
+monetary costs, risk perception, etc., can be considered a generic *cost*.
 
-The `gravity_access()` and `floating_catchment_area()` functions can use different decay functions when estimating accessibility levels. This decay functions effectively weigh the number of opportunities in a destination by a factor that depends on the travel cost between the origin and the destination. For convenience, the package currently includes the following decay functions:
+The `gravity()` and `floating_catchment_area()` functions can use
+different decay functions when estimating accessibility levels. This decay
+functions effectively weigh the number of opportunities in a destination by a
+factor that depends on the travel cost between the origin and the destination.
+For convenience, the package currently includes the following decay functions:
 
-1. `decay_binary()` - binary decay function (the one used in cumulative opportunities measures).
+1. `decay_binary()` - binary decay function (the one used in cumulative
+   opportunities measures).
 2. `decay_exponential()` - negative exponential decay function.
-3. `decay_linear()` - linear decay function (weights decay linearly from 1 to 0 until a specific travel cost cutoff is reached).
+3. `decay_linear()` - linear decay function (weights decay linearly from 1 to 0
+   until a specific travel cost cutoff is reached).
 4. `decay_power()` - inverse power decay function.
-5. `decay_stepped()` - stepped decay function (similar to `decay_binary()`, but can take an arbitrary number of steps, instead of a single one).
+5. `decay_stepped()` - stepped decay function (similar to `decay_binary()`, but
+   can take an arbitrary number of steps, instead of a single one).
 
-The users can also specify their own custom decay functions, if they need to use functions currently not included in the package. For more details on this, please read the [decay functions vignette](decay_functions.html).
+The users can also specify their own custom decay functions, if they need to
+use functions currently not included in the package. For more details on this,
+please read the [decay functions vignette](decay_functions.html).
 
 # Demonstration on sample data
 
-Enough talking. Let's demonstrate some of the key features of the package. First we'll need to load the libraries we'll be using:
+Enough talking. Let's demonstrate some of the key features of the package.
+First we'll need to load the libraries we'll be using:
 
 ```{r, message = FALSE, warning = FALSE}
 library(accessibility)
@@ -70,9 +98,24 @@ library(sf)
 
 ## Data requirements
 
-To use **accessibility**, you will need a pre-computed travel cost matrix and some land use data (e.g. location of jobs, healthcare, population, etc.). As mentioned before, travel costs can be presented in terms of travel times, distances or monetary costs, for example. This dataset must be structured in a `data.frame` containing, at least, the columns `from_id`, `to_id` and the travel cost between each origin-destination pair.
+To use **accessibility**, you will need a pre-computed travel cost matrix and
+some land use data (e.g. location of jobs, healthcare, population, etc.). As
+mentioned before, travel costs can be presented in terms of travel times,
+distances or monetary costs, for example. This dataset must be structured in a
+`data.frame` containing, at least, the columns `from_id`, `to_id` and the
+travel cost between each origin-destination pair.
 
-Your data should look similar to this:
+Your data should look similar to this sample dataset with public transport
+travel times for the city of Belo Horizonte, Brazil, included in the package
+for demonstration purposes[^1].
+
+[^1]: If you would like to calculate such travel cost matrices yourself, there
+are several computational packages to do that in R, such as
+[r5r](https://github.com/ipeaGIT/r5r),
+[dodgr](https://github.com/ATFutures/dodgr),
+[gtfsrouter](https://github.com/ATFutures/gtfs-router),
+[hereR](https://github.com/munterfi/hereR) and
+[opentripplanner](https://github.com/ropensci/opentripplanner).
 
 ```{r}
 data_dir <- system.file("extdata", package = "accessibility")
@@ -81,163 +124,180 @@ travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
 head(travel_matrix)
 ```
 
+The land use data must also be structured in a `data.frame` and must contain an
+`id` column, which refer to the ids listed in the travel matrix, and the number
+of opportunities/facilities/services in each spatial unit. The sample dataset
+we'll be using looks like this:
+
 ```{r}
 land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
 head(land_use_data)
 ```
 
-This is a small sample data with public transport travel times and land use data for the city of Belo Horizonte (Brazil) included in the package and that we will be using to illustrate its functionalities.
+## Minimum travel cost
 
-If you would like to estimate such travel cost matrices, there are several computational packages to do that in R, such as:
-- [r5r](https://github.com/ipeaGIT/r5r)
-- [dodgr](https://github.com/ATFutures/dodgr)
-- [gtfsrouter](https://github.com/ATFutures/gtfs-router)
-- [hereR](https://github.com/munterfi/hereR)
-- [opentripplanner](https://github.com/ropensci/opentripplanner)
-
-
-## 5.1 Minimum travel cost:
-
-`time_to_closest()` allows you to easily calculate the minimum travel cost accessibility. In the example below, the output shows the minimum travel cost from each origin to the closet school and the id of the destination where the school is located.
+`cost_to_closest()` calculates the minimum travel cost to a given number of
+opportunities. Much like the other functions we'll be demonstrating in this
+section, it takes as inputs the travel matrix and land use datasets, the name
+of the column in the latter with the opportunities to be considered and the
+name of the column in the former with the travel cost to be considered.
+Additionally, it takes the minimum number of opportunities to be considered.
+Here's how calculating the time from each origin in Belo Horizonte to the
+closest school looks like:
 
 ```{r, message = FALSE}
-df <- cost_to_closest(
+mtc <- cost_to_closest(
   travel_matrix,
   land_use_data,
-  n = 1,
   opportunity_col = "schools",
-  travel_cost_col = "travel_time"
+  travel_cost_col = "travel_time",
+  n = 1
 )
-head(df)
+head(mtc)
 ```
 
-## 5.2 Cumulative opportunity measures:
+## Cutoff-based cumulative opportunities
 
-#### Time threshold
-
-The  `cumulative_time_cutoff()` functions calculates traditional cumulative opportunity accessibility, indicating the number of opportunities that are accessible in under a given travel cost threshold. In this example, we estimate the number of jobs accessible in up to 30 minutes.
-
+`cumulative_cutoff()` calculates the traditional cumulative opportunities
+measure, indicating the number of opportunities that are accessible within a
+given travel cost threshold. In this example, we estimate how many jobs can be
+reached from each origin with trips taking up to 30 minutes of travel time.
 
 ```{r, message = FALSE}
 cum_cutoff <- cumulative_cutoff(
-  travel_matrix = travel_matrix,
-  land_use_data = land_use_data,
-  cutoff = 30,
-  opportunity_col = "schools",
-  travel_cost_col = "travel_time"
+  travel_matrix,
+  land_use_data,
+  opportunity_col = "jobs",
+  travel_cost_col = "travel_time",
+  cutoff = 30
 )
 head(cum_cutoff)
 ```
 
-
-#### Time interval
-
-`cumulative_time_interval()` calculates the the time interval cumulative accessibility measure. This is a novel accessibility metric developed by Tomasiello et al. (*forthcoming paper*) to mitigate the impacts of arbitrary choices of trip duration in traditional threshold-based cumulative opportunity metrics. In the example below, we calculate the average number of jobs accessible considering multiple minute-by-minute time thresholds between 20 and 60 minutes.
+Let's say that we wanted to, instead, calculate *passive* accessibility - i.e.
+by how many people each destination can be reached within a given travel cost.
+Doing so requires very few changes to the call: just change the "opportunity"
+column to `"population"` and set `active` (`TRUE` by default) to `FALSE`.
 
 ```{r, message = FALSE}
-df <- cumulative_interval(
+passive_cum_cutoff <- cumulative_cutoff(
+  travel_matrix,
+  land_use_data,
+  opportunity_col = "population",
+  travel_cost_col = "travel_time",
+  cutoff = 30,
+  active = FALSE
+)
+head(passive_cum_cutoff)
+```
+
+The `active` parameter is available in most other accessibility functions as
+well (with the exception of `floating_catchment_area()`), making it very easy
+to calculate both active and passive accessibility.
+
+## Interval-based cumulative opportunities
+
+`cumulative_time_interval()` calculates the interval-based cumulative
+opportunities measure. This measure, developed by Tomasiello et al.
+(*forthcoming paper*), mitigates the impacts of arbitrary choices of cost
+cutoffs, one of the main disadvantages of the traditional threshold-based
+cumulative opportunities measure. Given a cost interval, it calculates several
+accessibility estimates within the interval and summarizes it using a
+user-specified function. In the example below, we calculate the average number
+of accessible jobs considering multiple minute-by-minute time thresholds
+between 40 and 60 minutes.
+
+```{r, message = FALSE}
+cum_interval <- cumulative_interval(
   travel_matrix = travel_matrix,
   land_use_data = land_use_data,
-  interval = c(20, 30),
-  opportunity_col = "schools",
-  travel_cost_col = "travel_time"
-)
-head(df)
-```
-
-
-## 5.3 Gravity-based accessibility:
-
-The  `gravity_access()` allows one to continuously discount the weight of opportunities as travel costs become larger. See the [vignette on decay functions](https://ipeagit.github.io/accessibility/articles/decay_functions.html) for more information on the decay functions available in the package and how to use custom functions. In this case here, we use a negative exponential function with a `decay_value` \eqn{\beta} of 0.2
-
-
-```{r, message = FALSE}
-df_linear <- gravity(
-  travel_matrix,
-  land_use_data,
-  decay_function = decay_linear(cutoff = 50),
-  opportunity_col = "schools",
-  travel_cost_col = "travel_time"
-)
-head(df_linear)
-```
-
-## 5.4 Floating catchment accessibility:
-
-The `floating_catchment_area()` functions provides users with floating catchment area (FCA) indicators that allow you to calculate accessibility accounting for the competition of resources. The use can use the parameter `fca_metric` to specify which indicator of the broad FCA family should be used. The package currently supports two FCA metrics.
-
-#### 2SFCA: 2-Step Floating Catchment Area
-
-2SFCA was the first accessibility metric in the floating catchment area family. It was originally proposed by Luo & Wang [@luo2003measures].
-
-
-```{r, message = FALSE}
-df <- floating_catchment_area(
-  travel_matrix,
-  land_use_data,
-  fca_metric = "2sfca",
-  decay_function = decay_binary(cutoff = 50),
   opportunity_col = "jobs",
   travel_cost_col = "travel_time",
-  competition_col = "population"
+  interval = c(40, 60)
 )
-head(df)
+head(cum_interval)
 ```
-#### BFCA - Balanced Floating Catchment Area
 
-The BFCA metric calculates accessibility accounting for competition effects while simultaneously correcting for issues of inflation of demand and service levels that are present in previous floating  catchment area measures. It is the most recent FCA metric and it was originally proposed by Paez et al. [@paez2019demand] and named in Pereira et al. [@pereira2021geographic].
+## Gravity measures
+
+`gravity()` calculates gravity-based measures - i.e. measures in which the
+weight of opportunities is gradually discounted as the travel cost increases.
+Of course, several different decay functions can be used to so, each one of
+them with a range of possible different parameters. In order to accomodate such
+generalization, the function takes the decay function to be used as a
+parameter.
+
+In the example below, we calculate accessibility using a negative exponential
+function with a `decay_value` (usually referred as the \eqn{\beta} in its
+formulation) of 0.2. Please see [the vignette on decay
+functions](decay_functions.html) for more information on the decay functions
+shipped with the package and how to use custom functions.
 
 ```{r, message = FALSE}
-df <- floating_catchment_area(
+negative_exp <- gravity(
   travel_matrix,
   land_use_data,
+  opportunity_col = "schools",
+  travel_cost_col = "travel_time",
+  decay_function = decay_exponential(decay_value = 0.2)
+)
+head(negative_exp)
+```
+
+## Floating catchment area
+
+`floating_catchment_area()` calculates accessibility accounting for competition
+of resources using different floating catchment area (FCA) methods. The FCA
+family includes several different methods, which can be specified using the
+`fca_metric` parameter. As of the time of writing this vignette, the package
+supports two different methods:
+
+- 2-Step Floating Catchment Area (`"2sfca"`) - the first metric in the FCA
+family, originally proposed by @luo2003measures.
+- Balanced Floating Catchment Area (`"bfca"`) - takes competition affects into
+account while correcting for issues of inflation of demand and service levels.
+Originally proposed by @paez2019demand and named in @pereira2021geographic.
+
+Please note that, since FCA measures consider competition effects, we have to
+specify which column in the land use dataset represents the population
+competing for opportunities with the `competition_col` parameter. The function
+also support diferent decay functions. In the example below, we calculate
+accessibility to jobs using the BFCA method, considering that the entire
+population of the city compete for these jobs and using a negative exponential
+decay function.
+
+```{r, message = FALSE}
+bfca <- floating_catchment_area(
+  travel_matrix,
+  land_use_data,
+  opportunity_col = "jobs",
+  travel_cost_col = "travel_time",
+  competition_col = "population",
   fca_metric = "bfca",
-  decay_function = decay_exponential(decay_value = 0.5),
-  opportunity_col = "jobs",
-  travel_cost_col = "travel_time",
-  competition_col = "population"
+  decay_function = decay_exponential(decay_value = 0.5)
 )
-head(df)
+head(bfca)
 ```
 
-#### Visualize results
+## Visualize results
 
-If you have a spatial data with the geometries of your origin/destination data set, you can easily `merge` it with the accessibility to map the results. Here is a quick example using `ggplot2`.
+If you have the spatial data of your origins/destinations you can easily merge it with the accessibility to create spatial visualizations of the results.
+The example belows quickly shows how to create a simple map using `{ggplot2}`.
 
-
-
-```{r, out.width='100%', fig.width=6, fig.height=6}
-library(ggplot2)
-library(sf)
-library(data.table)
-
-# load spatial data
+```{r, eval = requireNamespace(c("sf", "ggplot2"), quietly = TRUE), out.width = "80%", fig.width = 6, fig.height = 6}
 grid <- system.file("extdata/grid_bho.rds", package = "accessibility")
 grid <- readRDS(grid)
 
-# merge accessibility output to spatial data
-df <- merge(grid, cum_cutoff, by.x='id', by.y='id')
+spatial_data <- merge(grid, cum_cutoff, by = "id")
 
-# for large data sets, this can be done much faster with `data.table` as follows:
-df2 <- setDT(grid)[cum_cutoff, on=c('id'='id'), schools := i.schools]
-df2 <- st_sf(df2, crs = 4326)
-
-
-# plot
 ggplot() +
-  geom_sf(data = df2, aes(fill = schools), color=NA, alpha=0.9) +
-  labs(title = 'Education accessibility by transit in under 30 min.', 
-       fill='Number of schhols\naccessible') +
-  scale_fill_viridis_c() + 
+  geom_sf(data = spatial_data, aes(fill = jobs), color = NA) +
+  labs(
+    title = "Job accessibility by transit in under 30 min.",
+    fill = "Accessible jobs"
+  ) +
+  scale_fill_viridis_c() +
   theme_void()
-
 ```
 
-If you have any suggestions or want to report an error, please visit [the package GitHub page](https://github.com/ipeaGIT/accessibility).
-
-
-```{r, include = FALSE}
-options(old)
-```
-
-## References
+# References
