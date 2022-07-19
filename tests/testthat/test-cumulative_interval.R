@@ -6,20 +6,20 @@ skip_if_not(requireNamespace("stats", quietly = TRUE))
 tester <- function(
   travel_matrix = get("travel_matrix", envir = parent.frame()),
   land_use_data = get("land_use_data", envir = parent.frame()),
-  interval = c(10, 30),
-  summary_function = stats::median,
   opportunity_col = "jobs",
   travel_cost_col = "travel_time",
+  interval = c(10, 30),
+  summary_function = stats::median,
   by_col = "mode",
   active = TRUE
 ) {
   cumulative_interval(
     travel_matrix,
     land_use_data,
-    interval,
-    summary_function,
     opportunity_col,
     travel_cost_col,
+    interval,
+    summary_function,
     by_col,
     active
   )

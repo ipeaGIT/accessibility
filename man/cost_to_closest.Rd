@@ -7,9 +7,9 @@
 cost_to_closest(
   travel_matrix,
   land_use_data,
-  n = 1,
   opportunity_col,
-  travel_cost_col = "travel_time",
+  travel_cost_col,
+  n = 1,
   by_col = NULL,
   active = TRUE,
   fill_missing_ids = TRUE
@@ -25,9 +25,6 @@ and any others specified in \code{travel_cost_col}.}
 the study area cells. Must contain the columns \code{id} and any others
 specified in \code{opportunity_col}.}
 
-\item{n}{A \code{numeric}. A number indicating the minimum number of opportunities
-that should be considered. Defaults to 1.}
-
 \item{opportunity_col}{A string. The name of the column in \code{land_use_data}
 with the number of opportunities/resources/services to be considered when
 calculating accessibility levels.}
@@ -35,6 +32,9 @@ calculating accessibility levels.}
 \item{travel_cost_col}{A string. The name of the column in \code{travel_matrix}
 with the travel cost between origins and destinations. Defaults to
 \code{"travel_time"}.}
+
+\item{n}{A \code{numeric}. A number indicating the minimum number of opportunities
+that should be considered. Defaults to 1.}
 
 \item{by_col}{Either \code{NULL} (the default) or a \code{character} vector. When not
 \code{NULL}, indicates the \code{travel_matrix} columns that should be used to group

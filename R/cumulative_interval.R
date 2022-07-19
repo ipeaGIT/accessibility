@@ -9,6 +9,8 @@
 #'
 #' @template travel_matrix
 #' @template land_use_data
+#' @template opportunity_col
+#' @template travel_cost_col
 #' @param interval A `numeric` vector of length 2. Indicates the start and end
 #'   points of the interval of travel cost thresholds to be used. The first
 #'   entry must be lower than the second.
@@ -17,8 +19,6 @@
 #'   single value. Can be any function that takes an arbitrary number of
 #'   numeric values as as input and returns a single number as output. Defaults
 #'   to [stats::median()].
-#' @template opportunity_col
-#' @template travel_cost_col
 #' @template by_col
 #' @template active
 #'
@@ -58,10 +58,10 @@
 #' @export
 cumulative_interval <- function(travel_matrix,
                                 land_use_data,
+                                opportunity_col,
+                                travel_cost_col,
                                 interval,
                                 summary_function = stats::median,
-                                opportunity_col,
-                                travel_cost_col = "travel_time",
                                 by_col = NULL,
                                 active = TRUE) {
   by_col_char <- assert_and_assign_by_col(by_col)

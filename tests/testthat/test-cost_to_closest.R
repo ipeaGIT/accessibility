@@ -4,9 +4,9 @@
 tester <- function(
   travel_matrix = get("travel_matrix", envir = parent.frame()),
   land_use_data = get("land_use_data", envir = parent.frame()),
-  n = 1,
   opportunity_col = "schools",
   travel_cost_col = "travel_time",
+  n = 1,
   by_col = "mode",
   active = TRUE,
   fill_missing_ids = TRUE
@@ -14,9 +14,9 @@ tester <- function(
   cost_to_closest(
     travel_matrix,
     land_use_data,
-    n,
     opportunity_col,
     travel_cost_col,
+    n,
     by_col,
     active,
     fill_missing_ids

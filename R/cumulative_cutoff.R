@@ -6,9 +6,9 @@
 #'
 #' @template travel_matrix
 #' @template land_use_data
-#' @param cutoff A `numeric`. A number indicating the travel cost cutoff.
 #' @template opportunity_col
 #' @template travel_cost_col
+#' @param cutoff A `numeric`. A number indicating the travel cost cutoff.
 #' @template by_col
 #' @template active
 #' @param fill_missing_ids A `logical`. Calculating cumulative accessibility may
@@ -53,9 +53,9 @@
 #' @export
 cumulative_cutoff <- function(travel_matrix,
                               land_use_data,
-                              cutoff,
                               opportunity_col,
-                              travel_cost_col = "travel_time",
+                              travel_cost_col,
+                              cutoff,
                               by_col = NULL,
                               active = TRUE,
                               fill_missing_ids = TRUE) {

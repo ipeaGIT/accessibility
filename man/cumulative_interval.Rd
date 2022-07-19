@@ -7,10 +7,10 @@
 cumulative_interval(
   travel_matrix,
   land_use_data,
+  opportunity_col,
+  travel_cost_col,
   interval,
   summary_function = stats::median,
-  opportunity_col,
-  travel_cost_col = "travel_time",
   by_col = NULL,
   active = TRUE
 )
@@ -25,6 +25,14 @@ and any others specified in \code{travel_cost_col}.}
 the study area cells. Must contain the columns \code{id} and any others
 specified in \code{opportunity_col}.}
 
+\item{opportunity_col}{A string. The name of the column in \code{land_use_data}
+with the number of opportunities/resources/services to be considered when
+calculating accessibility levels.}
+
+\item{travel_cost_col}{A string. The name of the column in \code{travel_matrix}
+with the travel cost between origins and destinations. Defaults to
+\code{"travel_time"}.}
+
 \item{interval}{A \code{numeric} vector of length 2. Indicates the start and end
 points of the interval of travel cost thresholds to be used. The first
 entry must be lower than the second.}
@@ -34,14 +42,6 @@ distribution of accessibility estimates within a travel cost interval as a
 single value. Can be any function that takes an arbitrary number of
 numeric values as as input and returns a single number as output. Defaults
 to \code{\link[stats:median]{stats::median()}}.}
-
-\item{opportunity_col}{A string. The name of the column in \code{land_use_data}
-with the number of opportunities/resources/services to be considered when
-calculating accessibility levels.}
-
-\item{travel_cost_col}{A string. The name of the column in \code{travel_matrix}
-with the travel cost between origins and destinations. Defaults to
-\code{"travel_time"}.}
 
 \item{by_col}{Either \code{NULL} (the default) or a \code{character} vector. When not
 \code{NULL}, indicates the \code{travel_matrix} columns that should be used to group

@@ -7,11 +7,11 @@
 floating_catchment_area(
   travel_matrix,
   land_use_data,
+  opportunity_col,
+  travel_cost_col,
+  competition_col,
   fca_metric,
   decay_function,
-  opportunity_col,
-  travel_cost_col = "travel_time",
-  competition_col = "population",
   by_col = NULL,
   fill_missing_ids = TRUE
 )
@@ -26,18 +26,6 @@ and any others specified in \code{travel_cost_col}.}
 the study area cells. Must contain the columns \code{id} and any others
 specified in \code{opportunity_col}.}
 
-\item{fca_metric}{A string. Which floating catchment area measure to use.
-Current available options are \code{"2sfca"} and \code{"bfca"}. More info in the
-details.}
-
-\item{decay_function}{A \code{fuction} that converts travel cost into an
-impedance factor used to weight opportunities. This function should take a
-\code{numeric} vector and also return a \code{numeric} vector as output, with the
-same length as the input. For convenience, the package currently includes
-the following functions: \code{\link[=decay_binary]{decay_binary()}}, \code{\link[=decay_exponential]{decay_exponential()}},
-\code{\link[=decay_exponential]{decay_exponential()}} and \code{\link[=decay_power]{decay_power()}}. See the documentation of each
-decay function for more details.}
-
 \item{opportunity_col}{A string. The name of the column in \code{land_use_data}
 with the number of opportunities/resources/services to be considered when
 calculating accessibility levels.}
@@ -49,6 +37,18 @@ with the travel cost between origins and destinations. Defaults to
 \item{competition_col}{A string. The name of the column in \code{land_use_data}
 with the number of people in each origin that will be considered potential
 competitors. Defaults to \code{"population"}.}
+
+\item{fca_metric}{A string. Which floating catchment area measure to use.
+Current available options are \code{"2sfca"} and \code{"bfca"}. More info in the
+details.}
+
+\item{decay_function}{A \code{fuction} that converts travel cost into an
+impedance factor used to weight opportunities. This function should take a
+\code{numeric} vector and also return a \code{numeric} vector as output, with the
+same length as the input. For convenience, the package currently includes
+the following functions: \code{\link[=decay_binary]{decay_binary()}}, \code{\link[=decay_exponential]{decay_exponential()}},
+\code{\link[=decay_exponential]{decay_exponential()}} and \code{\link[=decay_power]{decay_power()}}. See the documentation of each
+decay function for more details.}
 
 \item{by_col}{Either \code{NULL} (the default) or a \code{character} vector. When not
 \code{NULL}, indicates the \code{travel_matrix} columns that should be used to group

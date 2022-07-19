@@ -4,22 +4,22 @@
 tester <- function(
   travel_matrix = get("travel_matrix", envir = parent.frame()),
   land_use_data = get("land_use_data", envir = parent.frame()),
-  fca_metric = "2sfca",
-  decay_function = decay_binary(45),
   opportunity_col = "jobs",
   travel_cost_col = "travel_time",
   competition_col = "population",
+  fca_metric = "2sfca",
+  decay_function = decay_binary(45),
   by_col = "mode",
   fill_missing_ids = TRUE
 ) {
   floating_catchment_area(
     travel_matrix,
     land_use_data,
-    fca_metric,
-    decay_function,
     opportunity_col,
     travel_cost_col,
     competition_col,
+    fca_metric,
+    decay_function,
     by_col,
     fill_missing_ids
   )

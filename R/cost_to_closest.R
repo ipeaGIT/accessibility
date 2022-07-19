@@ -5,10 +5,10 @@
 #'
 #' @template travel_matrix
 #' @template land_use_data
-#' @param n A `numeric`. A number indicating the minimum number of opportunities
-#'   that should be considered. Defaults to 1.
 #' @template opportunity_col
 #' @template travel_cost_col
+#' @param n A `numeric`. A number indicating the minimum number of opportunities
+#'   that should be considered. Defaults to 1.
 #' @template by_col
 #' @template active
 #' @param fill_missing_ids A `logical`. Calculating minimum trave cost to
@@ -49,9 +49,9 @@
 #' @export
 cost_to_closest <- function(travel_matrix,
                             land_use_data,
-                            n = 1,
                             opportunity_col,
-                            travel_cost_col = "travel_time",
+                            travel_cost_col,
+                            n = 1,
                             by_col = NULL,
                             active = TRUE,
                             fill_missing_ids = TRUE) {

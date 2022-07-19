@@ -7,15 +7,15 @@
 #'
 #' @template travel_matrix
 #' @template land_use_data
-#' @param fca_metric A string. Which floating catchment area measure to use.
-#'   Current available options are `"2sfca"` and `"bfca"`. More info in the
-#'   details.
-#' @template decay_function
 #' @template opportunity_col
 #' @template travel_cost_col
 #' @param competition_col A string. The name of the column in `land_use_data`
 #'   with the number of people in each origin that will be considered potential
 #'   competitors. Defaults to `"population"`.
+#' @param fca_metric A string. Which floating catchment area measure to use.
+#'   Current available options are `"2sfca"` and `"bfca"`. More info in the
+#'   details.
+#' @template decay_function
 #' @template by_col
 #' @template fill_missing_ids_combinations
 #'
@@ -73,11 +73,11 @@
 #' @export
 floating_catchment_area <- function(travel_matrix,
                                     land_use_data,
+                                    opportunity_col,
+                                    travel_cost_col,
+                                    competition_col,
                                     fca_metric,
                                     decay_function,
-                                    opportunity_col,
-                                    travel_cost_col = "travel_time",
-                                    competition_col = "population",
                                     by_col = NULL,
                                     fill_missing_ids = TRUE) {
   by_col_char <- assert_and_assign_by_col(by_col)

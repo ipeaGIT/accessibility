@@ -6,9 +6,9 @@
 #'
 #' @template travel_matrix
 #' @template land_use_data
-#' @template decay_function
 #' @template opportunity_col
 #' @template travel_cost_col
+#' @template decay_function
 #' @template by_col
 #' @template active
 #' @template fill_missing_ids_combinations
@@ -41,9 +41,9 @@
 #' @export
 gravity <- function(travel_matrix,
                     land_use_data,
-                    decay_function,
                     opportunity_col,
-                    travel_cost_col = "travel_time",
+                    travel_cost_col,
+                    decay_function,
                     by_col = NULL,
                     active = TRUE,
                     fill_missing_ids = TRUE) {

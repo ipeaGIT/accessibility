@@ -4,9 +4,9 @@
 tester <- function(
   travel_matrix = get("travel_matrix", envir = parent.frame()),
   land_use_data = get("land_use_data", envir = parent.frame()),
-  decay_function = decay_binary(30),
   opportunity_col = "jobs",
   travel_cost_col = "travel_time",
+  decay_function = decay_binary(30),
   by_col = "mode",
   active = TRUE,
   fill_missing_ids = TRUE
@@ -14,9 +14,9 @@ tester <- function(
   gravity(
     travel_matrix,
     land_use_data,
-    decay_function,
     opportunity_col,
     travel_cost_col,
+    decay_function,
     by_col,
     active,
     fill_missing_ids
