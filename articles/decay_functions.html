@@ -82,7 +82,7 @@
 
       
 
-      </header><script src="decay_functions_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Decay functions</h1>
@@ -95,18 +95,14 @@
 
     
     
+<p>Some functions of the <strong>accessibility</strong> package, such as <code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code> and <code><a href="../reference/gravity.html">gravity()</a></code>, use decay functions to continuously discount the weight of opportunities as travel costs become larger. For convenience, the package ships with some of the most frequently used functions in the accessibility literature, which are discussed below. Additionally, users can pass custom functions to convert travel costs into weights to be applied the opportunities, which is discussed further down the vignette.</p>
 <div class="section level2">
-<h2 id="introduction">1. Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h2>
-<p>Some functions of the <code>accessibility</code> package, such as <code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code> and <code>gravity_access()</code>, use decay functions to continuously discount the weight of opportunities as travel costs become larger. For convenience, the package currently includes four decay functions discussed in <span class="citation">(Kwan 1998)</span>. See the implemented functions below. Additionally, the package also allows users to pass any custom decay function that converts travel cost <code>travel_cost</code> to an impedance factor (see section 3).</p>
-</div>
-<div class="section level2">
-<h2 id="currently-available-decay-functions">2. Currently available decay functions<a class="anchor" aria-label="anchor" href="#currently-available-decay-functions"></a>
+<h2 id="currently-available-decay-functions">Currently available decay functions<a class="anchor" aria-label="anchor" href="#currently-available-decay-functions"></a>
 </h2>
 <div class="section level3">
-<h3 id="binary-decay-function">2.1 Binary decay function<a class="anchor" aria-label="anchor" href="#binary-decay-function"></a>
+<h3 id="binary">Binary<a class="anchor" aria-label="anchor" href="#binary"></a>
 </h3>
-<p>Also known as ‘step’ decay function, commonly used in cumulative opportunity measures.</p>
+<p>Also known as the step decay function, it’s most commonly used in cumulative opportunities measures.</p>
 <p><span class="math display">\[
 \begin{aligned}
   f(t_{ij})= \left\{
@@ -117,11 +113,12 @@
     \right.\\
 \end{aligned}
 \]</span></p>
-<p>Where <span class="math inline">\(t_{ij}\)</span> is the travel cost between origin <em>i</em> and destination <em>j</em>; and <span class="math inline">\(T\)</span> is the <code>cutoff</code> of maximum travel cost.</p>
+<p>Where <span class="math inline">\(t_{ij}\)</span> is the travel cost between origin <em>i</em> and destination <em>j</em>, and <span class="math inline">\(T\)</span> is the travel cost cutoff.</p>
 </div>
 <div class="section level3">
-<h3 id="linear-decay-function">2.2 Linear decay function<a class="anchor" aria-label="anchor" href="#linear-decay-function"></a>
+<h3 id="linear">Linear<a class="anchor" aria-label="anchor" href="#linear"></a>
 </h3>
+<p>Weights decay linearly until the travel cost cutoff is reached. From this point onward weights assume the value of 0.</p>
 <p><span class="math display">\[
 \begin{aligned}
   f(t_{ij})= \left\{
@@ -132,20 +129,20 @@
     \right.\\
 \end{aligned}
 \]</span></p>
-<p>Where <span class="math inline">\(t_{ij}\)</span> is the travel cost between origin <em>i</em> and destination <em>j</em>; and <span class="math inline">\(T\)</span> is the <code>cutoff</code> of maximum travel cost.</p>
+<p>Where <span class="math inline">\(t_{ij}\)</span> is the travel cost between origin <em>i</em> and destination <em>j</em>, and <span class="math inline">\(T\)</span> is the travel cost cutoff.</p>
 </div>
 <div class="section level3">
-<h3 id="negative-exponential-">2.3 Negative exponential.<a class="anchor" aria-label="anchor" href="#negative-exponential-"></a>
+<h3 id="negative-exponential">Negative exponential<a class="anchor" aria-label="anchor" href="#negative-exponential"></a>
 </h3>
 <p><span class="math display">\[
 \begin{aligned}
   f(t_{ij})= e^{(-\beta t_{ij})}
 \end{aligned}
 \]</span></p>
-<p>Where: <span class="math inline">\(t_{ij}\)</span> is the travel cost between origin <em>i</em> and destination <em>j</em>; and <span class="math inline">\(\beta\)</span> is the <code>decay_value</code> that tells the speed of decay.</p>
+<p>Where <span class="math inline">\(t_{ij}\)</span> is the travel cost between origin <em>i</em> and destination <em>j</em>, and <span class="math inline">\(\beta\)</span> is the parameter that tells the speed of decay.</p>
 </div>
 <div class="section level3">
-<h3 id="inverse-power">2.4 Inverse power<a class="anchor" aria-label="anchor" href="#inverse-power"></a>
+<h3 id="inverse-power">Inverse power<a class="anchor" aria-label="anchor" href="#inverse-power"></a>
 </h3>
 <p><span class="math display">\[
 \begin{aligned}
@@ -157,87 +154,138 @@
     \right.\\
 \end{aligned}
 \]</span></p>
-<p>Where <span class="math inline">\(t_{ij}\)</span> is the travel cost between origin <em>i</em> and destination <em>j</em>; and <span class="math inline">\(\beta\)</span> is the <code>decay_value</code> that tells the speed of decay.</p>
-<div class="section level5">
-<h5 id="quick-demonstration-of-how-these-decay-functions-look-like">Quick demonstration of how these decay functions look like<a class="anchor" aria-label="anchor" href="#quick-demonstration-of-how-these-decay-functions-look-like"></a>
-</h5>
+<p>Where <span class="math inline">\(t_{ij}\)</span> is the travel cost between origin <em>i</em> and destination <em>j</em>, and <span class="math inline">\(\beta\)</span> is the parameter that tells the speed of decay.</p>
+</div>
+<div class="section level3">
+<h3 id="stepped">Stepped<a class="anchor" aria-label="anchor" href="#stepped"></a>
+</h3>
+<p>Similar to the binary function, but can take an arbitrary number of steps. The current implementation assumes that values changes at each step, instead of right after it.</p>
+<p><span class="math display">\[
+\begin{aligned}
+  f(t_{ij})= \left\{
+      \begin{array}{ll}
+          1 &amp; \quad \text{for } t_{ij} \lt S_{1} \\
+          v_{1} &amp; \quad \text{for } t_{ij} \lt S_{2} \\
+          v_{2} &amp; \quad \text{for } t_{ij} \lt S_{3} \\
+          ... \\
+          v_{n-1} &amp; \quad \text{for } t_{ij} \lt S_{n} \\
+          v_{n} &amp; \quad \text{otherwise} \\
+      \end{array}
+    \right.\\
+\end{aligned}
+\]</span></p>
+<p>Where <span class="math inline">\(t_{ij}\)</span> is the travel cost between origin <em>i</em> and destination <em>j</em>, <span class="math inline">\(n\)</span> is the total number of steps, <span class="math inline">\(S_{k}\)</span> is the travel cost cutoff that delimits the <span class="math inline">\(k^{th}\)</span> step, and <span class="math inline">\(v_{k}\)</span> is the value that the decay function assumes at the <span class="math inline">\(k^{th}\)</span> step.</p>
+<div class="section level4">
+<h4 id="quick-demonstration">Quick demonstration<a class="anchor" aria-label="anchor" href="#quick-demonstration"></a>
+</h4>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/accessibility" class="external-link">accessibility</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Generate inputs</span></span>
-<span><span class="va">vec</span> <span class="op">&lt;-</span> <span class="fl">0</span><span class="op">:</span><span class="fl">100</span></span>
-<span><span class="va">decay_value</span> <span class="op">&lt;-</span> <span class="fl">0.2</span></span>
-<span><span class="va">cutoff</span> <span class="op">&lt;-</span> <span class="fl">50</span></span>
+<span><span class="va">binary</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decay_binary.html">decay_binary</a></span><span class="op">(</span>cutoff <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
+<span><span class="va">linear</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decay_linear.html">decay_linear</a></span><span class="op">(</span>cutoff <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
+<span><span class="va">negative_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decay_exponential.html">decay_exponential</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
+<span><span class="va">inverse_power</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decay_power.html">decay_power</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
+<span><span class="va">stepped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decay_stepped.html">decay_stepped</a></span><span class="op">(</span>steps <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">60</span>, <span class="fl">90</span><span class="op">)</span>, weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.66</span>, <span class="fl">0.33</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Return functions</span></span>
-<span><span class="va">step</span>        <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decay_binary.html">decay_binary</a></span><span class="op">(</span>cutoff<span class="op">=</span><span class="va">cutoff</span><span class="op">)</span></span>
-<span><span class="va">linear</span>      <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decay_linear.html">decay_linear</a></span><span class="op">(</span>cutoff<span class="op">=</span><span class="va">cutoff</span><span class="op">)</span></span>
-<span><span class="va">exponential</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decay_exponential.html">decay_exponential</a></span><span class="op">(</span>decay_value<span class="op">=</span><span class="va">decay_value</span><span class="op">)</span></span>
-<span><span class="va">power</span>       <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decay_power.html">decay_power</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="va">decay_value</span><span class="op">)</span></span>
+<span><span class="va">travel_costs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">100</span>, <span class="fl">0.1</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>minutes       <span class="op">=</span> <span class="va">vec</span>,</span>
-<span>                 binary        <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/step.html" class="external-link">step</a></span><span class="op">(</span><span class="va">vec</span><span class="op">)</span>,</span>
-<span>                 linear        <span class="op">=</span> <span class="fu">linear</span><span class="op">(</span><span class="va">vec</span><span class="op">)</span>,</span>
-<span>                 exponential   <span class="op">=</span> <span class="fu">exponential</span><span class="op">(</span><span class="va">vec</span><span class="op">)</span>,</span>
-<span>                 inverse_power <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/power.html" class="external-link">power</a></span><span class="op">(</span><span class="va">vec</span><span class="op">)</span></span>
-<span>                 <span class="op">)</span></span>
+<span><span class="va">weights</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span></span>
+<span>  minutes <span class="op">=</span> <span class="va">travel_costs</span>,</span>
+<span>  binary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">binary</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  linear <span class="op">=</span> <span class="fu">linear</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span>,</span>
+<span>  negative_exp <span class="op">=</span> <span class="fu">negative_exp</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span>,</span>
+<span>  inverse_power <span class="op">=</span> <span class="fu">inverse_power</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span>,</span>
+<span>  stepped <span class="op">=</span> <span class="fu">stepped</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># reshape the data to long format</span></span>
-<span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/melt.data.table.html" class="external-link">melt.data.table</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, </span>
-<span>                                   id.vars <span class="op">=</span> <span class="st">'minutes'</span>, </span>
-<span>                                   variable.name <span class="op">=</span> <span class="st">'decay_function'</span>, </span>
-<span>                                   value.name <span class="op">=</span> <span class="st">'impedance_factor'</span><span class="op">)</span></span>
+<span><span class="co"># reshape data to long format</span></span>
+<span><span class="va">weights</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/melt.data.table.html" class="external-link">melt</a></span><span class="op">(</span></span>
+<span>  <span class="va">weights</span>,</span>
+<span>  id.vars <span class="op">=</span> <span class="st">"minutes"</span>,</span>
+<span>  variable.name <span class="op">=</span> <span class="st">"decay_function"</span>,</span>
+<span>  value.name <span class="op">=</span> <span class="st">"weights"</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># plot</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">df2</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">minutes</span>, y<span class="op">=</span><span class="va">impedance_factor</span>, color<span class="op">=</span><span class="va">decay_function</span><span class="op">)</span>, show.legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="va">.</span><span class="op">~</span><span class="va">decay_function</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">weights</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">minutes</span>, <span class="va">weights</span>, color <span class="op">=</span> <span class="va">decay_function</span><span class="op">)</span>,</span>
+<span>    show.legend <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="va">.</span> <span class="op">~</span> <span class="va">decay_function</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="decay_functions_files/figure-html/unnamed-chunk-2-1.png" width="80%"></p>
 </div>
 </div>
 </div>
 <div class="section level2">
-<h2 id="using-a-custom-decay-function">3. Using a custom decay function<a class="anchor" aria-label="anchor" href="#using-a-custom-decay-function"></a>
+<h2 id="using-a-custom-decay-function">Using a custom decay function<a class="anchor" aria-label="anchor" href="#using-a-custom-decay-function"></a>
 </h2>
-<p>Let’s use the sample data available in the <code>accessibility</code> package o demonstrate how you could use a custom decay function. Let’s load the data first.</p>
+<p>Any function that takes a <code>numeric</code> vector of travel costs and returns a <code>numeric</code> vector, with the same length of input, of weights to be applied to the opportunities can be considered a decay function.</p>
+<p>Let’s say that we wanted to use a very simple decay function that defines the weights as the multiplicative inverse of travel cost - i.e. <span class="math inline">\(travel\_cost^{-1}\)</span>. We just have to take care of the case when travel cost is less than 1, in which case the function would return values greater than 1 and which we will replace with 1, but otherwise the implementation is pretty simple:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># load input data</span></span>
-<span><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/ttm_bho.rds"</span>, package <span class="op">=</span> <span class="st">"accessibility"</span><span class="op">)</span></span>
-<span><span class="va">ttm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">data_path</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ttm</span><span class="op">)</span></span></code></pre></div>
-<p>Now let’s create a very simple custom decay function that uses a parameter <code>k</code> to convert the travel cost <code>travel_cost</code> between origin <code>i</code> and destination <code>j</code> into an impedance factor.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># create custom decay function</span></span>
-<span><span class="va">custom_decay_fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">k</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">impedance</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">travel_cost</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">f</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">/</span> <span class="va">travel_cost</span> <span class="op">^</span> <span class="va">k</span></span>
-<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
+<code class="sourceCode R"><span><span class="va">my_decay</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">travel_cost</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">weights</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">/</span> <span class="va">travel_cost</span></span>
+<span>  <span class="va">weights</span><span class="op">[</span><span class="va">weights</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">weights</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<p>You can use your <code>custom_decay_fun()</code> inside the <code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code> and <code>gravity_access()</code> functions like this:</p>
+<p>Given a <code>numeric</code> vector of travel costs, the function returns a <code>numeric</code> vector of weights:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">my_decay</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1.0 1.0 1.0 0.5 0.2 0.1</span></span></code></pre></div>
+<p>Using this function to calculate accessibility is as easy as any of the built-in decay functions:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># calculate gravity-based accessibility</span></span>
-<span><span class="va">grav_custom</span> <span class="op">&lt;-</span> <span class="fu">gravity_access</span><span class="op">(</span></span>
-<span>                  data <span class="op">=</span> <span class="va">ttm</span>,</span>
-<span>                  opportunity_col <span class="op">=</span> <span class="st">'jobs'</span>,</span>
-<span>                  decay_function <span class="op">=</span> <span class="fu">custom_decay_fun</span><span class="op">(</span>k<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span>,</span>
-<span>                  travel_cost_col <span class="op">=</span> <span class="st">'travel_time'</span>,</span>
-<span>                  by_col <span class="op">=</span> <span class="st">'from_id'</span></span>
-<span>                  <span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">data_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"accessibility"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">grav_custom</span><span class="op">)</span></span></code></pre></div>
-<div class="section level3">
-<h3 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
-</h3>
-<div id="refs" class="references">
-<div id="ref-kwan1998space">
-<p>Kwan, Mei-Po. 1998. “Space-Time and Integral Measures of Individual Accessibility: A Comparative Analysis Using a Point-Based Framework.” <em>Geographical Analysis</em> 30 (3): 191–216.</p>
-</div>
-</div>
-</div>
+<span><span class="va">travel_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data_dir</span>, <span class="st">"travel_matrix.rds"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">land_use_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data_dir</span>, <span class="st">"land_use_data.rds"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">custom_gravity</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gravity.html">gravity</a></span><span class="op">(</span></span>
+<span>  <span class="va">travel_matrix</span>,</span>
+<span>  <span class="va">land_use_data</span>,</span>
+<span>  opportunity_col <span class="op">=</span> <span class="st">"jobs"</span>,</span>
+<span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
+<span>  decay_function <span class="op">=</span> <span class="va">my_decay</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">custom_gravity</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                 id     jobs</span></span>
+<span><span class="co">#&gt; 1: 89a88cdb57bffff 11210.42</span></span>
+<span><span class="co">#&gt; 2: 89a88cdb597ffff 10775.77</span></span>
+<span><span class="co">#&gt; 3: 89a88cdb5b3ffff 11480.25</span></span>
+<span><span class="co">#&gt; 4: 89a88cdb5cfffff 12689.44</span></span>
+<span><span class="co">#&gt; 5: 89a88cd909bffff 11361.66</span></span>
+<span><span class="co">#&gt; 6: 89a88cd90b7ffff 12563.65</span></span></code></pre></div>
+<p>In fact, we could achieve the exact same result as we did with our custom function using <code>decay_power(1)</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">power_gravity</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gravity.html">gravity</a></span><span class="op">(</span></span>
+<span>  <span class="va">travel_matrix</span>,</span>
+<span>  <span class="va">land_use_data</span>,</span>
+<span>  opportunity_col <span class="op">=</span> <span class="st">"jobs"</span>,</span>
+<span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
+<span>  decay_function <span class="op">=</span> <span class="fu"><a href="../reference/decay_power.html">decay_power</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">power_gravity</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                 id     jobs</span></span>
+<span><span class="co">#&gt; 1: 89a88cdb57bffff 11210.42</span></span>
+<span><span class="co">#&gt; 2: 89a88cdb597ffff 10775.77</span></span>
+<span><span class="co">#&gt; 3: 89a88cdb5b3ffff 11480.25</span></span>
+<span><span class="co">#&gt; 4: 89a88cdb5cfffff 12689.44</span></span>
+<span><span class="co">#&gt; 5: 89a88cd909bffff 11361.66</span></span>
+<span><span class="co">#&gt; 6: 89a88cd90b7ffff 12563.65</span></span></code></pre></div>
+<p>A small difference is that in the first example we passed <code>my_decay</code> (the function <em>object</em>) to the <code>decay_function</code> parameter, whereas in the second we passed the function <em>call</em> <code>decay_power(1)</code>. That’s because <code><a href="../reference/decay_power.html">decay_power()</a></code> (and the other built-in decay functions as well) is actually a function “factory”: it’s a function that returns a function, as we can see below:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/decay_power.html">decay_power</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; function (travel_cost) </span></span>
+<span><span class="co">#&gt; {</span></span>
+<span><span class="co">#&gt;     impedance_value &lt;- travel_cost^(-decay_value)</span></span>
+<span><span class="co">#&gt;     impedance_value[impedance_value &gt; 1] &lt;- 1</span></span>
+<span><span class="co">#&gt;     return(impedance_value)</span></span>
+<span><span class="co">#&gt; }</span></span>
+<span><span class="co">#&gt; &lt;bytecode: 0x55bb57eb44e0&gt;</span></span>
+<span><span class="co">#&gt; &lt;environment: 0x55bb587c0610&gt;</span></span></code></pre></div>
+<p>This is because the built-in functions aim to be as generally used as possible, so we have to able to use them with different parameters, cutoffs, etc. In practice, every time we call these function we create another function that calculates travel costs exactly as we want.</p>
+<p>When we create our own custom decay function, we don’t have to think about general cases, just the cases that matter for us. Creating a simple function that converts one vector into another, therefore, suffices our needs. In both examples above, therefore, we’re passing a function to <code>decay_function</code> - one we created ourselves and another created by <code><a href="../reference/decay_power.html">decay_power()</a></code>.</p>
 </div>
   </div>
 
@@ -258,7 +306,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

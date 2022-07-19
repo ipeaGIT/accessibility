@@ -78,11 +78,11 @@ such as distance, time and money.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cumulative_interval</span><span class="op">(</span></span>
 <span>  <span class="va">travel_matrix</span>,</span>
 <span>  <span class="va">land_use_data</span>,</span>
+<span>  <span class="va">opportunity_col</span>,</span>
+<span>  <span class="va">travel_cost_col</span>,</span>
 <span>  <span class="va">interval</span>,</span>
 <span>  summary_function <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span>,</span>
-<span>  <span class="va">opportunity_col</span>,</span>
-<span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
-<span>  by_col <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  group_by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  active <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -102,6 +102,18 @@ the study area cells. Must contain the columns <code>id</code> and any others
 specified in <code>opportunity_col</code>.</p></dd>
 
 
+<dt>opportunity_col</dt>
+<dd><p>A string. The name of the column in <code>land_use_data</code>
+with the number of opportunities/resources/services to be considered when
+calculating accessibility levels.</p></dd>
+
+
+<dt>travel_cost_col</dt>
+<dd><p>A string. The name of the column in <code>travel_matrix</code>
+with the travel cost between origins and destinations. Defaults to
+<code>"travel_time"</code>.</p></dd>
+
+
 <dt>interval</dt>
 <dd><p>A <code>numeric</code> vector of length 2. Indicates the start and end
 points of the interval of travel cost thresholds to be used. The first
@@ -116,24 +128,12 @@ numeric values as as input and returns a single number as output. Defaults
 to <code><a href="https://rdrr.io/r/stats/median.html" class="external-link">stats::median()</a></code>.</p></dd>
 
 
-<dt>opportunity_col</dt>
-<dd><p>A string. The name of the column in <code>land_use_data</code>
-with the number of opportunities/resources/services to be considered when
-calculating accessibility levels.</p></dd>
-
-
-<dt>travel_cost_col</dt>
-<dd><p>A string. The name of the column in <code>travel_matrix</code>
-with the travel cost between origins and destinations. Defaults to
-<code>"travel_time"</code>.</p></dd>
-
-
-<dt>by_col</dt>
-<dd><p>Either <code>NULL</code> (the default) or a <code>character</code> vector. When not
-<code>NULL</code>, indicates the <code>travel_matrix</code> columns that should be used to group
-the accessibility estimates by. For example, if <code>travel_matrix</code> includes a
+<dt>group_by</dt>
+<dd><p>A <code>character</code> vector. When not <code>character(0)</code> (the default),
+indicates the <code>travel_matrix</code> columns that should be used to group the
+accessibility estimates by. For example, if <code>travel_matrix</code> includes a
 departure time column, that specifies the departure time of each entry in
-the data frame, passing <code>"departure_time"</code> to this argument results in
+the data frame, passing <code>"departure_time"</code> to this parameter results in
 accessibility estimates grouped by origin and by departure time.</p></dd>
 
 
@@ -220,7 +220,7 @@ opportunity accessibility.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

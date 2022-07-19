@@ -1,8 +1,8 @@
-pandoc: 2.7.3
-pkgdown: 2.0.5
+pandoc: '2.5'
+pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   accessibility: accessibility.html
   decay_functions: decay_functions.html
-last_built: 2022-07-15T20:36Z
+last_built: 2022-07-19T20:39Z
 

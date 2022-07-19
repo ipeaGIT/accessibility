@@ -82,7 +82,7 @@
 
       
 
-      </header><script src="accessibility_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to accessibility: calculating accessibility metrics</h1>
@@ -105,7 +105,7 @@
 <p>…or the development version from GitHub.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ipeaGIT/accessibility"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ipeaGIT/accessibility"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="overview-of-the-package">Overview of the package<a class="anchor" aria-label="anchor" href="#overview-of-the-package"></a>
@@ -124,7 +124,7 @@
 <code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code> - calculates accessibility taking into account the effects of competition for opportunities with different floating catchment area measures.</li>
 </ol>
 <p>You may have noticed that we’ve mentioned a few times that the functions calculate accessibility using travel <em>cost</em>, and not travel <em>time</em>. That’s because we’re treating <em>costs</em> here in its generic sense: anything that increases the impedance from an origin to a destination, such as travel time, monetary costs, risk perception, etc., can be considered a generic <em>cost</em>.</p>
-<p>The <code>gravity_access()</code> and <code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code> functions can use different decay functions when estimating accessibility levels. This decay functions effectively weigh the number of opportunities in a destination by a factor that depends on the travel cost between the origin and the destination. For convenience, the package currently includes the following decay functions:</p>
+<p>The <code><a href="../reference/gravity.html">gravity()</a></code> and <code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code> functions can use different decay functions when estimating accessibility levels. This decay functions effectively weigh the number of opportunities in a destination by a factor that depends on the travel cost between the origin and the destination. For convenience, the package currently includes the following decay functions:</p>
 <ol style="list-style-type: decimal">
 <li>
 <code><a href="../reference/decay_binary.html">decay_binary()</a></code> - binary decay function (the one used in cumulative opportunities measures).</li>
@@ -152,7 +152,7 @@
 <h3 id="data-requirements">Data requirements<a class="anchor" aria-label="anchor" href="#data-requirements"></a>
 </h3>
 <p>To use <strong>accessibility</strong>, you will need a pre-computed travel cost matrix and some land use data (e.g. location of jobs, healthcare, population, etc.). As mentioned before, travel costs can be presented in terms of travel times, distances or monetary costs, for example. This dataset must be structured in a <code>data.frame</code> containing, at least, the columns <code>from_id</code>, <code>to_id</code> and the travel cost between each origin-destination pair.</p>
-<p>Your data should look similar to this:</p>
+<p>Your data should look similar to this sample dataset with public transport travel times for the city of Belo Horizonte, Brazil, included in the package for demonstration purposes<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"accessibility"</span><span class="op">)</span></span>
 <span></span>
@@ -165,6 +165,7 @@
 <span><span class="co">#&gt; 4: 89a88cdb57bffff 89a88cdb5cfffff        47.0</span></span>
 <span><span class="co">#&gt; 5: 89a88cdb57bffff 89a88cd909bffff        64.0</span></span>
 <span><span class="co">#&gt; 6: 89a88cdb57bffff 89a88cd90b7ffff        59.0</span></span></code></pre></div>
+<p>The land use data must also be structured in a <code>data.frame</code> and must contain an <code>id</code> column, which refer to the ids listed in the travel matrix, and the number of opportunities/facilities/services in each spatial unit. The sample dataset we’ll be using looks like this:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">land_use_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data_dir</span>, <span class="st">"land_use_data.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">land_use_data</span><span class="op">)</span></span>
@@ -175,22 +176,20 @@
 <span><span class="co">#&gt; 4: 89a88cdb5cfffff       1864  109       0</span></span>
 <span><span class="co">#&gt; 5: 89a88cd909bffff         29    0       0</span></span>
 <span><span class="co">#&gt; 6: 89a88cd90b7ffff       1117  480       0</span></span></code></pre></div>
-<p>This is a small sample data with public transport travel times and land use data for the city of Belo Horizonte (Brazil) included in the package and that we will be using to illustrate its functionalities.</p>
-<p>If you would like to estimate such travel cost matrices, there are several computational packages to do that in R, such as: - <a href="https://github.com/ipeaGIT/r5r" class="external-link">r5r</a> - <a href="https://github.com/ATFutures/dodgr" class="external-link">dodgr</a> - <a href="https://github.com/ATFutures/gtfs-router" class="external-link">gtfsrouter</a> - <a href="https://github.com/munterfi/hereR" class="external-link">hereR</a> - <a href="https://github.com/ropensci/opentripplanner" class="external-link">opentripplanner</a></p>
 </div>
 <div class="section level3">
-<h3 id="minimum-travel-cost">5.1 Minimum travel cost:<a class="anchor" aria-label="anchor" href="#minimum-travel-cost"></a>
+<h3 id="minimum-travel-cost">Minimum travel cost<a class="anchor" aria-label="anchor" href="#minimum-travel-cost"></a>
 </h3>
-<p><code>time_to_closest()</code> allows you to easily calculate the minimum travel cost accessibility. In the example below, the output shows the minimum travel cost from each origin to the closet school and the id of the destination where the school is located.</p>
+<p><code><a href="../reference/cost_to_closest.html">cost_to_closest()</a></code> calculates the minimum travel cost to a given number of opportunities. Much like the other functions we’ll be demonstrating in this section, it takes as inputs the travel matrix and land use datasets, the name of the column in the latter with the opportunities to be considered and the name of the column in the former with the travel cost to be considered. Additionally, it takes the minimum number of opportunities to be considered. Here’s how calculating the time from each origin in Belo Horizonte to the closest school looks like:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cost_to_closest.html">cost_to_closest</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">mtc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cost_to_closest.html">cost_to_closest</a></span><span class="op">(</span></span>
 <span>  <span class="va">travel_matrix</span>,</span>
 <span>  <span class="va">land_use_data</span>,</span>
-<span>  n <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  opportunity_col <span class="op">=</span> <span class="st">"schools"</span>,</span>
-<span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span></span>
+<span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
+<span>  n <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mtc</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 id travel_time</span></span>
 <span><span class="co">#&gt; 1: 89a881a5a2bffff          29</span></span>
 <span><span class="co">#&gt; 2: 89a881a5a2fffff          24</span></span>
@@ -200,114 +199,108 @@
 <span><span class="co">#&gt; 6: 89a881a5b03ffff          17</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="cumulative-opportunity-measures">5.2 Cumulative opportunity measures:<a class="anchor" aria-label="anchor" href="#cumulative-opportunity-measures"></a>
+<h3 id="cutoff-based-cumulative-opportunities">Cutoff-based cumulative opportunities<a class="anchor" aria-label="anchor" href="#cutoff-based-cumulative-opportunities"></a>
 </h3>
-<div class="section level5">
-<h5 id="time-threshold">Time threshold<a class="anchor" aria-label="anchor" href="#time-threshold"></a>
-</h5>
-<p>The <code>cumulative_time_cutoff()</code> functions calculates traditional cumulative opportunity accessibility, indicating the number of opportunities that are accessible in under a given travel cost threshold. In this example, we estimate the number of jobs accessible in up to 30 minutes.</p>
+<p><code><a href="../reference/cumulative_cutoff.html">cumulative_cutoff()</a></code> calculates the traditional cumulative opportunities measure, indicating the number of opportunities that are accessible within a given travel cost threshold. In this example, we estimate how many jobs can be reached from each origin with trips taking up to 30 minutes of travel time.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cum_cutoff</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cumulative_cutoff.html">cumulative_cutoff</a></span><span class="op">(</span></span>
-<span>  travel_matrix <span class="op">=</span> <span class="va">travel_matrix</span>,</span>
-<span>  land_use_data <span class="op">=</span> <span class="va">land_use_data</span>,</span>
-<span>  cutoff <span class="op">=</span> <span class="fl">30</span>,</span>
-<span>  opportunity_col <span class="op">=</span> <span class="st">"schools"</span>,</span>
-<span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span></span>
+<span>  <span class="va">travel_matrix</span>,</span>
+<span>  <span class="va">land_use_data</span>,</span>
+<span>  opportunity_col <span class="op">=</span> <span class="st">"jobs"</span>,</span>
+<span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
+<span>  cutoff <span class="op">=</span> <span class="fl">30</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cum_cutoff</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                 id schools</span></span>
-<span><span class="co">#&gt; 1: 89a88cdb57bffff       6</span></span>
-<span><span class="co">#&gt; 2: 89a88cdb597ffff      22</span></span>
-<span><span class="co">#&gt; 3: 89a88cdb5b3ffff      23</span></span>
-<span><span class="co">#&gt; 4: 89a88cdb5cfffff       6</span></span>
-<span><span class="co">#&gt; 5: 89a88cd909bffff      17</span></span>
-<span><span class="co">#&gt; 6: 89a88cd90b7ffff      20</span></span></code></pre></div>
-</div>
-<div class="section level5">
-<h5 id="time-interval">Time interval<a class="anchor" aria-label="anchor" href="#time-interval"></a>
-</h5>
-<p><code>cumulative_time_interval()</code> calculates the the time interval cumulative accessibility measure. This is a novel accessibility metric developed by Tomasiello et al. (<em>forthcoming paper</em>) to mitigate the impacts of arbitrary choices of trip duration in traditional threshold-based cumulative opportunity metrics. In the example below, we calculate the average number of jobs accessible considering multiple minute-by-minute time thresholds between 20 and 60 minutes.</p>
+<span><span class="co">#&gt;                 id  jobs</span></span>
+<span><span class="co">#&gt; 1: 89a88cdb57bffff 22239</span></span>
+<span><span class="co">#&gt; 2: 89a88cdb597ffff 36567</span></span>
+<span><span class="co">#&gt; 3: 89a88cdb5b3ffff 42372</span></span>
+<span><span class="co">#&gt; 4: 89a88cdb5cfffff 55571</span></span>
+<span><span class="co">#&gt; 5: 89a88cd909bffff 26774</span></span>
+<span><span class="co">#&gt; 6: 89a88cd90b7ffff 36991</span></span></code></pre></div>
+<p>Let’s say that we wanted to, instead, calculate <em>passive</em> accessibility - i.e. by how many people each destination can be reached within a given travel cost. Doing so requires very few changes to the call: just change the “opportunity” column to <code>"population"</code> and set <code>active</code> (<code>TRUE</code> by default) to <code>FALSE</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cumulative_interval.html">cumulative_interval</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">passive_cum_cutoff</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cumulative_cutoff.html">cumulative_cutoff</a></span><span class="op">(</span></span>
+<span>  <span class="va">travel_matrix</span>,</span>
+<span>  <span class="va">land_use_data</span>,</span>
+<span>  opportunity_col <span class="op">=</span> <span class="st">"population"</span>,</span>
+<span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
+<span>  cutoff <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>  active <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">passive_cum_cutoff</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                 id population</span></span>
+<span><span class="co">#&gt; 1: 89a88cdb57bffff      62591</span></span>
+<span><span class="co">#&gt; 2: 89a88cdb19bffff     180316</span></span>
+<span><span class="co">#&gt; 3: 89a88cdb1d3ffff     185293</span></span>
+<span><span class="co">#&gt; 4: 89a88cdb56fffff     162202</span></span>
+<span><span class="co">#&gt; 5: 89a88cdb0afffff     243124</span></span>
+<span><span class="co">#&gt; 6: 89a88cdb50fffff     107605</span></span></code></pre></div>
+<p>The <code>active</code> parameter is available in most other accessibility functions as well (with the exception of <code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code>), making it very easy to calculate both active and passive accessibility.</p>
+</div>
+<div class="section level3">
+<h3 id="interval-based-cumulative-opportunities">Interval-based cumulative opportunities<a class="anchor" aria-label="anchor" href="#interval-based-cumulative-opportunities"></a>
+</h3>
+<p><code>cumulative_time_interval()</code> calculates the interval-based cumulative opportunities measure. This measure, developed by Tomasiello et al. (<em>forthcoming paper</em>), mitigates the impacts of arbitrary choices of cost cutoffs, one of the main disadvantages of the traditional threshold-based cumulative opportunities measure. Given a cost interval, it calculates several accessibility estimates within the interval and summarizes it using a user-specified function. In the example below, we calculate the average number of accessible jobs considering multiple minute-by-minute time thresholds between 40 and 60 minutes.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cum_interval</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cumulative_interval.html">cumulative_interval</a></span><span class="op">(</span></span>
 <span>  travel_matrix <span class="op">=</span> <span class="va">travel_matrix</span>,</span>
 <span>  land_use_data <span class="op">=</span> <span class="va">land_use_data</span>,</span>
-<span>  interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>,</span>
-<span>  opportunity_col <span class="op">=</span> <span class="st">"schools"</span>,</span>
-<span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span></span>
+<span>  opportunity_col <span class="op">=</span> <span class="st">"jobs"</span>,</span>
+<span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
+<span>  interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">40</span>, <span class="fl">60</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                 id schools</span></span>
-<span><span class="co">#&gt; 1: 89a88cdb57bffff       0</span></span>
-<span><span class="co">#&gt; 2: 89a88cdb597ffff      14</span></span>
-<span><span class="co">#&gt; 3: 89a88cdb5b3ffff      17</span></span>
-<span><span class="co">#&gt; 4: 89a88cdb5cfffff       4</span></span>
-<span><span class="co">#&gt; 5: 89a88cd909bffff       6</span></span>
-<span><span class="co">#&gt; 6: 89a88cd90b7ffff      12</span></span></code></pre></div>
-</div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cum_interval</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                 id   jobs</span></span>
+<span><span class="co">#&gt; 1: 89a88cdb57bffff 334406</span></span>
+<span><span class="co">#&gt; 2: 89a88cdb597ffff 257648</span></span>
+<span><span class="co">#&gt; 3: 89a88cdb5b3ffff 311264</span></span>
+<span><span class="co">#&gt; 4: 89a88cdb5cfffff 385355</span></span>
+<span><span class="co">#&gt; 5: 89a88cd909bffff 332576</span></span>
+<span><span class="co">#&gt; 6: 89a88cd90b7ffff 373920</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="gravity-based-accessibility">5.3 Gravity-based accessibility:<a class="anchor" aria-label="anchor" href="#gravity-based-accessibility"></a>
+<h3 id="gravity-measures">Gravity measures<a class="anchor" aria-label="anchor" href="#gravity-measures"></a>
 </h3>
-<p>The <code>gravity_access()</code> allows one to continuously discount the weight of opportunities as travel costs become larger. See the <a href="https://ipeagit.github.io/accessibility/articles/decay_functions.html" class="external-link">vignette on decay functions</a> for more information on the decay functions available in the package and how to use custom functions. In this case here, we use a negative exponential function with a <code>decay_value</code>  of 0.2</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df_linear</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gravity.html">gravity</a></span><span class="op">(</span></span>
-<span>  <span class="va">travel_matrix</span>,</span>
-<span>  <span class="va">land_use_data</span>,</span>
-<span>  decay_function <span class="op">=</span> <span class="fu"><a href="../reference/decay_linear.html">decay_linear</a></span><span class="op">(</span>cutoff <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>,</span>
-<span>  opportunity_col <span class="op">=</span> <span class="st">"schools"</span>,</span>
-<span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_linear</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                 id schools</span></span>
-<span><span class="co">#&gt; 1: 89a88cdb57bffff   9.260</span></span>
-<span><span class="co">#&gt; 2: 89a88cdb597ffff  18.748</span></span>
-<span><span class="co">#&gt; 3: 89a88cdb5b3ffff  20.900</span></span>
-<span><span class="co">#&gt; 4: 89a88cdb5cfffff  13.660</span></span>
-<span><span class="co">#&gt; 5: 89a88cd909bffff  18.980</span></span>
-<span><span class="co">#&gt; 6: 89a88cd90b7ffff  24.780</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="floating-catchment-accessibility">5.4 Floating catchment accessibility:<a class="anchor" aria-label="anchor" href="#floating-catchment-accessibility"></a>
-</h3>
-<p>The <code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code> functions provides users with floating catchment area (FCA) indicators that allow you to calculate accessibility accounting for the competition of resources. The use can use the parameter <code>fca_metric</code> to specify which indicator of the broad FCA family should be used. The package currently supports two FCA metrics.</p>
-<div class="section level5">
-<h5 id="sfca-2-step-floating-catchment-area">2SFCA: 2-Step Floating Catchment Area<a class="anchor" aria-label="anchor" href="#sfca-2-step-floating-catchment-area"></a>
-</h5>
-<p>2SFCA was the first accessibility metric in the floating catchment area family. It was originally proposed by Luo &amp; Wang <span class="citation">(Luo and Wang 2003)</span>.</p>
+<p><code><a href="../reference/gravity.html">gravity()</a></code> calculates gravity-based measures - i.e. measures in which the weight of opportunities is gradually discounted as the travel cost increases. Of course, several different decay functions can be used to so, each one of them with a range of possible different parameters. In order to accomodate such generalization, the function takes the decay function to be used as a parameter.</p>
+<p>In the example below, we calculate accessibility using a negative exponential function with a <code>decay_value</code> (usually referred as the  in its formulation) of 0.2. Please see <a href="decay_functions.html">the vignette on decay functions</a> for more information on the decay functions shipped with the package and how to use custom functions.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/floating_catchment_area.html">floating_catchment_area</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">negative_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gravity.html">gravity</a></span><span class="op">(</span></span>
 <span>  <span class="va">travel_matrix</span>,</span>
 <span>  <span class="va">land_use_data</span>,</span>
-<span>  fca_metric <span class="op">=</span> <span class="st">"2sfca"</span>,</span>
-<span>  decay_function <span class="op">=</span> <span class="fu"><a href="../reference/decay_binary.html">decay_binary</a></span><span class="op">(</span>cutoff <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>,</span>
-<span>  opportunity_col <span class="op">=</span> <span class="st">"jobs"</span>,</span>
+<span>  opportunity_col <span class="op">=</span> <span class="st">"schools"</span>,</span>
 <span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
-<span>  competition_col <span class="op">=</span> <span class="st">"population"</span></span>
+<span>  decay_function <span class="op">=</span> <span class="fu"><a href="../reference/decay_exponential.html">decay_exponential</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                 id      jobs</span></span>
-<span><span class="co">#&gt; 1: 89a88cdb57bffff 0.4357418</span></span>
-<span><span class="co">#&gt; 2: 89a88cdb597ffff 0.3938630</span></span>
-<span><span class="co">#&gt; 3: 89a88cdb5b3ffff 0.4589910</span></span>
-<span><span class="co">#&gt; 4: 89a88cdb5cfffff 0.5469433</span></span>
-<span><span class="co">#&gt; 5: 89a88cd909bffff 0.4358530</span></span>
-<span><span class="co">#&gt; 6: 89a88cd90b7ffff 0.5271746</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">negative_exp</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                 id    schools</span></span>
+<span><span class="co">#&gt; 1: 89a88cdb57bffff 0.03041853</span></span>
+<span><span class="co">#&gt; 2: 89a88cdb597ffff 1.15549493</span></span>
+<span><span class="co">#&gt; 3: 89a88cdb5b3ffff 0.56519126</span></span>
+<span><span class="co">#&gt; 4: 89a88cdb5cfffff 0.19852152</span></span>
+<span><span class="co">#&gt; 5: 89a88cd909bffff 0.41378042</span></span>
+<span><span class="co">#&gt; 6: 89a88cd90b7ffff 0.95737555</span></span></code></pre></div>
 </div>
-<div class="section level5">
-<h5 id="bfca---balanced-floating-catchment-area">BFCA - Balanced Floating Catchment Area<a class="anchor" aria-label="anchor" href="#bfca---balanced-floating-catchment-area"></a>
-</h5>
-<p>The BFCA metric calculates accessibility accounting for competition effects while simultaneously correcting for issues of inflation of demand and service levels that are present in previous floating catchment area measures. It is the most recent FCA metric and it was originally proposed by Paez et al. <span class="citation">(Paez, Higgins, and Vivona 2019)</span> and named in Pereira et al. <span class="citation">(Pereira et al. 2021)</span>.</p>
+<div class="section level3">
+<h3 id="floating-catchment-area">Floating catchment area<a class="anchor" aria-label="anchor" href="#floating-catchment-area"></a>
+</h3>
+<p><code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code> calculates accessibility accounting for competition of resources using different floating catchment area (FCA) methods. The FCA family includes several different methods, which can be specified using the <code>fca_metric</code> parameter. As of the time of writing this vignette, the package supports two different methods:</p>
+<ul>
+<li>2-Step Floating Catchment Area (<code>"2sfca"</code>) - the first metric in the FCA family, originally proposed by <span class="citation">Luo and Wang (2003)</span>.</li>
+<li>Balanced Floating Catchment Area (<code>"bfca"</code>) - takes competition affects into account while correcting for issues of inflation of demand and service levels. Originally proposed by <span class="citation">Paez, Higgins, and Vivona (2019)</span> and named in <span class="citation">Pereira et al. (2021)</span>.</li>
+</ul>
+<p>Please note that, since FCA measures consider competition effects, we have to specify which column in the land use dataset represents the population competing for opportunities with the <code>competition_col</code> parameter. The function also support diferent decay functions. In the example below, we calculate accessibility to jobs using the BFCA method, considering that the entire population of the city compete for these jobs and using a negative exponential decay function.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/floating_catchment_area.html">floating_catchment_area</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">bfca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/floating_catchment_area.html">floating_catchment_area</a></span><span class="op">(</span></span>
 <span>  <span class="va">travel_matrix</span>,</span>
 <span>  <span class="va">land_use_data</span>,</span>
-<span>  fca_metric <span class="op">=</span> <span class="st">"bfca"</span>,</span>
-<span>  decay_function <span class="op">=</span> <span class="fu"><a href="../reference/decay_exponential.html">decay_exponential</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
 <span>  opportunity_col <span class="op">=</span> <span class="st">"jobs"</span>,</span>
 <span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
-<span>  competition_col <span class="op">=</span> <span class="st">"population"</span></span>
+<span>  competition_col <span class="op">=</span> <span class="st">"population"</span>,</span>
+<span>  fca_metric <span class="op">=</span> <span class="st">"bfca"</span>,</span>
+<span>  decay_function <span class="op">=</span> <span class="fu"><a href="../reference/decay_exponential.html">decay_exponential</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">bfca</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 id       jobs</span></span>
 <span><span class="co">#&gt; 1: 89a88cdb57bffff 0.11894791</span></span>
 <span><span class="co">#&gt; 2: 89a88cdb597ffff 0.24251324</span></span>
@@ -316,43 +309,30 @@
 <span><span class="co">#&gt; 5: 89a88cd909bffff 0.07549538</span></span>
 <span><span class="co">#&gt; 6: 89a88cd90b7ffff 0.82935888</span></span></code></pre></div>
 </div>
-<div class="section level5">
-<h5 id="visualize-results">Visualize results<a class="anchor" aria-label="anchor" href="#visualize-results"></a>
-</h5>
-<p>If you have a spatial data with the geometries of your origin/destination data set, you can easily <code>merge</code> it with the accessibility to map the results. Here is a quick example using <code>ggplot2</code>.</p>
+<div class="section level3">
+<h3 id="visualize-results">Visualize results<a class="anchor" aria-label="anchor" href="#visualize-results"></a>
+</h3>
+<p>If you have the spatial data of your origins/destinations you can easily merge it with the accessibility to create spatial visualizations of the results. The example belows quickly shows how to create a simple map using <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a>.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># load spatial data</span></span>
-<span><span class="va">grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/grid_bho.rds"</span>, package <span class="op">=</span> <span class="st">"accessibility"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/grid_bho.rds"</span>, package <span class="op">=</span> <span class="st">"accessibility"</span><span class="op">)</span></span>
 <span><span class="va">grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">grid</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># merge accessibility output to spatial data</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">grid</span>, <span class="va">cum_cutoff</span>, by.x<span class="op">=</span><span class="st">'id'</span>, by.y<span class="op">=</span><span class="st">'id'</span><span class="op">)</span></span>
+<span><span class="va">spatial_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">grid</span>, <span class="va">cum_cutoff</span>, by <span class="op">=</span> <span class="st">"id"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># for large data sets, this can be done much faster with `data.table` as follows:</span></span>
-<span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setDT.html" class="external-link">setDT</a></span><span class="op">(</span><span class="va">grid</span><span class="op">)</span><span class="op">[</span><span class="va">cum_cutoff</span>, on<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'id'</span><span class="op">=</span><span class="st">'id'</span><span class="op">)</span>, <span class="va">schools</span> <span class="op">:=</span> <span class="va">i.schools</span><span class="op">]</span></span>
-<span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/sf.html" class="external-link">st_sf</a></span><span class="op">(</span><span class="va">df2</span>, crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: st_crs&lt;- : replacing crs does not reproject data; use st_transform for</span></span>
-<span><span class="co">#&gt; that</span></span>
-<span></span>
-<span></span>
-<span><span class="co"># plot</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df2</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">schools</span><span class="op">)</span>, color<span class="op">=</span><span class="cn">NA</span>, alpha<span class="op">=</span><span class="fl">0.9</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">'Education accessibility by transit in under 30 min.'</span>, </span>
-<span>       fill<span class="op">=</span><span class="st">'Number of schhols\naccessible'</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_fill_viridis_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">spatial_data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">jobs</span><span class="op">)</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Job accessibility by transit in under 30 min."</span>,</span>
+<span>    fill <span class="op">=</span> <span class="st">"Accessible jobs"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_fill_viridis_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_void</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="accessibility_files/figure-html/unnamed-chunk-13-1.png" width="100%"></p>
-<p>If you have any suggestions or want to report an error, please visit <a href="https://github.com/ipeaGIT/accessibility" class="external-link">the package GitHub page</a>.</p>
+<p><img src="accessibility_files/figure-html/unnamed-chunk-13-1.png" width="80%"></p>
 </div>
 </div>
-<div class="section level3">
-<h3 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
-</h3>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
 <div id="refs" class="references">
 <div id="ref-luo2003measures">
 <p>Luo, Wei, and Fahui Wang. 2003. “Measures of Spatial Accessibility to Health Care in a GIS Environment: Synthesis and a Case Study in the Chicago Region.” <em>Environment and Planning B: Planning and Design</em> 30 (6): 865–84. <a href="https://doi.org/10.1068/b29120" class="external-link">https://doi.org/10.1068/b29120</a>.</p>
@@ -361,10 +341,15 @@
 <p>Paez, Antonio, Christopher D. Higgins, and Salvatore F. Vivona. 2019. “Demand and Level of Service Inflation in Floating Catchment Area (FCA) Methods.” Edited by Tayyab Ikram Shah. <em>PLOS ONE</em> 14 (6): e0218773. <a href="https://doi.org/10.1371/journal.pone.0218773" class="external-link">https://doi.org/10.1371/journal.pone.0218773</a>.</p>
 </div>
 <div id="ref-pereira2021geographic">
-<p>Pereira, Rafael H. M., Carlos Kauê Vieira Braga, Luciana Mendes Servo, Bernardo Serra, Pedro Amaral, Nelson Gouveia, and Antonio Paez. 2021. “Geographic Access to COVID-19 Healthcare in Brazil Using a Balanced Float Catchment Area Approach.” <em>Social Science &amp; Medicine</em> 273 (March): 113773. <a href="https://doi.org/10.1016/j.socscimed.2021.113773" class="external-link">https://doi.org/10.1016/j.socscimed.2021.113773</a>.</p>
+<p>Pereira, Rafael H.M., Carlos Kauê Vieira Braga, Luciana Mendes Servo, Bernardo Serra, Pedro Amaral, Nelson Gouveia, and Antonio Paez. 2021. “Geographic Access to COVID-19 Healthcare in Brazil Using a Balanced Float Catchment Area Approach.” <em>Social Science &amp; Medicine</em> 273 (March): 113773. <a href="https://doi.org/10.1016/j.socscimed.2021.113773" class="external-link">https://doi.org/10.1016/j.socscimed.2021.113773</a>.</p>
 </div>
 </div>
 </div>
+<div class="footnotes">
+<hr>
+<ol>
+<li id="fn1"><p>If you would like to calculate such travel cost matrices yourself, there are several computational packages to do that in R, such as <a href="https://github.com/ipeaGIT/r5r" class="external-link">r5r</a>, <a href="https://github.com/ATFutures/dodgr" class="external-link">dodgr</a>, <a href="https://github.com/ATFutures/gtfs-router" class="external-link">gtfsrouter</a>, <a href="https://github.com/munterfi/hereR" class="external-link">hereR</a> and <a href="https://github.com/ropensci/opentripplanner" class="external-link">opentripplanner</a>.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+</ol>
 </div>
   </div>
 
@@ -385,7 +370,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
