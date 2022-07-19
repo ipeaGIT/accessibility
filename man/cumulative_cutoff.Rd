@@ -10,7 +10,7 @@ cumulative_cutoff(
   opportunity_col,
   travel_cost_col,
   cutoff,
-  group_by = NULL,
+  group_by = character(0),
   active = TRUE,
   fill_missing_ids = TRUE
 )

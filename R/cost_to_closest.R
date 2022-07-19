@@ -52,16 +52,16 @@ cost_to_closest <- function(travel_matrix,
                             opportunity_col,
                             travel_cost_col,
                             n = 1,
-                            group_by = NULL,
+                            group_by = character(0),
                             active = TRUE,
                             fill_missing_ids = TRUE) {
-  by_col_char <- assert_and_assign_by_col(group_by)
   checkmate::assert_number(n, lower = 1, finite = TRUE)
   checkmate::assert_string(opportunity_col)
   checkmate::assert_string(travel_cost_col)
   checkmate::assert_logical(active, len = 1, any.missing = FALSE)
   checkmate::assert_logical(fill_missing_ids, len = 1, any.missing = FALSE)
-  assert_travel_matrix(travel_matrix, travel_cost_col, by_col_char)
+  assert_group_by(group_by)
+  assert_travel_matrix(travel_matrix, travel_cost_col, group_by)
   assert_land_use_data(land_use_data, opportunity_col)
 
   # if not a dt, keep original class to assign later when returning result
@@ -80,7 +80,7 @@ cost_to_closest <- function(travel_matrix,
   merge_by_reference(data, land_use_data, opportunity_col, active)
 
   group_id <- ifelse(active, "from_id", "to_id")
-  groups <- c(group_id, by_col_char)
+  groups <- c(group_id, group_by)
   env <- environment()
 
   warn_extra_cols(travel_matrix, travel_cost_col, group_id, groups)

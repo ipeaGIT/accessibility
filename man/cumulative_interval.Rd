@@ -11,7 +11,7 @@ cumulative_interval(
   travel_cost_col,
   interval,
   summary_function = stats::median,
-  group_by = NULL,
+  group_by = character(0),
   active = TRUE
 )
 }

@@ -10,7 +10,7 @@ cost_to_closest(
   opportunity_col,
   travel_cost_col,
   n = 1,
-  group_by = NULL,
+  group_by = character(0),
   active = TRUE,
   fill_missing_ids = TRUE
 )

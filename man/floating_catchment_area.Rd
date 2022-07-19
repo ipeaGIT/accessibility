@@ -12,7 +12,7 @@ floating_catchment_area(
   competition_col,
   fca_metric,
   decay_function,
-  group_by = NULL,
+  group_by = character(0),
   fill_missing_ids = TRUE
 )
 }

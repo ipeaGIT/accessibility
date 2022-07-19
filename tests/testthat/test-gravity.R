@@ -35,8 +35,9 @@ test_that("raises errors due to incorrect input", {
   expect_error(tester(travel_cost_col = c("travel_time", "monetary_cost")))
 
   expect_error(tester(group_by = 1))
-  expect_error(tester(group_by = c("mode", "departure_time")))
+  expect_error(tester(group_by = NA))
   expect_error(tester(group_by = "from_id"))
+  expect_error(tester(group_by = c("mode", "mode")))
 
   expect_error(tester(active = 1))
   expect_error(tester(active = c(TRUE, TRUE)))
@@ -74,7 +75,7 @@ test_that("raises errors due to incorrect input", {
 
 test_that("throws warning if travel_matrix extra col", {
   # i.e. col not listed in travel_cost_col and by_col
-  expect_warning(tester(group_by = NULL))
+  expect_warning(tester(group_by = character(0)))
 })
 
 test_that("returns a dataframe whose class is the same as travel_matrix's", {
@@ -107,7 +108,7 @@ test_that("result has correct structure", {
   expect_is(result$mode, "character")
   expect_is(result$schools, "integer")
 
-  suppressWarnings(result <- tester(group_by = NULL))
+  suppressWarnings(result <- tester(group_by = character(0)))
   expect_true(ncol(result) == 2)
   expect_is(result$id, "character")
   expect_is(result$jobs, "integer")

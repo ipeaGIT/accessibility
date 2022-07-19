@@ -78,9 +78,8 @@ floating_catchment_area <- function(travel_matrix,
                                     competition_col,
                                     fca_metric,
                                     decay_function,
-                                    group_by = NULL,
+                                    group_by = character(0),
                                     fill_missing_ids = TRUE) {
-  by_col_char <- assert_and_assign_by_col(group_by)
   checkmate::assert(
     checkmate::check_string(fca_metric),
     checkmate::check_names(fca_metric, subset.of = c("2sfca", "bfca")),
@@ -91,7 +90,8 @@ floating_catchment_area <- function(travel_matrix,
   checkmate::assert_string(competition_col)
   checkmate::assert_logical(fill_missing_ids, len = 1, any.missing = FALSE)
   assert_decay_function(decay_function)
-  assert_travel_matrix(travel_matrix, travel_cost_col, by_col_char)
+  assert_group_by(group_by)
+  assert_travel_matrix(travel_matrix, travel_cost_col, group_by)
   assert_land_use_data(
     land_use_data,
     opportunity_col,
@@ -115,7 +115,7 @@ floating_catchment_area <- function(travel_matrix,
   merge_by_reference(data, land_use_data, competition_col, active = FALSE)
   data[, opp_weight := decay_function(get(travel_cost_col))]
 
-  groups <- c("from_id", by_col_char)
+  groups <- c("from_id", group_by)
   warn_extra_cols(
     travel_matrix,
     travel_cost_col, group_id = "from_id",
@@ -128,7 +128,7 @@ floating_catchment_area <- function(travel_matrix,
     fca_bfca
   }
 
-  access <- fca_function(data, opportunity_col, competition_col, by_col_char)
+  access <- fca_function(data, opportunity_col, competition_col, group_by)
 
   if (fill_missing_ids) {
     unique_values <- lapply(groups, function(x) unique(travel_matrix[[x]]))
@@ -149,14 +149,14 @@ floating_catchment_area <- function(travel_matrix,
 
 
 #' @keywords internal
-fca_2sfca <- function(data, opportunity_col, competition_col, by_col_char) {
+fca_2sfca <- function(data, opportunity_col, competition_col, group_by) {
   # step 1a - calculate the demand to each destination as the weight between
   # each od pair multiplied by the number of people at the origin
 
   data[
     ,
     pop_served := sum(get(competition_col) * opp_weight, na.rm = TRUE),
-    by = c("to_id", by_col_char)
+    by = c("to_id", group_by)
   ]
 
   # step 1b - calculate the provider-to-population ratio (ppr) of a destination
@@ -172,7 +172,7 @@ fca_2sfca <- function(data, opportunity_col, competition_col, by_col_char) {
   access <- data[
     ,
     .(access = sum(ppr * opp_weight, na.rm = TRUE)),
-    by = c("from_id", by_col_char)
+    by = c("from_id", group_by)
   ]
 
   return(access)
@@ -180,18 +180,18 @@ fca_2sfca <- function(data, opportunity_col, competition_col, by_col_char) {
 
 
 #' @keywords internal
-fca_bfca <- function(data, opportunity_col, competition_col, by_col_char) {
+fca_bfca <- function(data, opportunity_col, competition_col, group_by) {
   # calculate balanced (normalized) opp_weight by origin and by destination
 
   data[
     ,
     balanced_opp_weight_i := opp_weight / sum(opp_weight),
-    by = c("from_id", by_col_char)
+    by = c("from_id", group_by)
   ]
   data[
     ,
     balanced_opp_weight_j := opp_weight / sum(opp_weight),
-    by = c("to_id", by_col_char)
+    by = c("to_id", group_by)
   ]
 
   # step 1a - calculate the balanced demand to each destination as the balanced
@@ -203,7 +203,7 @@ fca_bfca <- function(data, opportunity_col, competition_col, by_col_char) {
       get(competition_col) * balanced_opp_weight_i,
       na.rm = TRUE
     ),
-    by = c("to_id", by_col_char)
+    by = c("to_id", group_by)
   ]
 
   # step 1b - calculate the balanced provider-to-population ratio
@@ -219,7 +219,7 @@ fca_bfca <- function(data, opportunity_col, competition_col, by_col_char) {
   access <- data[
     ,
     .(access = sum(balanced_ppr * balanced_opp_weight_j, na.rm = TRUE)),
-    by = c("from_id", by_col_char)
+    by = c("from_id", group_by)
   ]
 
   return(access)

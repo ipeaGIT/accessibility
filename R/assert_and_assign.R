@@ -1,26 +1,16 @@
 #' @keywords internal
-assert_and_assign_by_col <- function(by_col) {
-  checkmate::assert_string(by_col, null.ok = TRUE)
+assert_group_by <- function(group_by) {
+  checkmate::assert_character(group_by, any.missing = FALSE, unique = TRUE)
 
-  by_col_char <- if (is.null(by_col)) {
-    character(0)
-  } else {
-    by_col
-  }
+  checkmate::assert_names(group_by, disjunct.from = c("from_id", "to_id"))
 
-  checkmate::assert_names(
-    by_col_char,
-    disjunct.from = c("from_id", "to_id"),
-    .var.name = "by_col"
-  )
-
-  return(by_col_char)
+  return(invisible(TRUE))
 }
 
 
 #' @keywords internal
-assert_travel_matrix <- function(travel_matrix, travel_cost_col, by_col_char) {
-  travel_matrix_req_names <- c("from_id", "to_id", travel_cost_col, by_col_char)
+assert_travel_matrix <- function(travel_matrix, travel_cost_col, group_by) {
+  travel_matrix_req_names <- c("from_id", "to_id", travel_cost_col, group_by)
   checkmate::assert_data_frame(travel_matrix)
   checkmate::assert_names(
     names(travel_matrix),

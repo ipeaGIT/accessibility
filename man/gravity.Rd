@@ -10,7 +10,7 @@ gravity(
   opportunity_col,
   travel_cost_col,
   decay_function,
-  group_by = NULL,
+  group_by = character(0),
   active = TRUE,
   fill_missing_ids = TRUE
 )
