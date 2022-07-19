@@ -5,7 +5,7 @@ bibliography: '`r system.file("REFERENCES.bib", package = "accessibility")`'
 vignette: >
   %\VignetteIndexEntry{Introduction to accessibility: calculating accessibility metrics} 
   %\VignetteEngine{knitr::rmarkdown} 
-  \usepackage[utf8]{inputenc}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
