@@ -28,11 +28,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Rafael H. M. Pereira \email{rafa.pereira.br@gmail.com} (\href{https://orcid.org/0000-0003-2125-7465}{ORCID})
+\strong{Maintainer}: Daniel Herszenhut \email{dhersz@gmail.com} (\href{https://orcid.org/0000-0001-8066-1105}{ORCID})
 
 Authors:
 \itemize{
-  \item Daniel Herszenhut \email{dhersz@gmail.com} (\href{https://orcid.org/0000-0001-8066-1105}{ORCID})
+  \item Rafael H. M. Pereira \email{rafa.pereira.br@gmail.com} (\href{https://orcid.org/0000-0003-2125-7465}{ORCID})
 }
 
 Other contributors:

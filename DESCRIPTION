@@ -3,9 +3,9 @@ Package: accessibility
 Title: Transport Accessibility Metrics
 Version: 0.1.0.9000
 Authors@R: c(
-    person("Rafael H. M.", "Pereira", , "rafa.pereira.br@gmail.com", role = c("aut", "cre"),
+    person("Rafael H. M.", "Pereira", , "rafa.pereira.br@gmail.com", role = "aut",
            comment = c(ORCID = "0000-0003-2125-7465")),
-    person("Daniel", "Herszenhut", , "dhersz@gmail.com", role = "aut",
+    person("Daniel", "Herszenhut", , "dhersz@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8066-1105")),
     person("Ipea - Institute for Applied Economic Research", role = c("cph", "fnd"))
   )
