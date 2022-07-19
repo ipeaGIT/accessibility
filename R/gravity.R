@@ -9,7 +9,7 @@
 #' @template opportunity_col
 #' @template travel_cost_col
 #' @template decay_function
-#' @template by_col
+#' @template group_by
 #' @template active
 #' @template fill_missing_ids_combinations
 #'
@@ -44,10 +44,10 @@ gravity <- function(travel_matrix,
                     opportunity_col,
                     travel_cost_col,
                     decay_function,
-                    by_col = NULL,
+                    group_by = NULL,
                     active = TRUE,
                     fill_missing_ids = TRUE) {
-  by_col_char <- assert_and_assign_by_col(by_col)
+  by_col_char <- assert_and_assign_by_col(group_by)
   checkmate::assert_string(opportunity_col)
   checkmate::assert_string(travel_cost_col)
   checkmate::assert_logical(active, len = 1, any.missing = FALSE)

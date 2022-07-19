@@ -9,7 +9,7 @@
 #' @template opportunity_col
 #' @template travel_cost_col
 #' @param cutoff A `numeric`. A number indicating the travel cost cutoff.
-#' @template by_col
+#' @template group_by
 #' @template active
 #' @param fill_missing_ids A `logical`. Calculating cumulative accessibility may
 #'   result in missing ids if the they cannot reach any of the destinations
@@ -56,10 +56,10 @@ cumulative_cutoff <- function(travel_matrix,
                               opportunity_col,
                               travel_cost_col,
                               cutoff,
-                              by_col = NULL,
+                              group_by = NULL,
                               active = TRUE,
                               fill_missing_ids = TRUE) {
-  by_col_char <- assert_and_assign_by_col(by_col)
+  by_col_char <- assert_and_assign_by_col(group_by)
   checkmate::assert_number(cutoff, lower = 0, finite = TRUE)
   checkmate::assert_string(opportunity_col)
   checkmate::assert_string(travel_cost_col)

@@ -19,7 +19,7 @@
 #'   single value. Can be any function that takes an arbitrary number of
 #'   numeric values as as input and returns a single number as output. Defaults
 #'   to [stats::median()].
-#' @template by_col
+#' @template group_by
 #' @template active
 #'
 #' @template return_accessibility
@@ -62,9 +62,9 @@ cumulative_interval <- function(travel_matrix,
                                 travel_cost_col,
                                 interval,
                                 summary_function = stats::median,
-                                by_col = NULL,
+                                group_by = NULL,
                                 active = TRUE) {
-  by_col_char <- assert_and_assign_by_col(by_col)
+  by_col_char <- assert_and_assign_by_col(group_by)
   checkmate::assert_numeric(
     interval,
     lower = 0,

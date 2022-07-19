@@ -11,7 +11,7 @@ cumulative_interval(
   travel_cost_col,
   interval,
   summary_function = stats::median,
-  by_col = NULL,
+  group_by = NULL,
   active = TRUE
 )
 }
@@ -43,11 +43,11 @@ single value. Can be any function that takes an arbitrary number of
 numeric values as as input and returns a single number as output. Defaults
 to \code{\link[stats:median]{stats::median()}}.}
 
-\item{by_col}{Either \code{NULL} (the default) or a \code{character} vector. When not
-\code{NULL}, indicates the \code{travel_matrix} columns that should be used to group
-the accessibility estimates by. For example, if \code{travel_matrix} includes a
+\item{group_by}{A \code{character} vector. When not \code{character(0)} (the default),
+indicates the \code{travel_matrix} columns that should be used to group the
+accessibility estimates by. For example, if \code{travel_matrix} includes a
 departure time column, that specifies the departure time of each entry in
-the data frame, passing \code{"departure_time"} to this argument results in
+the data frame, passing \code{"departure_time"} to this parameter results in
 accessibility estimates grouped by origin and by departure time.}
 
 \item{active}{A logical. Whether to calculate active accessibility (the

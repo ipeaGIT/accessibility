@@ -9,7 +9,7 @@
 #' @template travel_cost_col
 #' @param n A `numeric`. A number indicating the minimum number of opportunities
 #'   that should be considered. Defaults to 1.
-#' @template by_col
+#' @template group_by
 #' @template active
 #' @param fill_missing_ids A `logical`. Calculating minimum trave cost to
 #'   closest N number of opportunities may result in missing ids in the output
@@ -52,10 +52,10 @@ cost_to_closest <- function(travel_matrix,
                             opportunity_col,
                             travel_cost_col,
                             n = 1,
-                            by_col = NULL,
+                            group_by = NULL,
                             active = TRUE,
                             fill_missing_ids = TRUE) {
-  by_col_char <- assert_and_assign_by_col(by_col)
+  by_col_char <- assert_and_assign_by_col(group_by)
   checkmate::assert_number(n, lower = 1, finite = TRUE)
   checkmate::assert_string(opportunity_col)
   checkmate::assert_string(travel_cost_col)

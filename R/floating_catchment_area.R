@@ -16,7 +16,7 @@
 #'   Current available options are `"2sfca"` and `"bfca"`. More info in the
 #'   details.
 #' @template decay_function
-#' @template by_col
+#' @template group_by
 #' @template fill_missing_ids_combinations
 #'
 #' @template return_accessibility
@@ -78,9 +78,9 @@ floating_catchment_area <- function(travel_matrix,
                                     competition_col,
                                     fca_metric,
                                     decay_function,
-                                    by_col = NULL,
+                                    group_by = NULL,
                                     fill_missing_ids = TRUE) {
-  by_col_char <- assert_and_assign_by_col(by_col)
+  by_col_char <- assert_and_assign_by_col(group_by)
   checkmate::assert(
     checkmate::check_string(fca_metric),
     checkmate::check_names(fca_metric, subset.of = c("2sfca", "bfca")),

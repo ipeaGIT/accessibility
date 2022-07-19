@@ -12,7 +12,7 @@ floating_catchment_area(
   competition_col,
   fca_metric,
   decay_function,
-  by_col = NULL,
+  group_by = NULL,
   fill_missing_ids = TRUE
 )
 }
@@ -50,11 +50,11 @@ the following functions: \code{\link[=decay_binary]{decay_binary()}}, \code{\lin
 \code{\link[=decay_exponential]{decay_exponential()}} and \code{\link[=decay_power]{decay_power()}}. See the documentation of each
 decay function for more details.}
 
-\item{by_col}{Either \code{NULL} (the default) or a \code{character} vector. When not
-\code{NULL}, indicates the \code{travel_matrix} columns that should be used to group
-the accessibility estimates by. For example, if \code{travel_matrix} includes a
+\item{group_by}{A \code{character} vector. When not \code{character(0)} (the default),
+indicates the \code{travel_matrix} columns that should be used to group the
+accessibility estimates by. For example, if \code{travel_matrix} includes a
 departure time column, that specifies the departure time of each entry in
-the data frame, passing \code{"departure_time"} to this argument results in
+the data frame, passing \code{"departure_time"} to this parameter results in
 accessibility estimates grouped by origin and by departure time.}
 
 \item{fill_missing_ids}{A \code{logical}. When calculating grouped accessibility

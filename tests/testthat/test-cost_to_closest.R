@@ -7,7 +7,7 @@ tester <- function(
   opportunity_col = "schools",
   travel_cost_col = "travel_time",
   n = 1,
-  by_col = "mode",
+  group_by = "mode",
   active = TRUE,
   fill_missing_ids = TRUE
 ) {
@@ -17,7 +17,7 @@ tester <- function(
     opportunity_col,
     travel_cost_col,
     n,
-    by_col,
+    group_by,
     active,
     fill_missing_ids
   )
@@ -35,9 +35,9 @@ test_that("raises errors due to incorrect input", {
   expect_error(tester(travel_cost_col = 1))
   expect_error(tester(travel_cost_col = c("travel_time", "monetary_cost")))
 
-  expect_error(tester(by_col = 1))
-  expect_error(tester(by_col = c("mode", "departure_time")))
-  expect_error(tester(by_col = "from_id"))
+  expect_error(tester(group_by = 1))
+  expect_error(tester(group_by = c("mode", "departure_time")))
+  expect_error(tester(group_by = "from_id"))
 
   expect_error(tester(active = 1))
   expect_error(tester(active = c(TRUE, TRUE)))
@@ -59,7 +59,7 @@ test_that("raises errors due to incorrect input", {
   expect_error(
     tester(
       travel_matrix[, .(from_id, to_id, travel_time, oi = mode)],
-      by_col = "mode"
+      group_by = "mode"
     )
   )
 
@@ -75,7 +75,7 @@ test_that("raises errors due to incorrect input", {
 
 test_that("throws warning if travel_matrix extra col", {
   # i.e. col not listed in travel_cost_col and by_col
-  expect_warning(tester(by_col = NULL))
+  expect_warning(tester(group_by = NULL))
 })
 
 test_that("returns a dataframe whose class is the same as travel_matrix's", {
@@ -102,7 +102,7 @@ test_that("result has correct structure", {
   expect_is(result$mode, "character")
   expect_is(result$travel_time, "numeric")
 
-  suppressWarnings(result <- tester(by_col = NULL))
+  suppressWarnings(result <- tester(group_by = NULL))
   expect_true(ncol(result) == 2)
   expect_is(result$id, "character")
   expect_is(result$travel_time, "numeric")
@@ -150,7 +150,7 @@ test_that("active and passive accessibility is correctly calculated", {
     from_id %in% selected_ids & to_id %in% selected_ids
   ]
 
-  result <- tester(smaller_travel_matrix, by_col = "mode")
+  result <- tester(smaller_travel_matrix, group_by = "mode")
   expected_result <- data.table::data.table(
     id = rep(selected_ids, 2),
     mode = rep(c("transit", "transit2"), each = 5),
@@ -161,7 +161,7 @@ test_that("active and passive accessibility is correctly calculated", {
   result <- tester(
     smaller_travel_matrix,
     opportunity_col = "population",
-    by_col = "mode",
+    group_by = "mode",
     active = FALSE
   )
   expected_result <- data.table::data.table(
