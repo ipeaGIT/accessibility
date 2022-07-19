@@ -7,7 +7,7 @@ tester <- function(
   opportunity_col = "jobs",
   travel_cost_col = "travel_time",
   competition_col = "population",
-  fca_metric = "2sfca",
+  method = "2sfca",
   decay_function = decay_binary(45),
   group_by = "mode",
   fill_missing_ids = TRUE
@@ -18,7 +18,7 @@ tester <- function(
     opportunity_col,
     travel_cost_col,
     competition_col,
-    fca_metric,
+    method,
     decay_function,
     group_by,
     fill_missing_ids
@@ -26,9 +26,9 @@ tester <- function(
 }
 
 test_that("raises errors due to incorrect input", {
-  expect_error(tester(fca_metric = 1))
-  expect_error(tester(fca_metric = "a"))
-  expect_error(tester(fca_metric = c("bfca", "bfca")))
+  expect_error(tester(method = 1))
+  expect_error(tester(method = "a"))
+  expect_error(tester(method = c("bfca", "bfca")))
 
   expect_error(tester(decay_function = "a"))
   expect_error(tester(decay_function = mean))
@@ -227,7 +227,7 @@ test_that("calculates 2sfca correctly", {
     from_id %in% selected_ids & to_id %in% selected_ids
   ]
 
-  result <- tester(smaller_travel_matrix, fca_metric = "2sfca")
+  result <- tester(smaller_travel_matrix, method = "2sfca")
   result[, jobs := round(jobs, digits = 4)]
   expect_identical(
     result,
@@ -251,7 +251,7 @@ test_that("calculates bfca correctly", {
     from_id %in% selected_ids & to_id %in% selected_ids
   ]
 
-  result <- tester(smaller_travel_matrix, fca_metric = "bfca")
+  result <- tester(smaller_travel_matrix, method = "bfca")
   result[, jobs := round(jobs, digits = 4)]
   expect_identical(
     result,

@@ -10,7 +10,7 @@ floating_catchment_area(
   opportunity_col,
   travel_cost_col,
   competition_col,
-  fca_metric,
+  method,
   decay_function,
   group_by = character(0),
   fill_missing_ids = TRUE
@@ -38,7 +38,7 @@ with the travel cost between origins and destinations. Defaults to
 with the number of people in each origin that will be considered potential
 competitors. Defaults to \code{"population"}.}
 
-\item{fca_metric}{A string. Which floating catchment area measure to use.
+\item{method}{A string. Which floating catchment area measure to use.
 Current available options are \code{"2sfca"} and \code{"bfca"}. More info in the
 details.}
 
@@ -105,7 +105,7 @@ land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
 df <- floating_catchment_area(
   travel_matrix,
   land_use_data,
-  fca_metric = "2sfca",
+  method = "2sfca",
   decay_function = decay_binary(cutoff = 50),
   opportunity_col = "jobs",
   travel_cost_col = "travel_time",
@@ -118,7 +118,7 @@ head(df)
 df <- floating_catchment_area(
   travel_matrix,
   land_use_data,
-  fca_metric = "bfca",
+  method = "bfca",
   decay_function = decay_exponential(decay_value = 0.5),
   opportunity_col = "jobs",
   travel_cost_col = "travel_time",

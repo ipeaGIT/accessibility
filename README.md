@@ -49,9 +49,9 @@ land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
 df <- cumulative_cutoff(
   travel_matrix,
   land_use_data,
-  cutoff = 30,
   opportunity_col = "jobs",
-  travel_cost_col = "travel_time"
+  travel_cost_col = "travel_time",
+  cutoff = 30
 )
 head(df)
 #>                 id  jobs
@@ -67,9 +67,9 @@ head(df)
 df <- gravity(
   travel_matrix,
   land_use_data,
-  decay_function = decay_exponential(decay_value = 0.2),
   opportunity_col = "schools",
-  travel_cost_col = "travel_time"
+  travel_cost_col = "travel_time",
+  decay_function = decay_exponential(decay_value = 0.2)
 )
 head(df)
 #>                 id    schools
@@ -85,11 +85,11 @@ head(df)
 df <- floating_catchment_area(
   travel_matrix,
   land_use_data,
-  fca_metric = "2sfca",
-  decay_function = decay_binary(cutoff = 50),
   opportunity_col = "jobs",
   travel_cost_col = "travel_time",
-  competition_col = "population"
+  competition_col = "population",
+  method = "2sfca",
+  decay_function = decay_binary(cutoff = 50)
 )
 head(df)
 #>                 id      jobs

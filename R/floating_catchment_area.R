@@ -12,7 +12,7 @@
 #' @param competition_col A string. The name of the column in `land_use_data`
 #'   with the number of people in each origin that will be considered potential
 #'   competitors. Defaults to `"population"`.
-#' @param fca_metric A string. Which floating catchment area measure to use.
+#' @param method A string. Which floating catchment area measure to use.
 #'   Current available options are `"2sfca"` and `"bfca"`. More info in the
 #'   details.
 #' @template decay_function
@@ -49,7 +49,7 @@
 #' df <- floating_catchment_area(
 #'   travel_matrix,
 #'   land_use_data,
-#'   fca_metric = "2sfca",
+#'   method = "2sfca",
 #'   decay_function = decay_binary(cutoff = 50),
 #'   opportunity_col = "jobs",
 #'   travel_cost_col = "travel_time",
@@ -62,7 +62,7 @@
 #' df <- floating_catchment_area(
 #'   travel_matrix,
 #'   land_use_data,
-#'   fca_metric = "bfca",
+#'   method = "bfca",
 #'   decay_function = decay_exponential(decay_value = 0.5),
 #'   opportunity_col = "jobs",
 #'   travel_cost_col = "travel_time",
@@ -76,13 +76,13 @@ floating_catchment_area <- function(travel_matrix,
                                     opportunity_col,
                                     travel_cost_col,
                                     competition_col,
-                                    fca_metric,
+                                    method,
                                     decay_function,
                                     group_by = character(0),
                                     fill_missing_ids = TRUE) {
   checkmate::assert(
-    checkmate::check_string(fca_metric),
-    checkmate::check_names(fca_metric, subset.of = c("2sfca", "bfca")),
+    checkmate::check_string(method),
+    checkmate::check_names(method, subset.of = c("2sfca", "bfca")),
     combine = "and"
   )
   checkmate::assert_string(opportunity_col)
@@ -122,7 +122,7 @@ floating_catchment_area <- function(travel_matrix,
     groups = groups
   )
 
-  fca_function <- if (fca_metric == "2sfca") {
+  fca_function <- if (method == "2sfca") {
     fca_2sfca
   } else {
     fca_bfca

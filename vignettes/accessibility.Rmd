@@ -249,7 +249,7 @@ head(negative_exp)
 `floating_catchment_area()` calculates accessibility accounting for competition
 of resources using different floating catchment area (FCA) methods. The FCA
 family includes several different methods, which can be specified using the
-`fca_metric` parameter. As of the time of writing this vignette, the package
+`method` parameter. As of the time of writing this vignette, the package
 supports two different methods:
 
 - 2-Step Floating Catchment Area (`"2sfca"`) - the first metric in the FCA
@@ -273,7 +273,7 @@ bfca <- floating_catchment_area(
   opportunity_col = "jobs",
   travel_cost_col = "travel_time",
   competition_col = "population",
-  fca_metric = "bfca",
+  method = "bfca",
   decay_function = decay_exponential(decay_value = 0.5)
 )
 head(bfca)
