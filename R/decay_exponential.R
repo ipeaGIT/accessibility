@@ -1,6 +1,6 @@
 #' Negative exponential decay function
 #'
-#' Returns a negative exponential impedance function  to be used inside
+#' Returns a negative exponential weighting function to be used inside
 #' accessibility calculating functions.
 #' @template description_generic_cost
 #'
@@ -13,20 +13,20 @@
 #' @family decay functions
 #'
 #' @examples
-#' impedance <- decay_exponential(decay_value = 0.1)
+#' weighting_function <- decay_exponential(decay_value = 0.1)
 #'
-#' impedance(20)
+#' weighting_function(20)
 #'
-#' impedance(35)
+#' weighting_function(35)
 #'
 #' @export
 decay_exponential <- function(decay_value) {
   checkmate::assert_number(decay_value, lower = 0, finite = TRUE)
 
-  impedance <- function(travel_cost) {
-    impedance_value <- exp(-decay_value * travel_cost)
-    return(impedance_value)
+  weighting_function <- function(travel_cost) {
+    weights <- exp(-decay_value * travel_cost)
+    return(weights)
   }
 
-  return(impedance)
+  return(weighting_function)
 }

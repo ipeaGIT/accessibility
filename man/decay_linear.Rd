@@ -8,26 +8,26 @@ decay_linear(cutoff)
 }
 \arguments{
 \item{cutoff}{A \code{numeric}. A number indicating the travel cost cutoff until
-which the impedance factor decays linearly. From this point onward the
-impedance factor is equal to 0.}
+which the weighting factor decays linearly. From this point onward the
+weight is equal to 0.}
 }
 \value{
-A \code{function} that takes a generic travel cost (\code{numeric}) as an input
-and returns an impedance factor (\code{numeric}).
+A \code{function} that takes a generic travel cost vector (\code{numeric}) as
+an input and returns a vector of weights (\code{numeric}).
 }
 \description{
-Returns a linear impedance function to be used inside accessibility
+Returns a linear weighting function to be used inside accessibility
 calculating functions.
 
 This function is generic over any kind of numeric travel cost,
 such as distance, time and money.
 }
 \examples{
-impedance <- decay_linear(cutoff = 30)
+weighting_function <- decay_linear(cutoff = 30)
 
-impedance(20)
+weighting_function(20)
 
-impedance(35)
+weighting_function(35)
 
 }
 \seealso{

@@ -1,2 +1,2 @@
-#' @return A `function` that takes a generic travel cost (`numeric`) as an input
-#'   and returns an impedance factor (`numeric`).
+#' @return A `function` that takes a generic travel cost vector (`numeric`) as
+#'   an input and returns a vector of weights (`numeric`).

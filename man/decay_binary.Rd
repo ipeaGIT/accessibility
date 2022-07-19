@@ -10,11 +10,11 @@ decay_binary(cutoff)
 \item{cutoff}{A \code{numeric}. A number indicating the travel cost cutoff.}
 }
 \value{
-A \code{function} that takes a generic travel cost (\code{numeric}) as an input
-and returns an impedance factor (\code{numeric}).
+A \code{function} that takes a generic travel cost vector (\code{numeric}) as
+an input and returns a vector of weights (\code{numeric}).
 }
 \description{
-Returns a binary impedance function (frequently used to calculate cumulative
+Returns a binary weighting function (frequently used to calculate cumulative
 opportunities measures) to be used inside accessibility calculating
 functions.
 
@@ -22,11 +22,11 @@ This function is generic over any kind of numeric travel cost,
 such as distance, time and money.
 }
 \examples{
-impedance <- decay_binary(cutoff = 30)
+weighting_function <- decay_binary(cutoff = 30)
 
-impedance(20)
+weighting_function(20)
 
-impedance(35)
+weighting_function(35)
 
 }
 \seealso{

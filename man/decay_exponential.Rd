@@ -12,22 +12,22 @@ multiplied by the travel cost, is used as the exponent of \code{e} in the
 negative exponential function.}
 }
 \value{
-A \code{function} that takes a generic travel cost (\code{numeric}) as an input
-and returns an impedance factor (\code{numeric}).
+A \code{function} that takes a generic travel cost vector (\code{numeric}) as
+an input and returns a vector of weights (\code{numeric}).
 }
 \description{
-Returns a negative exponential impedance function  to be used inside
+Returns a negative exponential weighting function to be used inside
 accessibility calculating functions.
 
 This function is generic over any kind of numeric travel cost,
 such as distance, time and money.
 }
 \examples{
-impedance <- decay_exponential(decay_value = 0.1)
+weighting_function <- decay_exponential(decay_value = 0.1)
 
-impedance(20)
+weighting_function(20)
 
-impedance(35)
+weighting_function(35)
 
 }
 \seealso{

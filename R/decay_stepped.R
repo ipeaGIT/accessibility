@@ -1,6 +1,6 @@
 #' Stepped decay function
 #'
-#' Returns a stepped impedance function to be used inside accessibility
+#' Returns a stepped weighting function to be used inside accessibility
 #' calculating functions.
 #' @template description_generic_cost
 #'
@@ -20,15 +20,15 @@
 #' @family decay functions
 #'
 #' @examples
-#' impedance <- decay_stepped(
+#' weighting_function <- decay_stepped(
 #'   c(10, 20, 30, 40),
 #'   weights = c(0.75, 0.5, 0.25, 0)
 #' )
 #'
-#' impedance(c(5, 25, 35, 45))
+#' weighting_function(c(5, 25, 35, 45))
 #'
 #' # intervals are open on the right, so the values change exactly at each step
-#' impedance(c(0, 10, 20, 30, 40))
+#' weighting_function(c(0, 10, 20, 30, 40))
 #'
 #' @export
 decay_stepped <- function(steps, weights) {
@@ -52,14 +52,14 @@ decay_stepped <- function(steps, weights) {
   steps <- c(0, steps)
   weights <- c(1, weights)
 
-  impedance <- function(travel_cost) {
-    impedance_value <- vapply(
+  weighting_function <- function(travel_cost) {
+    weights <- vapply(
       travel_cost,
       function(x) weights[max(which(x >= steps))],
       numeric(1)
     )
-    return(impedance_value)
+    return(weights)
   }
 
-  return(impedance)
+  return(weighting_function)
 }

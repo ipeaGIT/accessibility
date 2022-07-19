@@ -1,6 +1,6 @@
 #' Inverse power decay function
 #'
-#' Returns an inverse power impedance function  to be used inside accessibility
+#' Returns an inverse power weighting function to be used inside accessibility
 #' calculating functions.
 #' @template description_generic_cost
 #'
@@ -12,21 +12,21 @@
 #' @family decay functions
 #'
 #' @examples
-#' impedance <- decay_power(decay_value = 0.1)
+#' weighting_function <- decay_power(decay_value = 0.1)
 #'
-#' impedance(20)
+#' weighting_function(20)
 #'
-#' impedance(35)
+#' weighting_function(35)
 #'
 #' @export
 decay_power <- function(decay_value) {
   checkmate::assert_number(decay_value, lower = 0, finite = TRUE)
 
-  impedance <- function(travel_cost) {
-    impedance_value <- travel_cost ^ (-decay_value)
-    impedance_value[impedance_value > 1] <- 1
-    return(impedance_value)
+  weighting_function <- function(travel_cost) {
+    weights <- travel_cost ^ (-decay_value)
+    weights[weights > 1] <- 1
+    return(weights)
   }
 
-  return(impedance)
+  return(weighting_function)
 }
