@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - main
+      - pkgdowntest
 
 name: pkgdown
 
@@ -21,8 +22,12 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::pkgdown, local::.
+          extra-packages: local::.
           needs: website
+
+      - name: Install "my" pkgdown
+        run: |
+          Rscript -e 'remotes::install_github("dhersz/pkgdown")'
 
       - name: Build and deploy pkgdown site
         run: |
