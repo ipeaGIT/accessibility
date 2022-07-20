@@ -278,12 +278,12 @@
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/decay_power.html">decay_power</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; function (travel_cost) </span></span>
 <span><span class="co">#&gt; {</span></span>
-<span><span class="co">#&gt;     impedance_value &lt;- travel_cost^(-decay_value)</span></span>
-<span><span class="co">#&gt;     impedance_value[impedance_value &gt; 1] &lt;- 1</span></span>
-<span><span class="co">#&gt;     return(impedance_value)</span></span>
+<span><span class="co">#&gt;     weights &lt;- travel_cost^(-decay_value)</span></span>
+<span><span class="co">#&gt;     weights[weights &gt; 1] &lt;- 1</span></span>
+<span><span class="co">#&gt;     return(weights)</span></span>
 <span><span class="co">#&gt; }</span></span>
-<span><span class="co">#&gt; &lt;bytecode: 0x55bb57eb44e0&gt;</span></span>
-<span><span class="co">#&gt; &lt;environment: 0x55bb587c0610&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; &lt;bytecode: 0x557d2a1489f0&gt;</span></span>
+<span><span class="co">#&gt; &lt;environment: 0x557d2ce7d890&gt;</span></span></code></pre></div>
 <p>This is because the built-in functions aim to be as generally used as possible, so we have to able to use them with different parameters, cutoffs, etc. In practice, every time we call these function we create another function that calculates travel costs exactly as we want.</p>
 <p>When we create our own custom decay function, we don’t have to think about general cases, just the cases that matter for us. Creating a simple function that converts one vector into another, therefore, suffices our needs. In both examples above, therefore, we’re passing a function to <code>decay_function</code> - one we created ourselves and another created by <code><a href="../reference/decay_power.html">decay_power()</a></code>.</p>
 </div>
