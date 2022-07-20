@@ -10,7 +10,7 @@ jobs:
   pkgdown:
     runs-on: ubuntu-20.04
     env:
-      RSPM: https://packagemanager.rstudio.com/cran/__linux__/bionic/latest
+      RSPM: https://packagemanager.rstudio.com/cran/__linux__/focal/latest
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
@@ -22,12 +22,11 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::remotes, local::.
+          extra-packages: any::pkgdown, local::.
           needs: website
 
-      - name: Install "my" pkgdown
+      - name: Build and deploy pkgdown site
         run: |
-          Rscript -e 'remotes::install_github("dhersz/pkgdown")'
-
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+          git config --local user.name "$GITHUB_ACTOR"
+          git config --local user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          Rscript -e 'pkgdown::deploy_to_branch(new_process = FALSE)'
