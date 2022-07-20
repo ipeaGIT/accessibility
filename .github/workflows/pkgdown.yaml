@@ -22,7 +22,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: local::.
+          extra-packages: any::remotes, local::.
           needs: website
 
       - name: Install "my" pkgdown
