@@ -1,6 +1,6 @@
 Type: Package
 Package: accessibility
-Title: Transport Accessibility Metrics
+Title: Transport Accessibility Measures
 Version: 0.1.0.9000
 Authors@R: c(
     person("Rafael H. M.", "Pereira", , "rafa.pereira.br@gmail.com", role = "aut",
@@ -11,13 +11,13 @@ Authors@R: c(
   )
 Description: A set of fast and convenient functions to calculate multiple
     transport accessibility measures. Given a pre-computed travel cost
-    matrix in long format combined with land-use data (e.g. location of
-    jobs, healthcare, population), the package allows one to calculate
-    active and passive accessibility levels using multiple accessibility
-    metrics such as: cumulative opportunity measure (using either travel
-    time cutoff or interval), minimum travel cost to closest N number of
-    activities, gravitational measures and different floating catchment
-    area methods.
+    matrix and a land use dataset (containing the location of jobs,
+    healthcare and population, for example), the package allows one to
+    calculate active and passive accessibility levels using multiple
+    accessibility measures, such as: cumulative opportunities (using
+    either travel cost cutoffs or intervals), minimum travel cost to
+    closest N number of activities, gravity-based (with different decay
+    functions) and different floating catchment area methods.
 License: MIT + file LICENSE
 URL: https://github.com/ipeaGIT/accessibility
 BugReports: https://github.com/ipeaGIT/accessibility/issues

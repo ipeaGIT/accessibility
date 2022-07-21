@@ -1,9 +1,9 @@
 ---
-title: "Introduction to accessibility: calculating accessibility metrics"
+title: "Introduction to accessibility: calculating accessibility measures"
 output: rmarkdown::html_vignette
 bibliography: '`r system.file("REFERENCES.bib", package = "accessibility")`'
 vignette: >
-  %\VignetteIndexEntry{Introduction to accessibility: calculating accessibility metrics} 
+  %\VignetteIndexEntry{Introduction to accessibility: calculating accessibility measures} 
   %\VignetteEngine{knitr::rmarkdown} 
   %\VignetteEncoding{UTF-8}
 ---
