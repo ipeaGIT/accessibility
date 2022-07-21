@@ -7,3 +7,4 @@
 ^CRAN-SUBMISSION$
 ^README\.Rmd$
 ^README\.html$
+^_pkgdown\.yml$
