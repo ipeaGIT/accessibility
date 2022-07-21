@@ -8,7 +8,7 @@ cumulative_cutoff(
   travel_matrix,
   land_use_data,
   opportunity,
-  travel_cost_col,
+  travel_cost,
   cutoff,
   group_by = character(0),
   active = TRUE,
@@ -29,7 +29,7 @@ specified in \code{opportunity_col}.}
 with the number of opportunities/resources/services to be considered when
 calculating accessibility levels.}
 
-\item{travel_cost_col}{A string. The name of the column in \code{travel_matrix}
+\item{travel_cost}{A string. The name of the column in \code{travel_matrix}
 with the travel cost between origins and destinations. Defaults to
 \code{"travel_time"}.}
 
@@ -78,7 +78,7 @@ df <- cumulative_cutoff(
   land_use_data = land_use_data,
   cutoff = 30,
   opportunity = "schools",
-  travel_cost_col = "travel_time"
+  travel_cost = "travel_time"
 )
 head(df)
 
@@ -88,7 +88,7 @@ df <- cumulative_cutoff(
   land_use_data = land_use_data,
   cutoff = 30,
   opportunity = "population",
-  travel_cost_col = "travel_time",
+  travel_cost = "travel_time",
   active = FALSE
 )
 head(df)

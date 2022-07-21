@@ -199,7 +199,7 @@ custom_gravity <- gravity(
   travel_matrix,
   land_use_data,
   opportunity = "jobs",
-  travel_cost_col = "travel_time",
+  travel_cost = "travel_time",
   decay_function = my_decay
 )
 head(custom_gravity)
@@ -213,7 +213,7 @@ power_gravity <- gravity(
   travel_matrix,
   land_use_data,
   opportunity = "jobs",
-  travel_cost_col = "travel_time",
+  travel_cost = "travel_time",
   decay_function = decay_power(1)
 )
 head(power_gravity)

@@ -8,7 +8,7 @@ cost_to_closest(
   travel_matrix,
   land_use_data,
   opportunity,
-  travel_cost_col,
+  travel_cost,
   n = 1,
   group_by = character(0),
   active = TRUE,
@@ -29,7 +29,7 @@ specified in \code{opportunity_col}.}
 with the number of opportunities/resources/services to be considered when
 calculating accessibility levels.}
 
-\item{travel_cost_col}{A string. The name of the column in \code{travel_matrix}
+\item{travel_cost}{A string. The name of the column in \code{travel_matrix}
 with the travel cost between origins and destinations. Defaults to
 \code{"travel_time"}.}
 
@@ -78,7 +78,7 @@ df <- cost_to_closest(
   land_use_data,
   n = 1,
   opportunity = "schools",
-  travel_cost_col = "travel_time"
+  travel_cost = "travel_time"
 )
 head(df)
 
@@ -87,7 +87,7 @@ df <- cost_to_closest(
   land_use_data,
   n = 2,
   opportunity = "schools",
-  travel_cost_col = "travel_time"
+  travel_cost = "travel_time"
 )
 head(df)
 

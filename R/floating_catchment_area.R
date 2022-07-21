@@ -8,7 +8,7 @@
 #' @template travel_matrix
 #' @template land_use_data
 #' @template opportunity
-#' @template travel_cost_col
+#' @template travel_cost
 #' @param competition_col A string. The name of the column in `land_use_data`
 #'   with the number of people in each origin that will be considered potential
 #'   competitors. Defaults to `"population"`.
@@ -52,7 +52,7 @@
 #'   method = "2sfca",
 #'   decay_function = decay_binary(cutoff = 50),
 #'   opportunity = "jobs",
-#'   travel_cost_col = "travel_time",
+#'   travel_cost = "travel_time",
 #'   competition_col = "population"
 #' )
 #' head(df)
@@ -65,7 +65,7 @@
 #'   method = "bfca",
 #'   decay_function = decay_exponential(decay_value = 0.5),
 #'   opportunity = "jobs",
-#'   travel_cost_col = "travel_time",
+#'   travel_cost = "travel_time",
 #'   competition_col = "population"
 #' )
 #' head(df)
@@ -74,7 +74,7 @@
 floating_catchment_area <- function(travel_matrix,
                                     land_use_data,
                                     opportunity,
-                                    travel_cost_col,
+                                    travel_cost,
                                     competition_col,
                                     method,
                                     decay_function,
@@ -86,12 +86,12 @@ floating_catchment_area <- function(travel_matrix,
     combine = "and"
   )
   checkmate::assert_string(opportunity)
-  checkmate::assert_string(travel_cost_col)
+  checkmate::assert_string(travel_cost)
   checkmate::assert_string(competition_col)
   checkmate::assert_logical(fill_missing_ids, len = 1, any.missing = FALSE)
   assert_decay_function(decay_function)
   assert_group_by(group_by)
-  assert_travel_matrix(travel_matrix, travel_cost_col, group_by)
+  assert_travel_matrix(travel_matrix, travel_cost, group_by)
   assert_land_use_data(
     land_use_data,
     opportunity,
@@ -113,12 +113,15 @@ floating_catchment_area <- function(travel_matrix,
 
   merge_by_reference(data, land_use_data, opportunity, active = TRUE)
   merge_by_reference(data, land_use_data, competition_col, active = FALSE)
-  data[, opp_weight := decay_function(get(travel_cost_col))]
+
+  .cost_colname <- travel_cost
+  data[, opp_weight := decay_function(get(.cost_colname))]
 
   groups <- c("from_id", group_by)
   warn_extra_cols(
     travel_matrix,
-    travel_cost_col, group_id = "from_id",
+    travel_cost,
+    group_id = "from_id",
     groups = groups
   )
 

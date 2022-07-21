@@ -5,7 +5,7 @@ tester <- function(
   travel_matrix = get("travel_matrix", envir = parent.frame()),
   land_use_data = get("land_use_data", envir = parent.frame()),
   opportunity = "jobs",
-  travel_cost_col = "travel_time",
+  travel_cost = "travel_time",
   cutoff = 30,
   group_by = "mode",
   active = TRUE,
@@ -15,7 +15,7 @@ tester <- function(
     travel_matrix,
     land_use_data,
     opportunity,
-    travel_cost_col,
+    travel_cost,
     cutoff,
     group_by,
     active,
@@ -32,8 +32,8 @@ test_that("raises errors due to incorrect input", {
   expect_error(tester(opportunity = 1))
   expect_error(tester(opportunity = c("schools", "jobs")))
 
-  expect_error(tester(travel_cost_col = 1))
-  expect_error(tester(travel_cost_col = c("travel_time", "monetary_cost")))
+  expect_error(tester(travel_cost = 1))
+  expect_error(tester(travel_cost = c("travel_time", "monetary_cost")))
 
   expect_error(tester(group_by = 1))
   expect_error(tester(group_by = NA))
@@ -54,7 +54,7 @@ test_that("raises errors due to incorrect input", {
   expect_error(
     tester(
       travel_matrix[, .(from_id, to_id, oi = travel_time)],
-      travel_cost_col = "travel_time"
+      travel_cost = "travel_time"
     )
   )
   expect_error(
@@ -75,7 +75,7 @@ test_that("raises errors due to incorrect input", {
 })
 
 test_that("throws warning if travel_matrix extra col", {
-  # i.e. col not listed in travel_cost_col and by_col
+  # i.e. col not listed in travel_cost and by_col
   expect_warning(tester(group_by = character(0)))
 })
 

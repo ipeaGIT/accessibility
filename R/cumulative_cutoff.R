@@ -7,7 +7,7 @@
 #' @template travel_matrix
 #' @template land_use_data
 #' @template opportunity
-#' @template travel_cost_col
+#' @template travel_cost
 #' @param cutoff A `numeric`. A number indicating the travel cost cutoff.
 #' @template group_by
 #' @template active
@@ -35,7 +35,7 @@
 #'   land_use_data = land_use_data,
 #'   cutoff = 30,
 #'   opportunity = "schools",
-#'   travel_cost_col = "travel_time"
+#'   travel_cost = "travel_time"
 #' )
 #' head(df)
 #'
@@ -45,7 +45,7 @@
 #'   land_use_data = land_use_data,
 #'   cutoff = 30,
 #'   opportunity = "population",
-#'   travel_cost_col = "travel_time",
+#'   travel_cost = "travel_time",
 #'   active = FALSE
 #' )
 #' head(df)
@@ -54,18 +54,18 @@
 cumulative_cutoff <- function(travel_matrix,
                               land_use_data,
                               opportunity,
-                              travel_cost_col,
+                              travel_cost,
                               cutoff,
                               group_by = character(0),
                               active = TRUE,
                               fill_missing_ids = TRUE) {
   checkmate::assert_number(cutoff, lower = 0, finite = TRUE)
   checkmate::assert_string(opportunity)
-  checkmate::assert_string(travel_cost_col)
+  checkmate::assert_string(travel_cost)
   checkmate::assert_logical(active, len = 1, any.missing = FALSE)
   checkmate::assert_logical(fill_missing_ids, len = 1, any.missing = FALSE)
   assert_group_by(group_by)
-  assert_travel_matrix(travel_matrix, travel_cost_col, group_by)
+  assert_travel_matrix(travel_matrix, travel_cost, group_by)
   assert_land_use_data(land_use_data, opportunity)
 
   # if not a dt, keep original class to assign later when returning result
@@ -81,14 +81,15 @@ cumulative_cutoff <- function(travel_matrix,
     land_use_data <- data.table::as.data.table(land_use_data)
   }
 
-  data <- data[get(travel_cost_col) <= cutoff]
+  .cost_colname <- travel_cost
+  data <- data[get(.cost_colname) <= cutoff]
   merge_by_reference(data, land_use_data, opportunity, active)
 
   group_id <- ifelse(active, "from_id", "to_id")
   groups <- c(group_id, group_by)
   env <- environment()
 
-  warn_extra_cols(travel_matrix, travel_cost_col, group_id, groups)
+  warn_extra_cols(travel_matrix, travel_cost, group_id, groups)
 
   .opportunity_colname <- opportunity
   access <- data[

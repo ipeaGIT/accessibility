@@ -7,7 +7,7 @@
 #' @template travel_matrix
 #' @template land_use_data
 #' @template opportunity
-#' @template travel_cost_col
+#' @template travel_cost
 #' @template decay_function
 #' @template group_by
 #' @template active
@@ -25,7 +25,7 @@
 #'   land_use_data,
 #'   decay_function = decay_linear(cutoff = 50),
 #'   opportunity = "schools",
-#'   travel_cost_col = "travel_time"
+#'   travel_cost = "travel_time"
 #' )
 #' head(df_linear)
 #'
@@ -34,7 +34,7 @@
 #'   land_use_data,
 #'   decay_function = decay_exponential(decay_value = 0.5),
 #'   opportunity = "schools",
-#'   travel_cost_col = "travel_time"
+#'   travel_cost = "travel_time"
 #' )
 #' head(df_exp)
 #'
@@ -42,18 +42,18 @@
 gravity <- function(travel_matrix,
                     land_use_data,
                     opportunity,
-                    travel_cost_col,
+                    travel_cost,
                     decay_function,
                     group_by = character(0),
                     active = TRUE,
                     fill_missing_ids = TRUE) {
   checkmate::assert_string(opportunity)
-  checkmate::assert_string(travel_cost_col)
+  checkmate::assert_string(travel_cost)
   checkmate::assert_logical(active, len = 1, any.missing = FALSE)
   checkmate::assert_logical(fill_missing_ids, len = 1, any.missing = FALSE)
   assert_decay_function(decay_function)
   assert_group_by(group_by)
-  assert_travel_matrix(travel_matrix, travel_cost_col, group_by)
+  assert_travel_matrix(travel_matrix, travel_cost, group_by)
   assert_land_use_data(land_use_data, opportunity)
 
   # if not a dt, keep original class to assign later when returning result
@@ -75,13 +75,14 @@ gravity <- function(travel_matrix,
   groups <- c(group_id, group_by)
   env <- environment()
 
-  warn_extra_cols(travel_matrix, travel_cost_col, group_id, groups)
+  warn_extra_cols(travel_matrix, travel_cost, group_id, groups)
 
   .opp_colname <- opportunity
+  .cost_colname <- travel_cost
   access <- data[
     ,
     .(
-      access = sum(get(.opp_colname) * decay_function(get(travel_cost_col)))
+      access = sum(get(.opp_colname) * decay_function(get(.cost_colname)))
     ),
     by = eval(groups, envir = env)
   ]

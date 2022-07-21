@@ -9,8 +9,8 @@ assert_group_by <- function(group_by) {
 
 
 #' @keywords internal
-assert_travel_matrix <- function(travel_matrix, travel_cost_col, group_by) {
-  travel_matrix_req_names <- c("from_id", "to_id", travel_cost_col, group_by)
+assert_travel_matrix <- function(travel_matrix, travel_cost, group_by) {
+  travel_matrix_req_names <- c("from_id", "to_id", travel_cost, group_by)
   checkmate::assert_data_frame(travel_matrix)
   checkmate::assert_names(
     names(travel_matrix),

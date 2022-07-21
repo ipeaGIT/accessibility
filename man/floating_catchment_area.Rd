@@ -8,7 +8,7 @@ floating_catchment_area(
   travel_matrix,
   land_use_data,
   opportunity,
-  travel_cost_col,
+  travel_cost,
   competition_col,
   method,
   decay_function,
@@ -30,7 +30,7 @@ specified in \code{opportunity_col}.}
 with the number of opportunities/resources/services to be considered when
 calculating accessibility levels.}
 
-\item{travel_cost_col}{A string. The name of the column in \code{travel_matrix}
+\item{travel_cost}{A string. The name of the column in \code{travel_matrix}
 with the travel cost between origins and destinations. Defaults to
 \code{"travel_time"}.}
 
@@ -108,7 +108,7 @@ df <- floating_catchment_area(
   method = "2sfca",
   decay_function = decay_binary(cutoff = 50),
   opportunity = "jobs",
-  travel_cost_col = "travel_time",
+  travel_cost = "travel_time",
   competition_col = "population"
 )
 head(df)
@@ -121,7 +121,7 @@ df <- floating_catchment_area(
   method = "bfca",
   decay_function = decay_exponential(decay_value = 0.5),
   opportunity = "jobs",
-  travel_cost_col = "travel_time",
+  travel_cost = "travel_time",
   competition_col = "population"
 )
 head(df)

@@ -6,7 +6,7 @@
 #' @template travel_matrix
 #' @template land_use_data
 #' @template opportunity
-#' @template travel_cost_col
+#' @template travel_cost
 #' @param n A `numeric`. A number indicating the minimum number of opportunities
 #'   that should be considered. Defaults to 1.
 #' @template group_by
@@ -33,7 +33,7 @@
 #'   land_use_data,
 #'   n = 1,
 #'   opportunity = "schools",
-#'   travel_cost_col = "travel_time"
+#'   travel_cost = "travel_time"
 #' )
 #' head(df)
 #'
@@ -42,7 +42,7 @@
 #'   land_use_data,
 #'   n = 2,
 #'   opportunity = "schools",
-#'   travel_cost_col = "travel_time"
+#'   travel_cost = "travel_time"
 #' )
 #' head(df)
 #'
@@ -50,18 +50,18 @@
 cost_to_closest <- function(travel_matrix,
                             land_use_data,
                             opportunity,
-                            travel_cost_col,
+                            travel_cost,
                             n = 1,
                             group_by = character(0),
                             active = TRUE,
                             fill_missing_ids = TRUE) {
   checkmate::assert_number(n, lower = 1, finite = TRUE)
   checkmate::assert_string(opportunity)
-  checkmate::assert_string(travel_cost_col)
+  checkmate::assert_string(travel_cost)
   checkmate::assert_logical(active, len = 1, any.missing = FALSE)
   checkmate::assert_logical(fill_missing_ids, len = 1, any.missing = FALSE)
   assert_group_by(group_by)
-  assert_travel_matrix(travel_matrix, travel_cost_col, group_by)
+  assert_travel_matrix(travel_matrix, travel_cost, group_by)
   assert_land_use_data(land_use_data, opportunity)
 
   # if not a dt, keep original class to assign later when returning result
@@ -83,18 +83,19 @@ cost_to_closest <- function(travel_matrix,
   groups <- c(group_id, group_by)
   env <- environment()
 
-  warn_extra_cols(travel_matrix, travel_cost_col, group_id, groups)
+  warn_extra_cols(travel_matrix, travel_cost, group_id, groups)
 
   .opportunity_colname <- opportunity
+  .cost_colname <- travel_cost
   if (n == 1) {
     access <- data[
       get(.opportunity_colname) > 0,
-      .(min_cost = suppressWarnings(min(get(travel_cost_col)))),
+      .(min_cost = suppressWarnings(min(get(.cost_colname)))),
       by = eval(groups, envir = env)
     ]
   } else {
     opport_cumsum <- data[get(.opportunity_colname) > 0, ]
-    data.table::setorderv(opport_cumsum, c(groups, travel_cost_col))
+    data.table::setorderv(opport_cumsum, c(groups, travel_cost))
     opport_cumsum[
       ,
       cum_opport := cumsum(get(.opportunity_colname)),
@@ -103,7 +104,7 @@ cost_to_closest <- function(travel_matrix,
 
     access <- opport_cumsum[
       cum_opport >= n,
-      .(min_cost = suppressWarnings(min(get(travel_cost_col)))),
+      .(min_cost = suppressWarnings(min(get(.cost_colname)))),
       by = eval(groups, envir = env)
     ]
   }
@@ -127,7 +128,7 @@ cost_to_closest <- function(travel_matrix,
   data.table::setnames(
     access,
     c(group_id, "min_cost"),
-    c("id", travel_cost_col)
+    c("id", travel_cost)
   )
 
   if (exists("original_class")) class(access) <- original_class

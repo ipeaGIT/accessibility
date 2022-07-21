@@ -150,7 +150,7 @@ mtc <- cost_to_closest(
   travel_matrix,
   land_use_data,
   opportunity = "schools",
-  travel_cost_col = "travel_time",
+  travel_cost = "travel_time",
   n = 1
 )
 head(mtc)
@@ -168,7 +168,7 @@ cum_cutoff <- cumulative_cutoff(
   travel_matrix,
   land_use_data,
   opportunity = "jobs",
-  travel_cost_col = "travel_time",
+  travel_cost = "travel_time",
   cutoff = 30
 )
 head(cum_cutoff)
@@ -184,7 +184,7 @@ passive_cum_cutoff <- cumulative_cutoff(
   travel_matrix,
   land_use_data,
   opportunity = "population",
-  travel_cost_col = "travel_time",
+  travel_cost = "travel_time",
   cutoff = 30,
   active = FALSE
 )
@@ -212,7 +212,7 @@ cum_interval <- cumulative_interval(
   travel_matrix = travel_matrix,
   land_use_data = land_use_data,
   opportunity = "jobs",
-  travel_cost_col = "travel_time",
+  travel_cost = "travel_time",
   interval = c(40, 60)
 )
 head(cum_interval)
@@ -238,7 +238,7 @@ negative_exp <- gravity(
   travel_matrix,
   land_use_data,
   opportunity = "schools",
-  travel_cost_col = "travel_time",
+  travel_cost = "travel_time",
   decay_function = decay_exponential(decay_value = 0.2)
 )
 head(negative_exp)
@@ -271,7 +271,7 @@ bfca <- floating_catchment_area(
   travel_matrix,
   land_use_data,
   opportunity = "jobs",
-  travel_cost_col = "travel_time",
+  travel_cost = "travel_time",
   competition_col = "population",
   method = "bfca",
   decay_function = decay_exponential(decay_value = 0.5)

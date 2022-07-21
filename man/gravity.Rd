@@ -8,7 +8,7 @@ gravity(
   travel_matrix,
   land_use_data,
   opportunity,
-  travel_cost_col,
+  travel_cost,
   decay_function,
   group_by = character(0),
   active = TRUE,
@@ -29,7 +29,7 @@ specified in \code{opportunity_col}.}
 with the number of opportunities/resources/services to be considered when
 calculating accessibility levels.}
 
-\item{travel_cost_col}{A string. The name of the column in \code{travel_matrix}
+\item{travel_cost}{A string. The name of the column in \code{travel_matrix}
 with the travel cost between origins and destinations. Defaults to
 \code{"travel_time"}.}
 
@@ -84,7 +84,7 @@ df_linear <- gravity(
   land_use_data,
   decay_function = decay_linear(cutoff = 50),
   opportunity = "schools",
-  travel_cost_col = "travel_time"
+  travel_cost = "travel_time"
 )
 head(df_linear)
 
@@ -93,7 +93,7 @@ df_exp <- gravity(
   land_use_data,
   decay_function = decay_exponential(decay_value = 0.5),
   opportunity = "schools",
-  travel_cost_col = "travel_time"
+  travel_cost = "travel_time"
 )
 head(df_exp)
 
