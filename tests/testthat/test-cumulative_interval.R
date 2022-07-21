@@ -9,6 +9,7 @@ tester <- function(
   opportunity_col = "jobs",
   travel_cost_col = "travel_time",
   interval = c(10, 30),
+  interval_increment = 1,
   summary_function = stats::median,
   group_by = "mode",
   active = TRUE
@@ -19,6 +20,7 @@ tester <- function(
     opportunity_col,
     travel_cost_col,
     interval,
+    interval_increment,
     summary_function,
     group_by,
     active
@@ -33,6 +35,11 @@ test_that("raises errors due to incorrect input", {
   expect_error(tester(interval = c(10, 10)))
   expect_error(tester(interval = c(1, Inf)))
   expect_error(tester(interval = c(1, NA)))
+
+  expect_error(tester(interval_increment = "a"))
+  expect_error(tester(interval_increment = Inf))
+  expect_error(tester(interval_increment = c(1, 1)))
+  expect_error(tester(interval_increment = -1))
 
   expect_error(tester(summary_function = "test"))
   expect_error(tester(summary_function = readRDS))
@@ -248,4 +255,21 @@ test_that("accessibility is correctly calculated when ids are missing", {
     jobs = rep(as.integer(c(0, 0, 0, 0, 0)), 2)
   )
   expect_identical(result, expected_result)
+})
+
+test_that("interval_increment arg is being used", {
+  # hard to "perfectly" assess if the interval_increment value is being applied
+  # correctly, but the code is trivial enough to let us say that it's correctly
+  # applied if the results are different when using different increments
+
+  result_increment_1 <- tester(
+    travel_matrix,
+    interval_increment = 1
+  )
+  result_increment_3 <- tester(
+    travel_matrix,
+    interval_increment = 3
+  )
+
+  expect_false(identical(result_increment_1, result_increment_3))
 })

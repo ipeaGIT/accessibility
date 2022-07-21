@@ -104,3 +104,18 @@ assert_decay_function <- function(decay_function) {
 
   return(invisible(TRUE))
 }
+
+
+#' @keywords internal
+assert_interval_increment <- function(interval_increment) {
+  checkmate::assert_number(interval_increment, finite = TRUE)
+
+  if (interval_increment <= 0) {
+    stop(
+      "Assertion on 'interval_increment' failed: ",
+      "Value must be greater than 0."
+    )
+  }
+
+  return(invisible(TRUE))
+}

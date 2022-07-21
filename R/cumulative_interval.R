@@ -1,10 +1,10 @@
 #' Cumulative access based on maximum travel time interval
 #'
 #' Calculates the average or median number of opportunities that can be reached
-#' considering multiple minute-by-minute maximum travel cost thresholds within
-#' a given travel cost interval specified by the user. The time interval
-#' cumulative accessibility measures was originally proposed by Tomasiello et
-#' al. (*forthcoming*).
+#' considering multiple maximum travel cost thresholds within a given travel
+#' cost interval specified by the user. The time interval cumulative
+#' accessibility measures was originally proposed by Tomasiello et al.
+#' (*forthcoming*).
 #' @template description_generic_cost
 #'
 #' @template travel_matrix
@@ -14,6 +14,11 @@
 #' @param interval A `numeric` vector of length 2. Indicates the start and end
 #'   points of the interval of travel cost thresholds to be used. The first
 #'   entry must be lower than the second.
+#' @param interval_increment A `numeric`. How many travel cost units separate
+#'   the cutoffs used to calculate the accessibility estimates which will be
+#'   used to calculate the summary estimate within the specified interval.
+#'   Should be thought as the resolution of the distribution of travel costs
+#'   within the interval. Defaults to 1.
 #' @param summary_function A function. This function is used to summarize a
 #'   distribution of accessibility estimates within a travel cost interval as a
 #'   single value. Can be any function that takes an arbitrary number of
@@ -61,6 +66,7 @@ cumulative_interval <- function(travel_matrix,
                                 opportunity_col,
                                 travel_cost_col,
                                 interval,
+                                interval_increment = 1,
                                 summary_function = stats::median,
                                 group_by = character(0),
                                 active = TRUE) {
@@ -76,6 +82,7 @@ cumulative_interval <- function(travel_matrix,
   checkmate::assert_string(opportunity_col)
   checkmate::assert_string(travel_cost_col)
   checkmate::assert_logical(active, len = 1, any.missing = FALSE)
+  assert_interval_increment(interval_increment)
   assert_summary_function(summary_function)
   assert_group_by(group_by)
   assert_travel_matrix(travel_matrix, travel_cost_col, group_by)
@@ -106,7 +113,7 @@ cumulative_interval <- function(travel_matrix,
 
   warn_extra_cols(travel_matrix, travel_cost_col, group_id, groups)
 
-  cutoffs <- seq.int(interval[1], interval[2])
+  cutoffs <- seq(interval[1], interval[2], by = interval_increment)
   names(cutoffs) <- as.character(cutoffs)
 
   access <- lapply(

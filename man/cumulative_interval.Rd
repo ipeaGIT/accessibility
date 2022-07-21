@@ -10,6 +10,7 @@ cumulative_interval(
   opportunity_col,
   travel_cost_col,
   interval,
+  interval_increment = 1,
   summary_function = stats::median,
   group_by = character(0),
   active = TRUE
@@ -37,6 +38,12 @@ with the travel cost between origins and destinations. Defaults to
 points of the interval of travel cost thresholds to be used. The first
 entry must be lower than the second.}
 
+\item{interval_increment}{A \code{numeric}. How many travel cost units separate
+the cutoffs used to calculate the accessibility estimates which will be
+used to calculate the summary estimate within the specified interval.
+Should be thought as the resolution of the distribution of travel costs
+within the interval. Defaults to 1.}
+
 \item{summary_function}{A function. This function is used to summarize a
 distribution of accessibility estimates within a travel cost interval as a
 single value. Can be any function that takes an arbitrary number of
@@ -61,10 +68,10 @@ travel matrix.
 }
 \description{
 Calculates the average or median number of opportunities that can be reached
-considering multiple minute-by-minute maximum travel cost thresholds within
-a given travel cost interval specified by the user. The time interval
-cumulative accessibility measures was originally proposed by Tomasiello et
-al. (\emph{forthcoming}).
+considering multiple maximum travel cost thresholds within a given travel
+cost interval specified by the user. The time interval cumulative
+accessibility measures was originally proposed by Tomasiello et al.
+(\emph{forthcoming}).
 
 This function is generic over any kind of numeric travel cost,
 such as distance, time and money.
