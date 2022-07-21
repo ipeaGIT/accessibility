@@ -7,7 +7,7 @@
 floating_catchment_area(
   travel_matrix,
   land_use_data,
-  opportunity_col,
+  opportunity,
   travel_cost_col,
   competition_col,
   method,
@@ -26,7 +26,7 @@ and any others specified in \code{travel_cost_col}.}
 the study area cells. Must contain the columns \code{id} and any others
 specified in \code{opportunity_col}.}
 
-\item{opportunity_col}{A string. The name of the column in \code{land_use_data}
+\item{opportunity}{A string. The name of the column in \code{land_use_data}
 with the number of opportunities/resources/services to be considered when
 calculating accessibility levels.}
 
@@ -107,7 +107,7 @@ df <- floating_catchment_area(
   land_use_data,
   method = "2sfca",
   decay_function = decay_binary(cutoff = 50),
-  opportunity_col = "jobs",
+  opportunity = "jobs",
   travel_cost_col = "travel_time",
   competition_col = "population"
 )
@@ -120,7 +120,7 @@ df <- floating_catchment_area(
   land_use_data,
   method = "bfca",
   decay_function = decay_exponential(decay_value = 0.5),
-  opportunity_col = "jobs",
+  opportunity = "jobs",
   travel_cost_col = "travel_time",
   competition_col = "population"
 )

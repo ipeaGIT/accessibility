@@ -6,7 +6,7 @@
 #'
 #' @template travel_matrix
 #' @template land_use_data
-#' @template opportunity_col
+#' @template opportunity
 #' @template travel_cost_col
 #' @param cutoff A `numeric`. A number indicating the travel cost cutoff.
 #' @template group_by
@@ -34,7 +34,7 @@
 #'   travel_matrix = travel_matrix,
 #'   land_use_data = land_use_data,
 #'   cutoff = 30,
-#'   opportunity_col = "schools",
+#'   opportunity = "schools",
 #'   travel_cost_col = "travel_time"
 #' )
 #' head(df)
@@ -44,7 +44,7 @@
 #'   travel_matrix = travel_matrix,
 #'   land_use_data = land_use_data,
 #'   cutoff = 30,
-#'   opportunity_col = "population",
+#'   opportunity = "population",
 #'   travel_cost_col = "travel_time",
 #'   active = FALSE
 #' )
@@ -53,20 +53,20 @@
 #' @export
 cumulative_cutoff <- function(travel_matrix,
                               land_use_data,
-                              opportunity_col,
+                              opportunity,
                               travel_cost_col,
                               cutoff,
                               group_by = character(0),
                               active = TRUE,
                               fill_missing_ids = TRUE) {
   checkmate::assert_number(cutoff, lower = 0, finite = TRUE)
-  checkmate::assert_string(opportunity_col)
+  checkmate::assert_string(opportunity)
   checkmate::assert_string(travel_cost_col)
   checkmate::assert_logical(active, len = 1, any.missing = FALSE)
   checkmate::assert_logical(fill_missing_ids, len = 1, any.missing = FALSE)
   assert_group_by(group_by)
   assert_travel_matrix(travel_matrix, travel_cost_col, group_by)
-  assert_land_use_data(land_use_data, opportunity_col)
+  assert_land_use_data(land_use_data, opportunity)
 
   # if not a dt, keep original class to assign later when returning result
 
@@ -82,7 +82,7 @@ cumulative_cutoff <- function(travel_matrix,
   }
 
   data <- data[get(travel_cost_col) <= cutoff]
-  merge_by_reference(data, land_use_data, opportunity_col, active)
+  merge_by_reference(data, land_use_data, opportunity, active)
 
   group_id <- ifelse(active, "from_id", "to_id")
   groups <- c(group_id, group_by)
@@ -90,9 +90,10 @@ cumulative_cutoff <- function(travel_matrix,
 
   warn_extra_cols(travel_matrix, travel_cost_col, group_id, groups)
 
+  .opportunity_colname <- opportunity
   access <- data[
     ,
-    .(access = sum(get(opportunity_col))),
+    .(access = sum(get(.opportunity_colname))),
     by = eval(groups, envir = env)
   ]
 
@@ -106,7 +107,7 @@ cumulative_cutoff <- function(travel_matrix,
     }
   }
 
-  data.table::setnames(access, c(group_id, "access"), c("id", opportunity_col))
+  data.table::setnames(access, c(group_id, "access"), c("id", opportunity))
 
   if (exists("original_class")) class(access) <- original_class
 

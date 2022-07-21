@@ -7,7 +7,7 @@
 cumulative_cutoff(
   travel_matrix,
   land_use_data,
-  opportunity_col,
+  opportunity,
   travel_cost_col,
   cutoff,
   group_by = character(0),
@@ -25,7 +25,7 @@ and any others specified in \code{travel_cost_col}.}
 the study area cells. Must contain the columns \code{id} and any others
 specified in \code{opportunity_col}.}
 
-\item{opportunity_col}{A string. The name of the column in \code{land_use_data}
+\item{opportunity}{A string. The name of the column in \code{land_use_data}
 with the number of opportunities/resources/services to be considered when
 calculating accessibility levels.}
 
@@ -77,7 +77,7 @@ df <- cumulative_cutoff(
   travel_matrix = travel_matrix,
   land_use_data = land_use_data,
   cutoff = 30,
-  opportunity_col = "schools",
+  opportunity = "schools",
   travel_cost_col = "travel_time"
 )
 head(df)
@@ -87,7 +87,7 @@ df <- cumulative_cutoff(
   travel_matrix = travel_matrix,
   land_use_data = land_use_data,
   cutoff = 30,
-  opportunity_col = "population",
+  opportunity = "population",
   travel_cost_col = "travel_time",
   active = FALSE
 )

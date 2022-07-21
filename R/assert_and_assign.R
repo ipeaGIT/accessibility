@@ -24,9 +24,9 @@ assert_travel_matrix <- function(travel_matrix, travel_cost_col, group_by) {
 
 #' @keywords internal
 assert_land_use_data <- function(land_use_data,
-                                 opportunity_col,
+                                 opportunity,
                                  competition = NULL) {
-  land_use_data_req_names <- c("id", opportunity_col)
+  land_use_data_req_names <- c("id", opportunity)
   if (!is.null(competition)) {
     land_use_data_req_names <- c(land_use_data_req_names, competition)
   }

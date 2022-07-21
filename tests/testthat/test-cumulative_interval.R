@@ -6,7 +6,7 @@ skip_if_not(requireNamespace("stats", quietly = TRUE))
 tester <- function(
   travel_matrix = get("travel_matrix", envir = parent.frame()),
   land_use_data = get("land_use_data", envir = parent.frame()),
-  opportunity_col = "jobs",
+  opportunity = "jobs",
   travel_cost_col = "travel_time",
   interval = c(10, 30),
   interval_increment = 1,
@@ -17,7 +17,7 @@ tester <- function(
   cumulative_interval(
     travel_matrix,
     land_use_data,
-    opportunity_col,
+    opportunity,
     travel_cost_col,
     interval,
     interval_increment,
@@ -45,8 +45,8 @@ test_that("raises errors due to incorrect input", {
   expect_error(tester(summary_function = readRDS))
   expect_error(tester(summary_function = identity))
 
-  expect_error(tester(opportunity_col = 1))
-  expect_error(tester(opportunity_col = c("schools", "jobs")))
+  expect_error(tester(opportunity = 1))
+  expect_error(tester(opportunity = c("schools", "jobs")))
 
   expect_error(tester(travel_cost_col = 1))
   expect_error(tester(travel_cost_col = c("travel_time", "monetary_cost")))
@@ -81,7 +81,7 @@ test_that("raises errors due to incorrect input", {
   expect_error(
     tester(
       land_use_data = land_use_data[, .(id, oi = jobs)],
-      opportunity_col = "jobs"
+      opportunity = "jobs"
     )
   )
 })
@@ -115,7 +115,7 @@ test_that("result has correct structure", {
   expect_is(result$mode, "character")
   expect_is(result$jobs, "integer")
 
-  result <- tester(opportunity_col = "schools")
+  result <- tester(opportunity = "schools")
   expect_true(ncol(result) == 3)
   expect_is(result$id, "character")
   expect_is(result$mode, "character")
@@ -180,7 +180,7 @@ test_that("active and passive accessibility is correctly calculated", {
   result <- tester(
     smaller_travel_matrix,
     interval = c(40, 45),
-    opportunity_col = "population",
+    opportunity = "population",
     group_by = "mode",
     active = FALSE
   )

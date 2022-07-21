@@ -48,7 +48,8 @@ utils::globalVariables(
     "balanced_opp_weight_i",
     "balanced_opp_weight_j",
     "balanced_pop_served",
-    "balanced_ppr"
+    "balanced_ppr",
+    "..opportunity"
   )
 )
 

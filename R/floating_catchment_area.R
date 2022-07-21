@@ -7,7 +7,7 @@
 #'
 #' @template travel_matrix
 #' @template land_use_data
-#' @template opportunity_col
+#' @template opportunity
 #' @template travel_cost_col
 #' @param competition_col A string. The name of the column in `land_use_data`
 #'   with the number of people in each origin that will be considered potential
@@ -51,7 +51,7 @@
 #'   land_use_data,
 #'   method = "2sfca",
 #'   decay_function = decay_binary(cutoff = 50),
-#'   opportunity_col = "jobs",
+#'   opportunity = "jobs",
 #'   travel_cost_col = "travel_time",
 #'   competition_col = "population"
 #' )
@@ -64,7 +64,7 @@
 #'   land_use_data,
 #'   method = "bfca",
 #'   decay_function = decay_exponential(decay_value = 0.5),
-#'   opportunity_col = "jobs",
+#'   opportunity = "jobs",
 #'   travel_cost_col = "travel_time",
 #'   competition_col = "population"
 #' )
@@ -73,7 +73,7 @@
 #' @export
 floating_catchment_area <- function(travel_matrix,
                                     land_use_data,
-                                    opportunity_col,
+                                    opportunity,
                                     travel_cost_col,
                                     competition_col,
                                     method,
@@ -85,7 +85,7 @@ floating_catchment_area <- function(travel_matrix,
     checkmate::check_names(method, subset.of = c("2sfca", "bfca")),
     combine = "and"
   )
-  checkmate::assert_string(opportunity_col)
+  checkmate::assert_string(opportunity)
   checkmate::assert_string(travel_cost_col)
   checkmate::assert_string(competition_col)
   checkmate::assert_logical(fill_missing_ids, len = 1, any.missing = FALSE)
@@ -94,7 +94,7 @@ floating_catchment_area <- function(travel_matrix,
   assert_travel_matrix(travel_matrix, travel_cost_col, group_by)
   assert_land_use_data(
     land_use_data,
-    opportunity_col,
+    opportunity,
     competition = competition_col
   )
 
@@ -111,7 +111,7 @@ floating_catchment_area <- function(travel_matrix,
     land_use_data <- data.table::as.data.table(land_use_data)
   }
 
-  merge_by_reference(data, land_use_data, opportunity_col, active = TRUE)
+  merge_by_reference(data, land_use_data, opportunity, active = TRUE)
   merge_by_reference(data, land_use_data, competition_col, active = FALSE)
   data[, opp_weight := decay_function(get(travel_cost_col))]
 
@@ -128,7 +128,7 @@ floating_catchment_area <- function(travel_matrix,
     fca_bfca
   }
 
-  access <- fca_function(data, opportunity_col, competition_col, group_by)
+  access <- fca_function(data, opportunity, competition_col, group_by)
 
   if (fill_missing_ids) {
     unique_values <- lapply(groups, function(x) unique(travel_matrix[[x]]))
@@ -140,7 +140,7 @@ floating_catchment_area <- function(travel_matrix,
     }
   }
 
-  data.table::setnames(access, c("from_id", "access"), c("id", opportunity_col))
+  data.table::setnames(access, c("from_id", "access"), c("id", opportunity))
 
   if (exists("original_class")) class(access) <- original_class
 
@@ -149,7 +149,9 @@ floating_catchment_area <- function(travel_matrix,
 
 
 #' @keywords internal
-fca_2sfca <- function(data, opportunity_col, competition_col, group_by) {
+fca_2sfca <- function(data, opportunity, competition_col, group_by) {
+  .opportunity_colname <- opportunity
+
   # step 1a - calculate the demand to each destination as the weight between
   # each od pair multiplied by the number of people at the origin
 
@@ -163,7 +165,7 @@ fca_2sfca <- function(data, opportunity_col, competition_col, group_by) {
   # as number of opportunities/resources located at it divided by the
   # population it serves
 
-  data[, ppr := get(opportunity_col) / pop_served]
+  data[, ppr := get(.opportunity_colname) / pop_served]
 
   # step 2 - calculate accessibility at each origin i as the sum of the
   # multiplication between the ppr of destination j and the weight between od
@@ -180,7 +182,9 @@ fca_2sfca <- function(data, opportunity_col, competition_col, group_by) {
 
 
 #' @keywords internal
-fca_bfca <- function(data, opportunity_col, competition_col, group_by) {
+fca_bfca <- function(data, opportunity, competition_col, group_by) {
+  .opportunity_colname <- opportunity
+
   # calculate balanced (normalized) opp_weight by origin and by destination
 
   data[
@@ -210,7 +214,7 @@ fca_bfca <- function(data, opportunity_col, competition_col, group_by) {
   # (balanced_ppr) of a destination as number of opportunities/resources
   # located at it divided by the balanced demand
 
-  data[, balanced_ppr := get(opportunity_col) / balanced_pop_served]
+  data[, balanced_ppr := get(.opportunity_colname) / balanced_pop_served]
 
   # step 2 - calculate accessibility at each origin i as the sum of the
   # multiplication between the balanced_ppr of destination j and the balanced

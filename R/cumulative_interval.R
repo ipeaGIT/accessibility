@@ -9,7 +9,7 @@
 #'
 #' @template travel_matrix
 #' @template land_use_data
-#' @template opportunity_col
+#' @template opportunity
 #' @template travel_cost_col
 #' @param interval A `numeric` vector of length 2. Indicates the start and end
 #'   points of the interval of travel cost thresholds to be used. The first
@@ -46,7 +46,7 @@
 #'   travel_matrix = travel_matrix,
 #'   land_use_data = land_use_data,
 #'   interval = c(20, 30),
-#'   opportunity_col = "schools",
+#'   opportunity = "schools",
 #'   travel_cost_col = "travel_time"
 #' )
 #' head(df)
@@ -55,7 +55,7 @@
 #'   travel_matrix = travel_matrix,
 #'   land_use_data = land_use_data,
 #'   interval = c(40, 80),
-#'   opportunity_col = "jobs",
+#'   opportunity = "jobs",
 #'   travel_cost_col = "travel_time"
 #' )
 #' head(df)
@@ -63,7 +63,7 @@
 #' @export
 cumulative_interval <- function(travel_matrix,
                                 land_use_data,
-                                opportunity_col,
+                                opportunity,
                                 travel_cost_col,
                                 interval,
                                 interval_increment = 1,
@@ -79,14 +79,14 @@ cumulative_interval <- function(travel_matrix,
     sorted = TRUE,
     finite = TRUE
   )
-  checkmate::assert_string(opportunity_col)
+  checkmate::assert_string(opportunity)
   checkmate::assert_string(travel_cost_col)
   checkmate::assert_logical(active, len = 1, any.missing = FALSE)
   assert_interval_increment(interval_increment)
   assert_summary_function(summary_function)
   assert_group_by(group_by)
   assert_travel_matrix(travel_matrix, travel_cost_col, group_by)
-  assert_land_use_data(land_use_data, opportunity_col)
+  assert_land_use_data(land_use_data, opportunity)
 
   # if not a dt, keep original class to assign later when returning result
 
@@ -105,7 +105,7 @@ cumulative_interval <- function(travel_matrix,
   # limit of the interval, since it won't affect the results anyway
   data <- data[get(travel_cost_col) <= interval[2]]
 
-  merge_by_reference(data, land_use_data, opportunity_col, active)
+  merge_by_reference(data, land_use_data, opportunity, active)
 
   group_id <- ifelse(active, "from_id", "to_id")
   groups <- c(group_id, group_by)
@@ -116,12 +116,13 @@ cumulative_interval <- function(travel_matrix,
   cutoffs <- seq(interval[1], interval[2], by = interval_increment)
   names(cutoffs) <- as.character(cutoffs)
 
+  .opportunity_colname <- opportunity
   access <- lapply(
     cutoffs,
     function(x) {
       data[
         get(travel_cost_col) <= x,
-        .(access = sum(get(opportunity_col))),
+        .(access = sum(get(.opportunity_colname))),
         by = eval(groups, envir = env)
       ]
     }
@@ -153,7 +154,7 @@ cumulative_interval <- function(travel_matrix,
     .(access = as.integer(summary_function(access))),
     by = eval(groups, envir = env)
   ]
-  data.table::setnames(access, c(group_id, "access"), c("id", opportunity_col))
+  data.table::setnames(access, c(group_id, "access"), c("id", opportunity))
 
   if (exists("original_class")) class(access) <- original_class
 

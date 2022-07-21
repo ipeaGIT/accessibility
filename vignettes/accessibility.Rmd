@@ -149,7 +149,7 @@ closest school looks like:
 mtc <- cost_to_closest(
   travel_matrix,
   land_use_data,
-  opportunity_col = "schools",
+  opportunity = "schools",
   travel_cost_col = "travel_time",
   n = 1
 )
@@ -167,7 +167,7 @@ reached from each origin with trips taking up to 30 minutes of travel time.
 cum_cutoff <- cumulative_cutoff(
   travel_matrix,
   land_use_data,
-  opportunity_col = "jobs",
+  opportunity = "jobs",
   travel_cost_col = "travel_time",
   cutoff = 30
 )
@@ -183,7 +183,7 @@ column to `"population"` and set `active` (`TRUE` by default) to `FALSE`.
 passive_cum_cutoff <- cumulative_cutoff(
   travel_matrix,
   land_use_data,
-  opportunity_col = "population",
+  opportunity = "population",
   travel_cost_col = "travel_time",
   cutoff = 30,
   active = FALSE
@@ -211,7 +211,7 @@ between 40 and 60 minutes.
 cum_interval <- cumulative_interval(
   travel_matrix = travel_matrix,
   land_use_data = land_use_data,
-  opportunity_col = "jobs",
+  opportunity = "jobs",
   travel_cost_col = "travel_time",
   interval = c(40, 60)
 )
@@ -237,7 +237,7 @@ shipped with the package and how to use custom functions.
 negative_exp <- gravity(
   travel_matrix,
   land_use_data,
-  opportunity_col = "schools",
+  opportunity = "schools",
   travel_cost_col = "travel_time",
   decay_function = decay_exponential(decay_value = 0.2)
 )
@@ -270,7 +270,7 @@ decay function.
 bfca <- floating_catchment_area(
   travel_matrix,
   land_use_data,
-  opportunity_col = "jobs",
+  opportunity = "jobs",
   travel_cost_col = "travel_time",
   competition_col = "population",
   method = "bfca",

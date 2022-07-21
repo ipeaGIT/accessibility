@@ -4,7 +4,7 @@
 tester <- function(
   travel_matrix = get("travel_matrix", envir = parent.frame()),
   land_use_data = get("land_use_data", envir = parent.frame()),
-  opportunity_col = "schools",
+  opportunity = "schools",
   travel_cost_col = "travel_time",
   n = 1,
   group_by = "mode",
@@ -14,7 +14,7 @@ tester <- function(
   cost_to_closest(
     travel_matrix,
     land_use_data,
-    opportunity_col,
+    opportunity,
     travel_cost_col,
     n,
     group_by,
@@ -29,8 +29,8 @@ test_that("raises errors due to incorrect input", {
   expect_error(tester(n = c(1, 1)))
   expect_error(tester(n = Inf))
 
-  expect_error(tester(opportunity_col = 1))
-  expect_error(tester(opportunity_col = c("schools", "jobs")))
+  expect_error(tester(opportunity = 1))
+  expect_error(tester(opportunity = c("schools", "jobs")))
 
   expect_error(tester(travel_cost_col = 1))
   expect_error(tester(travel_cost_col = c("travel_time", "monetary_cost")))
@@ -69,7 +69,7 @@ test_that("raises errors due to incorrect input", {
   expect_error(
     tester(
       land_use_data = land_use_data[, .(id, oi = jobs)],
-      opportunity_col = "jobs"
+      opportunity = "jobs"
     )
   )
 })
@@ -161,7 +161,7 @@ test_that("active and passive accessibility is correctly calculated", {
 
   result <- tester(
     smaller_travel_matrix,
-    opportunity_col = "population",
+    opportunity = "population",
     group_by = "mode",
     active = FALSE
   )

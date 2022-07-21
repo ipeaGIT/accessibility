@@ -198,7 +198,7 @@ land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
 custom_gravity <- gravity(
   travel_matrix,
   land_use_data,
-  opportunity_col = "jobs",
+  opportunity = "jobs",
   travel_cost_col = "travel_time",
   decay_function = my_decay
 )
@@ -212,7 +212,7 @@ function using `decay_power(1)`:
 power_gravity <- gravity(
   travel_matrix,
   land_use_data,
-  opportunity_col = "jobs",
+  opportunity = "jobs",
   travel_cost_col = "travel_time",
   decay_function = decay_power(1)
 )

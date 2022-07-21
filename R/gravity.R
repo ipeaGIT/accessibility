@@ -6,7 +6,7 @@
 #'
 #' @template travel_matrix
 #' @template land_use_data
-#' @template opportunity_col
+#' @template opportunity
 #' @template travel_cost_col
 #' @template decay_function
 #' @template group_by
@@ -24,7 +24,7 @@
 #'   travel_matrix,
 #'   land_use_data,
 #'   decay_function = decay_linear(cutoff = 50),
-#'   opportunity_col = "schools",
+#'   opportunity = "schools",
 #'   travel_cost_col = "travel_time"
 #' )
 #' head(df_linear)
@@ -33,7 +33,7 @@
 #'   travel_matrix,
 #'   land_use_data,
 #'   decay_function = decay_exponential(decay_value = 0.5),
-#'   opportunity_col = "schools",
+#'   opportunity = "schools",
 #'   travel_cost_col = "travel_time"
 #' )
 #' head(df_exp)
@@ -41,20 +41,20 @@
 #' @export
 gravity <- function(travel_matrix,
                     land_use_data,
-                    opportunity_col,
+                    opportunity,
                     travel_cost_col,
                     decay_function,
                     group_by = character(0),
                     active = TRUE,
                     fill_missing_ids = TRUE) {
-  checkmate::assert_string(opportunity_col)
+  checkmate::assert_string(opportunity)
   checkmate::assert_string(travel_cost_col)
   checkmate::assert_logical(active, len = 1, any.missing = FALSE)
   checkmate::assert_logical(fill_missing_ids, len = 1, any.missing = FALSE)
   assert_decay_function(decay_function)
   assert_group_by(group_by)
   assert_travel_matrix(travel_matrix, travel_cost_col, group_by)
-  assert_land_use_data(land_use_data, opportunity_col)
+  assert_land_use_data(land_use_data, opportunity)
 
   # if not a dt, keep original class to assign later when returning result
 
@@ -69,7 +69,7 @@ gravity <- function(travel_matrix,
     land_use_data <- data.table::as.data.table(land_use_data)
   }
 
-  merge_by_reference(data, land_use_data, opportunity_col, active)
+  merge_by_reference(data, land_use_data, opportunity, active)
 
   group_id <- ifelse(active, "from_id", "to_id")
   groups <- c(group_id, group_by)
@@ -77,10 +77,11 @@ gravity <- function(travel_matrix,
 
   warn_extra_cols(travel_matrix, travel_cost_col, group_id, groups)
 
+  .opp_colname <- opportunity
   access <- data[
     ,
     .(
-      access = sum(get(opportunity_col) * decay_function(get(travel_cost_col)))
+      access = sum(get(.opp_colname) * decay_function(get(travel_cost_col)))
     ),
     by = eval(groups, envir = env)
   ]
@@ -95,7 +96,7 @@ gravity <- function(travel_matrix,
     }
   }
 
-  data.table::setnames(access, c(group_id, "access"), c("id", opportunity_col))
+  data.table::setnames(access, c(group_id, "access"), c("id", opportunity))
 
   if (exists("original_class")) class(access) <- original_class
 
