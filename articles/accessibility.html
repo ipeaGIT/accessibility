@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Introduction to accessibility: calculating accessibility metrics • accessibility</title>
+<title>Introduction to accessibility: calculating accessibility measures • accessibility</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to accessibility: calculating accessibility metrics">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to accessibility: calculating accessibility measures">
 <meta property="og:description" content="accessibility">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -85,7 +85,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Introduction to accessibility: calculating accessibility metrics</h1>
+      <h1 data-toc-skip>Introduction to accessibility: calculating accessibility measures</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/accessibility/blob/HEAD/vignettes/accessibility.Rmd" class="external-link"><code>vignettes/accessibility.Rmd</code></a></small>
@@ -185,8 +185,8 @@
 <code class="sourceCode R"><span><span class="va">mtc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cost_to_closest.html">cost_to_closest</a></span><span class="op">(</span></span>
 <span>  <span class="va">travel_matrix</span>,</span>
 <span>  <span class="va">land_use_data</span>,</span>
-<span>  opportunity_col <span class="op">=</span> <span class="st">"schools"</span>,</span>
-<span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
+<span>  opportunity <span class="op">=</span> <span class="st">"schools"</span>,</span>
+<span>  travel_cost <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
 <span>  n <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mtc</span><span class="op">)</span></span>
@@ -206,8 +206,8 @@
 <code class="sourceCode R"><span><span class="va">cum_cutoff</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cumulative_cutoff.html">cumulative_cutoff</a></span><span class="op">(</span></span>
 <span>  <span class="va">travel_matrix</span>,</span>
 <span>  <span class="va">land_use_data</span>,</span>
-<span>  opportunity_col <span class="op">=</span> <span class="st">"jobs"</span>,</span>
-<span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
+<span>  opportunity <span class="op">=</span> <span class="st">"jobs"</span>,</span>
+<span>  travel_cost <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
 <span>  cutoff <span class="op">=</span> <span class="fl">30</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cum_cutoff</span><span class="op">)</span></span>
@@ -223,8 +223,8 @@
 <code class="sourceCode R"><span><span class="va">passive_cum_cutoff</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cumulative_cutoff.html">cumulative_cutoff</a></span><span class="op">(</span></span>
 <span>  <span class="va">travel_matrix</span>,</span>
 <span>  <span class="va">land_use_data</span>,</span>
-<span>  opportunity_col <span class="op">=</span> <span class="st">"population"</span>,</span>
-<span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
+<span>  opportunity <span class="op">=</span> <span class="st">"population"</span>,</span>
+<span>  travel_cost <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
 <span>  cutoff <span class="op">=</span> <span class="fl">30</span>,</span>
 <span>  active <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
@@ -246,8 +246,8 @@
 <code class="sourceCode R"><span><span class="va">cum_interval</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cumulative_interval.html">cumulative_interval</a></span><span class="op">(</span></span>
 <span>  travel_matrix <span class="op">=</span> <span class="va">travel_matrix</span>,</span>
 <span>  land_use_data <span class="op">=</span> <span class="va">land_use_data</span>,</span>
-<span>  opportunity_col <span class="op">=</span> <span class="st">"jobs"</span>,</span>
-<span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
+<span>  opportunity <span class="op">=</span> <span class="st">"jobs"</span>,</span>
+<span>  travel_cost <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
 <span>  interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">40</span>, <span class="fl">60</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cum_interval</span><span class="op">)</span></span>
@@ -268,8 +268,8 @@
 <code class="sourceCode R"><span><span class="va">negative_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gravity.html">gravity</a></span><span class="op">(</span></span>
 <span>  <span class="va">travel_matrix</span>,</span>
 <span>  <span class="va">land_use_data</span>,</span>
-<span>  opportunity_col <span class="op">=</span> <span class="st">"schools"</span>,</span>
-<span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
+<span>  opportunity <span class="op">=</span> <span class="st">"schools"</span>,</span>
+<span>  travel_cost <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
 <span>  decay_function <span class="op">=</span> <span class="fu"><a href="../reference/decay_exponential.html">decay_exponential</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">negative_exp</span><span class="op">)</span></span>
@@ -294,8 +294,8 @@
 <code class="sourceCode R"><span><span class="va">bfca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/floating_catchment_area.html">floating_catchment_area</a></span><span class="op">(</span></span>
 <span>  <span class="va">travel_matrix</span>,</span>
 <span>  <span class="va">land_use_data</span>,</span>
-<span>  opportunity_col <span class="op">=</span> <span class="st">"jobs"</span>,</span>
-<span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
+<span>  opportunity <span class="op">=</span> <span class="st">"jobs"</span>,</span>
+<span>  travel_cost <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
 <span>  competition_col <span class="op">=</span> <span class="st">"population"</span>,</span>
 <span>  method <span class="op">=</span> <span class="st">"bfca"</span>,</span>
 <span>  decay_function <span class="op">=</span> <span class="fu"><a href="../reference/decay_exponential.html">decay_exponential</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>

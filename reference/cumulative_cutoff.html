@@ -72,8 +72,8 @@ such as distance, time and money.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cumulative_cutoff</span><span class="op">(</span></span>
 <span>  <span class="va">travel_matrix</span>,</span>
 <span>  <span class="va">land_use_data</span>,</span>
-<span>  <span class="va">opportunity_col</span>,</span>
-<span>  <span class="va">travel_cost_col</span>,</span>
+<span>  <span class="va">opportunity</span>,</span>
+<span>  <span class="va">travel_cost</span>,</span>
 <span>  <span class="va">cutoff</span>,</span>
 <span>  group_by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  active <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -96,13 +96,13 @@ the study area cells. Must contain the columns <code>id</code> and any others
 specified in <code>opportunity_col</code>.</p></dd>
 
 
-<dt>opportunity_col</dt>
+<dt>opportunity</dt>
 <dd><p>A string. The name of the column in <code>land_use_data</code>
 with the number of opportunities/resources/services to be considered when
 calculating accessibility levels.</p></dd>
 
 
-<dt>travel_cost_col</dt>
+<dt>travel_cost</dt>
 <dd><p>A string. The name of the column in <code>travel_matrix</code>
 with the travel cost between origins and destinations. Defaults to
 <code>"travel_time"</code>.</p></dd>
@@ -163,8 +163,8 @@ travel matrix.</p>
 <span class="r-in"><span>  travel_matrix <span class="op">=</span> <span class="va">travel_matrix</span>,</span></span>
 <span class="r-in"><span>  land_use_data <span class="op">=</span> <span class="va">land_use_data</span>,</span></span>
 <span class="r-in"><span>  cutoff <span class="op">=</span> <span class="fl">30</span>,</span></span>
-<span class="r-in"><span>  opportunity_col <span class="op">=</span> <span class="st">"schools"</span>,</span></span>
-<span class="r-in"><span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span></span></span>
+<span class="r-in"><span>  opportunity <span class="op">=</span> <span class="st">"schools"</span>,</span></span>
+<span class="r-in"><span>  travel_cost <span class="op">=</span> <span class="st">"travel_time"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 id schools</span>
@@ -180,8 +180,8 @@ travel matrix.</p>
 <span class="r-in"><span>  travel_matrix <span class="op">=</span> <span class="va">travel_matrix</span>,</span></span>
 <span class="r-in"><span>  land_use_data <span class="op">=</span> <span class="va">land_use_data</span>,</span></span>
 <span class="r-in"><span>  cutoff <span class="op">=</span> <span class="fl">30</span>,</span></span>
-<span class="r-in"><span>  opportunity_col <span class="op">=</span> <span class="st">"population"</span>,</span></span>
-<span class="r-in"><span>  travel_cost_col <span class="op">=</span> <span class="st">"travel_time"</span>,</span></span>
+<span class="r-in"><span>  opportunity <span class="op">=</span> <span class="st">"population"</span>,</span></span>
+<span class="r-in"><span>  travel_cost <span class="op">=</span> <span class="st">"travel_time"</span>,</span></span>
 <span class="r-in"><span>  active <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
