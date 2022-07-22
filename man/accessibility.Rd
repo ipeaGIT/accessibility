@@ -22,7 +22,7 @@ Please check the vignettes for more on the package usage:
 \itemize{
 \item Introduction to accessibility: calculating accessibility measures. Run
 \code{vignette("accessibility")} or check it on the \href{https://ipeagit.github.io/accessibility/articles/accessibility.html}{website}.
-\item Decay functions. Run \code{vignette("decay_functions", package = "accessibility")} or check it on the \href{https://ipeagit.github.io/accessibility/articles/decay_binary.html}{website}.
+\item Decay functions. Run \code{vignette("decay_functions", package = "accessibility")} or check it on the \href{https://ipeagit.github.io/accessibility/articles/decay_functions.html}{website}.
 }
 }
 

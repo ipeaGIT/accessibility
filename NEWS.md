@@ -34,7 +34,7 @@ some of the key points in the following topics.
 
 - New function `decay_stepped()`.
 - New parameter `interval_increment` to `cumulative_interval()`, used to
-  specify how mane travel cost units separate the cutoffs used to calculate the
+  specify how many travel cost units separate the cutoffs used to calculate the
   accessibility estimates which will be used to calculate the summary estimate
   within the specified interval.
 - All accessibility functions gained a `group_by` parameter, that allows

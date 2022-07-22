@@ -16,7 +16,7 @@
 #' https://ipeagit.github.io/accessibility/articles/accessibility.html).
 #' - Decay functions. Run `vignette("decay_functions", package =
 #' "accessibility")` or check it on the [website](
-#' https://ipeagit.github.io/accessibility/articles/decay_binary.html).
+#' https://ipeagit.github.io/accessibility/articles/decay_functions.html).
 #'
 #' @docType package
 #' @name accessibility
