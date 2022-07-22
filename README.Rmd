@@ -11,7 +11,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# accessibility: Transport Accessibility Metrics
+# accessibility
 
 <img align="right" src="man/figures/logo.png" alt="logo" width="180">
 
@@ -22,11 +22,24 @@ status](https://www.r-pkg.org/badges/version/accessibility)](https://CRAN.R-proj
 [![Codecov test coverage](https://codecov.io/gh/ipeaGIT/accessibility/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ipeaGIT/accessibility?branch=main)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html) 
 
-**accessibility** offers a set of fast and convenient functions to calculate multiple transport accessibility measures. Given a pre-computed travel cost matrix in long format combined with land-use data (e.g. location of jobs, healthcare, population), the package allows one to calculate active and passive accessibility levels using multiple accessibility metrics such as: cumulative opportunity measure (using either travel time *cutoff* or *interval*), minimum travel cost to closest *N* number of activities, gravitational measures and different floating catchment area methods.
+**accessibility** offers a set of fast and convenient functions to calculate
+multiple transport accessibility measures. Given a pre-computed travel cost
+matrix and a land use dataset (containing the location of jobs, healthcare and
+population, for example), the package allows one to calculate active and
+passive accessibility levels using multiple accessibility measures, such as:
+cumulative opportunities (using either travel cost cutoffs or intervals),
+minimum travel cost to closest N number of activities, gravity-based (with
+different decay functions) and different floating catchment area methods.
 
 ## Installation
 
-`accessibility` is not available on CRAN yet. In the meantime, you may install the **development version**:
+Stable version:
+
+```{r, eval = FALSE}
+install.packages("accessibility")
+```
+
+Development version:
 
 ```{r, eval = FALSE}
 # install.packages("remotes")
@@ -39,46 +52,62 @@ remotes::install_github("ipeaGIT/accessibility")
 library(accessibility)
 
 # required data: a travel matrix and some land use data
-
 data_dir <- system.file("extdata", package = "accessibility")
 travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
 land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
  
-# cumulative accessibility
-
-df <- cumulative_cutoff(
+cost_closest <- cost_to_closest(
   travel_matrix,
   land_use_data,
-  opportunity_col = "jobs",
-  travel_cost_col = "travel_time",
+  opportunity = "schools",
+  travel_cost = "travel_time",
+  n = 1
+)
+head(cost_closest)
+
+cum_cutoff <- cumulative_cutoff(
+  travel_matrix,
+  land_use_data,
+  opportunity = "jobs",
+  travel_cost = "travel_time",
   cutoff = 30
 )
-head(df)
+head(cum_cutoff)
 
-# gravity model
-
-df <- gravity(
+cum_interval <- cumulative_interval(
   travel_matrix,
   land_use_data,
-  opportunity_col = "schools",
-  travel_cost_col = "travel_time",
+  opportunity = "jobs",
+  travel_cost = "travel_time",
+  interval = c(20, 30)
+)
+head(cum_interval)
+
+grav <- gravity(
+  travel_matrix,
+  land_use_data,
+  opportunity = "schools",
+  travel_cost = "travel_time",
   decay_function = decay_exponential(decay_value = 0.2)
 )
-head(df)
+head(grav)
                        
-# 2SFCA with a binary (step) decay function
-
-df <- floating_catchment_area(
+fca <- floating_catchment_area(
   travel_matrix,
   land_use_data,
-  opportunity_col = "jobs",
-  travel_cost_col = "travel_time",
-  competition_col = "population",
+  opportunity = "jobs",
+  travel_cost = "travel_time",
+  demand = "population",
   method = "2sfca",
   decay_function = decay_binary(cutoff = 50)
 )
-head(df)
+head(fca)
 ```
+
+Please read the vignettes for more details on the usage:
+
+- Introduction to **accessibility**: calculating accessibility measures. Run [`vignette("accessibility")`](https://ipeagit.github.io/accessibility/articles/accessibility.html).
+- Decay functions. Run [`vignette("decay_functions", package = "accessibility")`](https://ipeagit.github.io/accessibility/articles/decay_functions.html).
 
 ## Related work:
 
