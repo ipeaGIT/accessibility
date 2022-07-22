@@ -260,7 +260,7 @@ Originally proposed by @paez2019demand and named in @pereira2021geographic.
 
 Please note that, since FCA measures consider competition effects, we have to
 specify which column in the land use dataset represents the population
-competing for opportunities with the `competition_col` parameter. The function
+competing for opportunities with the `demand` parameter. The function
 also support diferent decay functions. In the example below, we calculate
 accessibility to jobs using the BFCA method, considering that the entire
 population of the city compete for these jobs and using a negative exponential
@@ -272,7 +272,7 @@ bfca <- floating_catchment_area(
   land_use_data,
   opportunity = "jobs",
   travel_cost = "travel_time",
-  competition_col = "population",
+  demand = "population",
   method = "bfca",
   decay_function = decay_exponential(decay_value = 0.5)
 )

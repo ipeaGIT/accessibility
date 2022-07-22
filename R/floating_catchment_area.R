@@ -9,8 +9,8 @@
 #' @template land_use_data
 #' @template opportunity
 #' @template travel_cost
-#' @param competition_col A string. The name of the column in `land_use_data`
-#'   with the number of people in each origin that will be considered potential
+#' @param demand A string. The name of the column in `land_use_data` with the
+#'   number of people in each origin that will be considered potential
 #'   competitors. Defaults to `"population"`.
 #' @param method A string. Which floating catchment area measure to use.
 #'   Current available options are `"2sfca"` and `"bfca"`. More info in the
@@ -53,7 +53,7 @@
 #'   decay_function = decay_binary(cutoff = 50),
 #'   opportunity = "jobs",
 #'   travel_cost = "travel_time",
-#'   competition_col = "population"
+#'   demand = "population"
 #' )
 #' head(df)
 #'
@@ -66,7 +66,7 @@
 #'   decay_function = decay_exponential(decay_value = 0.5),
 #'   opportunity = "jobs",
 #'   travel_cost = "travel_time",
-#'   competition_col = "population"
+#'   demand = "population"
 #' )
 #' head(df)
 #'
@@ -75,7 +75,7 @@ floating_catchment_area <- function(travel_matrix,
                                     land_use_data,
                                     opportunity,
                                     travel_cost,
-                                    competition_col,
+                                    demand,
                                     method,
                                     decay_function,
                                     group_by = character(0),
@@ -87,16 +87,12 @@ floating_catchment_area <- function(travel_matrix,
   )
   checkmate::assert_string(opportunity)
   checkmate::assert_string(travel_cost)
-  checkmate::assert_string(competition_col)
+  checkmate::assert_string(demand)
   checkmate::assert_logical(fill_missing_ids, len = 1, any.missing = FALSE)
   assert_decay_function(decay_function)
   assert_group_by(group_by)
   assert_travel_matrix(travel_matrix, travel_cost, group_by)
-  assert_land_use_data(
-    land_use_data,
-    opportunity,
-    competition = competition_col
-  )
+  assert_land_use_data(land_use_data, opportunity, demand)
 
   # if not a dt, keep original class to assign later when returning result
 
@@ -112,7 +108,7 @@ floating_catchment_area <- function(travel_matrix,
   }
 
   merge_by_reference(data, land_use_data, opportunity, active = TRUE)
-  merge_by_reference(data, land_use_data, competition_col, active = FALSE)
+  merge_by_reference(data, land_use_data, demand, active = FALSE)
 
   .cost_colname <- travel_cost
   data[, opp_weight := decay_function(get(.cost_colname))]
@@ -131,7 +127,7 @@ floating_catchment_area <- function(travel_matrix,
     fca_bfca
   }
 
-  access <- fca_function(data, opportunity, competition_col, group_by)
+  access <- fca_function(data, opportunity, demand, group_by)
 
   if (fill_missing_ids) {
     unique_values <- lapply(groups, function(x) unique(travel_matrix[[x]]))
@@ -152,15 +148,16 @@ floating_catchment_area <- function(travel_matrix,
 
 
 #' @keywords internal
-fca_2sfca <- function(data, opportunity, competition_col, group_by) {
+fca_2sfca <- function(data, opportunity, demand, group_by) {
   .opportunity_colname <- opportunity
+  .demand_colname <- demand
 
   # step 1a - calculate the demand to each destination as the weight between
   # each od pair multiplied by the number of people at the origin
 
   data[
     ,
-    pop_served := sum(get(competition_col) * opp_weight, na.rm = TRUE),
+    pop_served := sum(get(.demand_colname) * opp_weight, na.rm = TRUE),
     by = c("to_id", group_by)
   ]
 
@@ -185,8 +182,9 @@ fca_2sfca <- function(data, opportunity, competition_col, group_by) {
 
 
 #' @keywords internal
-fca_bfca <- function(data, opportunity, competition_col, group_by) {
+fca_bfca <- function(data, opportunity, demand, group_by) {
   .opportunity_colname <- opportunity
+  .demand_colname <- demand
 
   # calculate balanced (normalized) opp_weight by origin and by destination
 
@@ -207,7 +205,7 @@ fca_bfca <- function(data, opportunity, competition_col, group_by) {
   data[
     ,
     balanced_pop_served := sum(
-      get(competition_col) * balanced_opp_weight_i,
+      get(.demand_colname) * balanced_opp_weight_i,
       na.rm = TRUE
     ),
     by = c("to_id", group_by)

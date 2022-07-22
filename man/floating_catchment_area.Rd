@@ -9,7 +9,7 @@ floating_catchment_area(
   land_use_data,
   opportunity,
   travel_cost,
-  competition_col,
+  demand,
   method,
   decay_function,
   group_by = character(0),
@@ -34,8 +34,8 @@ calculating accessibility levels.}
 with the travel cost between origins and destinations. Defaults to
 \code{"travel_time"}.}
 
-\item{competition_col}{A string. The name of the column in \code{land_use_data}
-with the number of people in each origin that will be considered potential
+\item{demand}{A string. The name of the column in \code{land_use_data} with the
+number of people in each origin that will be considered potential
 competitors. Defaults to \code{"population"}.}
 
 \item{method}{A string. Which floating catchment area measure to use.
@@ -109,7 +109,7 @@ df <- floating_catchment_area(
   decay_function = decay_binary(cutoff = 50),
   opportunity = "jobs",
   travel_cost = "travel_time",
-  competition_col = "population"
+  demand = "population"
 )
 head(df)
 
@@ -122,7 +122,7 @@ df <- floating_catchment_area(
   decay_function = decay_exponential(decay_value = 0.5),
   opportunity = "jobs",
   travel_cost = "travel_time",
-  competition_col = "population"
+  demand = "population"
 )
 head(df)
 

@@ -6,7 +6,7 @@ tester <- function(
   land_use_data = get("land_use_data", envir = parent.frame()),
   opportunity = "jobs",
   travel_cost = "travel_time",
-  competition_col = "population",
+  demand = "population",
   method = "2sfca",
   decay_function = decay_binary(45),
   group_by = "mode",
@@ -17,7 +17,7 @@ tester <- function(
     land_use_data,
     opportunity,
     travel_cost,
-    competition_col,
+    demand,
     method,
     decay_function,
     group_by,
@@ -40,8 +40,8 @@ test_that("raises errors due to incorrect input", {
   expect_error(tester(travel_cost = 1))
   expect_error(tester(travel_cost = c("travel_time", "monetary_cost")))
 
-  expect_error(tester(competition_col = 1))
-  expect_error(tester(competition_col = c("population", "population")))
+  expect_error(tester(demand = 1))
+  expect_error(tester(demand = c("population", "population")))
 
   expect_error(tester(group_by = 1))
   expect_error(tester(group_by = NA))
@@ -81,7 +81,7 @@ test_that("raises errors due to incorrect input", {
   expect_error(
     tester(
       land_use_data = land_use_data[, .(id, jobs, oi = population)],
-      competition_col = "population"
+      demand = "population"
     )
   )
 })
