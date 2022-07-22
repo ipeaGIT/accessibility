@@ -64,6 +64,9 @@
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -289,14 +292,14 @@
 <li>2-Step Floating Catchment Area (<code>"2sfca"</code>) - the first metric in the FCA family, originally proposed by <span class="citation">Luo and Wang (2003)</span>.</li>
 <li>Balanced Floating Catchment Area (<code>"bfca"</code>) - takes competition affects into account while correcting for issues of inflation of demand and service levels. Originally proposed by <span class="citation">Paez, Higgins, and Vivona (2019)</span> and named in <span class="citation">Pereira et al. (2021)</span>.</li>
 </ul>
-<p>Please note that, since FCA measures consider competition effects, we have to specify which column in the land use dataset represents the population competing for opportunities with the <code>competition_col</code> parameter. The function also support diferent decay functions. In the example below, we calculate accessibility to jobs using the BFCA method, considering that the entire population of the city compete for these jobs and using a negative exponential decay function.</p>
+<p>Please note that, since FCA measures consider competition effects, we have to specify which column in the land use dataset represents the population competing for opportunities with the <code>demand</code> parameter. The function also support diferent decay functions. In the example below, we calculate accessibility to jobs using the BFCA method, considering that the entire population of the city compete for these jobs and using a negative exponential decay function.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bfca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/floating_catchment_area.html">floating_catchment_area</a></span><span class="op">(</span></span>
 <span>  <span class="va">travel_matrix</span>,</span>
 <span>  <span class="va">land_use_data</span>,</span>
 <span>  opportunity <span class="op">=</span> <span class="st">"jobs"</span>,</span>
 <span>  travel_cost <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
-<span>  competition_col <span class="op">=</span> <span class="st">"population"</span>,</span>
+<span>  demand <span class="op">=</span> <span class="st">"population"</span>,</span>
 <span>  method <span class="op">=</span> <span class="st">"bfca"</span>,</span>
 <span>  decay_function <span class="op">=</span> <span class="fu"><a href="../reference/decay_exponential.html">decay_exponential</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
