@@ -140,8 +140,8 @@ test_that("input data sets remain unchanged", {
   # subsets in other functions tests set travel_matrix index
   data.table::setindex(travel_matrix, NULL)
 
-  expect_identical(original_travel_matrix, travel_matrix)
-  expect_identical(original_land_use_data, land_use_data)
+  expect_equal(original_travel_matrix, travel_matrix)
+  expect_equal(original_land_use_data, land_use_data)
 })
 
 test_that("active and passive accessibility is correctly calculated", {
@@ -248,4 +248,29 @@ test_that("fill_missing_ids arg works correctly", {
       jobs = c(22239L, 36567L, 36567L)
     )
   )
+})
+
+test_that("works even if travel_matrix and land_use has specific colnames", {
+  expected_result <- tester()
+
+  travel_matrix[, opportunity := "oi"]
+  result <- suppressWarnings(tester(travel_matrix))
+  expect_identical(expected_result, result)
+
+  travel_matrix[, opportunity := NULL]
+  travel_matrix[, travel_cost := "oi"]
+  result <- suppressWarnings(tester(travel_matrix))
+  expect_identical(expected_result, result)
+
+  travel_matrix[, travel_cost := NULL]
+  travel_matrix[, groups := "oi"]
+  result <- suppressWarnings(tester(travel_matrix))
+  expect_identical(expected_result, result)
+
+  travel_matrix[, groups := NULL]
+  land_use_data[, opportunity := "oi"]
+  result <- suppressWarnings(tester(land_use_data = land_use_data))
+  expect_identical(expected_result, result)
+
+  land_use_data[, opportunity := NULL]
 })

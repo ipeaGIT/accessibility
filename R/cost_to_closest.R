@@ -135,4 +135,3 @@ cost_to_closest <- function(travel_matrix,
 
   return(access[])
 }
-
