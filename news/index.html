@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">accessibility</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
       </span>
     </div>
 
@@ -105,7 +105,7 @@
 <div class="section level3">
 <h3 id="new-features-1-0-0">New features<a class="anchor" aria-label="anchor" href="#new-features-1-0-0"></a></h3>
 <ul><li>New function <code><a href="../reference/decay_stepped.html">decay_stepped()</a></code>.</li>
-<li>New parameter <code>interval_increment</code> to <code><a href="../reference/cumulative_interval.html">cumulative_interval()</a></code>, used to specify how mane travel cost units separate the cutoffs used to calculate the accessibility estimates which will be used to calculate the summary estimate within the specified interval.</li>
+<li>New parameter <code>interval_increment</code> to <code><a href="../reference/cumulative_interval.html">cumulative_interval()</a></code>, used to specify how many travel cost units separate the cutoffs used to calculate the accessibility estimates which will be used to calculate the summary estimate within the specified interval.</li>
 <li>All accessibility functions gained a <code>group_by</code> parameter, that allows accessibility estimates to be grouped by one or more columns present in <code>travel_matrix</code>.</li>
 <li>All accessibility functions (but <code><a href="../reference/cumulative_interval.html">cumulative_interval()</a></code>) gained a <code>fill_missing_ids</code> parameter, that includes in the results origins whose accessibility would be 0 but, due to some commonly overlooked implementation details, are usually left out from the output. <code><a href="../reference/cumulative_interval.html">cumulative_interval()</a></code> doesn’t have this parameter because its result will always include all origins, otherwise the summary measure wouldn’t be calculated properly.</li>
 </ul></div>
