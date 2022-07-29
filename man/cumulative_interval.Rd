@@ -70,20 +70,11 @@ travel matrix.
 Calculates the average or median number of opportunities that can be reached
 considering multiple maximum travel cost thresholds within a given travel
 cost interval specified by the user. The time interval cumulative
-accessibility measures was originally proposed by Tomasiello et al.
-(\emph{forthcoming}).
+accessibility measures was originally proposed by
+\insertCite{tomasiello2022interval;textual}{accessibility}.
 
 This function is generic over any kind of numeric travel cost,
 such as distance, time and money.
-}
-\details{
-\subsection{References:}{
-\itemize{
-\item Tomasiello, D. B.; Herszenhut, D.; Oliveira, J. L. A.; Braga, C. K. V.;
-Pereira, R. H. M. (\emph{forthcoming}). A time interval metric for cumulative
-opportunity accessibility.
-}
-}
 }
 \examples{
 \dontshow{if (requireNamespace("stats", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
@@ -109,6 +100,9 @@ df <- cumulative_interval(
 )
 head(df)
 \dontshow{\}) # examplesIf}
+}
+\references{
+\insertAllCited{}
 }
 \seealso{
 Other cumulative access: 

@@ -3,8 +3,8 @@
 #' Calculates the average or median number of opportunities that can be reached
 #' considering multiple maximum travel cost thresholds within a given travel
 #' cost interval specified by the user. The time interval cumulative
-#' accessibility measures was originally proposed by Tomasiello et al.
-#' (*forthcoming*).
+#' accessibility measures was originally proposed by
+#' \insertCite{tomasiello2022interval;textual}{accessibility}.
 #' @template description_generic_cost
 #'
 #' @template travel_matrix
@@ -31,11 +31,8 @@
 #'
 #' @family cumulative access
 #'
-#' @details
-#' ## References:
-#' - Tomasiello, D. B.; Herszenhut, D.; Oliveira, J. L. A.; Braga, C. K. V.;
-#' Pereira, R. H. M. (*forthcoming*). A time interval metric for cumulative
-#' opportunity accessibility.
+#' @references
+#' \insertAllCited{}
 #'
 #' @examplesIf requireNamespace("stats", quietly = TRUE)
 #' data_dir <- system.file("extdata", package = "accessibility")
