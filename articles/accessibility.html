@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">accessibility</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.09</span>
       </span>
     </div>
 
@@ -98,7 +98,7 @@
 
     
     
-<p><strong>accessibility</strong> is an R package that offers a set of fast and convenient functions to calculate multiple transport accessibility measures. Given a pre-computed travel cost matrix and a land use dataset, the package allows one to calculate active and passive accessibility levels using multiple accessibility metrics, such as cumulative opportunities (using either a travel cost cutoff or an travel cost interval), minimum travel cost to closest N number of activities, gravitational measures and different floating catchment area methods. This vignette briefly overviews the package with a few reproducible example.</p>
+<p><strong>accessibility</strong> is an R package that offers a set of fast and convenient functions to calculate multiple transport accessibility measures. Given a pre-computed travel cost matrix and a land use dataset, the package allows one to calculate active and passive accessibility levels using multiple accessibility metrics, such as cumulative opportunities (using either a travel cost cutoff or a travel cost interval), minimum travel cost to closest N number of activities, gravitational measures and different floating catchment area methods. This vignette briefly overviews the package with a few reproducible examples.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -116,9 +116,9 @@
 <p>As of the time of writing this vignette, the <strong>accessibility</strong> package includes five different functions to calculate accessibility:</p>
 <ol style="list-style-type: decimal">
 <li>
-<code><a href="../reference/cost_to_closest.html">cost_to_closest()</a></code> - calculates the mininimum travel cost to the closest <em>n</em> number of opportunities.</li>
+<code><a href="../reference/cost_to_closest.html">cost_to_closest()</a></code> - calculates the minimum travel cost to the closest <em>n</em> number of opportunities.</li>
 <li>
-<code><a href="../reference/cumulative_cutoff.html">cumulative_cutoff()</a></code> - calculates the frenquently used threshold-based cumulative opportunities measure.</li>
+<code><a href="../reference/cumulative_cutoff.html">cumulative_cutoff()</a></code> - calculates the frequently used threshold-based cumulative opportunities measure.</li>
 <li>
 <code><a href="../reference/cumulative_interval.html">cumulative_interval()</a></code> - calculates accessibility as the median/mean (or any other summary measure, really) number of opportunities that can be reached within a cost interval.</li>
 <li>
@@ -126,8 +126,8 @@
 <li>
 <code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code> - calculates accessibility taking into account the effects of competition for opportunities with different floating catchment area measures.</li>
 </ol>
-<p>You may have noticed that we’ve mentioned a few times that the functions calculate accessibility using travel <em>cost</em>, and not travel <em>time</em>. That’s because we’re treating <em>costs</em> here in its generic sense: anything that increases the impedance from an origin to a destination, such as travel time, monetary costs, risk perception, etc., can be considered a generic <em>cost</em>.</p>
-<p>The <code><a href="../reference/gravity.html">gravity()</a></code> and <code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code> functions can use different decay functions when estimating accessibility levels. This decay functions effectively weigh the number of opportunities in a destination by a factor that depends on the travel cost between the origin and the destination. For convenience, the package currently includes the following decay functions:</p>
+<p>You may have noticed that we’ve mentioned a few times that the functions calculate accessibility using travel <em>cost</em>, and not travel <em>time</em>. That’s because we’re treating <em>costs</em> here in its generic sense: anything that increases the impedance from an origin to a destination, such as travel time, monetary costs, distances, risk perception, etc., can be considered a generic <em>cost</em>.</p>
+<p>The <code><a href="../reference/gravity.html">gravity()</a></code> and <code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code> functions can use different decay functions when estimating accessibility levels. These decay functions effectively weigh the number of opportunities in a destination by a factor that depends on the travel cost between the origin and the destination. For convenience, the package currently includes the following decay functions:</p>
 <ol style="list-style-type: decimal">
 <li>
 <code><a href="../reference/decay_binary.html">decay_binary()</a></code> - binary decay function (the one used in cumulative opportunities measures).</li>
@@ -168,7 +168,7 @@
 <span><span class="co">#&gt; 4: 89a88cdb57bffff 89a88cdb5cfffff        47.0</span></span>
 <span><span class="co">#&gt; 5: 89a88cdb57bffff 89a88cd909bffff        64.0</span></span>
 <span><span class="co">#&gt; 6: 89a88cdb57bffff 89a88cd90b7ffff        59.0</span></span></code></pre></div>
-<p>The land use data must also be structured in a <code>data.frame</code> and must contain an <code>id</code> column, which refer to the ids listed in the travel matrix, and the number of opportunities/facilities/services in each spatial unit. The sample dataset we’ll be using looks like this:</p>
+<p>The land use data must also be structured in a <code>data.frame</code> and must contain an <code>id</code> column, referring to the ids listed in the travel matrix, and the number of opportunities/facilities/services in each spatial unit. The sample dataset we’ll be using looks like this:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">land_use_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data_dir</span>, <span class="st">"land_use_data.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">land_use_data</span><span class="op">)</span></span>
@@ -244,28 +244,29 @@
 <div class="section level3">
 <h3 id="interval-based-cumulative-opportunities">Interval-based cumulative opportunities<a class="anchor" aria-label="anchor" href="#interval-based-cumulative-opportunities"></a>
 </h3>
-<p><code>cumulative_time_interval()</code> calculates the interval-based cumulative opportunities measure. This measure, developed by Tomasiello et al. (<em>forthcoming paper</em>), mitigates the impacts of arbitrary choices of cost cutoffs, one of the main disadvantages of the traditional threshold-based cumulative opportunities measure. Given a cost interval, it calculates several accessibility estimates within the interval and summarizes it using a user-specified function. In the example below, we calculate the average number of accessible jobs considering multiple minute-by-minute time thresholds between 40 and 60 minutes.</p>
+<p><code>cumulative_time_interval()</code> calculates the interval-based cumulative opportunities measure. This measure, developed by <span class="citation">Tomasiello et al. (2022)</span>, mitigates the impacts of arbitrary choices of cost cutoffs, one of the main disadvantages of the traditional threshold-based cumulative opportunities measure. Given a cost interval, it calculates several accessibility estimates within the interval and summarizes it using a user-specified function. In the example below, we calculate the average number of accessible jobs considering multiple minute-by-minute time thresholds between 40 and 60 minutes.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cum_interval</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cumulative_interval.html">cumulative_interval</a></span><span class="op">(</span></span>
 <span>  travel_matrix <span class="op">=</span> <span class="va">travel_matrix</span>,</span>
 <span>  land_use_data <span class="op">=</span> <span class="va">land_use_data</span>,</span>
 <span>  opportunity <span class="op">=</span> <span class="st">"jobs"</span>,</span>
 <span>  travel_cost <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
-<span>  interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">40</span>, <span class="fl">60</span><span class="op">)</span></span>
+<span>  interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">40</span>, <span class="fl">60</span><span class="op">)</span>,</span>
+<span>  summary_function <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cum_interval</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 id   jobs</span></span>
-<span><span class="co">#&gt; 1: 89a88cdb57bffff 334406</span></span>
-<span><span class="co">#&gt; 2: 89a88cdb597ffff 257648</span></span>
-<span><span class="co">#&gt; 3: 89a88cdb5b3ffff 311264</span></span>
-<span><span class="co">#&gt; 4: 89a88cdb5cfffff 385355</span></span>
-<span><span class="co">#&gt; 5: 89a88cd909bffff 332576</span></span>
-<span><span class="co">#&gt; 6: 89a88cd90b7ffff 373920</span></span></code></pre></div>
+<span><span class="co">#&gt; 1: 89a88cdb57bffff 311965</span></span>
+<span><span class="co">#&gt; 2: 89a88cdb597ffff 249416</span></span>
+<span><span class="co">#&gt; 3: 89a88cdb5b3ffff 302515</span></span>
+<span><span class="co">#&gt; 4: 89a88cdb5cfffff 373386</span></span>
+<span><span class="co">#&gt; 5: 89a88cd909bffff 308429</span></span>
+<span><span class="co">#&gt; 6: 89a88cd90b7ffff 344118</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="gravity-measures">Gravity measures<a class="anchor" aria-label="anchor" href="#gravity-measures"></a>
 </h3>
-<p><code><a href="../reference/gravity.html">gravity()</a></code> calculates gravity-based measures - i.e. measures in which the weight of opportunities is gradually discounted as the travel cost increases. Of course, several different decay functions can be used to so, each one of them with a range of possible different parameters. In order to accomodate such generalization, the function takes the decay function to be used as a parameter.</p>
+<p><code><a href="../reference/gravity.html">gravity()</a></code> calculates gravity-based measures - i.e. measures in which the weight of opportunities is gradually discounted as the travel cost increases. Of course, several different decay functions can be used to so, each one of them with a range of possible different parameters. In order to accommodate such generalization, the function takes the decay function to be used as a parameter.</p>
 <p>In the example below, we calculate accessibility using a negative exponential function with a <code>decay_value</code> (usually referred as the  in its formulation) of 0.2. Please see <a href="decay_functions.html">the vignette on decay functions</a> for more information on the decay functions shipped with the package and how to use custom functions.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">negative_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gravity.html">gravity</a></span><span class="op">(</span></span>
@@ -292,7 +293,7 @@
 <li>2-Step Floating Catchment Area (<code>"2sfca"</code>) - the first metric in the FCA family, originally proposed by <span class="citation">Luo and Wang (2003)</span>.</li>
 <li>Balanced Floating Catchment Area (<code>"bfca"</code>) - takes competition affects into account while correcting for issues of inflation of demand and service levels. Originally proposed by <span class="citation">Paez, Higgins, and Vivona (2019)</span> and named in <span class="citation">Pereira et al. (2021)</span>.</li>
 </ul>
-<p>Please note that, since FCA measures consider competition effects, we have to specify which column in the land use dataset represents the population competing for opportunities with the <code>demand</code> parameter. The function also support diferent decay functions. In the example below, we calculate accessibility to jobs using the BFCA method, considering that the entire population of the city compete for these jobs and using a negative exponential decay function.</p>
+<p>Please note that, since FCA measures consider competition effects, we have to specify which column in the land use dataset represents the population competing for opportunities with the <code>demand</code> parameter. The function also supports different decay functions. In the example below, we calculate accessibility to jobs using the BFCA method, considering that the entire population of the city compete for these jobs and using a negative exponential decay function.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bfca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/floating_catchment_area.html">floating_catchment_area</a></span><span class="op">(</span></span>
 <span>  <span class="va">travel_matrix</span>,</span>
@@ -315,7 +316,7 @@
 <div class="section level3">
 <h3 id="visualize-results">Visualize results<a class="anchor" aria-label="anchor" href="#visualize-results"></a>
 </h3>
-<p>If you have the spatial data of your origins/destinations you can easily merge it with the accessibility to create spatial visualizations of the results. The example belows quickly shows how to create a simple map using <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a>.</p>
+<p>If you have the spatial data of your origins/destinations you can easily merge it with the accessibility to create spatial visualizations of the results. The example below quickly shows how to create a simple map using <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a>.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/grid_bho.rds"</span>, package <span class="op">=</span> <span class="st">"accessibility"</span><span class="op">)</span></span>
 <span><span class="va">grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="va">grid</span><span class="op">)</span></span>
@@ -345,6 +346,9 @@ Paez, Antonio, Christopher D. Higgins, and Salvatore F. Vivona. 2019. <span>“D
 </div>
 <div id="ref-pereira2021geographic" class="csl-entry">
 Pereira, Rafael H. M., Carlos Kauê Vieira Braga, Luciana Mendes Servo, Bernardo Serra, Pedro Amaral, Nelson Gouveia, and Antonio Paez. 2021. <span>“Geographic Access to <span>COVID-19</span> Healthcare in <span>Brazil</span> Using a Balanced Float Catchment Area Approach.”</span> <em>Social Science &amp; Medicine</em> 273 (March): 113773. <a href="https://doi.org/10.1016/j.socscimed.2021.113773" class="external-link">https://doi.org/10.1016/j.socscimed.2021.113773</a>.
+</div>
+<div id="ref-tomasiello2022interval" class="csl-entry">
+Tomasiello, Diego Bogado, Daniel Herszenhut Meirelles Santos, João Lucas Albuquerque Oliveira, Carlos Kaue Vieira Braga, and Rafael H. M. Pereira. 2022. <span>“A Time Interval Metric for Cumulative Opportunity Accessibility.”</span> <em>SocArXiv</em>, July. <a href="https://doi.org/10.31235/osf.io/ux5ah" class="external-link">https://doi.org/10.31235/osf.io/ux5ah</a>.
 </div>
 </div>
 </div>
