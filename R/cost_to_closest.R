@@ -11,7 +11,7 @@
 #'   that should be considered. Defaults to 1.
 #' @template group_by
 #' @template active
-#' @param fill_missing_ids A `logical`. Calculating minimum trave cost to
+#' @param fill_missing_ids A `logical`. Calculating minimum travel cost to
 #'   closest N number of opportunities may result in missing ids in the output
 #'   if they cannot reach the specified amount of opportunities across all
 #'   destinations they can reach. For example, estimating the minimum travel

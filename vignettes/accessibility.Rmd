@@ -20,10 +20,10 @@ functions to calculate multiple transport accessibility measures. Given a
 pre-computed travel cost matrix and a land use dataset, the package allows one
 to calculate active and passive accessibility levels using multiple
 accessibility metrics, such as cumulative opportunities (using either a travel
-cost cutoff or an travel cost interval), minimum travel cost to closest N
+cost cutoff or a travel cost interval), minimum travel cost to closest N
 number of activities, gravitational measures and different floating catchment
 area methods. This vignette briefly overviews the package with a few
-reproducible example.
+reproducible examples.
 
 # Installation
 
@@ -46,9 +46,9 @@ remotes::install_github("ipeaGIT/accessibility")
 As of the time of writing this vignette, the **accessibility** package includes
 five different functions to calculate accessibility:
 
-1. `cost_to_closest()` - calculates the mininimum travel cost to the closest
+1. `cost_to_closest()` - calculates the minimum travel cost to the closest
    *n* number of opportunities.
-2. `cumulative_cutoff()` - calculates the frenquently used threshold-based
+2. `cumulative_cutoff()` - calculates the frequently used threshold-based
    cumulative opportunities measure.
 3. `cumulative_interval()` - calculates accessibility as the median/mean (or
    any other summary measure, really) number of opportunities that can be
@@ -63,10 +63,10 @@ You may have noticed that we've mentioned a few times that the functions
 calculate accessibility using travel *cost*, and not travel *time*. That's
 because we're treating *costs* here in its generic sense: anything that
 increases the impedance from an origin to a destination, such as travel time,
-monetary costs, risk perception, etc., can be considered a generic *cost*.
+monetary costs, distances, risk perception, etc., can be considered a generic *cost*.
 
 The `gravity()` and `floating_catchment_area()` functions can use
-different decay functions when estimating accessibility levels. This decay
+different decay functions when estimating accessibility levels. These decay
 functions effectively weigh the number of opportunities in a destination by a
 factor that depends on the travel cost between the origin and the destination.
 For convenience, the package currently includes the following decay functions:
@@ -125,7 +125,7 @@ head(travel_matrix)
 ```
 
 The land use data must also be structured in a `data.frame` and must contain an
-`id` column, which refer to the ids listed in the travel matrix, and the number
+`id` column, referring to the ids listed in the travel matrix, and the number
 of opportunities/facilities/services in each spatial unit. The sample dataset
 we'll be using looks like this:
 
@@ -212,7 +212,8 @@ cum_interval <- cumulative_interval(
   land_use_data = land_use_data,
   opportunity = "jobs",
   travel_cost = "travel_time",
-  interval = c(40, 60)
+  interval = c(40, 60),
+  summary_function = base::mean
 )
 head(cum_interval)
 ```
@@ -222,7 +223,7 @@ head(cum_interval)
 `gravity()` calculates gravity-based measures - i.e. measures in which the
 weight of opportunities is gradually discounted as the travel cost increases.
 Of course, several different decay functions can be used to so, each one of
-them with a range of possible different parameters. In order to accomodate such
+them with a range of possible different parameters. In order to accommodate such
 generalization, the function takes the decay function to be used as a
 parameter.
 
@@ -260,7 +261,7 @@ Originally proposed by @paez2019demand and named in @pereira2021geographic.
 Please note that, since FCA measures consider competition effects, we have to
 specify which column in the land use dataset represents the population
 competing for opportunities with the `demand` parameter. The function
-also support diferent decay functions. In the example below, we calculate
+also supports different decay functions. In the example below, we calculate
 accessibility to jobs using the BFCA method, considering that the entire
 population of the city compete for these jobs and using a negative exponential
 decay function.
@@ -281,7 +282,7 @@ head(bfca)
 ## Visualize results
 
 If you have the spatial data of your origins/destinations you can easily merge it with the accessibility to create spatial visualizations of the results.
-The example belows quickly shows how to create a simple map using `{ggplot2}`.
+The example below quickly shows how to create a simple map using `{ggplot2}`.
 
 ```{r, eval = requireNamespace(c("sf", "ggplot2"), quietly = TRUE), out.width = "80%", fig.width = 6, fig.height = 6}
 grid <- system.file("extdata/grid_bho.rds", package = "accessibility")

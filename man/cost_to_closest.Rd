@@ -47,7 +47,7 @@ accessibility estimates grouped by origin and by departure time.}
 of opportunities that can be reached from a given origin, the default) or
 passive accessibility (by how many people each destination can be reached).}
 
-\item{fill_missing_ids}{A \code{logical}. Calculating minimum trave cost to
+\item{fill_missing_ids}{A \code{logical}. Calculating minimum travel cost to
 closest N number of opportunities may result in missing ids in the output
 if they cannot reach the specified amount of opportunities across all
 destinations they can reach. For example, estimating the minimum travel
