@@ -63,7 +63,8 @@ You may have noticed that we've mentioned a few times that the functions
 calculate accessibility using travel *cost*, and not travel *time*. That's
 because we're treating *costs* here in its generic sense: anything that
 increases the impedance from an origin to a destination, such as travel time,
-monetary costs, distances, risk perception, etc., can be considered a generic *cost*.
+monetary costs, distances, risk perception, etc., can be considered a generic
+*cost*.
 
 The `gravity()` and `floating_catchment_area()` functions can use
 different decay functions when estimating accessibility levels. These decay
@@ -198,13 +199,13 @@ to calculate both active and passive accessibility.
 ## Interval-based cumulative opportunities
 
 `cumulative_time_interval()` calculates the interval-based cumulative
-opportunities measure. This measure, developed by @tomasiello2022interval, mitigates the impacts of arbitrary choices of cost
-cutoffs, one of the main disadvantages of the traditional threshold-based
-cumulative opportunities measure. Given a cost interval, it calculates several
-accessibility estimates within the interval and summarizes it using a
-user-specified function. In the example below, we calculate the average number
-of accessible jobs considering multiple minute-by-minute time thresholds
-between 40 and 60 minutes.
+opportunities measure. This measure, developed by @tomasiello2022interval,
+mitigates the impacts of arbitrary choices of cost cutoffs, one of the main
+disadvantages of the traditional threshold-based cumulative opportunities
+measure. Given a cost interval, it calculates several accessibility estimates
+within the interval and summarizes it using a user-specified function. In the
+example below, we calculate the average number of accessible jobs considering
+multiple minute-by-minute time thresholds between 40 and 60 minutes.
 
 ```{r, message = FALSE}
 cum_interval <- cumulative_interval(
@@ -281,8 +282,9 @@ head(bfca)
 
 ## Visualize results
 
-If you have the spatial data of your origins/destinations you can easily merge it with the accessibility to create spatial visualizations of the results.
-The example below quickly shows how to create a simple map using `{ggplot2}`.
+If you have the spatial data of your origins/destinations you can easily merge
+it with the accessibility to create spatial visualizations of the results. The
+example below quickly shows how to create a simple map using `{ggplot2}`.
 
 ```{r, eval = requireNamespace(c("sf", "ggplot2"), quietly = TRUE), out.width = "80%", fig.width = 6, fig.height = 6}
 grid <- system.file("extdata/grid_bho.rds", package = "accessibility")

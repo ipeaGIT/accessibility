@@ -21,7 +21,8 @@ continuously discount the weight of opportunities as travel costs become
 larger. For convenience, the package ships with some of the most frequently
 used functions in the accessibility literature, which are discussed below.
 Additionally, users can pass custom functions to convert travel costs into
-weights to be applied the opportunities, which is discussed further down in this the vignette.
+weights to be applied the opportunities, which is discussed further down in
+this the vignette.
 
 # Currently available decay functions
 
@@ -235,6 +236,6 @@ calculates travel costs exactly as we want.
 
 When we create our own custom decay function, we don't have to think about
 general cases, just the cases that matter for us. Creating a simple function
-that converts one vector into another, therefore, suffices our for needs. In both
+that converts one vector into another, therefore, suffices our needs. In both
 examples above, therefore, we're passing a function to `decay_function` - one
 we created ourselves and another created by `decay_power()`.

@@ -7,7 +7,7 @@
   "codeRepository": "https://github.com/ipeaGIT/accessibility",
   "issueTracker": "https://github.com/ipeaGIT/accessibility/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "1.0.0",
+  "version": "1.0.0.9000",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -187,7 +187,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "1893.881KB",
+  "fileSize": "1893.982KB",
   "releaseNotes": "https://github.com/ipeaGIT/accessibility/blob/master/NEWS.md",
   "readme": "https://github.com/ipeaGIT/accessibility/blob/main/README.md",
   "contIntegration": ["https://github.com/ipeaGIT/accessibility/actions", "https://app.codecov.io/gh/ipeaGIT/accessibility?branch=main"],
