@@ -1,6 +1,4 @@
-# accessibility (development version)
-
-## New features
+# accessibility 1.0.1
 
 ## Bug fixes
 
@@ -8,8 +6,6 @@
   filling missing ids (which should be filled with `Inf`, since they cannot
   reach any opportunities). This was also responsible for the warning reported
   in #27, which was also fixed.
-
-## Notes
 
 # accessibility 1.0.0
 
