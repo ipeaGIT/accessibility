@@ -115,6 +115,8 @@ cost_to_closest <- function(travel_matrix,
     possible_combinations <- do.call(data.table::CJ, unique_values)
 
     if (nrow(access) < nrow(possible_combinations)) {
+      access[, min_cost := as.numeric(min_cost)]
+
       access <- do_fill_missing_ids(
         access,
         possible_combinations,
