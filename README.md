@@ -147,6 +147,7 @@ Please read the vignettes for more details on the usage:
     measures in Python
   - [access](https://access.readthedocs.io/en/latest/): Spatial Access
     for PySAL
+    - [aceso](https://github.com/tetraptych/aceso): a lightweight Python package for measuring spatial accessibility
 
 ## Acknowledgement <a href="https://www.ipea.gov.br"><img src="man/figures/ipea_logo.png" alt="IPEA" align="right" width="300"/></a>
 
