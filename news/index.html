@@ -62,15 +62,22 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="development version" id="accessibility-development-version">accessibility (development version)<a class="anchor" aria-label="anchor" href="#accessibility-development-version"></a></h2>
-<div class="section level3"><h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3></div>
-<div class="section level3"><h3 id="bug-fixes-development-version">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3></div>
-<div class="section level3"><h3 id="notes-development-version">Notes<a class="anchor" aria-label="anchor" href="#notes-development-version"></a></h3></div>
+<div class="section level3">
+<h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+</div>
+<div class="section level3">
+<h3 id="bug-fixes-development-version">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
+</div>
+<div class="section level3">
+<h3 id="notes-development-version">Notes<a class="anchor" aria-label="anchor" href="#notes-development-version"></a></h3>
+</div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.1" id="accessibility-101">accessibility 1.0.1<small>2022-10-06</small><a class="anchor" aria-label="anchor" href="#accessibility-101"></a></h2>
 <div class="section level3">
 <h3 id="bug-fixes-1-0-1">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-1"></a></h3>
-<ul><li>Fixed a bug in which <code><a href="../reference/cost_to_closest.html">cost_to_closest()</a></code> would return <code>NA</code> values when filling missing ids (which should be filled with <code>Inf</code>, since they cannot reach any opportunities). This was also responsible for the warning reported in <a href="https://github.com/ipeaGIT/accessibility/issues/27" class="external-link">#27</a>, which was also fixed.</li></ul></div>
+<ul><li>Fixed a bug in which <code><a href="../reference/cost_to_closest.html">cost_to_closest()</a></code> would return <code>NA</code> values when filling missing ids (which should be filled with <code>Inf</code>, since they cannot reach any opportunities). This was also responsible for the warning reported in <a href="https://github.com/ipeaGIT/accessibility/issues/27" class="external-link">#27</a>, which was also fixed.</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.0" id="accessibility-100">accessibility 1.0.0<small>2022-07-22</small><a class="anchor" aria-label="anchor" href="#accessibility-100"></a></h2>
@@ -78,7 +85,8 @@
 <div class="section level3">
 <h3 id="breaking-changes-1-0-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-1-0-0"></a></h3>
 <ul><li>Accessibility functions previously worked with a single input dataset: <code>data</code>. Now they require two input datasets: <code>travel_matrix</code> and <code>land_use_data</code>.</li>
-<li>Function names were changed:<ul><li>
+<li>Function names were changed:
+<ul><li>
 <code>time_to_closest()</code> -&gt; <code><a href="../reference/cost_to_closest.html">cost_to_closest()</a></code>
 </li>
 <li>
@@ -91,7 +99,8 @@
 <code>gravity_access()</code> -&gt; <code><a href="../reference/gravity.html">gravity()</a></code>
 </li>
 </ul></li>
-<li>Parameter names were changed:<ul><li>
+<li>Parameter names were changed:
+<ul><li>
 <code>opportunity_col</code> -&gt; <code>opportunity</code>
 </li>
 <li>
@@ -109,7 +118,8 @@
 <li>In <code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code>: <code>fca_metric</code> -&gt; <code>method</code>
 </li>
 </ul></li>
-<li>Parameter required values were changed:<ul><li>
+<li>Parameter required values were changed:
+<ul><li>
 <code>active</code> now takes a <code>logical</code>, instead of a string (which <code>by_col</code> previously took).</li>
 <li>In <code><a href="../reference/cumulative_interval.html">cumulative_interval()</a></code>: <code>summary_function</code> now takes a <code>function</code>, instead of a string (which <code>stat</code> previously took).</li>
 </ul></li>
@@ -124,7 +134,8 @@
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.0" id="accessibility-010">accessibility 0.1.0<small>2022-06-30</small><a class="anchor" aria-label="anchor" href="#accessibility-010"></a></h2>
-<ul><li>Initial CRAN release.</li></ul></div>
+<ul><li>Initial CRAN release.</li>
+</ul></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -139,7 +150,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

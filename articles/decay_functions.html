@@ -98,14 +98,22 @@
 
     
     
-<p>Some functions of the <strong>accessibility</strong> package, such as <code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code> and <code><a href="../reference/gravity.html">gravity()</a></code>, use decay functions to continuously discount the weight of opportunities as travel costs become larger. For convenience, the package ships with some of the most frequently used functions in the accessibility literature, which are discussed below. Additionally, users can pass custom functions to convert travel costs into weights to be applied the opportunities, which is discussed further down in this the vignette.</p>
+<p>Some functions of the <strong>accessibility</strong> package, such as
+<code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code> and <code><a href="../reference/gravity.html">gravity()</a></code>, use
+decay functions to continuously discount the weight of opportunities as
+travel costs become larger. For convenience, the package ships with some
+of the most frequently used functions in the accessibility literature,
+which are discussed below. Additionally, users can pass custom functions
+to convert travel costs into weights to be applied the opportunities,
+which is discussed further down in this the vignette.</p>
 <div class="section level2">
 <h2 id="currently-available-decay-functions">Currently available decay functions<a class="anchor" aria-label="anchor" href="#currently-available-decay-functions"></a>
 </h2>
 <div class="section level3">
 <h3 id="binary">Binary<a class="anchor" aria-label="anchor" href="#binary"></a>
 </h3>
-<p>Also known as the step decay function, it’s most commonly used in cumulative opportunities measures.</p>
+<p>Also known as the step decay function, it’s most commonly used in
+cumulative opportunities measures.</p>
 <p><span class="math display">\[
 \begin{aligned}
   f(t_{ij})= \left\{
@@ -116,12 +124,14 @@
     \right.\\
 \end{aligned}
 \]</span></p>
-<p>Where <span class="math inline">\(t_{ij}\)</span> is the travel cost between origin <em>i</em> and destination <em>j</em>, and <span class="math inline">\(T\)</span> is the travel cost cutoff.</p>
+<p>Where <span class="math inline">\(t_{ij}\)</span> is the travel cost
+between origin <em>i</em> and destination <em>j</em>, and <span class="math inline">\(T\)</span> is the travel cost cutoff.</p>
 </div>
 <div class="section level3">
 <h3 id="linear">Linear<a class="anchor" aria-label="anchor" href="#linear"></a>
 </h3>
-<p>Weights decay linearly until the travel cost cutoff is reached. From this point onward weights assume the value of 0.</p>
+<p>Weights decay linearly until the travel cost cutoff is reached. From
+this point onward weights assume the value of 0.</p>
 <p><span class="math display">\[
 \begin{aligned}
   f(t_{ij})= \left\{
@@ -132,7 +142,8 @@
     \right.\\
 \end{aligned}
 \]</span></p>
-<p>Where <span class="math inline">\(t_{ij}\)</span> is the travel cost between origin <em>i</em> and destination <em>j</em>, and <span class="math inline">\(T\)</span> is the travel cost cutoff.</p>
+<p>Where <span class="math inline">\(t_{ij}\)</span> is the travel cost
+between origin <em>i</em> and destination <em>j</em>, and <span class="math inline">\(T\)</span> is the travel cost cutoff.</p>
 </div>
 <div class="section level3">
 <h3 id="negative-exponential">Negative exponential<a class="anchor" aria-label="anchor" href="#negative-exponential"></a>
@@ -142,7 +153,9 @@
   f(t_{ij})= e^{(-\beta t_{ij})}
 \end{aligned}
 \]</span></p>
-<p>Where <span class="math inline">\(t_{ij}\)</span> is the travel cost between origin <em>i</em> and destination <em>j</em>, and <span class="math inline">\(\beta\)</span> is the parameter that tells the speed of decay.</p>
+<p>Where <span class="math inline">\(t_{ij}\)</span> is the travel cost
+between origin <em>i</em> and destination <em>j</em>, and <span class="math inline">\(\beta\)</span> is the parameter that tells the
+speed of decay.</p>
 </div>
 <div class="section level3">
 <h3 id="inverse-power">Inverse power<a class="anchor" aria-label="anchor" href="#inverse-power"></a>
@@ -157,12 +170,16 @@
     \right.\\
 \end{aligned}
 \]</span></p>
-<p>Where <span class="math inline">\(t_{ij}\)</span> is the travel cost between origin <em>i</em> and destination <em>j</em>, and <span class="math inline">\(\beta\)</span> is the parameter that tells the speed of decay.</p>
+<p>Where <span class="math inline">\(t_{ij}\)</span> is the travel cost
+between origin <em>i</em> and destination <em>j</em>, and <span class="math inline">\(\beta\)</span> is the parameter that tells the
+speed of decay.</p>
 </div>
 <div class="section level3">
 <h3 id="stepped">Stepped<a class="anchor" aria-label="anchor" href="#stepped"></a>
 </h3>
-<p>Similar to the binary function, but can take an arbitrary number of steps. The current implementation assumes that values changes at each step, instead of right after it.</p>
+<p>Similar to the binary function, but can take an arbitrary number of
+steps. The current implementation assumes that values changes at each
+step, instead of right after it.</p>
 <p><span class="math display">\[
 \begin{aligned}
   f(t_{ij})= \left\{
@@ -177,7 +194,11 @@
     \right.\\
 \end{aligned}
 \]</span></p>
-<p>Where <span class="math inline">\(t_{ij}\)</span> is the travel cost between origin <em>i</em> and destination <em>j</em>, <span class="math inline">\(n\)</span> is the total number of steps, <span class="math inline">\(S_{k}\)</span> is the travel cost cutoff that delimits the <span class="math inline">\(k^{th}\)</span> step, and <span class="math inline">\(v_{k}\)</span> is the value that the decay function assumes at the <span class="math inline">\(k^{th}\)</span> step.</p>
+<p>Where <span class="math inline">\(t_{ij}\)</span> is the travel cost
+between origin <em>i</em> and destination <em>j</em>, <span class="math inline">\(n\)</span> is the total number of steps, <span class="math inline">\(S_{k}\)</span> is the travel cost cutoff that
+delimits the <span class="math inline">\(k^{th}\)</span> step, and <span class="math inline">\(v_{k}\)</span> is the value that the decay
+function assumes at the <span class="math inline">\(k^{th}\)</span>
+step.</p>
 <div class="section level4">
 <h4 id="quick-demonstration">Quick demonstration<a class="anchor" aria-label="anchor" href="#quick-demonstration"></a>
 </h4>
@@ -225,19 +246,29 @@
 <div class="section level2">
 <h2 id="using-a-custom-decay-function">Using a custom decay function<a class="anchor" aria-label="anchor" href="#using-a-custom-decay-function"></a>
 </h2>
-<p>Any function that takes a <code>numeric</code> vector of travel costs and returns a <code>numeric</code> vector, with the same length of input, of weights to be applied to the opportunities can be considered a decay function.</p>
-<p>Let’s say that we wanted to use a very simple decay function that defines the weights as the multiplicative inverse of travel cost - i.e. <span class="math inline">\(travel\_cost^{-1}\)</span>. We just have to take care of the case when travel cost is less than 1, in which case the function would return values greater than 1 and which we will replace with 1, but otherwise the implementation is pretty simple:</p>
+<p>Any function that takes a <code>numeric</code> vector of travel costs
+and returns a <code>numeric</code> vector, with the same length of
+input, of weights to be applied to the opportunities can be considered a
+decay function.</p>
+<p>Let’s say that we wanted to use a very simple decay function that
+defines the weights as the multiplicative inverse of travel cost - i.e.
+<span class="math inline">\(travel\_cost^{-1}\)</span>. We just have to
+take care of the case when travel cost is less than 1, in which case the
+function would return values greater than 1 and which we will replace
+with 1, but otherwise the implementation is pretty simple:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_decay</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">travel_cost</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">weights</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">/</span> <span class="va">travel_cost</span></span>
 <span>  <span class="va">weights</span><span class="op">[</span><span class="va">weights</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
 <span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">weights</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<p>Given a <code>numeric</code> vector of travel costs, the function returns a <code>numeric</code> vector of weights:</p>
+<p>Given a <code>numeric</code> vector of travel costs, the function
+returns a <code>numeric</code> vector of weights:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">my_decay</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1.0 1.0 1.0 0.5 0.2 0.1</span></span></code></pre></div>
-<p>Using this function to calculate accessibility is as easy as any of the built-in decay functions:</p>
+<p>Using this function to calculate accessibility is as easy as any of
+the built-in decay functions:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"accessibility"</span><span class="op">)</span></span>
 <span></span>
@@ -259,7 +290,8 @@
 <span><span class="co">#&gt; 4: 89a88cdb5cfffff 12689.44</span></span>
 <span><span class="co">#&gt; 5: 89a88cd909bffff 11361.66</span></span>
 <span><span class="co">#&gt; 6: 89a88cd90b7ffff 12563.65</span></span></code></pre></div>
-<p>In fact, we could achieve the exact same result as we did with our custom function using <code>decay_power(1)</code>:</p>
+<p>In fact, we could achieve the exact same result as we did with our
+custom function using <code>decay_power(1)</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">power_gravity</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gravity.html">gravity</a></span><span class="op">(</span></span>
 <span>  <span class="va">travel_matrix</span>,</span>
@@ -276,7 +308,13 @@
 <span><span class="co">#&gt; 4: 89a88cdb5cfffff 12689.44</span></span>
 <span><span class="co">#&gt; 5: 89a88cd909bffff 11361.66</span></span>
 <span><span class="co">#&gt; 6: 89a88cd90b7ffff 12563.65</span></span></code></pre></div>
-<p>A small difference is that in the first example we passed <code>my_decay</code> (the function <em>object</em>) to the <code>decay_function</code> parameter, whereas in the second we passed the function <em>call</em> <code>decay_power(1)</code>. That’s because <code><a href="../reference/decay_power.html">decay_power()</a></code> (and the other built-in decay functions as well) is actually a function “factory”: it’s a function that returns a function, as we can see below:</p>
+<p>A small difference is that in the first example we passed
+<code>my_decay</code> (the function <em>object</em>) to the
+<code>decay_function</code> parameter, whereas in the second we passed
+the function <em>call</em> <code>decay_power(1)</code>. That’s because
+<code><a href="../reference/decay_power.html">decay_power()</a></code> (and the other built-in decay functions as
+well) is actually a function “factory”: it’s a function that returns a
+function, as we can see below:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/decay_power.html">decay_power</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; function (travel_cost) </span></span>
@@ -285,10 +323,18 @@
 <span><span class="co">#&gt;     weights[weights &gt; 1] &lt;- 1</span></span>
 <span><span class="co">#&gt;     return(weights)</span></span>
 <span><span class="co">#&gt; }</span></span>
-<span><span class="co">#&gt; &lt;bytecode: 0x557ad5f44de0&gt;</span></span>
-<span><span class="co">#&gt; &lt;environment: 0x557ad8e2d258&gt;</span></span></code></pre></div>
-<p>This is because the built-in functions aim to be as generally used as possible, so we have to able to use them with different parameters, cutoffs, etc. In practice, every time we call these functions we create another function that calculates travel costs exactly as we want.</p>
-<p>When we create our own custom decay function, we don’t have to think about general cases, just the cases that matter for us. Creating a simple function that converts one vector into another, therefore, suffices our needs. In both examples above, therefore, we’re passing a function to <code>decay_function</code> - one we created ourselves and another created by <code><a href="../reference/decay_power.html">decay_power()</a></code>.</p>
+<span><span class="co">#&gt; &lt;bytecode: 0x5596c7af7238&gt;</span></span>
+<span><span class="co">#&gt; &lt;environment: 0x5596c7969390&gt;</span></span></code></pre></div>
+<p>This is because the built-in functions aim to be as generally used as
+possible, so we have to able to use them with different parameters,
+cutoffs, etc. In practice, every time we call these functions we create
+another function that calculates travel costs exactly as we want.</p>
+<p>When we create our own custom decay function, we don’t have to think
+about general cases, just the cases that matter for us. Creating a
+simple function that converts one vector into another, therefore,
+suffices our needs. In both examples above, therefore, we’re passing a
+function to <code>decay_function</code> - one we created ourselves and
+another created by <code><a href="../reference/decay_power.html">decay_power()</a></code>.</p>
 </div>
   </div>
 
@@ -309,7 +355,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
