@@ -71,7 +71,7 @@ Calculates the average or median number of opportunities that can be reached
 considering multiple maximum travel cost thresholds within a given travel
 cost interval specified by the user. The time interval cumulative
 accessibility measures was originally proposed by
-\insertCite{tomasiello2022interval;textual}{accessibility}.
+\insertCite{tomasiello2022time;textual}{accessibility}.
 
 This function is generic over any kind of numeric travel cost,
 such as distance, time and money.
