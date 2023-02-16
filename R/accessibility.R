@@ -49,7 +49,10 @@ utils::globalVariables(
     "balanced_opp_weight_j",
     "balanced_pop_served",
     "balanced_ppr",
-    "..opportunity"
+    "..opportunity",
+    "demand_bal_fac",
+    "impedance_bal_fac",
+    "combined_bal_fac"
   )
 )
 

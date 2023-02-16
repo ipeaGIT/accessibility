@@ -2,6 +2,8 @@
 
 ## New features
 
+- New function `spatial_availability()`.
+
 ## Bug fixes
 
 ## Notes
