@@ -36,7 +36,7 @@ with the travel cost between origins and destinations. Defaults to
 
 \item{demand}{A string. The name of the column in \code{land_use_data} with the
 number of people in each origin that will be considered potential
-competitors. Defaults to \code{"population"}.}
+competitors.}
 
 \item{method}{A string. Which floating catchment area measure to use.
 Current available options are \code{"2sfca"} and \code{"bfca"}. More info in the

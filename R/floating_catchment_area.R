@@ -11,7 +11,7 @@
 #' @template travel_cost
 #' @param demand A string. The name of the column in `land_use_data` with the
 #'   number of people in each origin that will be considered potential
-#'   competitors. Defaults to `"population"`.
+#'   competitors.
 #' @param method A string. Which floating catchment area measure to use.
 #'   Current available options are `"2sfca"` and `"bfca"`. More info in the
 #'   details.
