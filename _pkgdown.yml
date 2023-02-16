@@ -6,6 +6,7 @@ reference:
     - cumulative_interval
     - floating_catchment_area
     - gravity
+    - spatial_availability
   - title: "Decay functions"
   - contents:
     - starts_with("decay_")
