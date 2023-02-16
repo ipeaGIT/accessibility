@@ -320,14 +320,14 @@ calculate both active and passive accessibility.</p>
 <h3 id="interval-based-cumulative-opportunities">Interval-based cumulative opportunities<a class="anchor" aria-label="anchor" href="#interval-based-cumulative-opportunities"></a>
 </h3>
 <p><code>cumulative_time_interval()</code> calculates the interval-based
-cumulative opportunities measure. This measure, developed by <span class="citation">Tomasiello et al. (2022)</span>, mitigates the impacts
-of arbitrary choices of cost cutoffs, one of the main disadvantages of
-the traditional threshold-based cumulative opportunities measure. Given
-a cost interval, it calculates several accessibility estimates within
-the interval and summarizes it using a user-specified function. In the
-example below, we calculate the average number of accessible jobs
-considering multiple minute-by-minute time thresholds between 40 and 60
-minutes.</p>
+cumulative opportunities measure. This measure, developed by <span class="citation">(<strong>tomasiello2022interval?</strong>)</span>,
+mitigates the impacts of arbitrary choices of cost cutoffs, one of the
+main disadvantages of the traditional threshold-based cumulative
+opportunities measure. Given a cost interval, it calculates several
+accessibility estimates within the interval and summarizes it using a
+user-specified function. In the example below, we calculate the average
+number of accessible jobs considering multiple minute-by-minute time
+thresholds between 40 and 60 minutes.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cum_interval</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cumulative_interval.html">cumulative_interval</a></span><span class="op">(</span></span>
 <span>  travel_matrix <span class="op">=</span> <span class="va">travel_matrix</span>,</span>
@@ -469,12 +469,6 @@ Bernardo Serra, Pedro Amaral, Nelson Gouveia, and Antonio Paez. 2021.
 <span>Brazil</span> Using a Balanced Float Catchment Area
 Approach.”</span> <em>Social Science &amp; Medicine</em> 273 (March):
 113773. <a href="https://doi.org/10.1016/j.socscimed.2021.113773" class="external-link">https://doi.org/10.1016/j.socscimed.2021.113773</a>.
-</div>
-<div id="ref-tomasiello2022interval" class="csl-entry">
-Tomasiello, Diego Bogado, Daniel Herszenhut Meirelles Santos, João Lucas
-Albuquerque Oliveira, Carlos Kaue Vieira Braga, and Rafael H. M.
-Pereira. 2022. <span>“A Time Interval Metric for Cumulative Opportunity
-Accessibility.”</span> <em>SocArXiv</em>, July. <a href="https://doi.org/10.31235/osf.io/ux5ah" class="external-link">https://doi.org/10.31235/osf.io/ux5ah</a>.
 </div>
 </div>
 </div>
