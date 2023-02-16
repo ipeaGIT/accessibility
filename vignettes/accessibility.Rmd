@@ -199,7 +199,7 @@ to calculate both active and passive accessibility.
 ## Interval-based cumulative opportunities
 
 `cumulative_time_interval()` calculates the interval-based cumulative
-opportunities measure. This measure, developed by @tomasiello2022interval,
+opportunities measure. This measure, developed by @tomasiello2022time,
 mitigates the impacts of arbitrary choices of cost cutoffs, one of the main
 disadvantages of the traditional threshold-based cumulative opportunities
 measure. Given a cost interval, it calculates several accessibility estimates
@@ -280,9 +280,32 @@ bfca <- floating_catchment_area(
 head(bfca)
 ```
 
+## Spatial availability
+
+`spatial_availability()` also calculates accessibility considering competition
+effects, though using the spatial availability measure proposed by
+@soukhov2023introducing. The results from this metric are proportional both to
+the demand in each origin and the travel cost it takes to reach the
+destinations. As with the FCA function, we have to specify the column in the
+land use dataset that contains the population competing for opportunities and we
+can use different decay functions to calculate the impedance between
+origin-destination pairs.
+
+```{r}
+spatial_avlblt <- spatial_availability(
+  travel_matrix,
+  land_use_data,
+  opportunity = "jobs",
+  travel_cost = "travel_time",
+  demand = "population",
+  decay_function = decay_exponential(decay_value = 0.1)
+)
+head(spatial_avlblt)
+```
+
 ## Visualize results
 
-If you have the spatial data of your origins/destinations you can easily merge
+If you have the spatial data of your origins/destinations, you can easily merge
 it with the accessibility to create spatial visualizations of the results. The
 example below quickly shows how to create a simple map using `{ggplot2}`.
 
