@@ -110,8 +110,10 @@ with the travel cost between origins and destinations. Defaults to
 
 
 <dt>n</dt>
-<dd><p>A <code>numeric</code>. A number indicating the minimum number of opportunities
-that should be considered. Defaults to 1.</p></dd>
+<dd><p>A <code>numeric</code> vector. The minimum number of opportunities that should
+be considered. Defaults to 1. If more than one value is provided, the
+output includes an extra column specifying the number of opportunities that
+the minimum travel cost refers to.</p></dd>
 
 
 <dt>group_by</dt>
@@ -175,18 +177,18 @@ travel matrix.</p>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">cost_to_closest</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">travel_matrix</span>,</span></span>
 <span class="r-in"><span>  <span class="va">land_use_data</span>,</span></span>
-<span class="r-in"><span>  n <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>  n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  opportunity <span class="op">=</span> <span class="st">"schools"</span>,</span></span>
 <span class="r-in"><span>  travel_cost <span class="op">=</span> <span class="st">"travel_time"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 id travel_time</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a881a5a2bffff          32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a881a5a2fffff          25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a881a5a67ffff          31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a881a5a6bffff          33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a881a5a6fffff          35</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a881a5b03ffff          17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 id n travel_time</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a881a5a2bffff 1          29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a881a5a2bffff 2          32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a881a5a2fffff 1          24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a881a5a2fffff 2          25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a881a5a67ffff 1          28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a881a5a67ffff 2          31</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
