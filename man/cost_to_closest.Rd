@@ -33,8 +33,10 @@ calculating accessibility levels.}
 with the travel cost between origins and destinations. Defaults to
 \code{"travel_time"}.}
 
-\item{n}{A \code{numeric}. A number indicating the minimum number of opportunities
-that should be considered. Defaults to 1.}
+\item{n}{A \code{numeric} vector. The minimum number of opportunities that should
+be considered. Defaults to 1. If more than one value is provided, the
+output includes an extra column specifying the number of opportunities that
+the minimum travel cost refers to.}
 
 \item{group_by}{A \code{character} vector. When not \code{character(0)} (the default),
 indicates the \code{travel_matrix} columns that should be used to group the
@@ -85,7 +87,7 @@ head(df)
 df <- cost_to_closest(
   travel_matrix,
   land_use_data,
-  n = 2,
+  n = c(1, 2),
   opportunity = "schools",
   travel_cost = "travel_time"
 )

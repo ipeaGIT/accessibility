@@ -7,8 +7,10 @@
 #' @template land_use_data
 #' @template opportunity
 #' @template travel_cost
-#' @param n A `numeric`. A number indicating the minimum number of opportunities
-#'   that should be considered. Defaults to 1.
+#' @param n A `numeric` vector. The minimum number of opportunities that should
+#'   be considered. Defaults to 1. If more than one value is provided, the
+#'   output includes an extra column specifying the number of opportunities that
+#'   the minimum travel cost refers to.
 #' @template group_by
 #' @template active
 #' @param fill_missing_ids A `logical`. Calculating minimum travel cost to
@@ -40,7 +42,7 @@
 #' df <- cost_to_closest(
 #'   travel_matrix,
 #'   land_use_data,
-#'   n = 2,
+#'   n = c(1, 2),
 #'   opportunity = "schools",
 #'   travel_cost = "travel_time"
 #' )
@@ -55,7 +57,14 @@ cost_to_closest <- function(travel_matrix,
                             group_by = character(0),
                             active = TRUE,
                             fill_missing_ids = TRUE) {
-  checkmate::assert_number(n, lower = 1, finite = TRUE)
+  checkmate::assert_numeric(
+    n,
+    lower = 1,
+    finite = TRUE,
+    any.missing = FALSE,
+    min.len = 1,
+    unique = TRUE
+  )
   checkmate::assert_string(opportunity)
   checkmate::assert_string(travel_cost)
   checkmate::assert_logical(active, len = 1, any.missing = FALSE)
@@ -81,14 +90,60 @@ cost_to_closest <- function(travel_matrix,
 
   group_id <- ifelse(active, "from_id", "to_id")
   groups <- c(group_id, group_by)
-  env <- environment()
-
   warn_extra_cols(travel_matrix, travel_cost, group_id, groups)
 
+  access <- lapply(
+    n,
+    function(.x) calculate_cost(data, groups, opportunity, travel_cost, .x)
+  )
+  names(access) <- n
+  access <- data.table::rbindlist(access, idcol = "n")
+  access[, n := as.numeric(n)]
+
+  if (fill_missing_ids) {
+    unique_values <- lapply(groups, function(x) unique(travel_matrix[[x]]))
+    unique_values <- append(unique_values, list(n))
+    names(unique_values) <- c(groups, "n")
+
+    possible_combinations <- do.call(data.table::CJ, unique_values)
+
+    if (nrow(access) < nrow(possible_combinations)) {
+      access[, min_cost := as.numeric(min_cost)]
+
+      access <- do_fill_missing_ids(
+        access,
+        possible_combinations,
+        groups = c(groups, "n"),
+        access_col = "min_cost",
+        fill_value = Inf
+      )
+    }
+  }
+
+  data.table::setnames(
+    access,
+    c(group_id, "min_cost"),
+    c("id", travel_cost)
+  )
+  data.table::setcolorder(
+    access,
+    c("id", setdiff(groups, group_id), "n", travel_cost)
+  )
+  if (length(n) == 1) access[, n := NULL]
+
+  if (exists("original_class")) class(access) <- original_class
+
+  return(access[])
+}
+
+
+calculate_cost <- function(data, groups, opportunity, travel_cost, .x) {
+  env <- environment()
   .opportunity_colname <- opportunity
   .cost_colname <- travel_cost
-  if (n == 1) {
-    access <- data[
+
+  if (.x == 1) {
+    cost <- data[
       get(.opportunity_colname) > 0,
       .(min_cost = suppressWarnings(min(get(.cost_colname)))),
       by = eval(groups, envir = env)
@@ -102,38 +157,12 @@ cost_to_closest <- function(travel_matrix,
       by = eval(groups, envir = env)
     ]
 
-    access <- opport_cumsum[
-      cum_opport >= n,
+    cost <- opport_cumsum[
+      cum_opport >= .x,
       .(min_cost = suppressWarnings(min(get(.cost_colname)))),
       by = eval(groups, envir = env)
     ]
   }
 
-  if (fill_missing_ids) {
-    unique_values <- lapply(groups, function(x) unique(travel_matrix[[x]]))
-    names(unique_values) <- groups
-    possible_combinations <- do.call(data.table::CJ, unique_values)
-
-    if (nrow(access) < nrow(possible_combinations)) {
-      access[, min_cost := as.numeric(min_cost)]
-
-      access <- do_fill_missing_ids(
-        access,
-        possible_combinations,
-        groups,
-        access_col = "min_cost",
-        fill_value = Inf
-      )
-    }
-  }
-
-  data.table::setnames(
-    access,
-    c(group_id, "min_cost"),
-    c("id", travel_cost)
-  )
-
-  if (exists("original_class")) class(access) <- original_class
-
-  return(access[])
+  return(cost)
 }
