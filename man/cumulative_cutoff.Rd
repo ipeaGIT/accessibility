@@ -33,7 +33,10 @@ calculating accessibility levels.}
 with the travel cost between origins and destinations. Defaults to
 \code{"travel_time"}.}
 
-\item{cutoff}{A \code{numeric}. A number indicating the travel cost cutoff.}
+\item{cutoff}{A \code{numeric} vector. The travel cost cutoffs to consider when
+calculating accessibility levels. If more than one value is provided, the
+output includes an extra column specifying the cutoff that the
+accessibility levels refer to.}
 
 \item{group_by}{A \code{character} vector. When not \code{character(0)} (the default),
 indicates the \code{travel_matrix} columns that should be used to group the
@@ -77,6 +80,15 @@ df <- cumulative_cutoff(
   travel_matrix = travel_matrix,
   land_use_data = land_use_data,
   cutoff = 30,
+  opportunity = "schools",
+  travel_cost = "travel_time"
+)
+head(df)
+
+df <- cumulative_cutoff(
+  travel_matrix = travel_matrix,
+  land_use_data = land_use_data,
+  cutoff = c(30, 60),
   opportunity = "schools",
   travel_cost = "travel_time"
 )

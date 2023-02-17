@@ -159,6 +159,8 @@ test_that("active and passive accessibility is correctly calculated", {
   ]
 
   result <- tester(smaller_travel_matrix)
+  data.table::setorderv(result, c("id", "mode", "jobs"))
+
   cum_result <- cumulative_cutoff(
     smaller_travel_matrix,
     land_use_data,
@@ -170,6 +172,8 @@ test_that("active and passive accessibility is correctly calculated", {
   expect_identical(result, cum_result)
 
   result <- tester(smaller_travel_matrix, active = FALSE)
+  data.table::setorderv(result, c("id", "mode", "jobs"))
+
   cum_result <- cumulative_cutoff(
     smaller_travel_matrix,
     land_use_data,

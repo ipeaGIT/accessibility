@@ -26,8 +26,10 @@ tester <- function(
 test_that("raises errors due to incorrect input", {
   expect_error(tester(cutoff = "banana"))
   expect_error(tester(cutoff = -3))
-  expect_error(tester(cutoff = c(1, 1)))
   expect_error(tester(cutoff = Inf))
+  expect_error(tester(cutoff = NA))
+  expect_error(tester(cutoff = numeric(0)))
+  expect_error(tester(cutoff = c(1, 1)))
 
   expect_error(tester(opportunity = 1))
   expect_error(tester(opportunity = c("schools", "jobs")))
@@ -147,11 +149,11 @@ test_that("input data sets remain unchanged", {
 
 test_that("active and passive accessibility is correctly calculated", {
   selected_ids <- c(
+    "89a88cd909bffff",
     "89a88cdb57bffff",
     "89a88cdb597ffff",
     "89a88cdb5b3ffff",
-    "89a88cdb5cfffff",
-    "89a88cd909bffff"
+    "89a88cdb5cfffff"
   )
   smaller_travel_matrix <- travel_matrix[
     from_id %in% selected_ids & to_id %in% selected_ids
@@ -159,9 +161,9 @@ test_that("active and passive accessibility is correctly calculated", {
 
   result <- tester(smaller_travel_matrix, group_by = "mode")
   expected_result <- data.table::data.table(
-    id = rep(selected_ids, 2),
-    mode = rep(c("transit", "transit2"), each = 5),
-    jobs = rep(as.integer(c(82, 408, 408, 109, 0)), 2)
+    id = rep(selected_ids, each = 2),
+    mode = rep(c("transit", "transit2"), 5),
+    jobs = rep(as.integer(c(0, 82, 408, 408, 109)), each = 2)
   )
   expect_identical(result, expected_result)
 
@@ -169,13 +171,12 @@ test_that("active and passive accessibility is correctly calculated", {
     smaller_travel_matrix,
     cutoff = 45,
     opportunity = "population",
-    group_by = "mode",
     active = FALSE
   )
   expected_result <- data.table::data.table(
-    id = rep(selected_ids, 2),
-    mode = rep(c("transit", "transit2"), each = 5),
-    population = rep(as.integer(c(4874, 4268, 2404, 4268, 29)), 2)
+    id = rep(selected_ids, each = 2),
+    mode = rep(c("transit", "transit2"), 5),
+    population = rep(as.integer(c(29, 4874, 4268, 2404, 4268)), each = 2)
   )
   expect_identical(result, expected_result)
 })

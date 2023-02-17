@@ -8,7 +8,10 @@
 #' @template land_use_data
 #' @template opportunity
 #' @template travel_cost
-#' @param cutoff A `numeric`. A number indicating the travel cost cutoff.
+#' @param cutoff A `numeric` vector. The travel cost cutoffs to consider when
+#'   calculating accessibility levels. If more than one value is provided, the
+#'   output includes an extra column specifying the cutoff that the
+#'   accessibility levels refer to.
 #' @template group_by
 #' @template active
 #' @param fill_missing_ids A `logical`. Calculating cumulative accessibility may
@@ -39,6 +42,15 @@
 #' )
 #' head(df)
 #'
+#' df <- cumulative_cutoff(
+#'   travel_matrix = travel_matrix,
+#'   land_use_data = land_use_data,
+#'   cutoff = c(30, 60),
+#'   opportunity = "schools",
+#'   travel_cost = "travel_time"
+#' )
+#' head(df)
+#'
 #' # passive accessibility: number of people that can reach each destination
 #' df <- cumulative_cutoff(
 #'   travel_matrix = travel_matrix,
@@ -59,7 +71,14 @@ cumulative_cutoff <- function(travel_matrix,
                               group_by = character(0),
                               active = TRUE,
                               fill_missing_ids = TRUE) {
-  checkmate::assert_number(cutoff, lower = 0, finite = TRUE)
+  checkmate::assert_numeric(
+    cutoff,
+    lower = 1,
+    finite = TRUE,
+    any.missing = FALSE,
+    min.len = 1,
+    unique = TRUE
+  )
   checkmate::assert_string(opportunity)
   checkmate::assert_string(travel_cost)
   checkmate::assert_logical(active, len = 1, any.missing = FALSE)
@@ -81,36 +100,62 @@ cumulative_cutoff <- function(travel_matrix,
     land_use_data <- data.table::as.data.table(land_use_data)
   }
 
-  .cost_colname <- travel_cost
-  data <- data[get(.cost_colname) <= cutoff]
   merge_by_reference(data, land_use_data, opportunity, active)
 
   group_id <- ifelse(active, "from_id", "to_id")
   groups <- c(group_id, group_by)
-  env <- environment()
-
   warn_extra_cols(travel_matrix, travel_cost, group_id, groups)
 
+  access <- lapply(
+    cutoff,
+    function(.x) calc_cum_cutoff(data, groups, opportunity, travel_cost, .x)
+  )
+  names(access) <- cutoff
+  access <- data.table::rbindlist(access, idcol = "cutoff")
+  access[, cutoff := as.numeric(cutoff)]
+
+  if (fill_missing_ids) {
+    unique_values <- lapply(groups, function(x) unique(travel_matrix[[x]]))
+    unique_values <- append(unique_values, list(cutoff))
+    names(unique_values) <- c(groups, "cutoff")
+
+    possible_combinations <- do.call(data.table::CJ, unique_values)
+
+    if (nrow(access) < nrow(possible_combinations)) {
+      access <- do_fill_missing_ids(
+        access,
+        possible_combinations,
+        groups = c(groups, "cutoff")
+      )
+    }
+  }
+
+  data.table::setnames(access, c(group_id, "access"), c("id", opportunity))
+  data.table::setcolorder(
+    access,
+    c("id", setdiff(groups, group_id), "cutoff", opportunity)
+  )
+  data.table::setorderv(access, c("id", setdiff(groups, group_id), "cutoff"))
+  if (length(cutoff) == 1) access[, cutoff := NULL]
+
+  if (exists("original_class")) class(access) <- original_class
+
+  return(access[])
+}
+
+
+calc_cum_cutoff <- function(data, groups, opportunity, travel_cost, .cutoff) {
+  env <- environment()
   .opportunity_colname <- opportunity
-  access <- data[
+  .cost_colname <- travel_cost
+
+  data <- data[get(.cost_colname) <= .cutoff]
+
+  cum_cutoff_access <- data[
     ,
     .(access = sum(get(.opportunity_colname))),
     by = eval(groups, envir = env)
   ]
 
-  if (fill_missing_ids) {
-    unique_values <- lapply(groups, function(x) unique(travel_matrix[[x]]))
-    names(unique_values) <- groups
-    possible_combinations <- do.call(data.table::CJ, unique_values)
-
-    if (nrow(access) < nrow(possible_combinations)) {
-      access <- do_fill_missing_ids(access, possible_combinations, groups)
-    }
-  }
-
-  data.table::setnames(access, c(group_id, "access"), c("id", opportunity))
-
-  if (exists("original_class")) class(access) <- original_class
-
-  return(access)
+  return(cum_cutoff_access)
 }
