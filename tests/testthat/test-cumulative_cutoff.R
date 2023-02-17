@@ -76,7 +76,7 @@ test_that("raises errors due to incorrect input", {
   )
 })
 
-test_that("throws warning if travel_matrix extra col", {
+test_that("throws warning if travel_matrix has an extra col", {
   # i.e. col not listed in travel_cost and by_col
   expect_warning(tester(group_by = character(0)))
 })
@@ -111,6 +111,13 @@ test_that("result has correct structure", {
   expect_is(result$mode, "character")
   expect_is(result$schools, "integer")
 
+  result <- tester(cutoff = c(15, 30))
+  expect_true(ncol(result) == 4)
+  expect_is(result$id, "character")
+  expect_is(result$mode, "character")
+  expect_is(result$cutoff, "numeric")
+  expect_is(result$jobs, "integer")
+
   suppressWarnings(result <- tester(group_by = character(0)))
   expect_true(ncol(result) == 2)
   expect_is(result$id, "character")
@@ -128,6 +135,22 @@ test_that("result has correct structure", {
   expect_true(nrow(result) == 0)
   expect_is(result$id, "character")
   expect_is(result$mode, "character")
+  expect_is(result$jobs, "integer")
+
+  result <- tester(
+    data.table::data.table(
+      mode = character(),
+      from_id = character(),
+      to_id = character(),
+      travel_time = integer()
+    ),
+    cutoff = c(15, 30)
+  )
+  expect_true(ncol(result) == 4)
+  expect_true(nrow(result) == 0)
+  expect_is(result$id, "character")
+  expect_is(result$mode, "character")
+  expect_is(result$cutoff, "numeric")
   expect_is(result$jobs, "integer")
 })
 
@@ -182,6 +205,8 @@ test_that("active and passive accessibility is correctly calculated", {
 })
 
 test_that("fill_missing_ids arg works correctly", {
+  # length(cutoff) == 1
+
   small_travel_matrix <- travel_matrix[
     from_id %in% c("89a88cdb57bffff", "89a88cdb597ffff")
   ]
@@ -189,11 +214,7 @@ test_that("fill_missing_ids arg works correctly", {
     from_id != "89a88cdb57bffff" | travel_time > 40
   ]
 
-  result <- tester(
-    small_travel_matrix,
-    land_use_data,
-    fill_missing_ids = TRUE
-  )
+  result <- tester(small_travel_matrix)
   data.table::setkey(result, NULL)
   expect_identical(
     result,
@@ -218,6 +239,28 @@ test_that("fill_missing_ids arg works correctly", {
       jobs = rep(36567L, each = 2)
     )
   )
+
+  # length(cutoff) > 1
+
+  result <- tester(small_travel_matrix, cutoff = c(15, 50))
+  data.table::setkey(result, NULL)
+  expected_result <- data.table::data.table(
+    id = rep(c("89a88cdb57bffff", "89a88cdb597ffff"), each = 4),
+    mode = rep(rep(c("transit", "transit2"), each = 2), times = 2),
+    cutoff = rep(c(15, 50), times = 4),
+    jobs = as.integer(c(rep(c(0, 187799), 2), rep(c(3008, 257648), 2)))
+  )
+
+  expect_identical(result, expected_result)
+
+  result <- tester(
+    small_travel_matrix,
+    cutoff = c(15, 50),
+    fill_missing_ids = FALSE
+  )
+  data.table::setkey(result, NULL)
+
+  expect_identical(result, expected_result[jobs != 0])
 })
 
 test_that("works even if travel_matrix and land_use has specific colnames", {
