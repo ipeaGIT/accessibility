@@ -282,12 +282,12 @@ trips taking up to 30 minutes of travel time.</p>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cum_cutoff</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 id  jobs</span></span>
-<span><span class="co">#&gt; 1: 89a88cdb57bffff 22239</span></span>
-<span><span class="co">#&gt; 2: 89a88cdb597ffff 36567</span></span>
-<span><span class="co">#&gt; 3: 89a88cdb5b3ffff 42372</span></span>
-<span><span class="co">#&gt; 4: 89a88cdb5cfffff 55571</span></span>
-<span><span class="co">#&gt; 5: 89a88cd909bffff 26774</span></span>
-<span><span class="co">#&gt; 6: 89a88cd90b7ffff 36991</span></span></code></pre></div>
+<span><span class="co">#&gt; 1: 89a881a5a2bffff 14561</span></span>
+<span><span class="co">#&gt; 2: 89a881a5a2fffff 29452</span></span>
+<span><span class="co">#&gt; 3: 89a881a5a67ffff 16647</span></span>
+<span><span class="co">#&gt; 4: 89a881a5a6bffff 10700</span></span>
+<span><span class="co">#&gt; 5: 89a881a5a6fffff  6669</span></span>
+<span><span class="co">#&gt; 6: 89a881a5b03ffff 37029</span></span></code></pre></div>
 <p>Let’s say that we wanted to, instead, calculate <em>passive</em>
 accessibility - i.e. by how many people each destination can be reached
 within a given travel cost. Doing so requires very few changes to the
@@ -305,12 +305,12 @@ and set <code>active</code> (<code>TRUE</code> by default) to
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">passive_cum_cutoff</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 id population</span></span>
-<span><span class="co">#&gt; 1: 89a88cdb57bffff      62591</span></span>
-<span><span class="co">#&gt; 2: 89a88cdb19bffff     180316</span></span>
-<span><span class="co">#&gt; 3: 89a88cdb1d3ffff     185293</span></span>
-<span><span class="co">#&gt; 4: 89a88cdb56fffff     162202</span></span>
-<span><span class="co">#&gt; 5: 89a88cdb0afffff     243124</span></span>
-<span><span class="co">#&gt; 6: 89a88cdb50fffff     107605</span></span></code></pre></div>
+<span><span class="co">#&gt; 1: 89a881a5a2bffff      10247</span></span>
+<span><span class="co">#&gt; 2: 89a881a5a2fffff      29882</span></span>
+<span><span class="co">#&gt; 3: 89a881a5a67ffff      12871</span></span>
+<span><span class="co">#&gt; 4: 89a881a5a6bffff      14361</span></span>
+<span><span class="co">#&gt; 5: 89a881a5a6fffff      15210</span></span>
+<span><span class="co">#&gt; 6: 89a881a5b03ffff      67648</span></span></code></pre></div>
 <p>The <code>active</code> parameter is available in most other
 accessibility functions as well (with the exception of
 <code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code>), making it very easy to
