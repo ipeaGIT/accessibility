@@ -90,11 +90,24 @@ assert_decay_function <- function(decay_function) {
     )
   }
 
-  if (!is.numeric(result) || length(result) != length(1:100)) {
+  # result must be either a numeric vector with same length as input or a list
+  # of numeric vectors whose lenghts are the same as input
+
+  right_numeric <- is.numeric(result) && length(result) == 100
+
+  elements_class <- vapply(result, class, character(1))
+  right_classes <- length(result) > 0 && all(elements_class == "numeric")
+
+  elements_length <- vapply(result, length, integer(1))
+  right_lengths <- length(result) > 0 && all(elements_length == 100)
+
+  if (!(right_numeric || (is.list(result) && right_classes && right_lengths))) {
     stop(
       "Assertion on 'decay_function' failed: Must be a function that takes ",
-      "a numeric vector as input and returns a numeric vector as output, with ",
-      "the same length of input. Instead, with input 1:100 it returned: ",
+      "a numeric vector as input and returns either:\n",
+      " - a numeric vector with the same length of input, or;\n",
+      " - a list of numeric vectors whose lengths are the same of input.\n",
+      "Instead, with input 1:100 it returned: ",
       "{", paste0(result, collapse = ","), "}",
       call. = FALSE
     )

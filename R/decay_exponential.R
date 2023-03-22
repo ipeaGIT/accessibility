@@ -21,11 +21,23 @@
 #'
 #' @export
 decay_exponential <- function(decay_value) {
-  checkmate::assert_number(decay_value, lower = 0, finite = TRUE)
+  checkmate::assert_numeric(
+    decay_value,
+    lower = 0,
+    finite = TRUE,
+    any.missing = FALSE,
+    min.len = 1,
+    unique = TRUE
+  )
 
   weighting_function <- function(travel_cost) {
-    weights <- exp(-decay_value * travel_cost)
-    return(weights)
+    weights_list <- lapply(
+      decay_value,
+      function(x) exp(-x * travel_cost)
+    )
+    names(weights_list) <- decay_value
+
+    return(weights_list)
   }
 
   return(weighting_function)
