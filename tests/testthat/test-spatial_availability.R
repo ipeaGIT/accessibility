@@ -171,7 +171,7 @@ test_that("fill_missing_ids arg works correctly", {
     data.table::data.table(
       id = rep(c("89a88cdb57bffff", "89a88cdb597ffff"), each = 2),
       mode = rep(c("transit", "transit2"), times = 2),
-      jobs = c(337410L, 0L, 158642L, 496053L)
+      jobs = c(271899L, 0L, 224153L, 496053L)
     )
   )
 
@@ -182,7 +182,7 @@ test_that("fill_missing_ids arg works correctly", {
     data.table::data.table(
       id = c("89a88cdb57bffff", "89a88cdb597ffff", "89a88cdb597ffff"),
       mode = c("transit", "transit", "transit2"),
-      jobs = c(337410L, 158642L, 496053L)
+      jobs = c(271899L, 224153L, 496053L)
     )
   )
 })
@@ -273,7 +273,7 @@ test_that("calculates spatial availability correctly", {
     result,
     data.table::data.table(
       id = c("A", "B", "C"),
-      jobs = c(66831, 133197, 9971)
+      jobs = c(66833, 133203, 9963)
     )
   )
 })
