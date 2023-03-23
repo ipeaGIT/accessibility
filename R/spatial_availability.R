@@ -83,7 +83,13 @@ spatial_availability <- function(travel_matrix,
   merge_by_reference(data, land_use_data, opportunity, active = TRUE)
   merge_by_reference(data, land_use_data, demand, active = FALSE)
 
+  data <- apply_gravity_measure(data, decay_function, travel_cost)
+
   groups <- c("from_id", group_by)
+  if ("decay_function_arg" %in% names(data)) {
+    groups <- c(groups, "decay_function_arg")
+  }
+
   warn_extra_cols(
     travel_matrix,
     travel_cost,
@@ -95,8 +101,6 @@ spatial_availability <- function(travel_matrix,
   total_demand <- sum(land_use_data[[.demand_colname]] ^ alpha)
   data[, demand_bal_fac := (get(.demand_colname) ^ alpha) / total_demand]
 
-  .cost_colname <- travel_cost
-  data[, opp_weight := decay_function(get(.cost_colname))]
   data[
     ,
     impedance_bal_fac := opp_weight / sum(opp_weight),

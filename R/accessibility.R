@@ -52,7 +52,8 @@ utils::globalVariables(
     "..opportunity",
     "demand_bal_fac",
     "impedance_bal_fac",
-    "combined_bal_fac"
+    "combined_bal_fac",
+    "decay_function_arg"
   )
 )
 
