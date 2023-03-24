@@ -7,7 +7,7 @@
 decay_linear(cutoff)
 }
 \arguments{
-\item{cutoff}{A \code{numeric}. A number indicating the travel cost cutoff until
+\item{cutoff}{A \code{numeric} vector. Indicates the travel cost cutoffs until
 which the weighting factor decays linearly. From this point onward the
 weight is equal to 0.}
 }
@@ -26,9 +26,11 @@ such as distance, time and money.
 \examples{
 weighting_function <- decay_linear(cutoff = 30)
 
-weighting_function(20)
+weighting_function(c(20, 35))
 
-weighting_function(35)
+weighting_function <- decay_linear(cutoff = c(30, 45))
+
+weighting_function(c(20, 35))
 
 }
 \seealso{
