@@ -10,8 +10,9 @@ apply_gravity_measure <- function(data, decay_function, travel_cost) {
   decay_fn_output <- decay_function(1)
 
   is_list_length_1 <- is.list(decay_fn_output) && length(decay_fn_output) == 1
+  is_numeric_like <- is.numeric(decay_fn_output) || is.integer(decay_fn_output)
 
-  if (is.numeric(decay_fn_output) || is_list_length_1) {
+  if (is_numeric_like || is_list_length_1) {
     data[, opp_weight := decay_function(get(.cost_colname))]
 
     access <- data

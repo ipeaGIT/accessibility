@@ -93,10 +93,12 @@ assert_decay_function <- function(decay_function) {
   # result must be either a numeric vector with same length as input or a list
   # of numeric vectors whose lenghts are the same as input
 
-  right_numeric <- is.numeric(result) && length(result) == 100
+  is_numeric_like <- function(x) is.numeric(x) || is.integer(x)
 
-  elements_class <- vapply(result, class, character(1))
-  right_classes <- length(result) > 0 && all(elements_class == "numeric")
+  right_numeric <- is_numeric_like(result) && length(result) == 100
+
+  numeric_like_elements <- vapply(result, is_numeric_like, logical(1))
+  right_classes <- length(result) > 0 && all(numeric_like_elements)
 
   elements_length <- vapply(result, length, integer(1))
   right_lengths <- length(result) > 0 && all(elements_length == 100)
