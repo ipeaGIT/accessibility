@@ -278,3 +278,28 @@ test_that("works even if travel_matrix and land_use has specific colnames", {
 
   land_use_data[, opportunity := NULL]
 })
+
+test_that("results are grouped by decay_function_arg when needed", {
+  small_travel_matrix <- travel_matrix[
+    from_id %in% c("89a88cdb57bffff", "89a88cdb597ffff") &
+      mode != "transit2"
+  ]
+
+  result <- tester(
+    small_travel_matrix,
+    land_use_data,
+    decay_function = decay_exponential(c(0.5, 0.6))
+  )
+  data.table::setkey(result, NULL)
+  result[, jobs := round(jobs, 2)]
+
+  expect_identical(
+    result,
+    data.table::data.table(
+      id = rep(c("89a88cdb57bffff", "89a88cdb597ffff"), times = 2),
+      mode = rep("transit", 4),
+      decay_function_arg = rep(c(0.5, 0.6), each = 2),
+      jobs = c(14.11, 28.02, 6.59, 13.4)
+    )
+  )
+})

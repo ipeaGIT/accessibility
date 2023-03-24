@@ -88,6 +88,7 @@ spatial_availability <- function(travel_matrix,
   groups <- c("from_id", group_by)
   if ("decay_function_arg" %in% names(data)) {
     groups <- c(groups, "decay_function_arg")
+    group_by <- c(group_by, "decay_function_arg")
   }
 
   warn_extra_cols(
@@ -128,13 +129,7 @@ spatial_availability <- function(travel_matrix,
   ]
 
   if (fill_missing_ids) {
-    unique_values <- lapply(groups, function(x) unique(travel_matrix[[x]]))
-    names(unique_values) <- groups
-    possible_combinations <- do.call(data.table::CJ, unique_values)
-
-    if (nrow(access) < nrow(possible_combinations)) {
-      access <- do_fill_missing_ids(access, possible_combinations, groups)
-    }
+    access <- fill_missing_ids(access, travel_matrix, groups)
   }
 
   data.table::setnames(access, c("from_id", "access"), c("id", opportunity))
