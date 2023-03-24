@@ -15,7 +15,8 @@
 #'   after it. Please see the illustrative examples for effects of this
 #'   assumption on the results.
 #'
-#' @template return_decay_function
+#' @return A `function` that takes a generic travel cost vector (`numeric`) as
+#'   an input and returns a vector of weights (`numeric`).
 #'
 #' @family decay functions
 #'

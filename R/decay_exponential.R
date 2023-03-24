@@ -4,8 +4,8 @@
 #' accessibility calculating functions.
 #' @template description_generic_cost
 #'
-#' @param decay_value A `numeric`. The calibration parameter that, when
-#'   multiplied by the travel cost, is used as the exponent of `e` in the
+#' @param decay_value A `numeric` vector. The calibration parameters that, when
+#'   multiplied by the travel cost, are used as the exponent of `e` in the
 #'   negative exponential function.
 #'
 #' @template return_decay_function
@@ -15,9 +15,11 @@
 #' @examples
 #' weighting_function <- decay_exponential(decay_value = 0.1)
 #'
-#' weighting_function(20)
+#' weighting_function(c(20, 30))
 #'
-#' weighting_function(35)
+#' weighting_function <- decay_exponential(decay_value = c(0.1, 0.2))
+#'
+#' weighting_function(c(20, 30))
 #'
 #' @export
 decay_exponential <- function(decay_value) {

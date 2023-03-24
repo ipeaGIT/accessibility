@@ -11,7 +11,8 @@ decay_binary(cutoff)
 }
 \value{
 A \code{function} that takes a generic travel cost vector (\code{numeric}) as
-an input and returns a vector of weights (\code{numeric}).
+an input and returns a \code{list} of weight vectors (a list of \code{numeric}
+vectors, named after the arguments passed to the decay function).
 }
 \description{
 Returns a binary weighting function (frequently used to calculate cumulative
