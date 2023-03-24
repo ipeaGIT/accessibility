@@ -137,7 +137,7 @@ weights <- data.table(
   binary = as.numeric(binary(travel_costs)),
   linear = linear(travel_costs)[[1]],
   negative_exp = negative_exp(travel_costs)[[1]],
-  inverse_power = inverse_power(travel_costs),
+  inverse_power = inverse_power(travel_costs)[[1]],
   stepped = stepped(travel_costs)
 )
 

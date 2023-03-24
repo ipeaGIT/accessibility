@@ -4,8 +4,8 @@
 #' calculating functions.
 #' @template description_generic_cost
 #'
-#' @param decay_value A `numeric`. The calibration parameter to be used as the
-#'   exponent in the inverse power function.
+#' @param decay_value A `numeric` vector. The calibration parameters to be used
+#'   as the exponents in the inverse power function.
 #'
 #' @template return_decay_function
 #'
@@ -14,18 +14,35 @@
 #' @examples
 #' weighting_function <- decay_power(decay_value = 0.1)
 #'
-#' weighting_function(20)
+#' weighting_function(c(20, 35))
 #'
-#' weighting_function(35)
+#' weighting_function <- decay_power(decay_value = c(0.1, 0.2))
+#'
+#' weighting_function(c(20, 35))
 #'
 #' @export
 decay_power <- function(decay_value) {
-  checkmate::assert_number(decay_value, lower = 0, finite = TRUE)
+  checkmate::assert_numeric(
+    decay_value,
+    lower = 0,
+    finite = TRUE,
+    any.missing = FALSE,
+    min.len = 1,
+    unique = TRUE
+  )
 
   weighting_function <- function(travel_cost) {
-    weights <- travel_cost ^ (-decay_value)
-    weights[weights > 1] <- 1
-    return(weights)
+    weights_list <- lapply(
+      decay_value,
+      function(x) {
+        weights <- travel_cost ^ (-x)
+        weights[weights > 1] <- 1
+        weights
+      }
+    )
+    names(weights_list) <- decay_value
+
+    return(weights_list)
   }
 
   return(weighting_function)
