@@ -277,3 +277,26 @@ test_that("calculates spatial availability correctly", {
     )
   )
 })
+
+test_that("results are grouped by decay_function_arg when needed", {
+  small_travel_matrix <- travel_matrix[
+    from_id %in% c("89a88cdb57bffff", "89a88cdb597ffff") &
+      mode != "transit2"
+  ]
+
+  result <- tester(
+    small_travel_matrix,
+    decay_function = decay_exponential(c(0.5, 0.6))
+  )
+  result[, jobs := round(jobs, 1)]
+
+  expect_identical(
+    result,
+    data.table::data.table(
+      id = rep(c("89a88cdb57bffff", "89a88cdb597ffff"), times = 2),
+      mode = rep("transit", 4),
+      decay_function_arg = rep(c(0.5, 0.6), each = 2),
+      jobs = c(367025.8, 129027.2, 372144.5, 123908.5)
+    )
+  )
+})

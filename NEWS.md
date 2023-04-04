@@ -7,6 +7,10 @@
   being restricted to a single number.
 - `cumulative_cutoff()` parameter `cutoff` now accepts a numeric vector, instead
   of being restricted to a single number.
+- The decay functions can now take numeric vectors as input, instead of being
+  restricted to a single number (in the case of `decay_stepped()`, both `steps`
+  and `weights` can take a `list` of `numeric` vectors as input, instead of
+  being restricted to a single `numeric` vector each).
 
 ## Bug fixes
 
