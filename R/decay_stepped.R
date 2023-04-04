@@ -13,11 +13,20 @@
 #'   assumes at each step. Please do not include weight 1 as the first value:
 #'   this is already handled by the function. The function considers the steps'
 #'   intervals "open on the right", meaning that the function assumes the step
-#'   value at the actual step, not after it. Please see the illustrative
+#'   value at the actual step, not right after it. Please see the illustrative
 #'   examples for effects of this assumption on the results.
 #'
 #' @return A `function` that takes a generic travel cost vector (`numeric`) as
 #'   an input and returns a vector of weights (`numeric`).
+#'
+#' @details When both `steps` and `weights` parameters are given `list`s, their
+#'   content are matched element-wise to define each stepped weighting function
+#'   - i.e. the first element of `steps` is matched to the first element of
+#'   `weights`, the second element of `steps` is matched to the second of
+#'   `weights`, etc. When using a function created with `decay_stepped()`, the
+#'   output is named after the combination of steps (`"s"`) and weights (`"w"`)
+#'   - e.g. given the steps `c(10, 20, 30)` and the weights `c(0.66, 0.33, 0)`,
+#'   the output will be named `"s(10,20,30);w(0.66,0.33,0)"`.
 #'
 #' @family decay functions
 #'
@@ -25,6 +34,13 @@
 #' weighting_function <- decay_stepped(
 #'   c(10, 20, 30, 40),
 #'   weights = c(0.75, 0.5, 0.25, 0)
+#' )
+#'
+#' weighting_function(c(5, 25, 35, 45))
+#'
+#' weighting_function <- decay_stepped(
+#'   list(c(10, 20, 30, 40), c(10, 20, 30, 40)),
+#'   weights = list(c(0.75, 0.5, 0.25, 0), c(0.8, 0.6, 0.4, 0.2))
 #' )
 #'
 #' weighting_function(c(5, 25, 35, 45))
@@ -37,16 +53,41 @@ decay_stepped <- function(steps, weights) {
   assert_steps(steps)
   assert_weights(weights, steps)
 
-  steps <- c(0, steps)
-  weights <- c(1, weights)
+  if (!is.list(steps)) steps <- list(steps)
+  if (!is.list(weights)) weights <- list(weights)
+
+  steps <- lapply(steps, function(stps) c(0, stps))
+  weights <- lapply(weights, function(wghts) c(1, wghts))
 
   weighting_function <- function(travel_cost) {
-    weights <- vapply(
-      travel_cost,
-      function(x) weights[max(which(x >= steps))],
-      numeric(1)
+    weights_list <- mapply(
+      stps = steps,
+      wghts = weights,
+      FUN = function(stps, wghts) {
+        vapply(
+          travel_cost,
+          function(x) wghts[max(which(x >= stps))],
+          numeric(1)
+        )
+      },
+      SIMPLIFY = FALSE
     )
-    return(weights)
+
+    list_names <- mapply(
+      stps = steps,
+      wghts = weights,
+      FUN = function(stps, wghts) {
+        paste0(
+          "s(", paste(stps[-1], collapse = ","), ");",
+          "w(", paste(wghts[-1], collapse = ","), ")"
+        )
+      },
+      SIMPLIFY = TRUE
+    )
+
+    names(weights_list) <- list_names
+
+    return(weights_list)
   }
 
   return(weighting_function)

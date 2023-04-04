@@ -138,7 +138,7 @@ weights <- data.table(
   linear = linear(travel_costs)[[1]],
   negative_exp = negative_exp(travel_costs)[[1]],
   inverse_power = inverse_power(travel_costs)[[1]],
-  stepped = stepped(travel_costs)
+  stepped = stepped(travel_costs)[[1]]
 )
 
 # reshape data to long format

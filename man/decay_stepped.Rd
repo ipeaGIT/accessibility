@@ -7,17 +7,18 @@
 decay_stepped(steps, weights)
 }
 \arguments{
-\item{steps}{A \code{numeric} vector. The travel cost steps, in ascending order.
-Please do not include travel cost 0 as a step: this is already handled by
-the function.}
+\item{steps}{A \code{numeric} vector or a list of \code{numeric} vectors. The travel
+cost steps, in ascending order. Please do not include travel cost 0 as a
+step: this is already handled by the function.}
 
-\item{weights}{A \code{numeric} vector with same length as \code{steps}. The values,
-between 0 and 1, that the function assumes at each step. Please do not
-include weight 1 as the first value: this is already handled by the
-function. The function considers the steps' intervals "open on the right",
-meaning that the function assumes the step value at the actual step, not
-after it. Please see the illustrative examples for effects of this
-assumption on the results.}
+\item{weights}{A \code{numeric} vector with same length as \code{steps} or a list of
+\code{numeric} vectors whose lenghts are equal to the lengths of the elements of
+same index in \code{steps}. The values, between 0 and 1, that the function
+assumes at each step. Please do not include weight 1 as the first value:
+this is already handled by the function. The function considers the steps'
+intervals "open on the right", meaning that the function assumes the step
+value at the actual step, not right after it. Please see the illustrative
+examples for effects of this assumption on the results.}
 }
 \value{
 A \code{function} that takes a generic travel cost vector (\code{numeric}) as
@@ -30,10 +31,29 @@ calculating functions.
 This function is generic over any kind of numeric travel cost,
 such as distance, time and money.
 }
+\details{
+When both \code{steps} and \code{weights} parameters are given \code{list}s, their
+content are matched element-wise to define each stepped weighting function
+\itemize{
+\item i.e. the first element of \code{steps} is matched to the first element of
+\code{weights}, the second element of \code{steps} is matched to the second of
+\code{weights}, etc. When using a function created with \code{decay_stepped()}, the
+output is named after the combination of steps (\code{"s"}) and weights (\code{"w"})
+\item e.g. given the steps \code{c(10, 20, 30)} and the weights \code{c(0.66, 0.33, 0)},
+the output will be named \code{"s(10,20,30);w(0.66,0.33,0)"}.
+}
+}
 \examples{
 weighting_function <- decay_stepped(
   c(10, 20, 30, 40),
   weights = c(0.75, 0.5, 0.25, 0)
+)
+
+weighting_function(c(5, 25, 35, 45))
+
+weighting_function <- decay_stepped(
+  list(c(10, 20, 30, 40), c(10, 20, 30, 40)),
+  weights = list(c(0.75, 0.5, 0.25, 0), c(0.8, 0.6, 0.4, 0.2))
 )
 
 weighting_function(c(5, 25, 35, 45))

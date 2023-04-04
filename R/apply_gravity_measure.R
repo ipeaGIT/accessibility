@@ -24,8 +24,20 @@ apply_gravity_measure <- function(data, decay_function, travel_cost) {
       function(opp_weight) cbind(data, opp_weight)
     )
     access <- data.table::rbindlist(access, idcol = "decay_function_arg")
-    access[, decay_function_arg := as.numeric(decay_function_arg)]
+    access[, decay_function_arg := try_to_convert_to_num(decay_function_arg)]
   }
 
   return(access[])
+}
+
+
+try_to_convert_to_num <- function(x) {
+  result <- tryCatch(
+    as.numeric(x),
+    warning = function(cnd) cnd
+  )
+
+  if (inherits(result, "warning")) return(x)
+
+  return(result)
 }

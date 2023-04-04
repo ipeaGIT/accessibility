@@ -303,3 +303,24 @@ test_that("results are grouped by decay_function_arg when needed", {
     )
   )
 })
+
+test_that("decay_fn_arg is char when decay fn is stepped and num otherwise", {
+  small_travel_matrix <- travel_matrix[
+    from_id %in% c("89a88cdb57bffff", "89a88cdb597ffff")
+  ]
+
+  result <- tester(
+    small_travel_matrix,
+    decay_function = decay_exponential(c(0.5, 0.6))
+  )
+  expect_is(result$decay_function_arg, "numeric")
+
+  result <- tester(
+    small_travel_matrix,
+    decay_function = decay_stepped(
+      steps = list(c(10, 20), c(15, 25)),
+      weights = list(c(0.5, 0), c(0.5, 0))
+    )
+  )
+  expect_is(result$decay_function_arg, "character")
+})
