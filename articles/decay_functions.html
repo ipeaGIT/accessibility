@@ -104,7 +104,7 @@ decay functions to continuously discount the weight of opportunities as
 travel costs become larger. For convenience, the package ships with some
 of the most frequently used functions in the accessibility literature,
 which are discussed below. Additionally, users can pass custom functions
-to convert travel costs into weights to be applied the opportunities,
+to convert travel costs into weights to be applied to the opportunities,
 which is discussed further down in this the vignette.</p>
 <div class="section level2">
 <h2 id="currently-available-decay-functions">Currently available decay functions<a class="anchor" aria-label="anchor" href="#currently-available-decay-functions"></a>
@@ -202,26 +202,64 @@ step.</p>
 <div class="section level4">
 <h4 id="quick-demonstration">Quick demonstration<a class="anchor" aria-label="anchor" href="#quick-demonstration"></a>
 </h4>
+<p>All decay functions (<code>decay_*()</code>) take decay parameters as
+input and return a function as output. This output function, in turn,
+takes a vector of numeric values as input, the travel costs, and returns
+a list of numeric vectors as output. Since the decay function can take
+multiple decay parameters as input, each element of the output list
+refers to the opportunities weights calculated with one of these decay
+parameters.</p>
+<p>Let’s check this behavior with an example. With the code snippet
+below, we calculate the opportunities weights for the same travel costs,
+but using different negative exponential decay values (0.2 and 0.3):</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/accessibility" class="external-link">accessibility</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">output_fn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decay_exponential.html">decay_exponential</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">output_fn</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">15</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $`0.2`</span></span>
+<span><span class="co">#&gt; [1] 0.13533528 0.04978707 0.01831564</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $`0.3`</span></span>
+<span><span class="co">#&gt; [1] 0.049787068 0.011108997 0.002478752</span></span></code></pre></div>
+<p><code><a href="../reference/decay_stepped.html">decay_stepped()</a></code>, as the only decay function that takes
+more than one argument (both <code>steps</code> and
+<code>weights</code>) names the output elements after the combination of
+steps and weights:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">stepped_output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decay_stepped.html">decay_stepped</a></span><span class="op">(</span></span>
+<span>  steps <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span>, <span class="fl">40</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.67</span>, <span class="fl">0.33</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.75</span>, <span class="fl">0.5</span>, <span class="fl">0.25</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">stepped_output</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">25</span>, <span class="fl">35</span>, <span class="fl">45</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $`s(10,20,30);w(0.67,0.33,0)`</span></span>
+<span><span class="co">#&gt; [1] 0.67 0.33 0.00 0.00</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $`s(10,20,30,40);w(0.75,0.5,0.25,0)`</span></span>
+<span><span class="co">#&gt; [1] 0.75 0.50 0.25 0.00</span></span></code></pre></div>
+<p>With the code below, we demonstrate each decay function with travel
+costs ranging from 1 to 100:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">binary</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decay_binary.html">decay_binary</a></span><span class="op">(</span>cutoff <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
 <span><span class="va">linear</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decay_linear.html">decay_linear</a></span><span class="op">(</span>cutoff <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
 <span><span class="va">negative_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decay_exponential.html">decay_exponential</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
 <span><span class="va">inverse_power</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decay_power.html">decay_power</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
-<span><span class="va">stepped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decay_stepped.html">decay_stepped</a></span><span class="op">(</span>steps <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">60</span>, <span class="fl">90</span><span class="op">)</span>, weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.66</span>, <span class="fl">0.33</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">stepped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decay_stepped.html">decay_stepped</a></span><span class="op">(</span>steps <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">60</span>, <span class="fl">90</span><span class="op">)</span>, weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.67</span>, <span class="fl">0.33</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">travel_costs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">100</span>, <span class="fl">0.1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">weights</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span></span>
 <span>  minutes <span class="op">=</span> <span class="va">travel_costs</span>,</span>
-<span>  binary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">binary</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  linear <span class="op">=</span> <span class="fu">linear</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span>,</span>
-<span>  negative_exp <span class="op">=</span> <span class="fu">negative_exp</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span>,</span>
-<span>  inverse_power <span class="op">=</span> <span class="fu">inverse_power</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span>,</span>
-<span>  stepped <span class="op">=</span> <span class="fu">stepped</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span></span>
+<span>  binary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">binary</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span><span class="op">[[</span><span class="st">"50"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>  linear <span class="op">=</span> <span class="fu">linear</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span><span class="op">[[</span><span class="st">"50"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  negative_exp <span class="op">=</span> <span class="fu">negative_exp</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span><span class="op">[[</span><span class="st">"0.2"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  inverse_power <span class="op">=</span> <span class="fu">inverse_power</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span><span class="op">[[</span><span class="st">"0.2"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  stepped <span class="op">=</span> <span class="fu">stepped</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span><span class="op">[[</span><span class="st">"s(30,60,90);w(0.67,0.33,0)"</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># reshape data to long format</span></span>
@@ -239,24 +277,30 @@ step.</p>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="va">.</span> <span class="op">~</span> <span class="va">decay_function</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="decay_functions_files/figure-html/unnamed-chunk-2-1.png" width="80%"></p>
+<p><img src="decay_functions_files/figure-html/unnamed-chunk-4-1.png" width="80%"></p>
 </div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="using-a-custom-decay-function">Using a custom decay function<a class="anchor" aria-label="anchor" href="#using-a-custom-decay-function"></a>
 </h2>
-<p>Any function that takes a <code>numeric</code> vector of travel costs
-and returns a <code>numeric</code> vector, with the same length of
-input, of weights to be applied to the opportunities can be considered a
-decay function.</p>
-<p>Let’s say that we wanted to use a very simple decay function that
-defines the weights as the multiplicative inverse of travel cost - i.e.
-<span class="math inline">\(travel\_cost^{-1}\)</span>. We just have to
-take care of the case when travel cost is less than 1, in which case the
+<p><strong>accessibility</strong> also allows you to use a custom decay
+function, instead of one of the functions shipped with the package. A
+valid decay function is one that takes a <code>numeric</code> vector of
+travel costs as input and returns either:</p>
+<ul>
+<li>A <code>numeric</code> vector of weights, with the same length of
+input, or;</li>
+<li>A named <code>list</code> of <code>numeric</code> vectors to be used
+as weights, each one with the same length of input.</li>
+</ul>
+<p>Let’s check the difference between each case with an example. Suppose
+we want to use a very simple decay function that defines the weights as
+the multiplicative inverse of travel cost - i.e. <span class="math inline">\(travel\_cost^{-1}\)</span>. We just have to take
+care of the case when travel cost is less than 1, in which case the
 function would return values greater than 1 and which we will replace
 with 1, but otherwise the implementation is pretty simple:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_decay</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">travel_cost</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">weights</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">/</span> <span class="va">travel_cost</span></span>
 <span>  <span class="va">weights</span><span class="op">[</span><span class="va">weights</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
@@ -264,12 +308,12 @@ with 1, but otherwise the implementation is pretty simple:</p>
 <span><span class="op">}</span></span></code></pre></div>
 <p>Given a <code>numeric</code> vector of travel costs, the function
 returns a <code>numeric</code> vector of weights:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">my_decay</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1.0 1.0 1.0 0.5 0.2 0.1</span></span></code></pre></div>
 <p>Using this function to calculate accessibility is as easy as any of
 the built-in decay functions:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"accessibility"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">travel_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data_dir</span>, <span class="st">"travel_matrix.rds"</span><span class="op">)</span><span class="op">)</span></span>
@@ -290,17 +334,44 @@ the built-in decay functions:</p>
 <span><span class="co">#&gt; 4: 89a88cdb5cfffff 12689.44</span></span>
 <span><span class="co">#&gt; 5: 89a88cd909bffff 11361.66</span></span>
 <span><span class="co">#&gt; 6: 89a88cd90b7ffff 12563.65</span></span></code></pre></div>
-<p>In fact, we could achieve the exact same result as we did with our
-custom function using <code>decay_power(1)</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">power_gravity</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gravity.html">gravity</a></span><span class="op">(</span></span>
+<p>Great! But now suppose we want to change this function a bit. Instead
+of the simple multiplicative inverse of the travel cost, we want to
+multiply this inverse by a given decay parameter. Now we face a
+“problem”: our function would need to take two inputs (the travel cost,
+as above, and the decay parameter to multiply the travel cost), but
+<code><a href="../reference/gravity.html">gravity()</a></code> can only take functions that receive a single
+input (the travel cost). In this case, we resort to the same strategy
+used in the decay functions shipped with the package, we create a
+function that takes a decay parameter as input and returns a function
+that takes travel cost input as output:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_second_decay</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">decay_parameter</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">function</span><span class="op">(</span><span class="va">travel_cost</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">weights</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">/</span> <span class="op">(</span><span class="va">decay_parameter</span> <span class="op">*</span> <span class="va">travel_cost</span><span class="op">)</span></span>
+<span>    <span class="va">weights</span><span class="op">[</span><span class="va">weights</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">weights</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">output_fn</span> <span class="op">&lt;-</span> <span class="fu">my_second_decay</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu">output_fn</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1.00 1.00 0.50 0.25 0.10 0.05</span></span>
+<span></span>
+<span><span class="co"># compare to the first custom decay function</span></span>
+<span><span class="fu">my_decay</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1.0 1.0 1.0 0.5 0.2 0.1</span></span></code></pre></div>
+<p>Great, it works! In fact, we can achieve the exact same
+<code><a href="../reference/gravity.html">gravity()</a></code> result shown above if we use
+<code>my_second_decay(1)</code>, instead of <code>my_decay</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">second_custom_gravity</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gravity.html">gravity</a></span><span class="op">(</span></span>
 <span>  <span class="va">travel_matrix</span>,</span>
 <span>  <span class="va">land_use_data</span>,</span>
 <span>  opportunity <span class="op">=</span> <span class="st">"jobs"</span>,</span>
 <span>  travel_cost <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
-<span>  decay_function <span class="op">=</span> <span class="fu"><a href="../reference/decay_power.html">decay_power</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span>  decay_function <span class="op">=</span> <span class="fu">my_second_decay</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">power_gravity</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">second_custom_gravity</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 id     jobs</span></span>
 <span><span class="co">#&gt; 1: 89a88cdb57bffff 11210.42</span></span>
 <span><span class="co">#&gt; 2: 89a88cdb597ffff 10775.77</span></span>
@@ -311,30 +382,94 @@ custom function using <code>decay_power(1)</code>:</p>
 <p>A small difference is that in the first example we passed
 <code>my_decay</code> (the function <em>object</em>) to the
 <code>decay_function</code> parameter, whereas in the second we passed
-the function <em>call</em> <code>decay_power(1)</code>. That’s because
-<code><a href="../reference/decay_power.html">decay_power()</a></code> (and the other built-in decay functions as
-well) is actually a function “factory”: it’s a function that returns a
-function, as we can see below:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+the function <em>call</em> <code>my_second_decay(1)</code>. That’s
+because <code>my_second_decay()</code> (and the built-in decay functions
+as well) is actually a function “factory”: it’s a function that returns
+a function.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/decay_power.html">decay_power</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; function (travel_cost) </span></span>
 <span><span class="co">#&gt; {</span></span>
-<span><span class="co">#&gt;     weights &lt;- travel_cost^(-decay_value)</span></span>
-<span><span class="co">#&gt;     weights[weights &gt; 1] &lt;- 1</span></span>
-<span><span class="co">#&gt;     return(weights)</span></span>
+<span><span class="co">#&gt;     weights_list &lt;- lapply(decay_value, function(x) {</span></span>
+<span><span class="co">#&gt;         weights &lt;- travel_cost^(-x)</span></span>
+<span><span class="co">#&gt;         weights[weights &gt; 1] &lt;- 1</span></span>
+<span><span class="co">#&gt;         weights</span></span>
+<span><span class="co">#&gt;     })</span></span>
+<span><span class="co">#&gt;     names(weights_list) &lt;- decay_value</span></span>
+<span><span class="co">#&gt;     return(weights_list)</span></span>
 <span><span class="co">#&gt; }</span></span>
-<span><span class="co">#&gt; &lt;bytecode: 0x562848c52738&gt;</span></span>
-<span><span class="co">#&gt; &lt;environment: 0x562848abccc0&gt;</span></span></code></pre></div>
-<p>This is because the built-in functions aim to be as generally used as
-possible, so we have to able to use them with different parameters,
-cutoffs, etc. In practice, every time we call these functions we create
-another function that calculates travel costs exactly as we want.</p>
+<span><span class="co">#&gt; &lt;bytecode: 0x5641099085c0&gt;</span></span>
+<span><span class="co">#&gt; &lt;environment: 0x56410c0f8ef8&gt;</span></span></code></pre></div>
+<p>What if we want our custom function to take many decay parameters as
+inputs, just like the built-in decay functions? In this case, our output
+function has to return a <code>list</code> of <code>numeric</code>
+weights named after the decay parameters we have set:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_third_decay</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">decay_parameter</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">function</span><span class="op">(</span><span class="va">travel_cost</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">weighting_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
+<span>      <span class="va">decay_parameter</span>,</span>
+<span>      <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>        <span class="va">weights</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">/</span> <span class="op">(</span><span class="va">x</span> <span class="op">*</span> <span class="va">travel_cost</span><span class="op">)</span></span>
+<span>        <span class="va">weights</span><span class="op">[</span><span class="va">weights</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
+<span>        <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">weights</span><span class="op">)</span></span>
+<span>      <span class="op">}</span></span>
+<span>    <span class="op">)</span></span>
+<span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">weighting_list</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">decay_parameter</span></span>
+<span>    <span class="va">weighting_list</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">output_fn</span> <span class="op">&lt;-</span> <span class="fu">my_third_decay</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">output_fn</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $`1`</span></span>
+<span><span class="co">#&gt; [1] 1.0 1.0 1.0 0.5 0.2 0.1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $`2`</span></span>
+<span><span class="co">#&gt; [1] 1.00 1.00 0.50 0.25 0.10 0.05</span></span>
+<span></span>
+<span><span class="co"># compare to the first and second custom decay functions</span></span>
+<span></span>
+<span><span class="fu">my_decay</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1.0 1.0 1.0 0.5 0.2 0.1</span></span>
+<span></span>
+<span><span class="fu">my_second_decay</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1.00 1.00 0.50 0.25 0.10 0.05</span></span></code></pre></div>
+<p>This new custom decay function is a bit more complex than the
+previous two, yet much more powerful. We can use it in conjunction with
+<code><a href="../reference/gravity.html">gravity()</a></code> (and the other accessibility functions that take
+decay functions as input as well) to calculate the accessibility with
+multiple decay parameters in a single call:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">third_custom_gravity</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gravity.html">gravity</a></span><span class="op">(</span></span>
+<span>  <span class="va">travel_matrix</span>,</span>
+<span>  <span class="va">land_use_data</span>,</span>
+<span>  opportunity <span class="op">=</span> <span class="st">"jobs"</span>,</span>
+<span>  travel_cost <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
+<span>  decay_function <span class="op">=</span> <span class="fu">my_third_decay</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">third_custom_gravity</span></span>
+<span><span class="co">#&gt;                    id decay_function_arg      jobs</span></span>
+<span><span class="co">#&gt;    1: 89a88cdb57bffff                  1 11210.421</span></span>
+<span><span class="co">#&gt;    2: 89a88cdb597ffff                  1 10775.769</span></span>
+<span><span class="co">#&gt;    3: 89a88cdb5b3ffff                  1 11480.254</span></span>
+<span><span class="co">#&gt;    4: 89a88cdb5cfffff                  1 12689.441</span></span>
+<span><span class="co">#&gt;    5: 89a88cd909bffff                  1 11361.664</span></span>
+<span><span class="co">#&gt;   ---                                             </span></span>
+<span><span class="co">#&gt; 1792: 89a881acda3ffff                  2  5621.512</span></span>
+<span><span class="co">#&gt; 1793: 89a88cdb543ffff                  2  7406.822</span></span>
+<span><span class="co">#&gt; 1794: 89a88cda667ffff                  2  5947.782</span></span>
+<span><span class="co">#&gt; 1795: 89a88cd900fffff                  2  4565.564</span></span>
+<span><span class="co">#&gt; 1796: 89a881aebafffff                  2     0.000</span></span></code></pre></div>
 <p>When we create our own custom decay function, we don’t have to think
 about general cases, just the cases that matter for us. Creating a
-simple function that converts one vector into another, therefore,
-suffices our needs. In both examples above, therefore, we’re passing a
-function to <code>decay_function</code> - one we created ourselves and
-another created by <code><a href="../reference/decay_power.html">decay_power()</a></code>.</p>
+simple function that converts one vector into another, therefore, might
+be enough, given our needs. If, however, you’re testing a new decay
+function and you want to check its sensitivity to different decay
+parameters, for example, you might be better off developing a decay
+function that can take many decay values as inputs and returns a list of
+weight vectors as output.</p>
 </div>
   </div>
 

@@ -78,19 +78,20 @@ such as distance, time and money.</p>
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>steps</dt>
-<dd><p>A <code>numeric</code> vector. The travel cost steps, in ascending order.
-Please do not include travel cost 0 as a step: this is already handled by
-the function.</p></dd>
+<dd><p>A <code>numeric</code> vector or a list of <code>numeric</code> vectors. The travel
+cost steps, in ascending order. Please do not include travel cost 0 as a
+step: this is already handled by the function.</p></dd>
 
 
 <dt>weights</dt>
-<dd><p>A <code>numeric</code> vector with same length as <code>steps</code>. The values,
-between 0 and 1, that the function assumes at each step. Please do not
-include weight 1 as the first value: this is already handled by the
-function. The function considers the steps' intervals "open on the right",
-meaning that the function assumes the step value at the actual step, not
-after it. Please see the illustrative examples for effects of this
-assumption on the results.</p></dd>
+<dd><p>A <code>numeric</code> vector with same length as <code>steps</code> or a list of
+<code>numeric</code> vectors whose lenghts are equal to the lengths of the elements of
+same index in <code>steps</code>. The values, between 0 and 1, that the function
+assumes at each step. Please do not include weight 1 as the first value:
+this is already handled by the function. The function considers the steps'
+intervals "open on the right", meaning that the function assumes the step
+value at the actual step, not right after it. Please see the illustrative
+examples for effects of this assumption on the results.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -100,6 +101,16 @@ assumption on the results.</p></dd>
 <p>A <code>function</code> that takes a generic travel cost vector (<code>numeric</code>) as
 an input and returns a vector of weights (<code>numeric</code>).</p>
     </div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>When both <code>steps</code> and <code>weights</code> parameters are given <code>list</code>s, their
+content are matched element-wise to define each stepped weighting function</p><ul><li><p>i.e. the first element of <code>steps</code> is matched to the first element of
+<code>weights</code>, the second element of <code>steps</code> is matched to the second of
+<code>weights</code>, etc. When using a function created with <code>decay_stepped()</code>, the
+output is named after the combination of steps (<code>"s"</code>) and weights (<code>"w"</code>)</p></li>
+<li><p>e.g. given the steps <code>c(10, 20, 30)</code> and the weights <code>c(0.66, 0.33, 0)</code>,
+the output will be named <code>"s(10,20,30);w(0.66,0.33,0)"</code>.</p></li>
+</ul></div>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p>Other decay functions: 
@@ -117,11 +128,31 @@ an input and returns a vector of weights (<code>numeric</code>).</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">weighting_function</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">25</span>, <span class="fl">35</span>, <span class="fl">45</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`s(10,20,30,40);w(0.75,0.5,0.25,0)`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.00 0.50 0.25 0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">weighting_function</span> <span class="op">&lt;-</span> <span class="fu">decay_stepped</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span>, <span class="fl">40</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span>, <span class="fl">40</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.75</span>, <span class="fl">0.5</span>, <span class="fl">0.25</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="fl">0.6</span>, <span class="fl">0.4</span>, <span class="fl">0.2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">weighting_function</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">25</span>, <span class="fl">35</span>, <span class="fl">45</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`s(10,20,30,40);w(0.75,0.5,0.25,0)`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.00 0.50 0.25 0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`s(10,20,30,40);w(0.8,0.6,0.4,0.2)`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0 0.6 0.4 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># intervals are open on the right, so the values change exactly at each step</span></span></span>
 <span class="r-in"><span><span class="fu">weighting_function</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span>, <span class="fl">40</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`s(10,20,30,40);w(0.75,0.5,0.25,0)`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.00 0.75 0.50 0.25 0.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`s(10,20,30,40);w(0.8,0.6,0.4,0.2)`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.0 0.8 0.6 0.4 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
