@@ -29,12 +29,23 @@ tester <- function(
 
 test_that("raises errors due to incorrect input", {
   expect_error(tester(interval = "banana"))
+
   expect_error(tester(interval = 3))
   expect_error(tester(interval = c(-1, 10)))
   expect_error(tester(interval = c(11, 10)))
   expect_error(tester(interval = c(10, 10)))
   expect_error(tester(interval = c(1, Inf)))
   expect_error(tester(interval = c(1, NA)))
+
+  expect_error(tester(interval = list("a")))
+  expect_error(tester(interval = list()))
+  expect_error(tester(interval = list(c(10, 20), c(10, 20))))
+  expect_error(tester(interval = list(3)))
+  expect_error(tester(interval = list(c(-1, 10))))
+  expect_error(tester(interval = list(c(11, 10))))
+  expect_error(tester(interval = list(c(10, 10))))
+  expect_error(tester(interval = list(c(1, Inf))))
+  expect_error(tester(interval = list(c(1, NA))))
 
   expect_error(tester(interval_increment = "a"))
   expect_error(tester(interval_increment = Inf))
@@ -169,7 +180,11 @@ test_that("active and passive accessibility is correctly calculated", {
     from_id %in% selected_ids & to_id %in% selected_ids
   ]
 
-  result <- tester(smaller_travel_matrix, interval = c(40, 45), group_by = "mode")
+  result <- tester(
+    smaller_travel_matrix,
+    interval = c(40, 45),
+    group_by = "mode"
+  )
   expected_result <- data.table::data.table(
     id = rep(selected_ids, 2),
     mode = rep(c("transit", "transit2"), each = 5),

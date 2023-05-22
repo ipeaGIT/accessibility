@@ -132,3 +132,62 @@ assert_interval_increment <- function(interval_increment) {
 
   return(invisible(TRUE))
 }
+
+
+#' @keywords internal
+assert_and_assign_interval <- function(interval) {
+  is_numeric_like <- function(x) is.numeric(x) || is.integer(x)
+
+  build_interval_name <- function(pair) {
+    paste0("[", pair[1], ",", pair[2], "]")
+  }
+
+  if (is.list(interval)) {
+    checkmate::assert_list(
+      interval,
+      types = "numeric",
+      any.missing = FALSE,
+      min.len = 1,
+      unique = TRUE
+    )
+
+    for (i in seq.int(length(interval))) {
+      checkmate::assert_numeric(
+        interval[[i]],
+        lower = 0,
+        any.missing = FALSE,
+        len = 2,
+        unique = TRUE,
+        sorted = TRUE,
+        finite = TRUE,
+        .var.name = paste0("interval[[", i, "]]")
+      )
+    }
+
+    names(interval) <- vapply(interval, build_interval_name, character(1))
+  } else if (is_numeric_like(interval)) {
+    checkmate::assert_numeric(
+      interval,
+      lower = 0,
+      any.missing = FALSE,
+      len = 2,
+      unique = TRUE,
+      sorted = TRUE,
+      finite = TRUE
+    )
+
+    interval <- list(interval)
+    names(interval) <- build_interval_name(interval[[1]])
+  } else {
+    stop(
+      "Assertion on 'interval' failed: Must be either:\n",
+      " - a numeric vector with 2 elements, indicating the start and end ",
+      "points of the travel cost interval;\n",
+      " - a list of numeric vectors with 2 elements, each one of them ",
+      "indicating the start and end points of a travel cost interval."
+    )
+  }
+
+  return(interval)
+}
+
