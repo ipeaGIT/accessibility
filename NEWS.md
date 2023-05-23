@@ -2,7 +2,7 @@
 
 ## New features
 
-- New function `spatial_availability()`.
+- New functions `spatial_availability()` and `balancing_cost()`.
 - `cost_to_closest()` parameter `n` now accepts a numeric vector, instead of
   being restricted to a single number.
 - `cumulative_cutoff()` parameter `cutoff` now accepts a numeric vector, instead
