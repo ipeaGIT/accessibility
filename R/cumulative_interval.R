@@ -164,7 +164,7 @@ cumulative_interval <- function(travel_matrix,
 
   if (exists("original_class")) class(access) <- original_class
 
-  return(access)
+  return(access[])
 }
 
 

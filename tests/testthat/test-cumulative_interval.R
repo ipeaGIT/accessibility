@@ -150,6 +150,13 @@ test_that("result has correct structure", {
   expect_is(result$id, "character")
   expect_is(result$mode, "character")
   expect_is(result$jobs, "integer")
+
+  result <- tester(interval = list(c(10, 30), c(20, 30)))
+  expect_true(ncol(result) == 4)
+  expect_is(result$id, "character")
+  expect_is(result$mode, "character")
+  expect_is(result$interval, "character")
+  expect_is(result$jobs, "integer")
 })
 
 test_that("input data sets remain unchanged", {
@@ -203,6 +210,42 @@ test_that("active and passive accessibility is correctly calculated", {
     id = rep(selected_ids, 2),
     mode = rep(c("transit", "transit2"), each = 5),
     population = rep(as.integer(c(1538, 3336, 2404, 4268, 29)), 2)
+  )
+  expect_identical(result, expected_result)
+
+  # with more than one interval
+
+  result <- tester(
+    smaller_travel_matrix,
+    interval = list(c(40, 45), c(40, 50)),
+    group_by = "mode"
+  )
+  expected_result <- data.table::data.table(
+    id = rep(selected_ids, 4),
+    mode = rep(rep(c("transit", "transit2"), each = 5), 2),
+    interval = rep(c("[40,45]", "[40,50]"), each = 10),
+    jobs = c(
+      rep(as.integer(c(82, 517, 517, 304, 0)), 2),
+      rep(as.integer(c(82, 599, 599, 499, 0)), 2)
+    )
+  )
+  expect_identical(result, expected_result)
+
+  result <- tester(
+    smaller_travel_matrix,
+    interval = list(c(40, 45), c(40, 50)),
+    opportunity = "population",
+    group_by = "mode",
+    active = FALSE
+  )
+  expected_result <- data.table::data.table(
+    id = rep(selected_ids, 4),
+    mode = rep(rep(c("transit", "transit2"), each = 5), 2),
+    interval = rep(c("[40,45]", "[40,50]"), each = 10),
+    population = c(
+      rep(as.integer(c(1538, 3336, 2404, 4268, 29)), 2),
+      rep(as.integer(c(4874, 4268, 2404, 4268, 29)), 2)
+    )
   )
   expect_identical(result, expected_result)
 })
