@@ -2,7 +2,7 @@
 % Please edit documentation in R/balancing_cost.R
 \name{balancing_cost}
 \alias{balancing_cost}
-\title{Balancing cost}
+\title{Balancing cost accessibility measure}
 \usage{
 balancing_cost(
   travel_matrix,
@@ -10,7 +10,7 @@ balancing_cost(
   opportunity,
   travel_cost,
   demand,
-  max_lookup_cost,
+  cost_increment = 1,
   group_by = character(0),
   fill_missing_ids = TRUE
 )
@@ -37,7 +37,16 @@ with the travel cost between origins and destinations. Defaults to
 number of people in each origin that will be considered potential
 competitors.}
 
-\item{max_lookup_cost}{A numeric.}
+\item{cost_increment}{A number. The cost increment that should be used when
+defining the travel cost distribution from which the potential balancing
+costs will be picked. For example, an increment of 1 tends to suitable for
+travel time distributions, meaning that the function will first check if
+any origins reach their balancing cost with a travel time of 0 minutes,
+then 1 minute, 2 minutes, 3, 4, ..., etc. A increment of 1 might be too big
+for a distribution of monetary costs, on the other hand, which could
+possibly benefit from a smaller increment of 0.05, for example, resulting
+in the function looking for balancing costs first at a cost of 0, then
+0.05, 0.10, ..., etc. Defaults to 1.}
 
 \item{group_by}{A \code{character} vector. When not \code{character(0)} (the default),
 indicates the \code{travel_matrix} columns that should be used to group the
@@ -60,10 +69,18 @@ performance penalty.}
 A data frame containing the accessibility estimates for each
 origin/destination (depending if \code{active} is \code{TRUE} or \code{FALSE}) in the
 travel matrix.
+
+A data frame containing the accessibility estimates for each origin
+in the travel matrix. Origins marked with a \code{NA} balancing cost never reach
+as many opportunities as there is people residing in them, given the
+specified travel matrix.
 }
 \description{
-Balancing cost measure. Originally proposed by
-\insertCite{barboza2021balancing;textual}{accessibility}.
+Calculates the balancing cost measure, which is defined as the travel cost
+required to reach as many opportunities as the number of people in a given
+origin. Originally proposed by
+\insertCite{barboza2021balancing;textual}{accessibility}, under the name
+"balancing time".
 
 This function is generic over any kind of numeric travel cost,
 such as distance, time and money.
@@ -73,6 +90,14 @@ data_dir <- system.file("extdata", package = "accessibility")
 travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
 land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
 
+bc <- balancing_cost(
+  travel_matrix,
+  land_use_data,
+  opportunity = "jobs",
+  travel_cost = "travel_time",
+  demand = "population"
+)
+head(bc)
 }
 \references{
 \insertAllCited{}

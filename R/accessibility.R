@@ -53,7 +53,9 @@ utils::globalVariables(
     "demand_bal_fac",
     "impedance_bal_fac",
     "combined_bal_fac",
-    "decay_function_arg"
+    "decay_function_arg",
+    "cost",
+    "did_balance"
   )
 )
 
