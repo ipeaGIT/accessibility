@@ -179,7 +179,24 @@ test_that("fill_missing_ids arg works correctly", {
   )
 })
 
-# test if cost_increment is working alright
+test_that("cost_increment arg works correctly", {
+  selected_ids <- c(
+    "89a88cda64fffff",
+    "89a88cdb027ffff",
+    "89a88cdb12bffff",
+    "89a88cdb287ffff",
+    "89a88cdb67bffff"
+  )
+  smaller_ttm <- travel_matrix[
+    from_id %in% selected_ids & to_id %in% selected_ids
+  ]
+
+  result <- tester(smaller_ttm)
+  expect_false(all(result$travel_time %% 2 == 0))
+
+  result <- tester(smaller_ttm, cost_increment = 2)
+  expect_true(all(result$travel_time %% 2 == 0))
+})
 
 test_that("works even if travel_matrix and land_use has specific colnames", {
   expected_result <- tester()
