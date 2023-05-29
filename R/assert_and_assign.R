@@ -9,6 +9,16 @@ assert_group_by <- function(group_by) {
 
 
 #' @keywords internal
+assert_access_group_by <- function(group_by) {
+  checkmate::assert_character(group_by, any.missing = FALSE, unique = TRUE)
+
+  checkmate::assert_names(group_by, disjunct.from = "id")
+
+  return(invisible(TRUE))
+}
+
+
+#' @keywords internal
 assert_travel_matrix <- function(travel_matrix, travel_cost, group_by) {
   travel_matrix_req_names <- c("from_id", "to_id", travel_cost, group_by)
   checkmate::assert_data_frame(travel_matrix)
@@ -16,6 +26,23 @@ assert_travel_matrix <- function(travel_matrix, travel_cost, group_by) {
     names(travel_matrix),
     must.include = travel_matrix_req_names,
     .var.name = "travel_matrix"
+  )
+
+  return(invisible(TRUE))
+}
+
+
+#' @keywords internal
+assert_accessibility_data <- function(accessibility_data,
+                                      opportunity,
+                                      group_by) {
+  required_names <- c("id", opportunity, group_by)
+
+  checkmate::assert_data_frame(accessibility_data)
+  checkmate::assert_names(
+    names(accessibility_data),
+    must.include = required_names,
+    .var.name = "accessibility_data"
   )
 
   return(invisible(TRUE))
@@ -34,6 +61,23 @@ assert_land_use_data <- function(land_use_data, opportunity, demand = NULL) {
     names(land_use_data),
     must.include = land_use_data_req_names,
     .var.name = "land_use_data"
+  )
+
+  return(invisible(TRUE))
+}
+
+
+#' @keywords internal
+assert_sociodemographic_data <- function(sociodemographic_data,
+                                         population,
+                                         income) {
+  required_names <- c("id", population, income)
+
+  checkmate::assert_data_frame(sociodemographic_data)
+  checkmate::assert_names(
+    names(sociodemographic_data),
+    must.include = required_names,
+    .var.name = "sociodemographic_data"
   )
 
   return(invisible(TRUE))
