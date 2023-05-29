@@ -155,7 +155,6 @@ test_that("input data sets remain unchanged", {
 
   expect_equal(original_travel_matrix, travel_matrix)
   expect_equal(original_land_use_data, land_use_data)
-
 })
 
 test_that("fill_missing_ids arg works correctly", {
@@ -174,7 +173,7 @@ test_that("fill_missing_ids arg works correctly", {
     data.table::data.table(
       id = rep(c("89a88cdb57bffff", "89a88cdb597ffff"), each = 2),
       mode = rep(c("transit", "transit2"), times = 2),
-      jobs = c(288L, 0L, 137L, 200L)
+      jobs = c(233L, 0L, 195L, 372L)
     )
   )
 
@@ -185,7 +184,7 @@ test_that("fill_missing_ids arg works correctly", {
     data.table::data.table(
       id = c("89a88cdb57bffff", "89a88cdb597ffff", "89a88cdb597ffff"),
       mode = c("transit", "transit", "transit2"),
-      jobs = c(288L, 137L, 200L)
+      jobs = c(233L, 195L, 372L)
     )
   )
 })
@@ -211,7 +210,7 @@ test_that("accepts custom decay function", {
     data.table::data.table(
       id = rep(selected_ids, 2),
       mode = rep(c("transit", "transit2"), each = 5),
-      jobs = 0.1222
+      jobs = 0.1108
     )
   )
 })
@@ -235,7 +234,7 @@ test_that("calculates 2sfca correctly", {
     data.table::data.table(
       id = rep(selected_ids, 2),
       mode = rep(c("transit", "transit2"), each = 5),
-      jobs = c(0.0168, 0.1561, 0.1561, 0.1145, 0)
+      jobs = c(0.0152, 0.1491, 0.1491, 0.1068, 0)
     )
   )
 })
@@ -259,7 +258,7 @@ test_that("calculates bfca correctly", {
     data.table::data.table(
       id = rep(selected_ids, 2),
       mode = rep(c("transit", "transit2"), each = 5),
-      jobs = c(0.0112, 0.2081, 0.2081, 0.1249, 0)
+      jobs = c(0.0094, 0.1993, 0.1993, 0.1147, 0)
     )
   )
 })
@@ -318,7 +317,7 @@ test_that("results are grouped by decay_function_arg when needed", {
       id = rep(c("89a88cdb57bffff", "89a88cdb597ffff"), times = 2),
       mode = rep("transit", 4),
       decay_function_arg = rep(c(0.5, 0.6), each = 2),
-      jobs = c(605.65, 175.79, 614.1, 168.81)
+      jobs = c(456.32, 272.26, 456.85, 271.10)
     )
   )
 })

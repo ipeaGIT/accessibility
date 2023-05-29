@@ -209,7 +209,7 @@ test_that("active and passive accessibility is correctly calculated", {
   expected_result <- data.table::data.table(
     id = rep(selected_ids, 2),
     mode = rep(c("transit", "transit2"), each = 5),
-    population = rep(as.integer(c(1538, 3336, 2404, 4268, 29)), 2)
+    population = rep(as.integer(c(1946, 3457, 2363, 4552, 0)), 2)
   )
   expect_identical(result, expected_result)
 
@@ -243,8 +243,8 @@ test_that("active and passive accessibility is correctly calculated", {
     mode = rep(rep(c("transit", "transit2"), each = 5), 2),
     interval = rep(c("[40,45]", "[40,50]"), each = 10),
     population = c(
-      rep(as.integer(c(1538, 3336, 2404, 4268, 29)), 2),
-      rep(as.integer(c(4874, 4268, 2404, 4268, 29)), 2)
+      rep(as.integer(c(1946, 3457, 2363, 4552, 0)), 2),
+      rep(as.integer(c(5404, 4552, 2363, 4552, 0)), 2)
     )
   )
   expect_identical(result, expected_result)

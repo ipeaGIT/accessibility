@@ -171,7 +171,7 @@ test_that("fill_missing_ids arg works correctly", {
     data.table::data.table(
       id = rep(c("89a88cdb57bffff", "89a88cdb597ffff"), each = 2),
       mode = rep(c("transit", "transit2"), times = 2),
-      jobs = c(271899L, 0L, 224153L, 496053L)
+      jobs = c(362330L, 0L, 133722L, 496053L)
     )
   )
 
@@ -182,7 +182,7 @@ test_that("fill_missing_ids arg works correctly", {
     data.table::data.table(
       id = c("89a88cdb57bffff", "89a88cdb597ffff", "89a88cdb597ffff"),
       mode = c("transit", "transit", "transit2"),
-      jobs = c(271899L, 224153L, 496053L)
+      jobs = c(362330L, 133722L, 496053L)
     )
   )
 })
@@ -208,7 +208,7 @@ test_that("accepts custom decay function", {
     data.table::data.table(
       id = rep(selected_ids, 2),
       mode = rep(c("transit", "transit2"), each = 5),
-      jobs = rep(c(74, 90, 204, 228, 4))
+      jobs = rep(c(94, 44, 218, 243, 0))
     )
   )
 })
@@ -296,7 +296,7 @@ test_that("results are grouped by decay_function_arg when needed", {
       id = rep(c("89a88cdb57bffff", "89a88cdb597ffff"), times = 2),
       mode = rep("transit", 4),
       decay_function_arg = rep(c(0.5, 0.6), each = 2),
-      jobs = c(367025.8, 129027.2, 372144.5, 123908.5)
+      jobs = c(388780.8, 107272.2, 389238.9, 106814.1)
     )
   )
 })
