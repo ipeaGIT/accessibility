@@ -104,7 +104,12 @@ cumulative_interval <- function(travel_matrix,
   .cost_colname <- travel_cost
   data <- data[get(.cost_colname) <= max(cutoffs)]
 
-  merge_by_reference(data, land_use_data, opportunity, active)
+  merge_by_reference(
+    data,
+    land_use_data,
+    opportunity,
+    left_df_idcol = ifelse(active, "to_id", "from_id")
+  )
 
   group_id <- ifelse(active, "from_id", "to_id")
   groups <- c(group_id, group_by)

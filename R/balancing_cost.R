@@ -78,7 +78,7 @@ balancing_cost <- function(travel_matrix,
     land_use_data <- data.table::as.data.table(land_use_data)
   }
 
-  merge_by_reference(data, land_use_data, opportunity, active = TRUE)
+  merge_by_reference(data, land_use_data, opportunity, left_df_idcol = "to_id")
 
   groups <- c("from_id", group_by)
   warn_extra_cols(travel_matrix, travel_cost, "from_id", groups)

@@ -105,8 +105,8 @@ floating_catchment_area <- function(travel_matrix,
     land_use_data <- data.table::as.data.table(land_use_data)
   }
 
-  merge_by_reference(data, land_use_data, opportunity, active = TRUE)
-  merge_by_reference(data, land_use_data, demand, active = FALSE)
+  merge_by_reference(data, land_use_data, opportunity, left_df_idcol = "to_id")
+  merge_by_reference(data, land_use_data, demand, left_df_idcol = "from_id")
 
   data <- apply_gravity_measure(data, decay_function, travel_cost)
 

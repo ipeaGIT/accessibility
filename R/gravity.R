@@ -69,7 +69,12 @@ gravity <- function(travel_matrix,
     land_use_data <- data.table::as.data.table(land_use_data)
   }
 
-  merge_by_reference(data, land_use_data, opportunity, active)
+  merge_by_reference(
+    data,
+    land_use_data,
+    opportunity,
+    left_df_idcol = ifelse(active, "to_id", "from_id")
+  )
 
   data <- apply_gravity_measure(data, decay_function, travel_cost)
 
