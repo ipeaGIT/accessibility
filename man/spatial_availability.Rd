@@ -20,19 +20,18 @@ spatial_availability(
 \item{travel_matrix}{A data frame. The travel matrix describing the costs
 (i.e. travel time, distance, monetary cost, etc.) between the origins and
 destinations in the study area. Must contain the columns \code{from_id}, \code{to_id}
-and any others specified in \code{travel_cost_col}.}
+and any others specified in \code{travel_cost}.}
 
 \item{land_use_data}{A data frame. The distribution of opportunities within
 the study area cells. Must contain the columns \code{id} and any others
-specified in \code{opportunity_col}.}
+specified in \code{opportunity}.}
 
 \item{opportunity}{A string. The name of the column in \code{land_use_data}
 with the number of opportunities/resources/services to be considered when
 calculating accessibility levels.}
 
 \item{travel_cost}{A string. The name of the column in \code{travel_matrix}
-with the travel cost between origins and destinations. Defaults to
-\code{"travel_time"}.}
+with the travel cost between origins and destinations.}
 
 \item{demand}{A string. The name of the column in \code{land_use_data} with the
 number of people in each origin that will be considered potential
