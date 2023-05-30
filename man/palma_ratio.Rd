@@ -2,7 +2,7 @@
 % Please edit documentation in R/palma_ratio.R
 \name{palma_ratio}
 \alias{palma_ratio}
-\title{Palma ratio}
+\title{Palma Ratio}
 \usage{
 palma_ratio(
   accessibility_data,
@@ -13,8 +13,46 @@ palma_ratio(
   group_by = character(0)
 )
 }
+\arguments{
+\item{accessibility_data}{A data frame. The accessibility levels whose
+inequality should be calculated. Must contain the columns \code{id} and any
+others specified in \code{opportunity}.}
+
+\item{sociodemographic_data}{A data frame. The distribution of
+sociodemographic characteristics of the population in the study area cells.
+Must contain the columns \code{id} and any others specified in \code{population} and
+\code{income}.}
+
+\item{opportunity}{A string. The name of the column in \code{accessibility_data}
+with the accessibility levels to be considerend when calculating inequality
+levels.}
+
+\item{population}{A string. The name of the column in \code{sociodemographic_data}
+with the number of people in each cell. Used to weigh accessibility levels
+when calculating inequality.}
+
+\item{income}{A string. The name of column in \code{sociodemographic_data} with
+the income variable that should be used to classify the population in
+socioeconomic groups. Please note that this variable should describe income
+per capita (e.g. mean income per capita, household income per
+capita, etc), instead of the total amount of income in each cell.}
+
+\item{group_by}{A \code{character} vector. When not \code{character(0)} (the default),
+indicates the \code{accessibility_data} columns that should be used to group the
+inequality estimates by. For example, if \code{accessibility_data} includes a
+\code{departure_time} column that specifies the departure time that each entry
+refers to, passing \code{"departure_time"} to this parameter results in
+inequality estimates grouped by departure time.}
+}
+\value{
+A data frame containing the inequality estimates for the study area.
+}
 \description{
-Palma ratio
+Calculates the Palma Ratio of a given accessibility distribution. Originally
+defined as the income share of the richest 10\% of a population divided by the
+income share of the poorest 40\%, this measure has been adapted in transport
+planning as the average accessibility of the richest 10\% divided by the
+average accessibility of the poorest 40\%.
 }
 \examples{
 data_dir <- system.file("extdata", package = "accessibility")

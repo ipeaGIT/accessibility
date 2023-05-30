@@ -2,7 +2,9 @@
 
 ## New features
 
-- New functions `spatial_availability()` and `balancing_cost()`.
+- The package now includes functions to estimate accessibility inequalities
+  (`palma_ratio()`).
+- New accessibility functions `spatial_availability()` and `balancing_cost()`.
 - `cost_to_closest()` parameter `n` now accepts a numeric vector, instead of
   being restricted to a single number.
 - `cumulative_cutoff()` parameter `cutoff` now accepts a numeric vector, instead
@@ -17,6 +19,8 @@
 ## Bug fixes
 
 ## Notes
+
+- Varios documentation tweaks.
 
 # accessibility 1.0.1
 
