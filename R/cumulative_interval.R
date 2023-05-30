@@ -34,7 +34,7 @@
 #' @references
 #' \insertAllCited{}
 #'
-#' @examplesIf requireNamespace("stats", quietly = TRUE)
+#' @examples
 #' data_dir <- system.file("extdata", package = "accessibility")
 #' travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
 #' land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))

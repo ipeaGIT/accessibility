@@ -26,7 +26,9 @@ Depends:
 Imports:
     checkmate,
     data.table,
+    Hmisc,
     Rdpack (>= 0.7),
+    stats,
     utils
 Suggests: 
     covr,
@@ -34,7 +36,6 @@ Suggests:
     knitr,
     rmarkdown,
     sf,
-    stats,
     testthat
 VignetteBuilder: 
     knitr

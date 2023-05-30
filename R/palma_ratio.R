@@ -21,6 +21,8 @@
 #'   income = "income_per_capita"
 #' )
 #' palma
+#'
+#' @export
 palma_ratio <- function(accessibility_data,
                         sociodemographic_data,
                         opportunity,
@@ -71,28 +73,50 @@ palma_ratio <- function(accessibility_data,
     .palma_group := "wealthiest"
   ]
 
-  # actually we have to calculate grouping by group_by, then join the datasets
-
   .opportunity_colname <- opportunity
-  wealthiest_avg_access <- data[
+  .population_colname <- population
+  wealthiest_access <- data[
     .palma_group == "wealthiest",
-    .(avg_access = weighted.mean(get(.opportunity_colname), w = population)),
+    .(
+      avg_access = stats::weighted.mean(
+        get(.opportunity_colname),
+        w = get(.population_colname)
+      )
+    ),
     by = group_by
   ]
-  poorest_avg_access <- data[
+  poorest_access <- data[
     .palma_group == "poorest",
-    .(avg_access = weighted.mean(get(.opportunity_colname), w = population)),
+    .(
+      avg_access = stats::weighted.mean(
+        get(.opportunity_colname),
+        w = get(.population_colname)
+      )
+    ),
     by = group_by
   ]
 
   if (identical(group_by, character(0))) {
-    palma <- data.table::data.table(
-      palma_ratio = wealthiest_avg_access$avg_access /
-        poorest_avg_access$avg_access
-    )
+    pr <- if (
+      (nrow(wealthiest_access) == 0 || nrow(poorest_access) == 0) &&
+        nrow(data) > 0
+    ) {
+      NA_real_
+    } else {
+      wealthiest_access$avg_access / poorest_access$avg_access
+    }
+
+    palma <- data.table::data.table(palma_ratio = pr)
   } else {
-    palma <- wealthiest_avg_access[
-      poorest_avg_access,
+    # if wealthiest_access is missing data on any of the groups, the result is
+    # that this group will be missing from the final output, even though its
+    # palma should be NA. thus, we have to fill wealthiest_access with missing
+    # groups
+
+    wealthiest_access <- fill_groups(wealthiest_access, data, group_by)
+
+    palma <- wealthiest_access[
+      poorest_access,
       on = group_by,
       poorest_avg_access := i.avg_access
     ]
@@ -104,4 +128,21 @@ palma_ratio <- function(accessibility_data,
   if (exists("original_class")) class(palma) <- original_class
 
   return(palma[])
+}
+
+fill_groups <- function(wealthiest_access, data, group_by) {
+  unique_values <- lapply(group_by, function(x) unique(data[[x]]))
+  names(unique_values) <- group_by
+
+  possible_combinations <- do.call(data.table::CJ, unique_values)
+
+  if (nrow(possible_combinations) > nrow(wealthiest_access)) {
+    wealthiest_access <- possible_combinations[
+      wealthiest_access,
+      on = group_by,
+      avg_access := i.avg_access
+    ]
+  }
+
+  return(wealthiest_access[])
 }

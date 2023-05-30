@@ -55,7 +55,11 @@ utils::globalVariables(
     "combined_bal_fac",
     "decay_function_arg",
     "cost",
-    "did_balance"
+    "did_balance",
+    "avg_access",
+    "i.avg_access",
+    ".palma_group",
+    "poorest_avg_access"
   )
 )
 

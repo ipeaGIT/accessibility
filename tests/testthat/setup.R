@@ -7,3 +7,12 @@ travel_matrix <- data.table::rbindlist(travel_matrix_list, idcol = "mode")
 smaller_matrix <- travel_matrix[1:10]
 
 land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
+
+small_access <- cumulative_cutoff(
+  smaller_matrix,
+  land_use_data,
+  opportunity = "jobs",
+  travel_cost = "travel_time",
+  cutoff = 30,
+  group_by = "mode"
+)

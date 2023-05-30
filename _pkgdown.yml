@@ -11,3 +11,5 @@ reference:
   - title: "Decay functions"
   - contents:
     - starts_with("decay_")
+  - title: "Inequality"
+    - palma_ratio

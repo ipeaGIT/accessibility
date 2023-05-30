@@ -77,7 +77,6 @@ This function is generic over any kind of numeric travel cost,
 such as distance, time and money.
 }
 \examples{
-\dontshow{if (requireNamespace("stats", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 data_dir <- system.file("extdata", package = "accessibility")
 travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
 land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
@@ -99,7 +98,7 @@ df <- cumulative_interval(
   travel_cost = "travel_time"
 )
 head(df)
-\dontshow{\}) # examplesIf}
+
 }
 \references{
 \insertAllCited{}
