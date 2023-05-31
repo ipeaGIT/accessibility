@@ -98,13 +98,13 @@ such as distance, time and money.</p>
 <dd><p>A data frame. The travel matrix describing the costs
 (i.e. travel time, distance, monetary cost, etc.) between the origins and
 destinations in the study area. Must contain the columns <code>from_id</code>, <code>to_id</code>
-and any others specified in <code>travel_cost_col</code>.</p></dd>
+and any others specified in <code>travel_cost</code>.</p></dd>
 
 
 <dt>land_use_data</dt>
 <dd><p>A data frame. The distribution of opportunities within
 the study area cells. Must contain the columns <code>id</code> and any others
-specified in <code>opportunity_col</code>.</p></dd>
+specified in <code>opportunity</code>.</p></dd>
 
 
 <dt>opportunity</dt>
@@ -115,8 +115,7 @@ calculating accessibility levels.</p></dd>
 
 <dt>travel_cost</dt>
 <dd><p>A string. The name of the column in <code>travel_matrix</code>
-with the travel cost between origins and destinations. Defaults to
-<code>"travel_time"</code>.</p></dd>
+with the travel cost between origins and destinations.</p></dd>
 
 
 <dt>demand</dt>
@@ -197,11 +196,11 @@ ISSN 09666923, <a href="https://doi.org/10.1016/j.jtrangeo.2020.102924" class="e
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">bc</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 id travel_time</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a881a5a2bffff          20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a881a5a2bffff          15</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a881a5a2fffff          13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a881a5a67ffff          24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a881a5a67ffff          23</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a881a5a6bffff           7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a881a5a6fffff          11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a881a5a6fffff          10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a881a5b03ffff           6</span>
 </code></pre></div>
     </div>

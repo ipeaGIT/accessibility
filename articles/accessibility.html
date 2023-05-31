@@ -227,13 +227,13 @@ dataset we’ll be using looks like this:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">land_use_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data_dir</span>, <span class="st">"land_use_data.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">land_use_data</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                 id population jobs schools</span></span>
-<span><span class="co">#&gt; 1: 89a88cdb57bffff        606   82       0</span></span>
-<span><span class="co">#&gt; 2: 89a88cdb597ffff        734  308       2</span></span>
-<span><span class="co">#&gt; 3: 89a88cdb5b3ffff       1670  100       0</span></span>
-<span><span class="co">#&gt; 4: 89a88cdb5cfffff       1864  109       0</span></span>
-<span><span class="co">#&gt; 5: 89a88cd909bffff         29    0       0</span></span>
-<span><span class="co">#&gt; 6: 89a88cd90b7ffff       1117  480       0</span></span></code></pre></div>
+<span><span class="co">#&gt;                 id population jobs schools income_per_capita</span></span>
+<span><span class="co">#&gt; 1: 89a881a5a2bffff        381  180       0           22369.1</span></span>
+<span><span class="co">#&gt; 2: 89a881a5a2fffff        269  134       0            3205.1</span></span>
+<span><span class="co">#&gt; 3: 89a881a5a67ffff        929  143       0           11394.0</span></span>
+<span><span class="co">#&gt; 4: 89a881a5a6bffff        249   61       0            3659.8</span></span>
+<span><span class="co">#&gt; 5: 89a881a5a6fffff        176   11       0            4905.1</span></span>
+<span><span class="co">#&gt; 6: 89a881a5b03ffff        681 1071       0            2200.2</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="minimum-travel-cost">Minimum travel cost<a class="anchor" aria-label="anchor" href="#minimum-travel-cost"></a>
@@ -305,12 +305,12 @@ and set <code>active</code> (<code>TRUE</code> by default) to
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">passive_cum_cutoff</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 id population</span></span>
-<span><span class="co">#&gt; 1: 89a881a5a2bffff      10247</span></span>
-<span><span class="co">#&gt; 2: 89a881a5a2fffff      29882</span></span>
-<span><span class="co">#&gt; 3: 89a881a5a67ffff      12871</span></span>
-<span><span class="co">#&gt; 4: 89a881a5a6bffff      14361</span></span>
-<span><span class="co">#&gt; 5: 89a881a5a6fffff      15210</span></span>
-<span><span class="co">#&gt; 6: 89a881a5b03ffff      67648</span></span></code></pre></div>
+<span><span class="co">#&gt; 1: 89a881a5a2bffff      11053</span></span>
+<span><span class="co">#&gt; 2: 89a881a5a2fffff      31903</span></span>
+<span><span class="co">#&gt; 3: 89a881a5a67ffff      12488</span></span>
+<span><span class="co">#&gt; 4: 89a881a5a6bffff      14474</span></span>
+<span><span class="co">#&gt; 5: 89a881a5a6fffff      15053</span></span>
+<span><span class="co">#&gt; 6: 89a881a5b03ffff      69582</span></span></code></pre></div>
 <p>The <code>active</code> parameter is available in most other
 accessibility functions as well (with the exception of
 <code><a href="../reference/floating_catchment_area.html">floating_catchment_area()</a></code>), making it very easy to
@@ -414,12 +414,12 @@ jobs and using a negative exponential decay function.</p>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">bfca</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 id       jobs</span></span>
-<span><span class="co">#&gt; 1: 89a88cdb57bffff 0.11894791</span></span>
-<span><span class="co">#&gt; 2: 89a88cdb597ffff 0.24251324</span></span>
-<span><span class="co">#&gt; 3: 89a88cdb5b3ffff 0.07459233</span></span>
-<span><span class="co">#&gt; 4: 89a88cdb5cfffff 0.10470062</span></span>
-<span><span class="co">#&gt; 5: 89a88cd909bffff 0.07549538</span></span>
-<span><span class="co">#&gt; 6: 89a88cd90b7ffff 0.82935888</span></span></code></pre></div>
+<span><span class="co">#&gt; 1: 89a88cdb57bffff 0.10280082</span></span>
+<span><span class="co">#&gt; 2: 89a88cdb597ffff 0.30930287</span></span>
+<span><span class="co">#&gt; 3: 89a88cdb5b3ffff 0.07288551</span></span>
+<span><span class="co">#&gt; 4: 89a88cdb5cfffff 0.09759117</span></span>
+<span><span class="co">#&gt; 5: 89a88cd909bffff 0.07390234</span></span>
+<span><span class="co">#&gt; 6: 89a88cd90b7ffff 1.22525579</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="spatial-availability">Spatial availability<a class="anchor" aria-label="anchor" href="#spatial-availability"></a>
@@ -443,13 +443,13 @@ origin-destination pairs.</p>
 <span>  decay_function <span class="op">=</span> <span class="fu"><a href="../reference/decay_exponential.html">decay_exponential</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">spatial_avlblt</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                 id       jobs</span></span>
-<span><span class="co">#&gt; 1: 89a88cdb57bffff 134.731975</span></span>
-<span><span class="co">#&gt; 2: 89a88cdb597ffff 266.957499</span></span>
-<span><span class="co">#&gt; 3: 89a88cdb5b3ffff 638.826290</span></span>
-<span><span class="co">#&gt; 4: 89a88cdb5cfffff 782.888096</span></span>
-<span><span class="co">#&gt; 5: 89a88cd909bffff   7.623068</span></span>
-<span><span class="co">#&gt; 6: 89a88cd90b7ffff 482.043074</span></span></code></pre></div>
+<span><span class="co">#&gt;                 id     jobs</span></span>
+<span><span class="co">#&gt; 1: 89a88cdb57bffff 186.0876</span></span>
+<span><span class="co">#&gt; 2: 89a88cdb597ffff 140.0738</span></span>
+<span><span class="co">#&gt; 3: 89a88cdb5b3ffff 736.5830</span></span>
+<span><span class="co">#&gt; 4: 89a88cdb5cfffff 900.9284</span></span>
+<span><span class="co">#&gt; 5: 89a88cd909bffff   0.0000</span></span>
+<span><span class="co">#&gt; 6: 89a88cd90b7ffff 204.7962</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="visualize-results">Visualize results<a class="anchor" aria-label="anchor" href="#visualize-results"></a>

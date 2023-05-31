@@ -93,13 +93,13 @@ such as distance, time and money.</p>
 <dd><p>A data frame. The travel matrix describing the costs
 (i.e. travel time, distance, monetary cost, etc.) between the origins and
 destinations in the study area. Must contain the columns <code>from_id</code>, <code>to_id</code>
-and any others specified in <code>travel_cost_col</code>.</p></dd>
+and any others specified in <code>travel_cost</code>.</p></dd>
 
 
 <dt>land_use_data</dt>
 <dd><p>A data frame. The distribution of opportunities within
 the study area cells. Must contain the columns <code>id</code> and any others
-specified in <code>opportunity_col</code>.</p></dd>
+specified in <code>opportunity</code>.</p></dd>
 
 
 <dt>opportunity</dt>
@@ -110,8 +110,7 @@ calculating accessibility levels.</p></dd>
 
 <dt>travel_cost</dt>
 <dd><p>A string. The name of the column in <code>travel_matrix</code>
-with the travel cost between origins and destinations. Defaults to
-<code>"travel_time"</code>.</p></dd>
+with the travel cost between origins and destinations.</p></dd>
 
 
 <dt>demand</dt>
@@ -217,12 +216,12 @@ ISSN 02779536, <a href="https://doi.org/10.1016/j.socscimed.2021.113773" class="
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 id      jobs</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a88cdb57bffff 0.4357418</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a88cdb597ffff 0.3938630</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a88cdb5b3ffff 0.4589910</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a88cdb5cfffff 0.5469433</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a88cd909bffff 0.4358530</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a88cd90b7ffff 0.5271746</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a88cdb57bffff 0.4278111</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a88cdb597ffff 0.3863614</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a88cdb5b3ffff 0.4501725</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a88cdb5cfffff 0.5366707</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a88cd909bffff 0.4280401</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a88cd90b7ffff 0.5176583</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># BFCA with an exponential decay function</span></span></span>
@@ -237,12 +236,12 @@ ISSN 02779536, <a href="https://doi.org/10.1016/j.socscimed.2021.113773" class="
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 id       jobs</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a88cdb57bffff 0.11894791</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a88cdb597ffff 0.24251324</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a88cdb5b3ffff 0.07459233</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a88cdb5cfffff 0.10470062</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a88cd909bffff 0.07549538</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a88cd90b7ffff 0.82935888</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a88cdb57bffff 0.10280082</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a88cdb597ffff 0.30930287</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a88cdb5b3ffff 0.07288551</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a88cdb5cfffff 0.09759117</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a88cd909bffff 0.07390234</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a88cd90b7ffff 1.22525579</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

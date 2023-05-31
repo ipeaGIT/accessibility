@@ -88,13 +88,13 @@ such as distance, time and money.</p>
 <dd><p>A data frame. The travel matrix describing the costs
 (i.e. travel time, distance, monetary cost, etc.) between the origins and
 destinations in the study area. Must contain the columns <code>from_id</code>, <code>to_id</code>
-and any others specified in <code>travel_cost_col</code>.</p></dd>
+and any others specified in <code>travel_cost</code>.</p></dd>
 
 
 <dt>land_use_data</dt>
 <dd><p>A data frame. The distribution of opportunities within
 the study area cells. Must contain the columns <code>id</code> and any others
-specified in <code>opportunity_col</code>.</p></dd>
+specified in <code>opportunity</code>.</p></dd>
 
 
 <dt>opportunity</dt>
@@ -105,8 +105,7 @@ calculating accessibility levels.</p></dd>
 
 <dt>travel_cost</dt>
 <dd><p>A string. The name of the column in <code>travel_matrix</code>
-with the travel cost between origins and destinations. Defaults to
-<code>"travel_time"</code>.</p></dd>
+with the travel cost between origins and destinations.</p></dd>
 
 
 <dt>n</dt>
