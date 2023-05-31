@@ -12,4 +12,5 @@ reference:
   - contents:
     - starts_with("decay_")
   - title: "Inequality"
+  - contents:
     - palma_ratio
