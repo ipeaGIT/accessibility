@@ -106,15 +106,25 @@ calculating accessibility levels.</p></dd>
 
 
 <dt>travel_cost</dt>
-<dd><p>A string. The name of the column in <code>travel_matrix</code>
-with the travel cost between origins and destinations.</p></dd>
+<dd><p>A <code>character</code> vector. The name of the columns in
+<code>travel_matrix</code> with the travel costs between origins and destinations to
+be considered in the calculation.</p></dd>
 
 
 <dt>cutoff</dt>
-<dd><p>A <code>numeric</code> vector. The travel cost cutoffs to consider when
-calculating accessibility levels. If more than one value is provided, the
-output includes an extra column specifying the cutoff that the
-accessibility levels refer to.</p></dd>
+<dd><p>Either a <code>numeric</code> vector or a list of <code>numeric</code> vectors, one
+for each cost specified in <code>travel_cost</code>. The travel cost cutoffs to
+consider when calculating accessibility levels. If a list, the function
+finds every single possible cutoff combination and use them to calculate
+accessibility (e.g. if one specifies that travel time cutoffs should be 30
+and 60 minutes and that monetary cost cutoffs should be 5 and 10 dollars,
+the output includes accessibility estimates limited at 30 min &amp; 5 dollars,
+30 min &amp; 10 dollars, 60 min &amp; 5 dollars and 60 min &amp; 10 dollars). In these
+cases, cost constraints are considered simultaneously - i.e. only trips
+that take 30 minutes or less AND 5 dollars or less to be completed, for
+example, are included in the accessibility output. The cutoff parameter is
+not included in the final output if the input includes only a single cutoff
+for a single travel cost.</p></dd>
 
 
 <dt>group_by</dt>
@@ -188,13 +198,13 @@ travel matrix.</p>
 <span class="r-in"><span>  travel_cost <span class="op">=</span> <span class="st">"travel_time"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 id cutoff schools</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a881a5a2bffff     30       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a881a5a2bffff     60      76</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a881a5a2fffff     30      10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a881a5a2fffff     60      91</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a881a5a67ffff     30       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a881a5a67ffff     60      82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 id travel_time schools</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 89a881a5a2bffff          30       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 89a881a5a2bffff          60      76</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 89a881a5a2fffff          30      10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a881a5a2fffff          60      91</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a881a5a67ffff          30       1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a881a5a67ffff          60      82</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># passive accessibility: number of people that can reach each destination</span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">cumulative_cutoff</span><span class="op">(</span></span></span>
@@ -213,6 +223,29 @@ travel matrix.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4: 89a881a5a6bffff      14474</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5: 89a881a5a6fffff      15053</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6: 89a881a5b03ffff      69582</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># using multiple travel costs</span></span></span>
+<span class="r-in"><span><span class="va">travel_matrix</span><span class="op">[</span>, <span class="va">monetary_cost</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">748437</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 from_id           to_id travel_time monetary_cost</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      1: 89a88cdb57bffff 89a88cdb57bffff         5.8             0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      2: 89a88cdb57bffff 89a88cdb597ffff        47.0             0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      3: 89a88cdb57bffff 89a88cdb5b3ffff        48.0             0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4: 89a88cdb57bffff 89a88cdb5cfffff        47.0             9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      5: 89a88cdb57bffff 89a88cd909bffff        64.0             3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     ---                                                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 748433: 89a88cd900fffff 89a881acda3ffff        66.0             6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 748434: 89a88cd900fffff 89a88cdb543ffff        68.0             2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 748435: 89a88cd900fffff 89a88cda667ffff        74.0             9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 748436: 89a88cd900fffff 89a88cd900fffff         5.8             9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 748437: 89a881aebafffff 89a881aebafffff         5.8             8</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">cumulative_cutoff</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">travel_matrix</span>,</span></span>
+<span class="r-in"><span>  land_use_data <span class="op">=</span> <span class="va">land_use_data</span>,</span></span>
+<span class="r-in"><span>  opportunity <span class="op">=</span> <span class="st">"jobs"</span>,</span></span>
+<span class="r-in"><span>  travel_cost <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"travel_time"</span>, <span class="st">"monetary_cost"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  cutoff <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
