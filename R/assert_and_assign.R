@@ -1,4 +1,45 @@
 #' @keywords internal
+assert_cutoff <- function(cutoff, travel_cost) {
+  if (length(travel_cost) == 1) {
+    checkmate::assert_numeric(
+      cutoff,
+      lower = 0,
+      finite = TRUE,
+      any.missing = FALSE,
+      min.len = 1,
+      unique = TRUE
+    )
+  } else {
+    checkmate::assert_list(
+      cutoff,
+      any.missing = FALSE,
+      len = length(travel_cost)
+    )
+
+    cutoff_collection <- checkmate::makeAssertCollection()
+
+
+    for (i in seq.int(1, length(travel_cost))) {
+      checkmate::assert_numeric(
+        cutoff[[i]],
+        lower = 0,
+        finite = TRUE,
+        any.missing = FALSE,
+        min.len = 1,
+        unique = TRUE,
+        .var.name = paste0("cutoff[[", i, "]]"),
+        add = cutoff_collection
+      )
+    }
+
+    checkmate::reportAssertions(cutoff_collection)
+  }
+
+  return(invisible(TRUE))
+}
+
+
+#' @keywords internal
 assert_group_by <- function(group_by) {
   checkmate::assert_character(group_by, any.missing = FALSE, unique = TRUE)
 

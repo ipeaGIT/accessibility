@@ -23,19 +23,36 @@ tester <- function(
   )
 }
 
-test_that("raises errors due to incorrect input", {
-  expect_error(tester(cutoff = "banana"))
-  expect_error(tester(cutoff = -3))
-  expect_error(tester(cutoff = Inf))
-  expect_error(tester(cutoff = NA))
-  expect_error(tester(cutoff = numeric(0)))
-  expect_error(tester(cutoff = c(1, 1)))
+tester_with_cost <- function(travel_matrix = small_matrix_wcost,
+                             travel_cost = c("travel_time", "monetary_cost"),
+                             cutoff = list(30, 10),
+                             ...) {
+  tester(travel_matrix, travel_cost = travel_cost, cutoff = cutoff, ...)
+}
 
+test_that("raises errors due to incorrect input", {
   expect_error(tester(opportunity = 1))
   expect_error(tester(opportunity = c("schools", "jobs")))
 
   expect_error(tester(travel_cost = 1))
-  expect_error(tester(travel_cost = c("travel_time", "monetary_cost")))
+  expect_error(tester(travel_cost = NA_character_))
+  expect_error(tester(travel_cost = character()))
+  expect_error(tester(travel_cost = c("travel_time", "travel_time")))
+
+  expect_error(tester(cutoff = "banana"))
+  expect_error(tester(cutoff = -3))
+  expect_error(tester(cutoff = Inf))
+  expect_error(tester(cutoff = NA_real_))
+  expect_error(tester(cutoff = numeric(0)))
+  expect_error(tester(cutoff = c(1, 1)))
+  expect_error(tester_with_cost(cutoff = 3))
+  expect_error(tester_with_cost(cutoff = list(3)))
+  expect_error(tester_with_cost(cutoff = list(3, "a")))
+  expect_error(tester_with_cost(cutoff = list(3, -3)))
+  expect_error(tester_with_cost(cutoff = list(3, Inf)))
+  expect_error(tester_with_cost(cutoff = list(3, NA_real_)))
+  expect_error(tester_with_cost(cutoff = list(3, numeric())))
+  expect_error(tester_with_cost(cutoff = list(3, c(1, 1))))
 
   expect_error(tester(group_by = 1))
   expect_error(tester(group_by = NA))
@@ -115,7 +132,7 @@ test_that("result has correct structure", {
   expect_true(ncol(result) == 4)
   expect_is(result$id, "character")
   expect_is(result$mode, "character")
-  expect_is(result$cutoff, "numeric")
+  expect_is(result$travel_time, "numeric")
   expect_is(result$jobs, "integer")
 
   suppressWarnings(result <- tester(group_by = character(0)))
@@ -150,7 +167,7 @@ test_that("result has correct structure", {
   expect_true(nrow(result) == 0)
   expect_is(result$id, "character")
   expect_is(result$mode, "character")
-  expect_is(result$cutoff, "numeric")
+  expect_is(result$travel_time, "numeric")
   expect_is(result$jobs, "integer")
 })
 
@@ -247,7 +264,7 @@ test_that("fill_missing_ids arg works correctly", {
   expected_result <- data.table::data.table(
     id = rep(c("89a88cdb57bffff", "89a88cdb597ffff"), each = 4),
     mode = rep(rep(c("transit", "transit2"), each = 2), times = 2),
-    cutoff = rep(c(15, 50), times = 4),
+    travel_time = rep(c(15, 50), times = 4),
     jobs = as.integer(c(rep(c(0, 187799), 2), rep(c(3008, 257648), 2)))
   )
 

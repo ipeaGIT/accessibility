@@ -159,3 +159,20 @@ balancing_cost <- function(travel_matrix,
 
   return(access[])
 }
+
+
+calc_cum_cutoff <- function(data, groups, opportunity, travel_cost, .cutoff) {
+  env <- environment()
+  .opportunity_colname <- opportunity
+  .cost_colname <- travel_cost
+
+  data <- data[get(.cost_colname) <= .cutoff]
+
+  cum_cutoff_access <- data[
+    ,
+    .(access = sum(get(.opportunity_colname))),
+    by = eval(groups, envir = env)
+  ]
+
+  return(cum_cutoff_access)
+}

@@ -7,11 +7,22 @@
 #' @template travel_matrix
 #' @template land_use_data
 #' @template opportunity
-#' @template travel_cost
-#' @param cutoff A `numeric` vector. The travel cost cutoffs to consider when
-#'   calculating accessibility levels. If more than one value is provided, the
-#'   output includes an extra column specifying the cutoff that the
-#'   accessibility levels refer to.
+#' @param travel_cost A `character` vector. The name of the columns in
+#'   `travel_matrix` with the travel costs between origins and destinations to
+#'   be considered in the calculation.
+#' @param cutoff Either a `numeric` vector or a list of `numeric` vectors, one
+#'   for each cost specified in `travel_cost`. The travel cost cutoffs to
+#'   consider when calculating accessibility levels. If a list, the function
+#'   finds every single possible cutoff combination and use them to calculate
+#'   accessibility (e.g. if one specifies that travel time cutoffs should be 30
+#'   and 60 minutes and that monetary cost cutoffs should be 5 and 10 dollars,
+#'   the output includes accessibility estimates limited at 30 min & 5 dollars,
+#'   30 min & 10 dollars, 60 min & 5 dollars and 60 min & 10 dollars). In these
+#'   cases, cost constraints are considered simultaneously - i.e. only trips
+#'   that take 30 minutes or less AND 5 dollars or less to be completed, for
+#'   example, are included in the accessibility output. The cutoff parameter is
+#'   not included in the final output if the input includes only a single cutoff
+#'   for a single travel cost.
 #' @template group_by
 #' @template active
 #' @param fill_missing_ids A `logical`. Calculating cumulative accessibility may
@@ -62,6 +73,17 @@
 #' )
 #' head(df)
 #'
+#' # using multiple travel costs
+#' travel_matrix[, monetary_cost := sample(0:10, 748437, replace = TRUE)]
+#'
+#' df <- cumulative_cutoff(
+#'   travel_matrix,
+#'   land_use_data = land_use_data,
+#'   opportunity = "jobs",
+#'   travel_cost = c("travel_time", "monetary_cost"),
+#'   cutoff = list(c(20, 30), c(0, 5, 10))
+#' )
+#'
 #' @export
 cumulative_cutoff <- function(travel_matrix,
                               land_use_data,
@@ -71,18 +93,16 @@ cumulative_cutoff <- function(travel_matrix,
                               group_by = character(0),
                               active = TRUE,
                               fill_missing_ids = TRUE) {
-  checkmate::assert_numeric(
-    cutoff,
-    lower = 1,
-    finite = TRUE,
+  checkmate::assert_string(opportunity)
+  checkmate::assert_character(
+    travel_cost,
     any.missing = FALSE,
     min.len = 1,
     unique = TRUE
   )
-  checkmate::assert_string(opportunity)
-  checkmate::assert_string(travel_cost)
   checkmate::assert_logical(active, len = 1, any.missing = FALSE)
   checkmate::assert_logical(fill_missing_ids, len = 1, any.missing = FALSE)
+  assert_cutoff(cutoff, travel_cost)
   assert_group_by(group_by)
   assert_travel_matrix(travel_matrix, travel_cost, group_by)
   assert_land_use_data(land_use_data, opportunity)
@@ -111,18 +131,61 @@ cumulative_cutoff <- function(travel_matrix,
   groups <- c(group_id, group_by)
   warn_extra_cols(travel_matrix, travel_cost, group_id, groups)
 
-  access <- lapply(
-    cutoff,
-    function(.x) calc_cum_cutoff(data, groups, opportunity, travel_cost, .x)
+  cutoff_list <- if (is.list(cutoff)) {
+    cutoff
+  } else {
+    list(cutoff)
+  }
+  names(cutoff_list) <- travel_cost
+  cutoff_df <- do.call(data.table::CJ, cutoff_list)
+
+  env <- environment()
+  .opportunity_colname <- opportunity
+
+  access <- do.call(
+    mapply,
+    args = c(
+      as.list(cutoff_df),
+      SIMPLIFY = FALSE,
+      FUN = function(...) {
+        cutoff_args <- unlist(list(...))
+        subset_expr <- paste(
+          names(cutoff_args),
+          cutoff_args,
+          sep = " <= ",
+          collapse = " & "
+        )
+        subset_expr <- parse(text = subset_expr)
+
+        cum_opps <- data[
+          eval(subset_expr),
+          .(access = sum(get(.opportunity_colname))),
+          by = eval(groups, envir = env)
+        ]
+
+        cutoff_id_expr <- paste0(
+          "`:=`(",
+          paste(
+            names(cutoff_args),
+            cutoff_args,
+            sep = " = ",
+            collapse = ", "
+          ),
+          ")"
+        )
+        cutoff_id_expr <- parse(text = cutoff_id_expr)
+
+        cum_opps[, eval(cutoff_id_expr)]
+      }
+    )
   )
-  names(access) <- cutoff
-  access <- data.table::rbindlist(access, idcol = "cutoff")
-  access[, cutoff := as.numeric(cutoff)]
+
+  access <- data.table::rbindlist(access)
 
   if (fill_missing_ids) {
     unique_values <- lapply(groups, function(x) unique(travel_matrix[[x]]))
-    unique_values <- append(unique_values, list(cutoff))
-    names(unique_values) <- c(groups, "cutoff")
+    names(unique_values) <- groups
+    unique_values <- append(unique_values, cutoff_list)
 
     possible_combinations <- do.call(data.table::CJ, unique_values)
 
@@ -130,7 +193,7 @@ cumulative_cutoff <- function(travel_matrix,
       access <- do_fill_missing_ids(
         access,
         possible_combinations,
-        groups = c(groups, "cutoff")
+        groups = c(groups, travel_cost)
       )
     }
   }
@@ -138,29 +201,16 @@ cumulative_cutoff <- function(travel_matrix,
   data.table::setnames(access, c(group_id, "access"), c("id", opportunity))
   data.table::setcolorder(
     access,
-    c("id", setdiff(groups, group_id), "cutoff", opportunity)
+    c("id", setdiff(groups, group_id), travel_cost, opportunity)
   )
-  data.table::setorderv(access, c("id", setdiff(groups, group_id), "cutoff"))
-  if (length(cutoff) == 1) access[, cutoff := NULL]
+  data.table::setorderv(access, c("id", setdiff(groups, group_id), travel_cost))
+
+  env <- environment()
+  if (length(travel_cost) == 1 && length(cutoff) == 1) {
+    access[, get("travel_cost", envir = env) := NULL]
+  }
 
   if (exists("original_class")) class(access) <- original_class
 
   return(access[])
-}
-
-
-calc_cum_cutoff <- function(data, groups, opportunity, travel_cost, .cutoff) {
-  env <- environment()
-  .opportunity_colname <- opportunity
-  .cost_colname <- travel_cost
-
-  data <- data[get(.cost_colname) <= .cutoff]
-
-  cum_cutoff_access <- data[
-    ,
-    .(access = sum(get(.opportunity_colname))),
-    by = eval(groups, envir = env)
-  ]
-
-  return(cum_cutoff_access)
 }
