@@ -169,6 +169,29 @@ test_that("result has correct structure", {
   expect_is(result$mode, "character")
   expect_is(result$travel_time, "numeric")
   expect_is(result$jobs, "integer")
+
+  result <- tester_with_cost()
+  expect_true(ncol(result) == 5)
+  expect_is(result$id, "character")
+  expect_is(result$mode, "character")
+  expect_is(result$travel_time, "numeric")
+  expect_is(result$monetary_cost, "numeric")
+  expect_is(result$jobs, "integer")
+
+  suppressWarnings(result <- tester_with_cost(group_by = character()))
+  expect_true(ncol(result) == 4)
+  expect_is(result$id, "character")
+  expect_is(result$travel_time, "numeric")
+  expect_is(result$monetary_cost, "numeric")
+  expect_is(result$jobs, "integer")
+
+  result <- tester_with_cost(small_frontier[0])
+  expect_true(ncol(result) == 5)
+  expect_is(result$id, "character")
+  expect_is(result$mode, "character")
+  expect_is(result$travel_time, "numeric")
+  expect_is(result$monetary_cost, "numeric")
+  expect_is(result$jobs, "integer")
 })
 
 test_that("input data sets remain unchanged", {
@@ -219,10 +242,43 @@ test_that("active and passive accessibility is correctly calculated", {
     population = rep(as.integer(c(0, 5404, 4552, 2363, 4552)), each = 2)
   )
   expect_identical(result, expected_result)
+
+  # when the provided matrix/frontier includes more than 1 trip per od pair -
+  # i.e. not double counting opportunities when more than 1 trip can be used
+  # between origins and destinations
+
+  test_frontier <- pareto_frontier[
+    from_id %in% selected_ids & to_id %in% selected_ids
+  ]
+
+  result <- tester_with_cost(test_frontier, cutoff = list(120, c(5, 15)))
+  expected_result <- data.table::data.table(
+    id = rep(selected_ids, each = 4),
+    mode = rep(rep(c("transit", "transit2"), each = 2), times = 5),
+    travel_time = 120,
+    monetary_cost = rep(c(5, 15), 10),
+    jobs = rep(as.integer(c(499, 599, 499, 599, rep(599, 16))))
+  )
+  expect_identical(result, expected_result)
+
+  result <- tester_with_cost(
+    test_frontier,
+    cutoff = list(120, c(5, 15)),
+    opportunity = "population",
+    active = FALSE
+  )
+  expected_result <- data.table::data.table(
+    id = rep(selected_ids, each = 4),
+    mode = rep(rep(c("transit", "transit2"), each = 2), times = 5),
+    travel_time = 120,
+    monetary_cost = rep(c(5, 15), 10),
+    population = rep(as.integer(c(3435, 5404, 3435, 5404, rep(5404, 16))))
+  )
+  expect_identical(result, expected_result)
 })
 
 test_that("fill_missing_ids arg works correctly", {
-  # length(cutoff) == 1
+  # with one travel cost and one cutoff
 
   small_travel_matrix <- travel_matrix[
     from_id %in% c("89a88cdb57bffff", "89a88cdb597ffff")
@@ -257,7 +313,7 @@ test_that("fill_missing_ids arg works correctly", {
     )
   )
 
-  # length(cutoff) > 1
+  # with one travel cost and more than one cutoff
 
   result <- tester(small_travel_matrix, cutoff = c(15, 50))
   data.table::setkey(result, NULL)
@@ -278,6 +334,30 @@ test_that("fill_missing_ids arg works correctly", {
   data.table::setkey(result, NULL)
 
   expect_identical(result, expected_result[jobs != 0])
+
+  # with more than one travel cost
+
+  test_frontier <- rbind(small_frontier, small_frontier[1])
+  test_frontier[11, mode := "transit2"]
+  test_frontier[11, travel_time := 100]
+
+  result <- tester_with_cost(test_frontier, cutoff = list(10, 10))
+  expected_result <- data.table::data.table(
+    id = "89a881a5a2bffff",
+    mode = c("transit", "transit2"),
+    travel_time = 10,
+    monetary_cost = 10,
+    jobs = as.integer(c(323, 0))
+  )
+  data.table::setkey(result, NULL)
+  expect_identical(result, expected_result)
+
+  result <- tester_with_cost(
+    test_frontier,
+    cutoff = list(10, 10),
+    fill_missing_ids = FALSE
+  )
+  expect_identical(result, expected_result[1])
 })
 
 test_that("works even if travel_matrix and land_use has specific colnames", {

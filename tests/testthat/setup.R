@@ -18,5 +18,7 @@ small_access <- cumulative_cutoff(
 )
 
 pareto_frontier <- readRDS(file.path(data_dir, "pareto_frontier.rds"))
+frontier_list <- list(transit = pareto_frontier, transit2 = pareto_frontier)
+pareto_frontier <- data.table::rbindlist(frontier_list, idcol = "mode")
 
 small_frontier <- pareto_frontier[1:10]
