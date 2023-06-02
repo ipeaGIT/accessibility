@@ -227,16 +227,16 @@ travel matrix.</p>
 <span class="r-in"><span><span class="co"># using multiple travel costs</span></span></span>
 <span class="r-in"><span><span class="va">travel_matrix</span><span class="op">[</span>, <span class="va">monetary_cost</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">748437</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 from_id           to_id travel_time monetary_cost</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      1: 89a88cdb57bffff 89a88cdb57bffff         5.8             7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      2: 89a88cdb57bffff 89a88cdb597ffff        47.0             1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      3: 89a88cdb57bffff 89a88cdb5b3ffff        48.0             5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      4: 89a88cdb57bffff 89a88cdb5cfffff        47.0             4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      5: 89a88cdb57bffff 89a88cd909bffff        64.0             5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      1: 89a88cdb57bffff 89a88cdb57bffff         5.8             6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      2: 89a88cdb57bffff 89a88cdb597ffff        47.0             3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      3: 89a88cdb57bffff 89a88cdb5b3ffff        48.0             9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      4: 89a88cdb57bffff 89a88cdb5cfffff        47.0             2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      5: 89a88cdb57bffff 89a88cd909bffff        64.0             9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ---                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 748433: 89a88cd900fffff 89a881acda3ffff        66.0             1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 748434: 89a88cd900fffff 89a88cdb543ffff        68.0             7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 748435: 89a88cd900fffff 89a88cda667ffff        74.0             4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 748436: 89a88cd900fffff 89a88cd900fffff         5.8             9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 748433: 89a88cd900fffff 89a881acda3ffff        66.0             9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 748434: 89a88cd900fffff 89a88cdb543ffff        68.0             8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 748435: 89a88cd900fffff 89a88cda667ffff        74.0             5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 748436: 89a88cd900fffff 89a88cd900fffff         5.8             5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 748437: 89a881aebafffff 89a881aebafffff         5.8             6</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">cumulative_cutoff</span><span class="op">(</span></span></span>
