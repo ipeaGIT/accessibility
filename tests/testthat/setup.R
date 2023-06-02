@@ -6,9 +6,6 @@ travel_matrix <- data.table::rbindlist(travel_matrix_list, idcol = "mode")
 
 smaller_matrix <- travel_matrix[1:10]
 
-small_matrix_wcost <- data.table::copy(smaller_matrix)
-small_matrix_wcost[, monetary_cost := c(rep(c(0, 5, 10), 3), 5)]
-
 land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
 
 small_access <- cumulative_cutoff(
@@ -19,3 +16,7 @@ small_access <- cumulative_cutoff(
   cutoff = 30,
   group_by = "mode"
 )
+
+pareto_frontier <- readRDS(file.path(data_dir, "pareto_frontier.rds"))
+
+small_frontier <- pareto_frontier[1:10]

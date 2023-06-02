@@ -74,10 +74,10 @@
 #' head(df)
 #'
 #' # using multiple travel costs
-#' travel_matrix[, monetary_cost := sample(0:10, 748437, replace = TRUE)]
+#' pareto_frontier <- readRDS(file.path(data_dir, "pareto_frontier.rds"))
 #'
 #' df <- cumulative_cutoff(
-#'   travel_matrix,
+#'   pareto_frontier,
 #'   land_use_data = land_use_data,
 #'   opportunity = "jobs",
 #'   travel_cost = c("travel_time", "monetary_cost"),

@@ -23,7 +23,7 @@ tester <- function(
   )
 }
 
-tester_with_cost <- function(travel_matrix = small_matrix_wcost,
+tester_with_cost <- function(travel_matrix = small_frontier,
                              travel_cost = c("travel_time", "monetary_cost"),
                              cutoff = list(30, 10),
                              ...) {
