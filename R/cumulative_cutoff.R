@@ -157,8 +157,15 @@ cumulative_cutoff <- function(travel_matrix,
         )
         subset_expr <- parse(text = subset_expr)
 
-        cum_opps <- data[
-          eval(subset_expr),
+        cum_opps <- data[eval(subset_expr)]
+
+        if (length(travel_cost) > 1) {
+          .od_group <- c(setdiff(groups, group_id), "from_id", "to_id")
+          cum_opps <- cum_opps[cum_opps[, .I[1], by = .od_group]$V1]
+        }
+
+        cum_opps <- cum_opps[
+          ,
           .(access = sum(get(.opportunity_colname))),
           by = eval(groups, envir = env)
         ]
