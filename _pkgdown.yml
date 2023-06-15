@@ -1,7 +1,7 @@
 reference:
   - title: "Accessibility"
   - contents:
-    - cost_to_closest 
+    - cost_to_closest
     - cumulative_cutoff
     - cumulative_interval
     - floating_catchment_area
@@ -14,3 +14,6 @@ reference:
   - title: "Inequality"
   - contents:
     - palma_ratio
+  - title: "Poverty"
+  - contents:
+    - fgt_poverty

@@ -22,7 +22,7 @@
 #' @name accessibility
 #' @aliases accessibility-package
 #'
-#' @importFrom data.table := .I .SD %chin% .GRP .N
+#' @importFrom data.table := .I .SD %chin% .GRP .N fifelse
 #' @importFrom utils globalVariables
 #' @importFrom Rdpack reprompt
 #'

@@ -4,7 +4,7 @@
 #' considering multiple maximum travel cost thresholds within a given travel
 #' cost interval specified by the user. The time interval cumulative
 #' accessibility measures was originally proposed by
-#' \insertCite{tomasiello2022time;textual}{accessibility}.
+#' \insertCite{tomasiello2023time;textual}{accessibility}.
 #' @template description_generic_cost
 #'
 #' @template travel_matrix
