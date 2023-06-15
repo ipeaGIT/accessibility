@@ -26,8 +26,10 @@ tester <- function(
 test_that("raises errors due to incorrect input", {
   expect_error(tester(n = "banana"))
   expect_error(tester(n = -3))
-  expect_error(tester(n = c(1, 1)))
   expect_error(tester(n = Inf))
+  expect_error(tester(n = NA))
+  expect_error(tester(n = numeric(0)))
+  expect_error(tester(n = c(1, 1)))
 
   expect_error(tester(opportunity = 1))
   expect_error(tester(opportunity = c("schools", "jobs")))
@@ -74,7 +76,7 @@ test_that("raises errors due to incorrect input", {
   )
 })
 
-test_that("throws warning if travel_matrix extra col", {
+test_that("throws warning if travel_matrix has an extra col", {
   # i.e. col not listed in travel_cost and by_col
   expect_warning(tester(group_by = character(0)))
 })
@@ -103,6 +105,13 @@ test_that("result has correct structure", {
   expect_is(result$mode, "character")
   expect_is(result$travel_time, "numeric")
 
+  result <- tester(n = c(1, 2))
+  expect_true(ncol(result) == 4)
+  expect_is(result$id, "character")
+  expect_is(result$mode, "character")
+  expect_is(result$n, "numeric")
+  expect_is(result$travel_time, "numeric")
+
   suppressWarnings(result <- tester(group_by = character(0)))
   expect_true(ncol(result) == 2)
   expect_is(result$id, "character")
@@ -121,6 +130,30 @@ test_that("result has correct structure", {
   expect_is(result$id, "character")
   expect_is(result$mode, "character")
   expect_is(result$travel_time, "numeric")
+
+  result <- tester(
+    data.table::data.table(
+      mode = character(),
+      from_id = character(),
+      to_id = character(),
+      travel_time = numeric()
+    ),
+    n = c(1, 2)
+  )
+  expect_true(ncol(result) == 4)
+  expect_true(nrow(result) == 0)
+  expect_is(result$id, "character")
+  expect_is(result$mode, "character")
+  expect_is(result$n, "numeric")
+  expect_is(result$travel_time, "numeric")
+})
+
+test_that("result columns are ordered correctly when length(n)>1", {
+  result <- tester(n = c(1, 3))
+  expect_identical(names(result), c("id", "mode", "n", "travel_time"))
+
+  result <- tester(n = c(1, 3), fill_missing_ids = FALSE)
+  expect_identical(names(result), c("id", "mode", "n", "travel_time"))
 })
 
 test_that("input data sets remain unchanged", {
@@ -168,7 +201,7 @@ test_that("active and passive accessibility is correctly calculated", {
   expected_result <- data.table::data.table(
     id = rep(selected_ids, 2),
     mode = rep(c("transit", "transit2"), each = 5),
-    travel_time = 5.8
+    travel_time = rep(c(5.8, 5.8, 5.8, 5.8, 58), 2)
   )
   expect_identical(result, expected_result)
 })
@@ -216,6 +249,38 @@ test_that("output is as expected when ids are missing - n=1", {
 })
 
 test_that("output is as expected when ids are missing - n>1", {
+  selected_ids <- c(
+    "89a88cdb57bffff",
+    "89a88cdb597ffff",
+    "89a88cdb5b3ffff",
+    "89a88cdb5cfffff",
+    "89a88cd909bffff"
+  )
+  smaller_travel_matrix <- travel_matrix[
+    from_id %in% selected_ids & to_id %in% selected_ids
+  ]
+
+  result <- tester(smaller_travel_matrix, n = c(1, 3))
+  data.table::setkey(result, NULL)
+  expected_result_subset <- data.table::data.table(
+    id = rep(selected_ids[order(selected_ids)], each = 2),
+    mode = rep(c("transit", "transit2"), times = 5),
+    n = 3,
+    travel_time = Inf
+  )
+  expect_identical(result[is.infinite(travel_time)], expected_result_subset)
+
+  result <- tester(smaller_travel_matrix, n = c(1, 3), fill_missing_ids = FALSE)
+  expected_result_subset <- data.table::data.table(
+    id = character(0),
+    mode = character(0),
+    n = numeric(0),
+    travel_time = numeric(0)
+  )
+  expect_identical(result[is.infinite(travel_time)], expected_result_subset)
+})
+
+test_that("output is as expected when ids are missing - length(n)>1", {
   selected_ids <- c(
     "89a88cdb57bffff",
     "89a88cdb597ffff",

@@ -21,7 +21,7 @@ continuously discount the weight of opportunities as travel costs become
 larger. For convenience, the package ships with some of the most frequently
 used functions in the accessibility literature, which are discussed below.
 Additionally, users can pass custom functions to convert travel costs into
-weights to be applied the opportunities, which is discussed further down in
+weights to be applied to the opportunities, which is discussed further down in
 this the vignette.
 
 # Currently available decay functions
@@ -119,8 +119,42 @@ the $k^{th}$ step.
 
 ### Quick demonstration
 
-```{r, eval = requireNamespace("ggplot2", quietly = TRUE), out.width = "80%", fig.width = 6, fig.height = 6}
+All decay functions (`decay_*()`) take decay parameters as input and return a
+function as output. This output function, in turn, takes a vector of numeric
+values as input, the travel costs, and returns a list of numeric vectors as
+output. Since the decay function can take multiple decay parameters as input,
+each element of the output list refers to the opportunities weights calculated
+with one of these decay parameters.
+
+Let's check this behavior with an example. With the code snippet below, we
+calculate the opportunities weights for the same travel costs, but using
+different negative exponential decay values (0.2 and 0.3):
+
+```{r}
 library(accessibility)
+
+output_fn <- decay_exponential(c(0.2, 0.3))
+
+output_fn(c(10, 15, 20))
+```
+
+`decay_stepped()`, as the only decay function that takes more than one argument
+(both `steps` and `weights`) names the output elements after the combination of
+steps and weights:
+
+```{r}
+stepped_output <- decay_stepped(
+  steps = list(c(10, 20, 30), c(10, 20, 30, 40)),
+  weights = list(c(0.67, 0.33, 0), c(0.75, 0.5, 0.25, 0))
+)
+
+stepped_output(c(15, 25, 35, 45))
+```
+
+With the code below, we demonstrate each decay function with travel costs
+ranging from 1 to 100:
+
+```{r, eval = requireNamespace("ggplot2", quietly = TRUE), out.width = "80%", fig.width = 6, fig.height = 6}
 library(data.table)
 library(ggplot2)
 
@@ -128,17 +162,17 @@ binary <- decay_binary(cutoff = 50)
 linear <- decay_linear(cutoff = 50)
 negative_exp <- decay_exponential(decay_value = 0.2)
 inverse_power <- decay_power(decay_value = 0.2)
-stepped <- decay_stepped(steps = c(30, 60, 90), weights = c(0.66, 0.33, 0))
+stepped <- decay_stepped(steps = c(30, 60, 90), weights = c(0.67, 0.33, 0))
 
 travel_costs <- seq(1, 100, 0.1)
 
 weights <- data.table(
   minutes = travel_costs,
-  binary = as.numeric(binary(travel_costs)),
-  linear = linear(travel_costs),
-  negative_exp = negative_exp(travel_costs),
-  inverse_power = inverse_power(travel_costs),
-  stepped = stepped(travel_costs)
+  binary = as.numeric(binary(travel_costs)[["50"]]),
+  linear = linear(travel_costs)[["50"]],
+  negative_exp = negative_exp(travel_costs)[["0.2"]],
+  inverse_power = inverse_power(travel_costs)[["0.2"]],
+  stepped = stepped(travel_costs)[["s(30,60,90);w(0.67,0.33,0)"]]
 )
 
 # reshape data to long format
@@ -160,16 +194,20 @@ ggplot(weights) +
 
 # Using a custom decay function
 
-Any function that takes a `numeric` vector of travel costs and returns a
-`numeric` vector, with the same length of input, of weights to be applied to
-the opportunities can be considered a decay function.
+**accessibility** also allows you to use a custom decay function, instead of one
+of the functions shipped with the package. A valid decay function is one that
+takes a `numeric` vector of travel costs as input and returns either:
 
-Let's say that we wanted to use a very simple decay function that defines the
-weights as the multiplicative inverse of travel cost - i.e.
-$travel\_cost^{-1}$. We just have to take care of the case when travel cost is
-less than 1, in which case the function would return values greater than 1 and
-which we will replace with 1, but otherwise the implementation is pretty
-simple:
+- A `numeric` vector of weights, with the same length of input, or;
+- A named `list` of `numeric` vectors to be used as weights, each one with the
+  same length of input.
+
+Let's check the difference between each case with an example. Suppose we want to
+use a very simple decay function that defines the weights as the multiplicative
+inverse of travel cost - i.e. $travel\_cost^{-1}$. We just have to take care of
+the case when travel cost is less than 1, in which case the function would
+return values greater than 1 and which we will replace with 1, but otherwise the
+implementation is pretty simple:
 
 ```{r}
 my_decay <- function(travel_cost) {
@@ -205,37 +243,108 @@ custom_gravity <- gravity(
 head(custom_gravity)
 ```
 
-In fact, we could achieve the exact same result as we did with our custom
-function using `decay_power(1)`:
+Great! But now suppose we want to change this function a bit. Instead of the
+simple multiplicative inverse of the travel cost, we want to multiply this
+inverse by a given decay parameter. Now we face a "problem": our function would
+need to take two inputs (the travel cost, as above, and the decay parameter to
+multiply the travel cost), but `gravity()` can only take functions that receive
+a single input (the travel cost). In this case, we resort to the same strategy
+used in the decay functions shipped with the package, we create a function that
+takes a decay parameter as input and returns a function that takes travel cost
+input as output:
 
 ```{r}
-power_gravity <- gravity(
+my_second_decay <- function(decay_parameter) {
+  function(travel_cost) {
+    weights <- 1 / (decay_parameter * travel_cost)
+    weights[weights > 1] <- 1
+    return(weights)
+  }
+}
+
+output_fn <- my_second_decay(2)
+output_fn(c(0, 0.5, 1, 2, 5, 10))
+
+# compare to the first custom decay function
+my_decay(c(0, 0.5, 1, 2, 5, 10))
+```
+
+Great, it works! In fact, we can achieve the exact same `gravity()` result shown
+above if we use `my_second_decay(1)`, instead of `my_decay`:
+
+```{r}
+second_custom_gravity <- gravity(
   travel_matrix,
   land_use_data,
   opportunity = "jobs",
   travel_cost = "travel_time",
-  decay_function = decay_power(1)
+  decay_function = my_second_decay(1)
 )
-head(power_gravity)
+head(second_custom_gravity)
 ```
 
 A small difference is that in the first example we passed `my_decay` (the
 function *object*) to the `decay_function` parameter, whereas in the second we
-passed the function *call* `decay_power(1)`. That's because `decay_power()`
-(and the other built-in decay functions as well) is actually a function
-"factory": it's a function that returns a function, as we can see below:
+passed the function *call* `my_second_decay(1)`. That's because
+`my_second_decay()` (and the built-in decay functions as well) is actually a
+function "factory": it's a function that returns a function.
 
 ```{r}
 decay_power(1)
 ```
 
-This is because the built-in functions aim to be as generally used as possible,
-so we have to able to use them with different parameters, cutoffs, etc. In
-practice, every time we call these functions we create another function that
-calculates travel costs exactly as we want.
+What if we want our custom function to take many decay parameters as inputs,
+just like the built-in decay functions? In this case, our output function has to
+return a `list` of `numeric` weights named after the decay parameters we have
+set:
+
+```{r}
+my_third_decay <- function(decay_parameter) {
+  function(travel_cost) {
+    weighting_list <- lapply(
+      decay_parameter,
+      function(x) {
+        weights <- 1 / (x * travel_cost)
+        weights[weights > 1] <- 1
+        return(weights)
+      }
+    )
+
+    names(weighting_list) <- decay_parameter
+    weighting_list
+  }
+}
+
+output_fn <- my_third_decay(c(1, 2))
+output_fn(c(0, 0.5, 1, 2, 5, 10))
+
+# compare to the first and second custom decay functions
+
+my_decay(c(0, 0.5, 1, 2, 5, 10))
+
+my_second_decay(2)(c(0, 0.5, 1, 2, 5, 10))
+```
+
+This new custom decay function is a bit more complex than the previous two, yet
+much more powerful. We can use it in conjunction with `gravity()` (and the other
+accessibility functions that take decay functions as input as well) to calculate
+the accessibility with multiple decay parameters in a single call:
+
+```{r}
+third_custom_gravity <- gravity(
+  travel_matrix,
+  land_use_data,
+  opportunity = "jobs",
+  travel_cost = "travel_time",
+  decay_function = my_third_decay(c(1, 2))
+)
+third_custom_gravity
+```
 
 When we create our own custom decay function, we don't have to think about
 general cases, just the cases that matter for us. Creating a simple function
-that converts one vector into another, therefore, suffices our needs. In both
-examples above, therefore, we're passing a function to `decay_function` - one
-we created ourselves and another created by `decay_power()`.
+that converts one vector into another, therefore, might be enough, given our
+needs. If, however, you're testing a new decay function and you want to check
+its sensitivity to different decay parameters, for example, you might be better
+off developing a decay function that can take many decay values as inputs and
+returns a list of weight vectors as output.

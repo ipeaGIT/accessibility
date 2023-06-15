@@ -6,6 +6,11 @@ reference:
     - cumulative_interval
     - floating_catchment_area
     - gravity
+    - spatial_availability
+    - balancing_cost
   - title: "Decay functions"
   - contents:
     - starts_with("decay_")
+  - title: "Inequality"
+  - contents:
+    - palma_ratio

@@ -7,11 +7,13 @@
 decay_binary(cutoff)
 }
 \arguments{
-\item{cutoff}{A \code{numeric}. A number indicating the travel cost cutoff.}
+\item{cutoff}{A \code{numeric} vector. The numbers indicating the travel cost
+cutoffs.}
 }
 \value{
 A \code{function} that takes a generic travel cost vector (\code{numeric}) as
-an input and returns a vector of weights (\code{numeric}).
+an input and returns a \code{list} of weight vectors (a list of \code{numeric}
+vectors, named after the arguments passed to the decay function).
 }
 \description{
 Returns a binary weighting function (frequently used to calculate cumulative
@@ -24,9 +26,11 @@ such as distance, time and money.
 \examples{
 weighting_function <- decay_binary(cutoff = 30)
 
-weighting_function(20)
+weighting_function(c(20, 35))
 
-weighting_function(35)
+weighting_function <- decay_binary(cutoff = c(30, 45))
+
+weighting_function(c(20, 35))
 
 }
 \seealso{

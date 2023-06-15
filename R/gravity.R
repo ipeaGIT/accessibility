@@ -69,32 +69,33 @@ gravity <- function(travel_matrix,
     land_use_data <- data.table::as.data.table(land_use_data)
   }
 
-  merge_by_reference(data, land_use_data, opportunity, active)
+  merge_by_reference(
+    data,
+    land_use_data,
+    opportunity,
+    left_df_idcol = ifelse(active, "to_id", "from_id")
+  )
+
+  data <- apply_gravity_measure(data, decay_function, travel_cost)
 
   group_id <- ifelse(active, "from_id", "to_id")
   groups <- c(group_id, group_by)
+  if ("decay_function_arg" %in% names(data)) {
+    groups <- c(groups, "decay_function_arg")
+  }
   env <- environment()
 
   warn_extra_cols(travel_matrix, travel_cost, group_id, groups)
 
   .opp_colname <- opportunity
-  .cost_colname <- travel_cost
   access <- data[
     ,
-    .(
-      access = sum(get(.opp_colname) * decay_function(get(.cost_colname)))
-    ),
+    .(access = sum(get(.opp_colname) * opp_weight)),
     by = eval(groups, envir = env)
   ]
 
   if (fill_missing_ids) {
-    unique_values <- lapply(groups, function(x) unique(travel_matrix[[x]]))
-    names(unique_values) <- groups
-    possible_combinations <- do.call(data.table::CJ, unique_values)
-
-    if (nrow(access) < nrow(possible_combinations)) {
-      access <- do_fill_missing_ids(access, possible_combinations, groups)
-    }
+    access <- fill_missing_ids(access, travel_matrix, groups)
   }
 
   data.table::setnames(access, c(group_id, "access"), c("id", opportunity))

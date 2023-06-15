@@ -49,7 +49,17 @@ utils::globalVariables(
     "balanced_opp_weight_j",
     "balanced_pop_served",
     "balanced_ppr",
-    "..opportunity"
+    "..opportunity",
+    "demand_bal_fac",
+    "impedance_bal_fac",
+    "combined_bal_fac",
+    "decay_function_arg",
+    "cost",
+    "did_balance",
+    "avg_access",
+    "i.avg_access",
+    ".palma_group",
+    "poorest_avg_access"
   )
 )
 

@@ -9,3 +9,4 @@
 ^README\.html$
 ^_pkgdown\.yml$
 ^codemeta\.json$
+^data-raw$

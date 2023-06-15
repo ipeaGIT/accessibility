@@ -7,28 +7,29 @@ tester <- function(
   opportunity = "jobs",
   travel_cost = "travel_time",
   demand = "population",
-  method = "2sfca",
-  decay_function = decay_binary(45),
+  decay_function = decay_exponential(0.1),
+  alpha = 1,
   group_by = "mode",
   fill_missing_ids = TRUE
 ) {
-  floating_catchment_area(
+  spatial_availability(
     travel_matrix,
     land_use_data,
     opportunity,
     travel_cost,
     demand,
-    method,
     decay_function,
+    alpha,
     group_by,
     fill_missing_ids
   )
 }
 
 test_that("raises errors due to incorrect input", {
-  expect_error(tester(method = 1))
-  expect_error(tester(method = "a"))
-  expect_error(tester(method = c("bfca", "bfca")))
+  expect_error(tester(alpha = "a"))
+  expect_error(tester(alpha = -1))
+  expect_error(tester(alpha = c(1, 2)))
+  expect_error(tester(alpha = Inf))
 
   expect_error(tester(decay_function = "a"))
   expect_error(tester(decay_function = mean))
@@ -86,7 +87,7 @@ test_that("raises errors due to incorrect input", {
   )
 })
 
-test_that("throws warning if travel_matrix extra col", {
+test_that("throws warning if travel_matrix has extra col", {
   # i.e. col not listed in travel_cost and by_col
   expect_warning(tester(group_by = character(0)))
 })
@@ -100,10 +101,7 @@ test_that("returns a dataframe whose class is the same as travel_matrix's", {
   result <- tester(as.data.frame(travel_matrix))
   expect_false(inherits(result, "data.table"))
   expect_is(result, "data.frame")
-  result <- tester(
-    as.data.frame(travel_matrix),
-    land_use_data = as.data.frame(land_use_data)
-  )
+  result <- tester(as.data.frame(travel_matrix), as.data.frame(land_use_data))
   expect_false(inherits(result, "data.table"))
   expect_is(result, "data.frame")
 })
@@ -173,7 +171,7 @@ test_that("fill_missing_ids arg works correctly", {
     data.table::data.table(
       id = rep(c("89a88cdb57bffff", "89a88cdb597ffff"), each = 2),
       mode = rep(c("transit", "transit2"), times = 2),
-      jobs = c(233L, 0L, 195L, 372L)
+      jobs = c(362330L, 0L, 133722L, 496053L)
     )
   )
 
@@ -184,7 +182,7 @@ test_that("fill_missing_ids arg works correctly", {
     data.table::data.table(
       id = c("89a88cdb57bffff", "89a88cdb597ffff", "89a88cdb597ffff"),
       mode = c("transit", "transit", "transit2"),
-      jobs = c(233L, 195L, 372L)
+      jobs = c(362330L, 133722L, 496053L)
     )
   )
 })
@@ -204,61 +202,13 @@ test_that("accepts custom decay function", {
   custom_function <- function(travel_cost) rep(1L, length(travel_cost))
 
   result <- tester(smaller_travel_matrix, decay_function = custom_function)
-  result[, jobs := round(jobs, digits = 4)]
+  result[, jobs := round(jobs, digits = 0)]
   expect_identical(
     result,
     data.table::data.table(
       id = rep(selected_ids, 2),
       mode = rep(c("transit", "transit2"), each = 5),
-      jobs = 0.1108
-    )
-  )
-})
-
-test_that("calculates 2sfca correctly", {
-  selected_ids <- c(
-    "89a88cdb57bffff",
-    "89a88cdb597ffff",
-    "89a88cdb5b3ffff",
-    "89a88cdb5cfffff",
-    "89a88cd909bffff"
-  )
-  smaller_travel_matrix <- travel_matrix[
-    from_id %in% selected_ids & to_id %in% selected_ids
-  ]
-
-  result <- tester(smaller_travel_matrix, method = "2sfca")
-  result[, jobs := round(jobs, digits = 4)]
-  expect_identical(
-    result,
-    data.table::data.table(
-      id = rep(selected_ids, 2),
-      mode = rep(c("transit", "transit2"), each = 5),
-      jobs = c(0.0152, 0.1491, 0.1491, 0.1068, 0)
-    )
-  )
-})
-
-test_that("calculates bfca correctly", {
-  selected_ids <- c(
-    "89a88cdb57bffff",
-    "89a88cdb597ffff",
-    "89a88cdb5b3ffff",
-    "89a88cdb5cfffff",
-    "89a88cd909bffff"
-  )
-  smaller_travel_matrix <- travel_matrix[
-    from_id %in% selected_ids & to_id %in% selected_ids
-  ]
-
-  result <- tester(smaller_travel_matrix, method = "bfca")
-  result[, jobs := round(jobs, digits = 4)]
-  expect_identical(
-    result,
-    data.table::data.table(
-      id = rep(selected_ids, 2),
-      mode = rep(c("transit", "transit2"), each = 5),
-      jobs = c(0.0094, 0.1993, 0.1993, 0.1147, 0)
+      jobs = rep(c(94, 44, 218, 243, 0))
     )
   )
 })
@@ -298,6 +248,36 @@ test_that("works even if travel_matrix and land_use has specific colnames", {
   land_use_data[, demand := NULL]
 })
 
+test_that("calculates spatial availability correctly", {
+  # data used in Soukhov et al. (2023), slightly modified
+
+  paper_travel_matrix <- data.table::data.table(
+    from_id = rep(c("A", "B", "C"), each = 3),
+    to_id = as.character(rep(1:3, 3)),
+    travel_time = c(15, 30, 100, 30, 15, 100, 100, 100, 15)
+  )
+  paper_land_use_data <- data.table::data.table(
+    id = c("A", "B", "C", "1", "2", "3"),
+    population = c(50000, 150000, 10000, 0, 0, 0),
+    jobs = c(0, 0, 0, 100000, 100000, 10000)
+  )
+
+  result <- tester(
+    paper_travel_matrix,
+    paper_land_use_data,
+    group_by = character(0)
+  )
+  result[, jobs := round(jobs, digits = 0)]
+
+  expect_identical(
+    result,
+    data.table::data.table(
+      id = c("A", "B", "C"),
+      jobs = c(66833, 133203, 9963)
+    )
+  )
+})
+
 test_that("results are grouped by decay_function_arg when needed", {
   small_travel_matrix <- travel_matrix[
     from_id %in% c("89a88cdb57bffff", "89a88cdb597ffff") &
@@ -308,8 +288,7 @@ test_that("results are grouped by decay_function_arg when needed", {
     small_travel_matrix,
     decay_function = decay_exponential(c(0.5, 0.6))
   )
-  data.table::setkey(result, NULL)
-  result[, jobs := round(jobs, 2)]
+  result[, jobs := round(jobs, 1)]
 
   expect_identical(
     result,
@@ -317,7 +296,7 @@ test_that("results are grouped by decay_function_arg when needed", {
       id = rep(c("89a88cdb57bffff", "89a88cdb597ffff"), times = 2),
       mode = rep("transit", 4),
       decay_function_arg = rep(c(0.5, 0.6), each = 2),
-      jobs = c(456.32, 272.26, 456.85, 271.10)
+      jobs = c(388780.8, 107272.2, 389238.9, 106814.1)
     )
   )
 })

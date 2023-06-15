@@ -47,7 +47,7 @@ library(accessibility)
 data_dir <- system.file("extdata", package = "accessibility")
 travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
 land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
- 
+
 cost_closest <- cost_to_closest(
   travel_matrix,
   land_use_data,
@@ -111,7 +111,7 @@ head(grav)
 #> 4: 89a88cdb5cfffff 0.19852152
 #> 5: 89a88cd909bffff 0.41378042
 #> 6: 89a88cd90b7ffff 0.95737555
-                       
+
 fca <- floating_catchment_area(
   travel_matrix,
   land_use_data,
@@ -129,6 +129,23 @@ head(fca)
 #> 4: 89a88cdb5cfffff 0.5469433
 #> 5: 89a88cd909bffff 0.4358530
 #> 6: 89a88cd90b7ffff 0.5271746
+
+sptl_avlblt <- spatial_availability(
+  travel_matrix,
+  land_use_data,
+  opportunity = "jobs",
+  travel_cost = "travel_time",
+  demand = "population",
+  decay_function = decay_exponential(decay_value = 0.1)
+)
+head(sptl_avlblt)
+#>                 id       jobs
+#> 1: 89a88cdb57bffff  371.68866
+#> 2: 89a88cdb597ffff  310.22854
+#> 3: 89a88cdb5b3ffff  688.84257
+#> 4: 89a88cdb5cfffff 1396.27751
+#> 5: 89a88cd909bffff   10.96648
+#> 6: 89a88cd90b7ffff  525.20251
 ```
 
 Please read the vignettes for more details on the usage:
@@ -147,6 +164,8 @@ Please read the vignettes for more details on the usage:
     measures in Python
   - [access](https://access.readthedocs.io/en/latest/): Spatial Access
     for PySAL
+  - [aceso](https://github.com/tetraptych/aceso): a lightweight Python
+    package for measuring spatial accessibility
 
 ## Acknowledgement <a href="https://www.ipea.gov.br"><img src="man/figures/ipea_logo.png" alt="IPEA" align="right" width="300"/></a>
 

@@ -4,7 +4,7 @@
 #' considering multiple maximum travel cost thresholds within a given travel
 #' cost interval specified by the user. The time interval cumulative
 #' accessibility measures was originally proposed by
-#' \insertCite{tomasiello2022interval;textual}{accessibility}.
+#' \insertCite{tomasiello2022time;textual}{accessibility}.
 #' @template description_generic_cost
 #'
 #' @template travel_matrix
@@ -34,7 +34,7 @@
 #' @references
 #' \insertAllCited{}
 #'
-#' @examplesIf requireNamespace("stats", quietly = TRUE)
+#' @examples
 #' data_dir <- system.file("extdata", package = "accessibility")
 #' travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
 #' land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
@@ -67,15 +67,6 @@ cumulative_interval <- function(travel_matrix,
                                 summary_function = stats::median,
                                 group_by = character(0),
                                 active = TRUE) {
-  checkmate::assert_numeric(
-    interval,
-    lower = 0,
-    any.missing = FALSE,
-    len = 2,
-    unique = TRUE,
-    sorted = TRUE,
-    finite = TRUE
-  )
   checkmate::assert_string(opportunity)
   checkmate::assert_string(travel_cost)
   checkmate::assert_logical(active, len = 1, any.missing = FALSE)
@@ -84,6 +75,8 @@ cumulative_interval <- function(travel_matrix,
   assert_group_by(group_by)
   assert_travel_matrix(travel_matrix, travel_cost, group_by)
   assert_land_use_data(land_use_data, opportunity)
+
+  interval <- assert_and_assign_interval(interval)
 
   # if not a dt, keep original class to assign later when returning result
 
@@ -98,12 +91,25 @@ cumulative_interval <- function(travel_matrix,
     land_use_data <- data.table::as.data.table(land_use_data)
   }
 
-  # small optimization: we can ditch anything that costs more than the upper
-  # limit of the interval, since it won't affect the results anyway
-  .cost_colname <- travel_cost
-  data <- data[get(.cost_colname) <= interval[2]]
+  cutoffs <- lapply(
+    interval,
+    function(pair) seq.int(pair[1], pair[2], by = interval_increment)
+  )
+  cutoffs <- unique(unlist(cutoffs))
+  cutoffs <- cutoffs[order(cutoffs)]
+  names(cutoffs) <- as.character(cutoffs)
 
-  merge_by_reference(data, land_use_data, opportunity, active)
+  # small optimization: we can ditch anything that costs more than the highest
+  # cost cutoff value, since it won't affect the results anyway
+  .cost_colname <- travel_cost
+  data <- data[get(.cost_colname) <= max(cutoffs)]
+
+  merge_by_reference(
+    data,
+    land_use_data,
+    opportunity,
+    left_df_idcol = ifelse(active, "to_id", "from_id")
+  )
 
   group_id <- ifelse(active, "from_id", "to_id")
   groups <- c(group_id, group_by)
@@ -111,11 +117,8 @@ cumulative_interval <- function(travel_matrix,
 
   warn_extra_cols(travel_matrix, travel_cost, group_id, groups)
 
-  cutoffs <- seq(interval[1], interval[2], by = interval_increment)
-  names(cutoffs) <- as.character(cutoffs)
-
   .opportunity_colname <- opportunity
-  access <- lapply(
+  access_list <- lapply(
     cutoffs,
     function(x) {
       data[
@@ -133,13 +136,14 @@ cumulative_interval <- function(travel_matrix,
   # measure would be miscalculated (e.g. think of median of 1 3 5 and median of
   # 0 1 3 5)
 
-  nrow_more_restrictive <- nrow(access[[1]])
-  nrow_less_restrictive <- nrow(access[[length(access)]])
+  nrow_more_restrictive <- nrow(access_list[[1]])
+  nrow_less_restrictive <- nrow(access_list[[length(access_list)]])
 
   if (nrow_more_restrictive < nrow_less_restrictive) {
-    access <- fill_access_list(access, travel_matrix, groups)
+    access_list <- fill_access_list(access_list, travel_matrix, groups)
   }
-  access <- data.table::rbindlist(access, idcol = "cutoffs")
+  access_list <- data.table::rbindlist(access_list, idcol = "cutoffs")
+  access_list[, cutoffs := as.numeric(cutoffs)]
 
   # the as.integer() call below makes sure that, even though the summary
   # function may return doubles, the result is an integer (afterall when using
@@ -147,16 +151,25 @@ cumulative_interval <- function(travel_matrix,
   # float is rounded down to the integer (if you reach 2.8 opportunities you do
   # reach 2, but you can't reach 3)
 
-  access <- access[
-    ,
-    .(access = as.integer(summary_function(access))),
-    by = eval(groups, envir = env)
-  ]
+  access_list <- lapply(
+    interval,
+    function(pair) {
+      access_list[
+        cutoffs >= pair[1] & cutoffs <= pair[2],
+        .(access = as.integer(summary_function(access))),
+        by = eval(groups, envir = env)
+      ]
+    }
+  )
+  access <- data.table::rbindlist(access_list, idcol = "interval")
+  data.table::setcolorder(access, c(groups, "interval", "access"))
   data.table::setnames(access, c(group_id, "access"), c("id", opportunity))
+
+  if (length(interval) == 1) access[, interval := NULL]
 
   if (exists("original_class")) class(access) <- original_class
 
-  return(access)
+  return(access[])
 }
 
 

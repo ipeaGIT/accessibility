@@ -1,8 +1,6 @@
 # if running manually, please run the following line first:
 # source("tests/testthat/setup.R")
 
-skip_if_not(requireNamespace("stats", quietly = TRUE))
-
 tester <- function(
   travel_matrix = get("travel_matrix", envir = parent.frame()),
   land_use_data = get("land_use_data", envir = parent.frame()),
@@ -29,12 +27,23 @@ tester <- function(
 
 test_that("raises errors due to incorrect input", {
   expect_error(tester(interval = "banana"))
+
   expect_error(tester(interval = 3))
   expect_error(tester(interval = c(-1, 10)))
   expect_error(tester(interval = c(11, 10)))
   expect_error(tester(interval = c(10, 10)))
   expect_error(tester(interval = c(1, Inf)))
   expect_error(tester(interval = c(1, NA)))
+
+  expect_error(tester(interval = list("a")))
+  expect_error(tester(interval = list()))
+  expect_error(tester(interval = list(c(10, 20), c(10, 20))))
+  expect_error(tester(interval = list(3)))
+  expect_error(tester(interval = list(c(-1, 10))))
+  expect_error(tester(interval = list(c(11, 10))))
+  expect_error(tester(interval = list(c(10, 10))))
+  expect_error(tester(interval = list(c(1, Inf))))
+  expect_error(tester(interval = list(c(1, NA))))
 
   expect_error(tester(interval_increment = "a"))
   expect_error(tester(interval_increment = Inf))
@@ -139,6 +148,13 @@ test_that("result has correct structure", {
   expect_is(result$id, "character")
   expect_is(result$mode, "character")
   expect_is(result$jobs, "integer")
+
+  result <- tester(interval = list(c(10, 30), c(20, 30)))
+  expect_true(ncol(result) == 4)
+  expect_is(result$id, "character")
+  expect_is(result$mode, "character")
+  expect_is(result$interval, "character")
+  expect_is(result$jobs, "integer")
 })
 
 test_that("input data sets remain unchanged", {
@@ -169,7 +185,11 @@ test_that("active and passive accessibility is correctly calculated", {
     from_id %in% selected_ids & to_id %in% selected_ids
   ]
 
-  result <- tester(smaller_travel_matrix, interval = c(40, 45), group_by = "mode")
+  result <- tester(
+    smaller_travel_matrix,
+    interval = c(40, 45),
+    group_by = "mode"
+  )
   expected_result <- data.table::data.table(
     id = rep(selected_ids, 2),
     mode = rep(c("transit", "transit2"), each = 5),
@@ -187,7 +207,43 @@ test_that("active and passive accessibility is correctly calculated", {
   expected_result <- data.table::data.table(
     id = rep(selected_ids, 2),
     mode = rep(c("transit", "transit2"), each = 5),
-    population = rep(as.integer(c(1538, 3336, 2404, 4268, 29)), 2)
+    population = rep(as.integer(c(1946, 3457, 2363, 4552, 0)), 2)
+  )
+  expect_identical(result, expected_result)
+
+  # with more than one interval
+
+  result <- tester(
+    smaller_travel_matrix,
+    interval = list(c(40, 45), c(40, 50)),
+    group_by = "mode"
+  )
+  expected_result <- data.table::data.table(
+    id = rep(selected_ids, 4),
+    mode = rep(rep(c("transit", "transit2"), each = 5), 2),
+    interval = rep(c("[40,45]", "[40,50]"), each = 10),
+    jobs = c(
+      rep(as.integer(c(82, 517, 517, 304, 0)), 2),
+      rep(as.integer(c(82, 599, 599, 499, 0)), 2)
+    )
+  )
+  expect_identical(result, expected_result)
+
+  result <- tester(
+    smaller_travel_matrix,
+    interval = list(c(40, 45), c(40, 50)),
+    opportunity = "population",
+    group_by = "mode",
+    active = FALSE
+  )
+  expected_result <- data.table::data.table(
+    id = rep(selected_ids, 4),
+    mode = rep(rep(c("transit", "transit2"), each = 5), 2),
+    interval = rep(c("[40,45]", "[40,50]"), each = 10),
+    population = c(
+      rep(as.integer(c(1946, 3457, 2363, 4552, 0)), 2),
+      rep(as.integer(c(5404, 4552, 2363, 4552, 0)), 2)
+    )
   )
   expect_identical(result, expected_result)
 })

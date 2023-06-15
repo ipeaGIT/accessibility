@@ -1,7 +1,7 @@
 Type: Package
 Package: accessibility
 Title: Transport Accessibility Measures
-Version: 1.0.0.9000
+Version: 1.0.1.9000
 Authors@R: c(
     person("Rafael H. M.", "Pereira", , "rafa.pereira.br@gmail.com", role = "aut",
            comment = c(ORCID = "0000-0003-2125-7465")),
@@ -26,7 +26,9 @@ Depends:
 Imports:
     checkmate,
     data.table,
+    Hmisc,
     Rdpack (>= 0.7),
+    stats,
     utils
 Suggests: 
     covr,
@@ -34,7 +36,6 @@ Suggests:
     knitr,
     rmarkdown,
     sf,
-    stats,
     testthat
 VignetteBuilder: 
     knitr
@@ -43,4 +44,4 @@ RdMacros:
 Encoding: UTF-8
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3

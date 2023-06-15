@@ -9,9 +9,7 @@
 #' @template land_use_data
 #' @template opportunity
 #' @template travel_cost
-#' @param demand A string. The name of the column in `land_use_data` with the
-#'   number of people in each origin that will be considered potential
-#'   competitors. Defaults to `"population"`.
+#' @template demand
 #' @param method A string. Which floating catchment area measure to use.
 #'   Current available options are `"2sfca"` and `"bfca"`. More info in the
 #'   details.
@@ -107,13 +105,16 @@ floating_catchment_area <- function(travel_matrix,
     land_use_data <- data.table::as.data.table(land_use_data)
   }
 
-  merge_by_reference(data, land_use_data, opportunity, active = TRUE)
-  merge_by_reference(data, land_use_data, demand, active = FALSE)
+  merge_by_reference(data, land_use_data, opportunity, left_df_idcol = "to_id")
+  merge_by_reference(data, land_use_data, demand, left_df_idcol = "from_id")
 
-  .cost_colname <- travel_cost
-  data[, opp_weight := decay_function(get(.cost_colname))]
+  data <- apply_gravity_measure(data, decay_function, travel_cost)
 
   groups <- c("from_id", group_by)
+  if ("decay_function_arg" %in% names(data)) {
+    groups <- c(groups, "decay_function_arg")
+  }
+
   warn_extra_cols(
     travel_matrix,
     travel_cost,
@@ -127,16 +128,10 @@ floating_catchment_area <- function(travel_matrix,
     fca_bfca
   }
 
-  access <- fca_function(data, opportunity, demand, group_by)
+  access <- fca_function(data, opportunity, demand, setdiff(groups, "from_id"))
 
   if (fill_missing_ids) {
-    unique_values <- lapply(groups, function(x) unique(travel_matrix[[x]]))
-    names(unique_values) <- groups
-    possible_combinations <- do.call(data.table::CJ, unique_values)
-
-    if (nrow(access) < nrow(possible_combinations)) {
-      access <- do_fill_missing_ids(access, possible_combinations, groups)
-    }
+    access <- fill_missing_ids(access, travel_matrix, groups)
   }
 
   data.table::setnames(access, c("from_id", "access"), c("id", opportunity))
