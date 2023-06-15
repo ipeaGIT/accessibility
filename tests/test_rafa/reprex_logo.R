@@ -19,10 +19,12 @@ library(sfheaders)
 
 
 
-ttm_path <- system.file("extdata/ttm_bho.rds", package = "accessibility")
+ttm_path <- system.file("extdata/travel_matrix.rds", package = "accessibility")
 grid_path <- system.file("extdata/grid_bho.rds", package = "accessibility")
+landuse_path <- system.file("extdata/land_use_data.rds", package = "accessibility")
 ttm <- readRDS(ttm_path)
 grid <- readRDS(grid_path)
+landuse <- readRDS(landuse_path)
 
 setdiff(ttm$from_id, grid$id)
 
@@ -30,11 +32,12 @@ unique(ttm$from_id) |> length()
 unique(grid$id) |> length()
 
 # Active accessibility: number of schools accessible from each origin
-df <- cumulative_time_cutoff(data = ttm,
-                             opportunity_colname = 'jobs',
-                             cutoff = 30,
-                             by_colname = 'from_id')
-#
+df <- accessibility::cumulative_cutoff(travel_matrix = ttm,
+                                       land_use_data =landuse,
+                                       travel_cost = 'travel_time',
+                                       opportunity = 'jobs',
+                                       cutoff = 30)
+
 # df <- accessibility::gravity_access(data = ttm,
 #                                     opportunity_colname = 'jobs',
 #                                     decay_function = 'inverse_power',
@@ -42,7 +45,7 @@ df <- cumulative_time_cutoff(data = ttm,
 #                                     by_colname = 'from_id')
 
 # access
-df2 <- df[setDT(grid), on=c('from_id'='id'), geom := i.geom]
+df2 <- df[setDT(grid), on=c('id'='id'), geom := i.geom]
 
 df2 <- st_sf(df2)
 
@@ -52,7 +55,7 @@ df2 <- st_sf(df2)
 
 # plot results
 fig <- ggplot() +
-  geom_sf(data=df2, aes(fill=access), color=NA, show.legend = F) +
+  geom_sf(data=df2, aes(fill=jobs), color=NA, show.legend = F) +
   scale_fill_viridis_c() +
   theme_void() +
   theme(panel.grid.major=element_line(colour="transparent"))
