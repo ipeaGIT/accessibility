@@ -133,9 +133,9 @@ fgt_poverty <- function(accessibility_data,
 
   fgt <-
     data[, .(
-      FGT0 = weighted.mean(x = FGT0, w = get(.population_colname)),
-      FGT1 = weighted.mean(x = FGT1, w = get(.population_colname)),
-      FGT2 = weighted.mean(x = FGT1, w = get(.population_colname))
+      FGT0 = stats::weighted.mean(x = FGT0, w = get(.population_colname)),
+      FGT1 = stats::weighted.mean(x = FGT1, w = get(.population_colname)),
+      FGT2 = stats::weighted.mean(x = FGT1, w = get(.population_colname))
     ),
     by = group_by]
 

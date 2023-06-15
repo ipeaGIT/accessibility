@@ -59,7 +59,11 @@ utils::globalVariables(
     "avg_access",
     "i.avg_access",
     ".palma_group",
-    "poorest_avg_access"
+    "poorest_avg_access",
+    "p",
+    "FGT0",
+    "FGT1",
+    "FGT2"
   )
 )
 
