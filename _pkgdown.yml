@@ -13,7 +13,7 @@ reference:
     - starts_with("decay_")
   - title: "Inequality"
   - contents:
-    - gini
+    - gini_index
     - palma_ratio
   - title: "Poverty"
   - contents:

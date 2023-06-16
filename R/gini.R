@@ -33,16 +33,16 @@
 #'   travel_cost = "travel_time"
 #' )
 #'
-#' gini_index <- gini(
+#' gini <- gini_index(
 #'   accessibility_data = access,
 #'   sociodemographic_data = land_use_data,
 #'   opportunity = "jobs",
 #'   population = "population"
 #' )
-#' gini_index
+#' gini
 #'
 #' @export
-gini <- function(accessibility_data,
+gini_index <- function(accessibility_data,
                  sociodemographic_data,
                  opportunity,
                  population){
