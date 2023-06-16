@@ -4,13 +4,7 @@
 \alias{gini}
 \title{Gini idex}
 \usage{
-gini(
-  accessibility_data,
-  sociodemographic_data,
-  opportunity,
-  population,
-  group_by = character(0)
-)
+gini(accessibility_data, sociodemographic_data, opportunity, population)
 }
 \arguments{
 \item{accessibility_data}{A data frame. The accessibility levels whose
@@ -57,9 +51,5 @@ gini_index <- gini(
 )
 gini_index
 
-}
-\seealso{
-Other Inequality: 
-\code{\link{palma_ratio}()}
 }
 \concept{Inequality}

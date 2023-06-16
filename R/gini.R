@@ -45,13 +45,13 @@
 gini <- function(accessibility_data,
                  sociodemographic_data,
                  opportunity,
-                 population,
-                 group_by = character(0)) {
+                 population){
 
   checkmate::assert_string(opportunity)
   checkmate::assert_string(population)
-  assert_access_group_by(group_by)
-  assert_accessibility_data(accessibility_data, opportunity, group_by)
+  # assert_access_group_by(group_by)
+
+  # assert_accessibility_data(accessibility_data, opportunity, group_by)
 
   ### this should be flexible to input the columns we want. In this case, for
   ### example, we do not require an income column
@@ -76,7 +76,7 @@ gini <- function(accessibility_data,
     left_df_idcol = "id"
   )
 
-  warn_extra_access_cols(accessibility_data, opportunity, group_by)
+  # warn_extra_access_cols(accessibility_data, opportunity, group_by)
 
   .opportunity_colname <- opportunity
   .population_colname <- population
