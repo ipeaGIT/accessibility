@@ -5,7 +5,7 @@
 #' comprises three indicators that differ based on the the `alpha` parameter,
 #' which can receive values of 0, 1 or 2. The interpretation of FGT is different
 #' for each value of `alpha`. With `alpha = 0`, FGT0 captures the *extent* of
-#' poverty as a simple headcount, i.e. the proportion of peole below the poverty
+#' poverty as a simple headcount, i.e. the proportion of people below the poverty
 #' line. With `alpha = 1`, FGT1 captures the *severity* of poverty as the
 #' average percent distance between the poverty line and the accessibility of
 #' individuals below the poverty line. FGT1 is also known as the “poverty gap
@@ -22,7 +22,7 @@
 #' @param accessibility_data A data frame with accessibility estimates. It must
 #'   contain the columns `id` and any others specified in `opportunity`.
 #' @param opportunity A string. The name of the column in `accessibility_data`
-#'   with the accessibility estimates to be considerend when calculating
+#'   with the accessibility estimates to be considered when calculating
 #'   accessibility poverty.
 #' @param sociodemographic_data A data frame. The distribution of the population
 #'   in the study area cells. Must contain the columns `id` and any others
@@ -45,7 +45,7 @@
 #' @details
 #'  # Interpretation of Alpha values:
 #'  - With `alpha = 0`, the FGT0 index captures the *extent* of poverty as a
-#'  simple headcount, i.e. the proportion of peole below the poverty line.
+#'  simple headcount, i.e. the proportion of people below the poverty line.
 #'  - With `alpha = 1`, FGT1 captures the *severity* of poverty as the average
 #'  percent distance between the poverty line and the accessibility of
 #'  individuals below the poverty line. It is also known as the “poverty gap

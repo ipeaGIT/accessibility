@@ -1,12 +1,12 @@
-#' Gini idex
+#' Gini index
 #'
-#' Calculates the Gini idex of a given accessibility distribution.
+#' Calculates the Gini index of a given accessibility distribution.
 #'
 #' @param accessibility_data A data frame. The accessibility levels whose
 #'   inequality should be calculated. Must contain the columns `id` and any
 #'   others specified in `opportunity`.
 #' @param opportunity A string. The name of the column in `accessibility_data`
-#'   with the accessibility levels to be considerend when calculating inequality
+#'   with the accessibility levels to be considered when calculating inequality
 #'   levels.
 #' @param sociodemographic_data A data frame. The distribution of
 #'   sociodemographic characteristics of the population in the study area cells.

@@ -12,7 +12,7 @@ cost steps, in ascending order. Please do not include travel cost 0 as a
 step: this is already handled by the function.}
 
 \item{weights}{A \code{numeric} vector with same length as \code{steps} or a list of
-\code{numeric} vectors whose lenghts are equal to the lengths of the elements of
+\code{numeric} vectors whose lengths are equal to the lengths of the elements of
 same index in \code{steps}. The values, between 0 and 1, that the function
 assumes at each step. Please do not include weight 1 as the first value:
 this is already handled by the function. The function considers the steps'

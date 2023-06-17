@@ -18,7 +18,7 @@ fgt_poverty(
 contain the columns \code{id} and any others specified in \code{opportunity}.}
 
 \item{opportunity}{A string. The name of the column in \code{accessibility_data}
-with the accessibility estimates to be considerend when calculating
+with the accessibility estimates to be considered when calculating
 accessibility poverty.}
 
 \item{sociodemographic_data}{A data frame. The distribution of the population
@@ -49,7 +49,7 @@ measures that capture the extent and severity of poverty. The FGT family
 comprises three indicators that differ based on the the \code{alpha} parameter,
 which can receive values of 0, 1 or 2. The interpretation of FGT is different
 for each value of \code{alpha}. With \code{alpha = 0}, FGT0 captures the \emph{extent} of
-poverty as a simple headcount, i.e. the proportion of peole below the poverty
+poverty as a simple headcount, i.e. the proportion of people below the poverty
 line. With \code{alpha = 1}, FGT1 captures the \emph{severity} of poverty as the
 average percent distance between the poverty line and the accessibility of
 individuals below the poverty line. FGT1 is also known as the “poverty gap
@@ -66,7 +66,7 @@ family of poverty measures was originally proposed by
 \section{Interpretation of Alpha values:}{
 \itemize{
 \item With \code{alpha = 0}, the FGT0 index captures the \emph{extent} of poverty as a
-simple headcount, i.e. the proportion of peole below the poverty line.
+simple headcount, i.e. the proportion of people below the poverty line.
 \item With \code{alpha = 1}, FGT1 captures the \emph{severity} of poverty as the average
 percent distance between the poverty line and the accessibility of
 individuals below the poverty line. It is also known as the “poverty gap

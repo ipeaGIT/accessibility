@@ -2,7 +2,7 @@
 % Please edit documentation in R/gini.R
 \name{gini_index}
 \alias{gini_index}
-\title{Gini idex}
+\title{Gini index}
 \usage{
 gini_index(accessibility_data, sociodemographic_data, opportunity, population)
 }
@@ -17,7 +17,7 @@ Must contain the columns \code{id} and any others specified in \code{population}
 \code{income}.}
 
 \item{opportunity}{A string. The name of the column in \code{accessibility_data}
-with the accessibility levels to be considerend when calculating inequality
+with the accessibility levels to be considered when calculating inequality
 levels.}
 
 \item{population}{A string. The name of the column in \code{sociodemographic_data}
@@ -28,7 +28,7 @@ when calculating inequality.}
 A numeric value with the Gini index estimate for the study area.
 }
 \description{
-Calculates the Gini idex of a given accessibility distribution.
+Calculates the Gini index of a given accessibility distribution.
 }
 \examples{
 data_dir <- system.file("extdata", package = "accessibility")
