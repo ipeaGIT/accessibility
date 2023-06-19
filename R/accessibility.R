@@ -63,7 +63,12 @@ utils::globalVariables(
     "p",
     "FGT0",
     "FGT1",
-    "FGT2"
+    "FGT2",
+    ".area_under_curve",
+    ".big_edge",
+    ".cum_total_access",
+    ".prop_pop",
+    ".small_edge"
   )
 )
 
