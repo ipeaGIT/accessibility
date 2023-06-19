@@ -18,7 +18,6 @@ assert_cutoff <- function(cutoff, travel_cost) {
 
     cutoff_collection <- checkmate::makeAssertCollection()
 
-
     for (i in seq.int(1, length(travel_cost))) {
       checkmate::assert_numeric(
         cutoff[[i]],
@@ -110,9 +109,8 @@ assert_land_use_data <- function(land_use_data, opportunity, demand = NULL) {
 
 #' @keywords internal
 assert_sociodemographic_data <- function(sociodemographic_data,
-                                         population,
-                                         income) {
-  required_names <- c("id", population, income)
+                                         columns) {
+  required_names <- c("id", columns)
 
   checkmate::assert_data_frame(sociodemographic_data)
   checkmate::assert_names(

@@ -53,9 +53,7 @@ gini_index <- function(accessibility_data,
 
   # assert_accessibility_data(accessibility_data, opportunity, group_by)
 
-  ### this should be flexible to input the columns we want. In this case, for
-  ### example, we do not require an income column
-  # assert_sociodemographic_data(sociodemographic_data, population)
+  assert_sociodemographic_data(sociodemographic_data, population)
 
 
   if (!inherits(accessibility_data, "data.table")) {
