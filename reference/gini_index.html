@@ -57,7 +57,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Gini index</h1>
-    <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/accessibility/blob/HEAD/R/gini.R" class="external-link"><code>R/gini.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/accessibility/blob/HEAD/R/gini_index.R" class="external-link"><code>R/gini_index.R</code></a></small>
     <div class="hidden name"><code>gini_index.Rd</code></div>
     </div>
 
@@ -66,7 +66,13 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gini_index</span><span class="op">(</span><span class="va">accessibility_data</span>, <span class="va">sociodemographic_data</span>, <span class="va">opportunity</span>, <span class="va">population</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gini_index</span><span class="op">(</span></span>
+<span>  <span class="va">accessibility_data</span>,</span>
+<span>  <span class="va">sociodemographic_data</span>,</span>
+<span>  <span class="va">opportunity</span>,</span>
+<span>  <span class="va">population</span>,</span>
+<span>  group_by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -94,6 +100,15 @@ levels.</p></dd>
 <dd><p>A string. The name of the column in <code>sociodemographic_data</code>
 with the number of people in each cell. Used to weigh accessibility levels
 when calculating inequality.</p></dd>
+
+
+<dt>group_by</dt>
+<dd><p>A <code>character</code> vector. When not <code>character(0)</code> (the default),
+indicates the <code>accessibility_data</code> columns that should be used to group the
+inequality estimates by. For example, if <code>accessibility_data</code> includes a
+<code>departure_time</code> column that specifies the departure time that each entry
+refers to, passing <code>"departure_time"</code> to this parameter results in
+inequality estimates grouped by departure time.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -124,7 +139,8 @@ when calculating inequality.</p></dd>
 <span class="r-in"><span>  population <span class="op">=</span> <span class="st">"population"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">gini</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.4715251</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    gini_index</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  0.4715251</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
