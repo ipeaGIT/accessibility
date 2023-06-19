@@ -81,20 +81,21 @@ gini_index <- function(accessibility_data,
 
   .opp_colname <- opportunity
   .pop_colname <- population
+  .groups <- group_by
 
   data.table::setorderv(data, cols = c(opportunity, group_by))
 
   data[
     ,
     .prop_pop := get(.pop_colname) / sum(get(.pop_colname)),
-    by = group_by
+    by = .groups
   ]
   data[
     ,
     .cum_total_access := cumsum(
       as.numeric(get(.pop_colname) * get(.opp_colname))
     ) / sum(get(.pop_colname) * get(.opp_colname)),
-    by = group_by
+    by = .groups
   ]
 
   # to calculate the area under the lorenz curve we simply have to calculate the
@@ -108,13 +109,22 @@ gini_index <- function(accessibility_data,
   data[
     ,
     .small_edge := data.table::shift(.cum_total_access, fill = 0),
-    by = group_by
+    by = .groups
   ]
   data[, .big_edge := .cum_total_access]
 
   data[, .area_under_curve := ((.small_edge + .big_edge) * .prop_pop) / 2]
 
-  gini <- data[, .(gini_index = 1 - 2 * sum(.area_under_curve)), by = group_by]
+  if (nrow(data) == 0 && identical(group_by, character(0))) {
+    gini <- data.table::data.table(gini_index = numeric(0))
+  } else {
+    gini <- data[
+      ,
+      .(gini_index = 1 - 2 * sum(.area_under_curve)), by = .groups
+    ]
+  }
+
+  if (exists("original_class")) class(gini) <- original_class
 
   return(gini)
 }
