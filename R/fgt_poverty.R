@@ -127,15 +127,23 @@ fgt_poverty <- function(accessibility_data,
     )
   ]
 
-  fgt <- data[
-    ,
-    .(
-      FGT0 = stats::weighted.mean(x = .fgt0, w = get(.pop_colname)),
-      FGT1 = stats::weighted.mean(x = .fgt1, w = get(.pop_colname)),
-      FGT2 = stats::weighted.mean(x = .fgt2, w = get(.pop_colname))
-    ),
-    by = .groups
-  ]
+  if (nrow(data) == 0 && identical(group_by, character(0))) {
+    fgt <- data.table::data.table(
+      FGT0 = numeric(0),
+      FGT1 = numeric(0),
+      FGT2 = numeric(0)
+    )
+  } else {
+    fgt <- data[
+      ,
+      .(
+        FGT0 = stats::weighted.mean(x = .fgt0, w = get(.pop_colname)),
+        FGT1 = stats::weighted.mean(x = .fgt1, w = get(.pop_colname)),
+        FGT2 = stats::weighted.mean(x = .fgt2, w = get(.pop_colname))
+      ),
+      by = .groups
+    ]
+  }
 
   if (exists("original_class")) class(fgt) <- original_class
 
