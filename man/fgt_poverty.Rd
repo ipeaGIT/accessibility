@@ -67,10 +67,12 @@ poverty line;
 \item with \eqn{\alpha = 2} (FGT2) the measure simultaneously captures the
 \emph{extent} and the \emph{severity} of poverty by calculating the number of people
 below the poverty line weighted by the size of the accessibility shortfall
-relative to the poverty line. The value of FGT2 ranges from 0 to 1, where 0
-indicates that every individual is above the poverty line and a value of 1
-indicates that the entire population is below it.
+relative to the poverty line.
 }
+
+FGT values range from 0 to 1. A value of 0 indicates that every individual is
+above the poverty line. When every individual is below the poverty line,
+however, FGT0 value is 1 and FGT1 and FGT2 values approach 1.
 }
 
 \examples{
