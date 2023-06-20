@@ -1,63 +1,56 @@
 #' Foster–Greer–Thorbecke (FGT) poverty measures
 #'
-#' Calculates the Foster–Greer–Thorbecke (FGT) indices, a family of poverty
-#' measures that capture the extent and severity of poverty. The FGT family
-#' comprises three indicators that differ based on the the `alpha` parameter,
-#' which can receive values of 0, 1 or 2. The interpretation of FGT is different
-#' for each value of `alpha`. With `alpha = 0`, FGT0 captures the *extent* of
-#' poverty as a simple headcount, i.e. the proportion of people below the poverty
-#' line. With `alpha = 1`, FGT1 captures the *severity* of poverty as the
-#' average percent distance between the poverty line and the accessibility of
-#' individuals below the poverty line. FGT1 is also known as the “poverty gap
-#' index”. Finally, with `alpha = 2`, FGT2 index simultaneously captures the
-#' *extent and severity* of poverty by calculating the number of people below
-#' the poverty line weighted by the size of the accessibility shortfall
-#' relative to the poverty line. The value of FGT2 ranges from 0 to 1, where 0
-#' indicates that every individual is above the poverty line, and a value of 1
-#' indicates that the entire population is below the poverty line. The function
-#' returns a `data.frame` with the values of FGT0, FGT1 and FGT2. The FGT
-#' family of poverty measures was originally proposed by
-#' \insertCite{foster1984class;textual}{accessibility}.
+#' Calculates the FGT metrics, a family of poverty measures originally proposed
+#' by \insertCite{foster1984class;textual}{accessibility} that capture the
+#' extent and severity of poverty within an accessibility distribution. The FGT
+#' family is composed of three measures that differ based on the \eqn{\alpha}
+#' parameter used to calculate them (either 0, 1 or 2) and which also changes
+#' their interpretation. Please see the details section for more information on
+#' the interpretation of the measures.
 #'
-#' @param accessibility_data A data frame with accessibility estimates. It must
-#'   contain the columns `id` and any others specified in `opportunity`.
+#' @param accessibility_data A data frame. The accessibility levels whose
+#'   poverty levels should be calculated. Must contain the columns `id` and any
+#'   others specified in `opportunity`.
+#' @template sociodem_data_without_income
 #' @param opportunity A string. The name of the column in `accessibility_data`
-#'   with the accessibility estimates to be considered when calculating
+#'   with the accessibility levels to be considerend when calculating
 #'   accessibility poverty.
-#' @param sociodemographic_data A data frame. The distribution of the population
-#'   in the study area cells. Must contain the columns `id` and any others
-#'   specified in `population`.
 #' @param population A string. The name of the column in `sociodemographic_data`
 #'   with the number of people in each cell. Used to weigh accessibility levels
 #'   when calculating poverty.
-#' @param poverty_line A `numeric` value. The value of the accessibility poverty
-#'   line, below which individuals are considered to be in accessibility poverty.
+#' @param poverty_line A `numeric`. The poverty line below which individuals are
+#'   considered to be in accessibility poverty.
 #' @param group_by A `character` vector. When not `character(0)` (the default),
 #'   indicates the `accessibility_data` columns that should be used to group the
 #'   poverty estimates by. For example, if `accessibility_data` includes a
 #'   `race` column that specifies the racial category of the population (e.g.
-#'   `"Black"` and `"White"`) that each entry refers to, passing `"race"` to
+#'   `"black"` and `"white"`) that each entry refers to, passing `"race"` to
 #'   this parameter results in poverty estimates grouped by race.
 #'
-#' @return A data frame containing the poverty three estimates for the study
-#'    area: FGT0, FGT1 and FGT2.
+#' @return A data frame containing the three poverty estimates (FGT0, FGT1 and
+#'   FGT2) for the study area.
 #'
-#' @details
-#'  # Interpretation of Alpha values:
-#'  - With `alpha = 0`, the FGT0 index captures the *extent* of poverty as a
-#'  simple headcount, i.e. the proportion of people below the poverty line.
-#'  - With `alpha = 1`, FGT1 captures the *severity* of poverty as the average
-#'  percent distance between the poverty line and the accessibility of
-#'  individuals below the poverty line. It is also known as the “poverty gap
-#'  index”.
-#'  - Finally, with `alpha = 2`, the FGT2 index simultaneously captures the
-#'  *extent and severity* of poverty by calculating the number of people below
-#'  the poverty line weighted by the size of the accessibility shortfall
-#'  relative to the poverty line. The value of FGT2 ranges from 0 to 1, where 0
-#'  indicates that every individual is above the poverty line, and a value of 1
-#'  indicates that the entire population is below the poverty line.
+#' @section Interpretation of FGT measures:
+#' The interpretation of each FGT measure depends on the \eqn{\alpha} parameter
+#' used to calculate it:
 #'
-#' @family Poverty
+#' - with \eqn{\alpha = 0} (FGT0) the measure captures the *extent* of poverty
+#' as a simple headcount - i.e. the proportion of people below the poverty line;
+#'
+#' - with \eqn{\alpha = 1} (FGT1) the measure, also know as the "poverty gap
+#' index", captures the *severity* of poverty as the average percentage distance
+#' between the poverty line and the accessibility of individuals below the
+#' poverty line;
+#'
+#' - with \eqn{\alpha = 2} (FGT2) the measure simultaneously captures the
+#' *extent* and the *severity* of poverty by calculating the number of people
+#' below the poverty line weighted by the size of the accessibility shortfall
+#' relative to the poverty line. The value of FGT2 ranges from 0 to 1, where 0
+#' indicates that every individual is above the poverty line and a value of 1
+#' indicates that the entire population is below it.
+#'
+#' @references
+#' \insertAllCited{}
 #'
 #' @examples
 #' data_dir <- system.file("extdata", package = "accessibility")
@@ -83,9 +76,9 @@
 #'
 #' @export
 fgt_poverty <- function(accessibility_data,
+                        sociodemographic_data,
                         opportunity,
-                        sociodemographic_data = NULL,
-                        population = NULL,
+                        population,
                         poverty_line,
                         group_by = character(0)) {
   checkmate::assert_string(opportunity)
@@ -115,25 +108,36 @@ fgt_poverty <- function(accessibility_data,
 
   warn_extra_access_cols(accessibility_data, opportunity, group_by)
 
+  .opp_colname <- opportunity
+  .pop_colname <- population
+  .groups <- group_by
 
-  .opportunity_colname <- opportunity
-  .population_colname <- population
+  data[get(.opp_colname) >= poverty_line, c(".fgt0", ".fgt1", ".fgt2") := 0]
 
+  data[
+    get(.opp_colname) < poverty_line,
+    .norm_opp_shortfall := (poverty_line - get(.opp_colname)) / poverty_line
+  ]
+  data[
+    get(.opp_colname) < poverty_line,
+    `:=`(
+      .fgt0 = .norm_opp_shortfall ^ 0,
+      .fgt1 = .norm_opp_shortfall ^ 1,
+      .fgt2 = .norm_opp_shortfall ^ 2
+    )
+  ]
 
-  data[, p := fifelse(get(.opportunity_colname) < poverty_line,
-                      ((poverty_line - get(.opportunity_colname)) / poverty_line), 0)]
-
-  data[, FGT0 := fifelse(get(.opportunity_colname) < poverty_line, p^0, 0) ]
-  data[, FGT1 := fifelse(get(.opportunity_colname) < poverty_line, p^1, 0) ]
-  data[, FGT2 := fifelse(get(.opportunity_colname) < poverty_line, p^2, 0) ]
-
-  fgt <-
-    data[, .(
-      FGT0 = stats::weighted.mean(x = FGT0, w = get(.population_colname)),
-      FGT1 = stats::weighted.mean(x = FGT1, w = get(.population_colname)),
-      FGT2 = stats::weighted.mean(x = FGT2, w = get(.population_colname))
+  fgt <- data[
+    ,
+    .(
+      FGT0 = stats::weighted.mean(x = .fgt0, w = get(.pop_colname)),
+      FGT1 = stats::weighted.mean(x = .fgt1, w = get(.pop_colname)),
+      FGT2 = stats::weighted.mean(x = .fgt2, w = get(.pop_colname))
     ),
-    by = group_by]
+    by = .groups
+  ]
+
+  if (exists("original_class")) class(fgt) <- original_class
 
   return(fgt[])
 }

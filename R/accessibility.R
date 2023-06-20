@@ -68,7 +68,11 @@ utils::globalVariables(
     ".big_edge",
     ".cum_total_access",
     ".prop_pop",
-    ".small_edge"
+    ".small_edge",
+    ".fgt0",
+    ".fgt1",
+    ".fgt2",
+    ".norm_opp_shortfall"
   )
 )
 

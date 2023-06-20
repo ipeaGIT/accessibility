@@ -6,77 +6,70 @@
 \usage{
 fgt_poverty(
   accessibility_data,
+  sociodemographic_data,
   opportunity,
-  sociodemographic_data = NULL,
-  population = NULL,
+  population,
   poverty_line,
   group_by = character(0)
 )
 }
 \arguments{
-\item{accessibility_data}{A data frame with accessibility estimates. It must
-contain the columns \code{id} and any others specified in \code{opportunity}.}
+\item{accessibility_data}{A data frame. The accessibility levels whose
+poverty levels should be calculated. Must contain the columns \code{id} and any
+others specified in \code{opportunity}.}
+
+\item{sociodemographic_data}{A data frame. The distribution of
+sociodemographic characteristics of the population in the study area cells.
+Must contain the columns \code{id} and any others specified in \code{population}.}
 
 \item{opportunity}{A string. The name of the column in \code{accessibility_data}
-with the accessibility estimates to be considered when calculating
+with the accessibility levels to be considerend when calculating
 accessibility poverty.}
-
-\item{sociodemographic_data}{A data frame. The distribution of the population
-in the study area cells. Must contain the columns \code{id} and any others
-specified in \code{population}.}
 
 \item{population}{A string. The name of the column in \code{sociodemographic_data}
 with the number of people in each cell. Used to weigh accessibility levels
 when calculating poverty.}
 
-\item{poverty_line}{A \code{numeric} value. The value of the accessibility poverty
-line, below which individuals are considered to be in accessibility poverty.}
+\item{poverty_line}{A \code{numeric}. The poverty line below which individuals are
+considered to be in accessibility poverty.}
 
 \item{group_by}{A \code{character} vector. When not \code{character(0)} (the default),
 indicates the \code{accessibility_data} columns that should be used to group the
 poverty estimates by. For example, if \code{accessibility_data} includes a
 \code{race} column that specifies the racial category of the population (e.g.
-\code{"Black"} and \code{"White"}) that each entry refers to, passing \code{"race"} to
+\code{"black"} and \code{"white"}) that each entry refers to, passing \code{"race"} to
 this parameter results in poverty estimates grouped by race.}
 }
 \value{
-A data frame containing the poverty three estimates for the study
-area: FGT0, FGT1 and FGT2.
+A data frame containing the three poverty estimates (FGT0, FGT1 and
+FGT2) for the study area.
 }
 \description{
-Calculates the Foster–Greer–Thorbecke (FGT) indices, a family of poverty
-measures that capture the extent and severity of poverty. The FGT family
-comprises three indicators that differ based on the the \code{alpha} parameter,
-which can receive values of 0, 1 or 2. The interpretation of FGT is different
-for each value of \code{alpha}. With \code{alpha = 0}, FGT0 captures the \emph{extent} of
-poverty as a simple headcount, i.e. the proportion of people below the poverty
-line. With \code{alpha = 1}, FGT1 captures the \emph{severity} of poverty as the
-average percent distance between the poverty line and the accessibility of
-individuals below the poverty line. FGT1 is also known as the “poverty gap
-index”. Finally, with \code{alpha = 2}, FGT2 index simultaneously captures the
-\emph{extent and severity} of poverty by calculating the number of people below
-the poverty line weighted by the size of the accessibility shortfall
-relative to the poverty line. The value of FGT2 ranges from 0 to 1, where 0
-indicates that every individual is above the poverty line, and a value of 1
-indicates that the entire population is below the poverty line. The function
-returns a \code{data.frame} with the values of FGT0, FGT1 and FGT2. The FGT
-family of poverty measures was originally proposed by
-\insertCite{foster1984class;textual}{accessibility}.
+Calculates the FGT metrics, a family of poverty measures originally proposed
+by \insertCite{foster1984class;textual}{accessibility} that capture the
+extent and severity of poverty within an accessibility distribution. The FGT
+family is composed of three measures that differ based on the \eqn{\alpha}
+parameter used to calculate them (either 0, 1 or 2) and which also changes
+their interpretation. Please see the details section for more information on
+the interpretation of the measures.
 }
-\section{Interpretation of Alpha values:}{
+\section{Interpretation of FGT measures}{
+
+The interpretation of each FGT measure depends on the \eqn{\alpha} parameter
+used to calculate it:
 \itemize{
-\item With \code{alpha = 0}, the FGT0 index captures the \emph{extent} of poverty as a
-simple headcount, i.e. the proportion of people below the poverty line.
-\item With \code{alpha = 1}, FGT1 captures the \emph{severity} of poverty as the average
-percent distance between the poverty line and the accessibility of
-individuals below the poverty line. It is also known as the “poverty gap
-index”.
-\item Finally, with \code{alpha = 2}, the FGT2 index simultaneously captures the
-\emph{extent and severity} of poverty by calculating the number of people below
-the poverty line weighted by the size of the accessibility shortfall
+\item with \eqn{\alpha = 0} (FGT0) the measure captures the \emph{extent} of poverty
+as a simple headcount - i.e. the proportion of people below the poverty line;
+\item with \eqn{\alpha = 1} (FGT1) the measure, also know as the "poverty gap
+index", captures the \emph{severity} of poverty as the average percentage distance
+between the poverty line and the accessibility of individuals below the
+poverty line;
+\item with \eqn{\alpha = 2} (FGT2) the measure simultaneously captures the
+\emph{extent} and the \emph{severity} of poverty by calculating the number of people
+below the poverty line weighted by the size of the accessibility shortfall
 relative to the poverty line. The value of FGT2 ranges from 0 to 1, where 0
-indicates that every individual is above the poverty line, and a value of 1
-indicates that the entire population is below the poverty line.
+indicates that every individual is above the poverty line and a value of 1
+indicates that the entire population is below it.
 }
 }
 
@@ -103,4 +96,6 @@ poverty <- fgt_poverty(
 poverty
 
 }
-\concept{Poverty}
+\references{
+\insertAllCited{}
+}
