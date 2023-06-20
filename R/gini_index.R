@@ -2,29 +2,15 @@
 #'
 #' Calculates the Gini index of a given accessibility distribution.
 #'
-#' @param accessibility_data A data frame. The accessibility levels whose
-#'   inequality should be calculated. Must contain the columns `id` and any
-#'   others specified in `opportunity`.
-#' @param sociodemographic_data A data frame. The distribution of
-#'   sociodemographic characteristics of the population in the study area cells.
-#'   Must contain the columns `id` and any others specified in `population` and
-#'   `income`.
-#' @param opportunity A string. The name of the column in `accessibility_data`
-#'   with the accessibility levels to be considered when calculating inequality
-#'   levels.
-#' @param population A string. The name of the column in `sociodemographic_data`
-#'   with the number of people in each cell. Used to weigh accessibility levels
-#'   when calculating inequality.
-#' @param group_by A `character` vector. When not `character(0)` (the default),
-#'   indicates the `accessibility_data` columns that should be used to group the
-#'   inequality estimates by. For example, if `accessibility_data` includes a
-#'   `departure_time` column that specifies the departure time that each entry
-#'   refers to, passing `"departure_time"` to this parameter results in
-#'   inequality estimates grouped by departure time.
+#' @template accessibility_data
+#' @template sociodem_data_without_income
+#' @template opportunity_access
+#' @template population
+#' @template group_by_access
 #'
-#' @return A numeric value with the Gini index estimate for the study area.
+#' @template return_inequality
 #'
-#' @family Inequality
+#' @family inequality
 #'
 #' @examples
 #' data_dir <- system.file("extdata", package = "accessibility")

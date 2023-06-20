@@ -77,3 +77,8 @@ palma <- palma_ratio(
 palma
 
 }
+\seealso{
+Other inequality: 
+\code{\link{gini_index}()}
+}
+\concept{inequality}

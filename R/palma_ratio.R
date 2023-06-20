@@ -6,32 +6,23 @@
 #' planning as the average accessibility of the richest 10% divided by the
 #' average accessibility of the poorest 40%.
 #'
-#' @param accessibility_data A data frame. The accessibility levels whose
-#'   inequality should be calculated. Must contain the columns `id` and any
-#'   others specified in `opportunity`.
+#' @template accessibility_data
 #' @param sociodemographic_data A data frame. The distribution of
 #'   sociodemographic characteristics of the population in the study area cells.
 #'   Must contain the columns `id` and any others specified in `population` and
 #'   `income`.
-#' @param opportunity A string. The name of the column in `accessibility_data`
-#'   with the accessibility levels to be considerend when calculating inequality
-#'   levels.
-#' @param population A string. The name of the column in `sociodemographic_data`
-#'   with the number of people in each cell. Used to weigh accessibility levels
-#'   when calculating inequality.
+#' @template opportunity_access
+#' @template population
 #' @param income A string. The name of column in `sociodemographic_data` with
 #'   the income variable that should be used to classify the population in
 #'   socioeconomic groups. Please note that this variable should describe income
 #'   per capita (e.g. mean income per capita, household income per
 #'   capita, etc), instead of the total amount of income in each cell.
-#' @param group_by A `character` vector. When not `character(0)` (the default),
-#'   indicates the `accessibility_data` columns that should be used to group the
-#'   inequality estimates by. For example, if `accessibility_data` includes a
-#'   `departure_time` column that specifies the departure time that each entry
-#'   refers to, passing `"departure_time"` to this parameter results in
-#'   inequality estimates grouped by departure time.
+#' @template group_by_access
 #'
-#' @return A data frame containing the inequality estimates for the study area.
+#' @template return_inequality
+#'
+#' @family inequality
 #'
 #' @examples
 #' data_dir <- system.file("extdata", package = "accessibility")

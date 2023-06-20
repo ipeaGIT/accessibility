@@ -19,11 +19,10 @@ others specified in \code{opportunity}.}
 
 \item{sociodemographic_data}{A data frame. The distribution of
 sociodemographic characteristics of the population in the study area cells.
-Must contain the columns \code{id} and any others specified in \code{population} and
-\code{income}.}
+Must contain the columns \code{id} and any others specified in \code{population}.}
 
 \item{opportunity}{A string. The name of the column in \code{accessibility_data}
-with the accessibility levels to be considered when calculating inequality
+with the accessibility levels to be considerend when calculating inequality
 levels.}
 
 \item{population}{A string. The name of the column in \code{sociodemographic_data}
@@ -38,7 +37,7 @@ refers to, passing \code{"departure_time"} to this parameter results in
 inequality estimates grouped by departure time.}
 }
 \value{
-A numeric value with the Gini index estimate for the study area.
+A data frame containing the inequality estimates for the study area.
 }
 \description{
 Calculates the Gini index of a given accessibility distribution.
@@ -65,4 +64,8 @@ gini <- gini_index(
 gini
 
 }
-\concept{Inequality}
+\seealso{
+Other inequality: 
+\code{\link{palma_ratio}()}
+}
+\concept{inequality}
