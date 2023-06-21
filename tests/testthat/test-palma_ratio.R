@@ -1,9 +1,6 @@
 # if running manually, please run the following line first:
 # source("tests/testthat/setup.R")
 
-# check if palma ratio is always NA when group_by is missing, even if there is
-# either no wealthiest or poorest cell in access data
-
 tester <- function(accessibility_data = small_access,
                    sociodemographic_data = land_use_data,
                    opportunity = "jobs",
@@ -211,6 +208,11 @@ test_that("works even if access_data and sociodem_data has specific colnames", {
   expect_identical(expected_result, result)
 
   land_use_data[, income := NULL]
+  access_data[, group_by := "oi"]
+  result <- suppressWarnings(tester(access_data))
+  expect_identical(expected_result, result)
+
+  access_data[, group_by := NULL]
 })
 
 test_that("handles missing data correctly", {

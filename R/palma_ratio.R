@@ -99,6 +99,8 @@ palma_ratio <- function(accessibility_data,
 
   .opportunity_colname <- opportunity
   .population_colname <- population
+  .groups <- group_by
+
   wealthiest_access <- data[
     .palma_group == "wealthiest",
     .(
@@ -107,7 +109,7 @@ palma_ratio <- function(accessibility_data,
         w = get(.population_colname)
       )
     ),
-    by = group_by
+    by = .groups
   ]
   poorest_access <- data[
     .palma_group == "poorest",
@@ -117,7 +119,7 @@ palma_ratio <- function(accessibility_data,
         w = get(.population_colname)
       )
     ),
-    by = group_by
+    by = .groups
   ]
 
   if (identical(group_by, character(0))) {
