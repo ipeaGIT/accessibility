@@ -22,6 +22,7 @@
 ## Notes
 
 - Various documentation tweaks.
+- Added the new accessibility functions to the intro vignette.
 
 # accessibility 1.0.1
 

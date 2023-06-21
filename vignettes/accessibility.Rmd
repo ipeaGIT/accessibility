@@ -113,8 +113,8 @@ for demonstration purposes[^1].
 [^1]: If you would like to calculate such travel cost matrices yourself, there
 are several computational packages to do that in R, such as
 [r5r](https://github.com/ipeaGIT/r5r),
-[dodgr](https://github.com/ATFutures/dodgr),
-[gtfsrouter](https://github.com/ATFutures/gtfs-router),
+[dodgr](https://github.com/UrbanAnalyst/dodgr),
+[gtfsrouter](https://github.com/UrbanAnalyst/gtfsrouter),
 [hereR](https://github.com/munterfi/hereR) and
 [opentripplanner](https://github.com/ropensci/opentripplanner).
 
@@ -301,6 +301,38 @@ spatial_avlblt <- spatial_availability(
   decay_function = decay_exponential(decay_value = 0.1)
 )
 head(spatial_avlblt)
+```
+
+## Balancing cost
+
+`balancing_cost()` calculates the balancing cost accessibility measure.
+Originally proposed by @barboza2021balancing under the name "balancing time",
+this metric is defined as the travel cost required to reach as many
+opportunities as the number of people in a given origin. Just like the
+previous two functions, `balancing_cost()` also includes a
+parameter to specify the population competing for opportunities.
+
+The function also includes a `cost_increment` parameter, that should be used to
+specify the increment that defines the travel cost distribution from which the
+potential balancing costs will be picked. For example, an increment of 1 (the
+default) tends to suit travel time distributions, meaning that the function will
+first check if any origins reach their balancing cost with a travel time of 0
+minutes, then 1 minute, 2 minutes, 3, 4, ..., etc. On the other hand, an
+increment of 1 might be too big for a distribution of monetary costs, which
+could possibly benefit from a smaller increment of 0.05 (5 cents), for example.
+Such increment results in the function looking for balancing costs first at a
+monetary cost of 0, then 0.05, 0.10, ..., etc. In the example below, we use the
+default cost increment of 1.
+
+```{r}
+bal_cost <- balancing_cost(
+  travel_matrix,
+  land_use_data,
+  opportunity = "jobs",
+  travel_cost = "travel_time",
+  demand = "population"
+)
+head(bal_cost)
 ```
 
 ## Visualize results
