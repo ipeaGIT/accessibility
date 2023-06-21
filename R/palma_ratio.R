@@ -30,8 +30,8 @@
 #' land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
 #'
 #' access <- cumulative_cutoff(
-#'   travel_matrix = travel_matrix,
-#'   land_use_data = land_use_data,
+#'   travel_matrix,
+#'   land_use_data,
 #'   cutoff = 30,
 #'   opportunity = "jobs",
 #'   travel_cost = "travel_time"

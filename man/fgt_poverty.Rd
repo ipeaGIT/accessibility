@@ -2,7 +2,7 @@
 % Please edit documentation in R/fgt_poverty.R
 \name{fgt_poverty}
 \alias{fgt_poverty}
-\title{Foster–Greer–Thorbecke (FGT) poverty measures}
+\title{Foster-Greer-Thorbecke (FGT) poverty measures}
 \usage{
 fgt_poverty(
   accessibility_data,
@@ -81,15 +81,15 @@ travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
 land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
 
 access <- cumulative_cutoff(
-  travel_matrix = travel_matrix,
-  land_use_data = land_use_data,
+  travel_matrix,
+  land_use_data,
   cutoff = 30,
   opportunity = "jobs",
   travel_cost = "travel_time"
 )
 
 poverty <- fgt_poverty(
-  accessibility_data = access,
+  access,
   opportunity = "jobs",
   sociodemographic_data = land_use_data,
   population = "population",
