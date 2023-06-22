@@ -1,3 +1,8 @@
+## Resubmission
+
+This is a resubmission. Our latest submission got flagged for invalid URIs and
+slow examples, which have been fixed in this version.
+
 ## Test environments
 
 - Local Ubuntu 20.04 installation (R 4.2.1)
@@ -13,24 +18,6 @@
 
 ## R CMD check results
 
-In most platforms we got the following result:
+After fixing the flagged issues, we got this result:
 
 0 errors | 0 warnings | 0 notes
-
-However, when using win-builder we got this result:
-
-0 errors | 0 warnings | 1 note
-
-Found the following (possibly) invalid file URIs:
-  URI: 2020-12-07
-    From: man/balancing_cost.Rd
-  URI: 2023-06-15
-    From: man/cumulative_interval.Rd
-  URI: 2023-06-15
-    From: man/fgt_poverty.Rd
-  URI: 2022-07-14
-    From: man/floating_catchment_area.Rd
-  URI: 2023-02-16
-    From: man/spatial_availability.Rd
-
-We checked the mentioned files but could not find the possibly invalid URIs. 
