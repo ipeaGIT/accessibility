@@ -1,10 +1,11 @@
-# accessibility (development version)
+# accessibility 1.1.0
 
 ## New features
 
 - The package now includes functions to estimate accessibility inequalities
   (`palma_ratio()` and `gini_index()`) and poverty (`fgt_poverty()`).
 - New accessibility functions `spatial_availability()` and `balancing_cost()`.
+- New vignette "Calculating accessibility inequality and poverty".
 - `cost_to_closest()` parameter `n` now accepts a numeric vector, instead of
   being restricted to a single number.
 - `cumulative_cutoff()` parameters `cutoff` and `travel_cost` now accepts a
@@ -16,8 +17,6 @@
   restricted to a single number (in the case of `decay_stepped()`, both `steps`
   and `weights` can take a `list` of `numeric` vectors as input, instead of
   being restricted to a single `numeric` vector each).
-
-## Bug fixes
 
 ## Notes
 

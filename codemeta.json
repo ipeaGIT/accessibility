@@ -7,13 +7,13 @@
   "codeRepository": "https://github.com/ipeaGIT/accessibility",
   "issueTracker": "https://github.com/ipeaGIT/accessibility/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "1.0.1.9000",
+  "version": "1.1.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.2.1 (2022-06-23)",
+  "runtimePlatform": "R version 4.3.0 (2023-04-21)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -120,11 +120,6 @@
     },
     {
       "@type": "SoftwareApplication",
-      "identifier": "stats",
-      "name": "stats"
-    },
-    {
-      "@type": "SoftwareApplication",
       "identifier": "testthat",
       "name": "testthat",
       "provider": {
@@ -169,6 +164,18 @@
     },
     "4": {
       "@type": "SoftwareApplication",
+      "identifier": "Hmisc",
+      "name": "Hmisc",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=Hmisc"
+    },
+    "5": {
+      "@type": "SoftwareApplication",
       "identifier": "Rdpack",
       "name": "Rdpack",
       "version": ">= 0.7",
@@ -180,14 +187,19 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=Rdpack"
     },
-    "5": {
+    "6": {
+      "@type": "SoftwareApplication",
+      "identifier": "stats",
+      "name": "stats"
+    },
+    "7": {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils"
     },
     "SystemRequirements": null
   },
-  "fileSize": "1894.25KB",
+  "fileSize": "3267.436KB",
   "releaseNotes": "https://github.com/ipeaGIT/accessibility/blob/master/NEWS.md",
   "readme": "https://github.com/ipeaGIT/accessibility/blob/main/README.md",
   "contIntegration": ["https://github.com/ipeaGIT/accessibility/actions", "https://app.codecov.io/gh/ipeaGIT/accessibility?branch=main"],
