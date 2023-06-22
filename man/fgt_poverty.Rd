@@ -76,6 +76,7 @@ however, FGT0 value is 1 and FGT1 and FGT2 values approach 1.
 }
 
 \examples{
+\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 data_dir <- system.file("extdata", package = "accessibility")
 travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
 land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
@@ -96,7 +97,7 @@ poverty <- fgt_poverty(
   poverty_line = 95368
 )
 poverty
-
+\dontshow{\}) # examplesIf}
 }
 \references{
 \insertAllCited{}

@@ -25,7 +25,7 @@
 #'
 #' @template return_accessibility
 #'
-#' @examples
+#' @examplesIf identical(tolower(Sys.getenv("NOT_CRAN")), "true")
 #' data_dir <- system.file("extdata", package = "accessibility")
 #' travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
 #' land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))

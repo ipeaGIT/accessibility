@@ -43,6 +43,7 @@ A data frame containing the inequality estimates for the study area.
 Calculates the Gini index of a given accessibility distribution.
 }
 \examples{
+\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 data_dir <- system.file("extdata", package = "accessibility")
 travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
 land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
@@ -62,7 +63,7 @@ gini <- gini_index(
   population = "population"
 )
 gini
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other inequality: 

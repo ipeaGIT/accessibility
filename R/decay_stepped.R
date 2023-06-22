@@ -30,7 +30,7 @@
 #'
 #' @family decay functions
 #'
-#' @examples
+#' @examplesIf identical(tolower(Sys.getenv("NOT_CRAN")), "true")
 #' weighting_function <- decay_stepped(
 #'   c(10, 20, 30, 40),
 #'   weights = c(0.75, 0.5, 0.25, 0)

@@ -25,7 +25,7 @@
 #' @references
 #' \insertAllCited{}
 #'
-#' @examples
+#' @examplesIf identical(tolower(Sys.getenv("NOT_CRAN")), "true")
 #' # the example below is based on Soukhov et al. (2023) paper
 #'
 #' travel_matrix <- data.table::data.table(

@@ -44,6 +44,7 @@ the output will be named \code{"s(10,20,30);w(0.66,0.33,0)"}.
 }
 }
 \examples{
+\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 weighting_function <- decay_stepped(
   c(10, 20, 30, 40),
   weights = c(0.75, 0.5, 0.25, 0)
@@ -60,7 +61,7 @@ weighting_function(c(5, 25, 35, 45))
 
 # intervals are open on the right, so the values change exactly at each step
 weighting_function(c(0, 10, 20, 30, 40))
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 Other decay functions: 

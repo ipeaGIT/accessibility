@@ -11,7 +11,7 @@
 #'
 #' @family decay functions
 #'
-#' @examples
+#' @examplesIf identical(tolower(Sys.getenv("NOT_CRAN")), "true")
 #' weighting_function <- decay_power(decay_value = 0.1)
 #'
 #' weighting_function(c(20, 35))

@@ -83,6 +83,7 @@ This function is generic over any kind of numeric travel cost,
 such as distance, time and money.
 }
 \examples{
+\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # the example below is based on Soukhov et al. (2023) paper
 
 travel_matrix <- data.table::data.table(
@@ -105,7 +106,7 @@ df <- spatial_availability(
   decay_function = decay_exponential(decay_value = 0.1)
 )
 df
-
+\dontshow{\}) # examplesIf}
 }
 \references{
 \insertAllCited{}

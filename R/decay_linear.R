@@ -12,7 +12,7 @@
 #'
 #' @family decay functions
 #'
-#' @examples
+#' @examplesIf identical(tolower(Sys.getenv("NOT_CRAN")), "true")
 #' weighting_function <- decay_linear(cutoff = 30)
 #'
 #' weighting_function(c(20, 35))
