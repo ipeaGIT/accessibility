@@ -73,12 +73,12 @@ cum_cutoff <- cumulative_cutoff(
 )
 head(cum_cutoff)
 #>                 id  jobs
-#> 1: 89a88cdb57bffff 22239
-#> 2: 89a88cdb597ffff 36567
-#> 3: 89a88cdb5b3ffff 42372
-#> 4: 89a88cdb5cfffff 55571
-#> 5: 89a88cd909bffff 26774
-#> 6: 89a88cd90b7ffff 36991
+#> 1: 89a881a5a2bffff 14561
+#> 2: 89a881a5a2fffff 29452
+#> 3: 89a881a5a67ffff 16647
+#> 4: 89a881a5a6bffff 10700
+#> 5: 89a881a5a6fffff  6669
+#> 6: 89a881a5b03ffff 37029
 
 cum_interval <- cumulative_interval(
   travel_matrix,
@@ -123,12 +123,12 @@ fca <- floating_catchment_area(
 )
 head(fca)
 #>                 id      jobs
-#> 1: 89a88cdb57bffff 0.4357418
-#> 2: 89a88cdb597ffff 0.3938630
-#> 3: 89a88cdb5b3ffff 0.4589910
-#> 4: 89a88cdb5cfffff 0.5469433
-#> 5: 89a88cd909bffff 0.4358530
-#> 6: 89a88cd90b7ffff 0.5271746
+#> 1: 89a88cdb57bffff 0.4278111
+#> 2: 89a88cdb597ffff 0.3863614
+#> 3: 89a88cdb5b3ffff 0.4501725
+#> 4: 89a88cdb5cfffff 0.5366707
+#> 5: 89a88cd909bffff 0.4280401
+#> 6: 89a88cd90b7ffff 0.5176583
 
 sptl_avlblt <- spatial_availability(
   travel_matrix,
@@ -139,13 +139,29 @@ sptl_avlblt <- spatial_availability(
   decay_function = decay_exponential(decay_value = 0.1)
 )
 head(sptl_avlblt)
-#>                 id       jobs
-#> 1: 89a88cdb57bffff  371.68866
-#> 2: 89a88cdb597ffff  310.22854
-#> 3: 89a88cdb5b3ffff  688.84257
-#> 4: 89a88cdb5cfffff 1396.27751
-#> 5: 89a88cd909bffff   10.96648
-#> 6: 89a88cd90b7ffff  525.20251
+#>                 id     jobs
+#> 1: 89a88cdb57bffff 186.0876
+#> 2: 89a88cdb597ffff 140.0738
+#> 3: 89a88cdb5b3ffff 736.5830
+#> 4: 89a88cdb5cfffff 900.9284
+#> 5: 89a88cd909bffff   0.0000
+#> 6: 89a88cd90b7ffff 204.7962
+
+bc <- balancing_cost(
+  travel_matrix,
+  land_use_data,
+  opportunity = "jobs",
+  travel_cost = "travel_time",
+  demand = "population"
+)
+head(bc)
+#>                 id travel_time
+#> 1: 89a881a5a2bffff          15
+#> 2: 89a881a5a2fffff          13
+#> 3: 89a881a5a67ffff          23
+#> 4: 89a881a5a6bffff           7
+#> 5: 89a881a5a6fffff          10
+#> 6: 89a881a5b03ffff           6
 ```
 
 Please read the vignettes for more details on the usage:
@@ -155,6 +171,9 @@ Please read the vignettes for more details on the usage:
     [`vignette("accessibility")`](https://ipeagit.github.io/accessibility/articles/accessibility.html).
   - Decay functions. Run [`vignette("decay_functions", package =
     "accessibility")`](https://ipeagit.github.io/accessibility/articles/decay_functions.html).
+  - Calculating accessibility inequality and poverty. Run
+    [`vignette("inequality_and_poverty", package =
+    "accessibility")`](https://ipeagit.github.io/accessibility/articles/inequality_and_poverty.html).
 
 ## Related work:
 

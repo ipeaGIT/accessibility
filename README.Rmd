@@ -112,12 +112,26 @@ sptl_avlblt <- spatial_availability(
   decay_function = decay_exponential(decay_value = 0.1)
 )
 head(sptl_avlblt)
+
+bc <- balancing_cost(
+  travel_matrix,
+  land_use_data,
+  opportunity = "jobs",
+  travel_cost = "travel_time",
+  demand = "population"
+)
+head(bc)
 ```
 
 Please read the vignettes for more details on the usage:
 
-- Introduction to **accessibility**: calculating accessibility measures. Run [`vignette("accessibility")`](https://ipeagit.github.io/accessibility/articles/accessibility.html).
-- Decay functions. Run [`vignette("decay_functions", package = "accessibility")`](https://ipeagit.github.io/accessibility/articles/decay_functions.html).
+- Introduction to **accessibility**: calculating accessibility measures. Run
+  [`vignette("accessibility")`](https://ipeagit.github.io/accessibility/articles/accessibility.html).
+- Decay functions. Run [`vignette("decay_functions", package =
+  "accessibility")`](https://ipeagit.github.io/accessibility/articles/decay_functions.html).
+- Calculating accessibility inequality and poverty. Run
+  [`vignette("inequality_and_poverty", package =
+  "accessibility")`](https://ipeagit.github.io/accessibility/articles/inequality_and_poverty.html).
 
 ## Related work:
 
