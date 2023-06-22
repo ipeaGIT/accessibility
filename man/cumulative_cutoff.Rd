@@ -124,6 +124,7 @@ df <- cumulative_cutoff(
   travel_cost = c("travel_time", "monetary_cost"),
   cutoff = list(c(20, 30), c(0, 5, 10))
 )
+head(df)
 
 }
 \seealso{
