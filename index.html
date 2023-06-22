@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">accessibility</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -151,12 +151,12 @@
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cum_cutoff</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 id  jobs</span></span>
-<span><span class="co">#&gt; 1: 89a88cdb57bffff 22239</span></span>
-<span><span class="co">#&gt; 2: 89a88cdb597ffff 36567</span></span>
-<span><span class="co">#&gt; 3: 89a88cdb5b3ffff 42372</span></span>
-<span><span class="co">#&gt; 4: 89a88cdb5cfffff 55571</span></span>
-<span><span class="co">#&gt; 5: 89a88cd909bffff 26774</span></span>
-<span><span class="co">#&gt; 6: 89a88cd90b7ffff 36991</span></span>
+<span><span class="co">#&gt; 1: 89a881a5a2bffff 14561</span></span>
+<span><span class="co">#&gt; 2: 89a881a5a2fffff 29452</span></span>
+<span><span class="co">#&gt; 3: 89a881a5a67ffff 16647</span></span>
+<span><span class="co">#&gt; 4: 89a881a5a6bffff 10700</span></span>
+<span><span class="co">#&gt; 5: 89a881a5a6fffff  6669</span></span>
+<span><span class="co">#&gt; 6: 89a881a5b03ffff 37029</span></span>
 <span></span>
 <span><span class="va">cum_interval</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/cumulative_interval.html">cumulative_interval</a></span><span class="op">(</span></span>
 <span>  <span class="va">travel_matrix</span>,</span>
@@ -201,12 +201,12 @@
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fca</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 id      jobs</span></span>
-<span><span class="co">#&gt; 1: 89a88cdb57bffff 0.4357418</span></span>
-<span><span class="co">#&gt; 2: 89a88cdb597ffff 0.3938630</span></span>
-<span><span class="co">#&gt; 3: 89a88cdb5b3ffff 0.4589910</span></span>
-<span><span class="co">#&gt; 4: 89a88cdb5cfffff 0.5469433</span></span>
-<span><span class="co">#&gt; 5: 89a88cd909bffff 0.4358530</span></span>
-<span><span class="co">#&gt; 6: 89a88cd90b7ffff 0.5271746</span></span>
+<span><span class="co">#&gt; 1: 89a88cdb57bffff 0.4278111</span></span>
+<span><span class="co">#&gt; 2: 89a88cdb597ffff 0.3863614</span></span>
+<span><span class="co">#&gt; 3: 89a88cdb5b3ffff 0.4501725</span></span>
+<span><span class="co">#&gt; 4: 89a88cdb5cfffff 0.5366707</span></span>
+<span><span class="co">#&gt; 5: 89a88cd909bffff 0.4280401</span></span>
+<span><span class="co">#&gt; 6: 89a88cd90b7ffff 0.5176583</span></span>
 <span></span>
 <span><span class="va">sptl_avlblt</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/spatial_availability.html">spatial_availability</a></span><span class="op">(</span></span>
 <span>  <span class="va">travel_matrix</span>,</span>
@@ -217,17 +217,34 @@
 <span>  decay_function <span class="op">=</span> <span class="fu"><a href="reference/decay_exponential.html">decay_exponential</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sptl_avlblt</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                 id       jobs</span></span>
-<span><span class="co">#&gt; 1: 89a88cdb57bffff  371.68866</span></span>
-<span><span class="co">#&gt; 2: 89a88cdb597ffff  310.22854</span></span>
-<span><span class="co">#&gt; 3: 89a88cdb5b3ffff  688.84257</span></span>
-<span><span class="co">#&gt; 4: 89a88cdb5cfffff 1396.27751</span></span>
-<span><span class="co">#&gt; 5: 89a88cd909bffff   10.96648</span></span>
-<span><span class="co">#&gt; 6: 89a88cd90b7ffff  525.20251</span></span></code></pre></div>
+<span><span class="co">#&gt;                 id     jobs</span></span>
+<span><span class="co">#&gt; 1: 89a88cdb57bffff 186.0876</span></span>
+<span><span class="co">#&gt; 2: 89a88cdb597ffff 140.0738</span></span>
+<span><span class="co">#&gt; 3: 89a88cdb5b3ffff 736.5830</span></span>
+<span><span class="co">#&gt; 4: 89a88cdb5cfffff 900.9284</span></span>
+<span><span class="co">#&gt; 5: 89a88cd909bffff   0.0000</span></span>
+<span><span class="co">#&gt; 6: 89a88cd90b7ffff 204.7962</span></span>
+<span></span>
+<span><span class="va">bc</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/balancing_cost.html">balancing_cost</a></span><span class="op">(</span></span>
+<span>  <span class="va">travel_matrix</span>,</span>
+<span>  <span class="va">land_use_data</span>,</span>
+<span>  opportunity <span class="op">=</span> <span class="st">"jobs"</span>,</span>
+<span>  travel_cost <span class="op">=</span> <span class="st">"travel_time"</span>,</span>
+<span>  demand <span class="op">=</span> <span class="st">"population"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">bc</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                 id travel_time</span></span>
+<span><span class="co">#&gt; 1: 89a881a5a2bffff          15</span></span>
+<span><span class="co">#&gt; 2: 89a881a5a2fffff          13</span></span>
+<span><span class="co">#&gt; 3: 89a881a5a67ffff          23</span></span>
+<span><span class="co">#&gt; 4: 89a881a5a6bffff           7</span></span>
+<span><span class="co">#&gt; 5: 89a881a5a6fffff          10</span></span>
+<span><span class="co">#&gt; 6: 89a881a5b03ffff           6</span></span></code></pre></div>
 <p>Please read the vignettes for more details on the usage:</p>
 <ul>
 <li>Introduction to <strong>accessibility</strong>: calculating accessibility measures. Run <a href="https://ipeagit.github.io/accessibility/articles/accessibility.html" class="external-link"><code>vignette("accessibility")</code></a>.</li>
 <li>Decay functions. Run <a href="https://ipeagit.github.io/accessibility/articles/decay_functions.html" class="external-link"><code>vignette("decay_functions", package =     "accessibility")</code></a>.</li>
+<li>Calculating accessibility inequality and poverty. Run <a href="https://ipeagit.github.io/accessibility/articles/inequality_and_poverty.html" class="external-link"><code>vignette("inequality_and_poverty", package =     "accessibility")</code></a>.</li>
 </ul>
 </div>
 <div class="section level2">
