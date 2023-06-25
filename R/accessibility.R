@@ -25,6 +25,7 @@
 #' @importFrom data.table := .I .SD %chin% .GRP .N fifelse
 #' @importFrom utils globalVariables
 #' @importFrom Rdpack reprompt
+#' @importFrom stats weighted.mean
 #'
 #' @keywords internal
 "_PACKAGE"
@@ -72,7 +73,13 @@ utils::globalVariables(
     ".fgt0",
     ".fgt1",
     ".fgt2",
-    ".norm_opp_shortfall"
+    ".norm_opp_shortfall",
+    "pop_share",
+    "weighted_rank",
+    "meanw_rank",
+    "weights_norm",
+    "upper",
+    "lower"
   )
 )
 

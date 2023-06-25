@@ -67,6 +67,7 @@ gini
 }
 \seealso{
 Other inequality: 
+\code{\link{concentration_index}()},
 \code{\link{palma_ratio}()}
 }
 \concept{inequality}

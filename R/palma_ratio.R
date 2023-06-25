@@ -38,7 +38,7 @@
 #' )
 #'
 #' palma <- palma_ratio(
-#'   access,
+#'   accessibility_data = access,
 #'   sociodemographic_data = land_use_data,
 #'   opportunity = "jobs",
 #'   population = "population",
