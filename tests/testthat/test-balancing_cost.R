@@ -1,7 +1,10 @@
 # if running manually, please run the following line first:
 # source("tests/testthat/setup.R")
 
-tester <- function(travel_matrix = smaller_matrix,
+fast_smaller_matrix <- data.table::copy(smaller_matrix)
+fast_smaller_matrix[, travel_time := travel_time / 4]
+
+tester <- function(travel_matrix = fast_smaller_matrix,
                    land_use_data = get("land_use_data", envir = parent.frame()),
                    opportunity = "jobs",
                    travel_cost = "travel_time",
@@ -81,11 +84,11 @@ test_that("returns a dataframe whose class is the same as travel_matrix's", {
   result <- tester(land_use_data = as.data.frame(land_use_data))
   expect_is(result, "data.table")
 
-  result <- tester(as.data.frame(smaller_matrix))
+  result <- tester(as.data.frame(fast_smaller_matrix))
   expect_false(inherits(result, "data.table"))
   expect_is(result, "data.frame")
   result <- tester(
-    as.data.frame(smaller_matrix),
+    as.data.frame(fast_smaller_matrix),
     land_use_data = as.data.frame(land_use_data)
   )
   expect_false(inherits(result, "data.table"))
@@ -120,15 +123,13 @@ test_that("result has correct structure", {
 })
 
 test_that("input data sets remain unchanged", {
-  original_smaller_matrix <- travel_matrix[1:10]
+  original_fast_smaller_matrix <- travel_matrix[1:10]
+  original_fast_smaller_matrix[, travel_time := travel_time / 4]
   original_land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
 
   result <- tester()
 
-  # # subsets in other functions tests set travel_matrix index
-  # data.table::setindex(travel_matrix, NULL)
-
-  expect_identical(original_smaller_matrix, smaller_matrix)
+  expect_identical(original_fast_smaller_matrix, fast_smaller_matrix)
   expect_identical(original_land_use_data, land_use_data)
 })
 
@@ -155,7 +156,10 @@ test_that("calculates balancing cost correctly", {
 })
 
 test_that("fill_missing_ids arg works correctly", {
-  test_matrix <- rbind(smaller_matrix, smaller_matrix[1][, mode := "transit2"])
+  test_matrix <- rbind(
+    fast_smaller_matrix,
+    fast_smaller_matrix[1][, mode := "transit2"]
+  )
 
   result <- tester(test_matrix)
   data.table::setkeyv(result, NULL)
@@ -164,7 +168,7 @@ test_that("fill_missing_ids arg works correctly", {
     data.table::data.table(
       id = rep("89a88cdb57bffff", 2),
       mode = c("transit", "transit2"),
-      travel_time = c(48, NA)
+      travel_time = c(12, NA)
     )
   )
 
@@ -174,7 +178,7 @@ test_that("fill_missing_ids arg works correctly", {
     data.table::data.table(
       id = "89a88cdb57bffff",
       mode = "transit",
-      travel_time = 48
+      travel_time = 12
     )
   )
 })
@@ -201,26 +205,26 @@ test_that("cost_increment arg works correctly", {
 test_that("works even if travel_matrix and land_use has specific colnames", {
   expected_result <- tester()
 
-  smaller_matrix[, opportunity := "oi"]
-  result <- suppressWarnings(tester(smaller_matrix))
+  fast_smaller_matrix[, opportunity := "oi"]
+  result <- suppressWarnings(tester(fast_smaller_matrix))
   expect_identical(expected_result, result)
 
-  smaller_matrix[, opportunity := NULL]
-  smaller_matrix[, travel_cost := "oi"]
-  result <- suppressWarnings(tester(smaller_matrix))
+  fast_smaller_matrix[, opportunity := NULL]
+  fast_smaller_matrix[, travel_cost := "oi"]
+  result <- suppressWarnings(tester(fast_smaller_matrix))
   expect_identical(expected_result, result)
 
-  smaller_matrix[, travel_cost := NULL]
-  smaller_matrix[, groups := "oi"]
-  result <- suppressWarnings(tester(smaller_matrix))
+  fast_smaller_matrix[, travel_cost := NULL]
+  fast_smaller_matrix[, groups := "oi"]
+  result <- suppressWarnings(tester(fast_smaller_matrix))
   expect_identical(expected_result, result)
 
-  smaller_matrix[, groups := NULL]
-  smaller_matrix[, demand := "oi"]
-  result <- suppressWarnings(tester(smaller_matrix))
+  fast_smaller_matrix[, groups := NULL]
+  fast_smaller_matrix[, demand := "oi"]
+  result <- suppressWarnings(tester(fast_smaller_matrix))
   expect_identical(expected_result, result)
 
-  smaller_matrix[, demand := NULL]
+  fast_smaller_matrix[, demand := NULL]
   land_use_data[, opportunity := "oi"]
   result <- suppressWarnings(tester(land_use_data = land_use_data))
   expect_identical(expected_result, result)

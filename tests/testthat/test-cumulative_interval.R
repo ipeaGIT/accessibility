@@ -1,17 +1,15 @@
 # if running manually, please run the following line first:
 # source("tests/testthat/setup.R")
 
-tester <- function(
-  travel_matrix = get("travel_matrix", envir = parent.frame()),
-  land_use_data = get("land_use_data", envir = parent.frame()),
-  opportunity = "jobs",
-  travel_cost = "travel_time",
-  interval = c(10, 30),
-  interval_increment = 1,
-  summary_function = stats::median,
-  group_by = "mode",
-  active = TRUE
-) {
+tester <- function(travel_matrix = smaller_matrix,
+                   land_use_data = get("land_use_data", envir = parent.frame()),
+                   opportunity = "jobs",
+                   travel_cost = "travel_time",
+                   interval = c(10, 30),
+                   interval_increment = 1,
+                   summary_function = stats::median,
+                   group_by = "mode",
+                   active = TRUE) {
   cumulative_interval(
     travel_matrix,
     land_use_data,
@@ -106,11 +104,11 @@ test_that("returns a dataframe whose class is the same as travel_matrix's", {
   result <- tester(land_use_data = as.data.frame(land_use_data))
   expect_is(result, "data.table")
 
-  result <- tester(as.data.frame(travel_matrix))
+  result <- tester(as.data.frame(smaller_matrix))
   expect_false(inherits(result, "data.table"))
   expect_is(result, "data.frame")
   result <- tester(
-    as.data.frame(travel_matrix),
+    as.data.frame(smaller_matrix),
     land_use_data = as.data.frame(land_use_data)
   )
   expect_false(inherits(result, "data.table"))
@@ -158,18 +156,15 @@ test_that("result has correct structure", {
 })
 
 test_that("input data sets remain unchanged", {
-  original_travel_matrix <- data.table::rbindlist(
-    travel_matrix_list,
-    idcol = "mode"
-  )
+  original_smaller_matrix <- travel_matrix[1:10]
   original_land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
 
   result <- tester()
 
-  # subsets in other functions tests set travel_matrix index
-  data.table::setindex(travel_matrix, NULL)
+  # subsets in other functions tests set smaller_matrix index
+  data.table::setindex(smaller_matrix, NULL)
 
-  expect_equal(original_travel_matrix, travel_matrix)
+  expect_equal(original_smaller_matrix, smaller_matrix)
   expect_equal(original_land_use_data, land_use_data)
 })
 
@@ -318,36 +313,49 @@ test_that("interval_increment arg is being used", {
   # correctly, but the code is trivial enough to let us say that it's correctly
   # applied if the results are different when using different increments
 
-  result_increment_1 <- tester(
-    travel_matrix,
-    interval_increment = 1
+  selected_ids <- c(
+    "89a88cdb57bffff",
+    "89a88cdb597ffff",
+    "89a88cdb5b3ffff",
+    "89a88cdb5cfffff",
+    "89a88cd909bffff"
   )
-  result_increment_3 <- tester(
-    travel_matrix,
-    interval_increment = 3
+  smaller_travel_matrix <- travel_matrix[
+    from_id %in% selected_ids & to_id %in% selected_ids
+  ]
+
+  result_increment_1 <- tester(
+    smaller_travel_matrix,
+    interval_increment = 1,
+    interval = c(5, 7)
+  )
+  result_increment_2 <- tester(
+    smaller_travel_matrix,
+    interval_increment = 2,
+    interval = c(5, 7)
   )
 
-  expect_false(identical(result_increment_1, result_increment_3))
+  expect_false(identical(result_increment_1, result_increment_2))
 })
 
 test_that("works even if travel_matrix and land_use has specific colnames", {
   expected_result <- tester()
 
-  travel_matrix[, opportunity := "oi"]
-  result <- suppressWarnings(tester(travel_matrix))
+  smaller_matrix[, opportunity := "oi"]
+  result <- suppressWarnings(tester(smaller_matrix))
   expect_identical(expected_result, result)
 
-  travel_matrix[, opportunity := NULL]
-  travel_matrix[, travel_cost := "oi"]
-  result <- suppressWarnings(tester(travel_matrix))
+  smaller_matrix[, opportunity := NULL]
+  smaller_matrix[, travel_cost := "oi"]
+  result <- suppressWarnings(tester(smaller_matrix))
   expect_identical(expected_result, result)
 
-  travel_matrix[, travel_cost := NULL]
-  travel_matrix[, groups := "oi"]
-  result <- suppressWarnings(tester(travel_matrix))
+  smaller_matrix[, travel_cost := NULL]
+  smaller_matrix[, groups := "oi"]
+  result <- suppressWarnings(tester(smaller_matrix))
   expect_identical(expected_result, result)
 
-  travel_matrix[, groups := NULL]
+  smaller_matrix[, groups := NULL]
   land_use_data[, opportunity := "oi"]
   result <- suppressWarnings(tester(land_use_data = land_use_data))
   expect_identical(expected_result, result)
