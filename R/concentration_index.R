@@ -139,7 +139,7 @@ concentration_index <- function(
 
 
   # weighted average access
-  data[, avg_access := weighted.mean(x = get(.opp_colname),
+  data[, avg_access := stats::weighted.mean(x = get(.opp_colname),
                                      w = get(.pop_colname)
                                      ), by = .groups]
 

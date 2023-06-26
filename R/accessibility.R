@@ -22,10 +22,9 @@
 #' @name accessibility
 #' @aliases accessibility-package
 #'
-#' @importFrom data.table := .I .SD %chin% .GRP .N fifelse
+#' @importFrom data.table := .I .SD %chin% .GRP .N
 #' @importFrom utils globalVariables
 #' @importFrom Rdpack reprompt
-#' @importFrom stats weighted.mean
 #'
 #' @keywords internal
 "_PACKAGE"

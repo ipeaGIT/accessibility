@@ -69,7 +69,7 @@ access <- cumulative_cutoff(
 )
 
 palma <- palma_ratio(
-  accessibility_data = access,
+  access,
   sociodemographic_data = land_use_data,
   opportunity = "jobs",
   population = "population",
