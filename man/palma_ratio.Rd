@@ -31,11 +31,11 @@ levels.}
 with the number of people in each cell. Used to weigh accessibility levels
 when calculating inequality.}
 
-\item{income}{A string. The name of column in \code{sociodemographic_data} with
-the income variable that should be used to classify the population in
+\item{income}{A string. The name of the column in \code{sociodemographic_data}
+with the income variable that should be used to classify the population in
 socioeconomic groups. Please note that this variable should describe income
-per capita (e.g. mean income per capita, household income per
-capita, etc), instead of the total amount of income in each cell.}
+per capita (e.g. mean income per capita, household income per capita, etc),
+instead of the total amount of income in each cell.}
 
 \item{group_by}{A \code{character} vector. When not \code{character(0)} (the default),
 indicates the \code{accessibility_data} columns that should be used to group the

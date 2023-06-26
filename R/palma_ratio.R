@@ -10,11 +10,11 @@
 #' @template sociodem_data_with_income
 #' @template opportunity_access
 #' @template population
-#' @param income A string. The name of column in `sociodemographic_data` with
-#'   the income variable that should be used to classify the population in
+#' @param income A string. The name of the column in `sociodemographic_data`
+#'   with the income variable that should be used to classify the population in
 #'   socioeconomic groups. Please note that this variable should describe income
-#'   per capita (e.g. mean income per capita, household income per
-#'   capita, etc), instead of the total amount of income in each cell.
+#'   per capita (e.g. mean income per capita, household income per capita, etc),
+#'   instead of the total amount of income in each cell.
 #' @template group_by_access
 #'
 #' @template return_inequality
