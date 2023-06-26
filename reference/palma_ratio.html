@@ -126,9 +126,10 @@ capita, etc), instead of the total amount of income in each cell.</p></dd>
 <dd><p>A <code>character</code> vector. When not <code>character(0)</code> (the default),
 indicates the <code>accessibility_data</code> columns that should be used to group the
 inequality estimates by. For example, if <code>accessibility_data</code> includes a
-<code>departure_time</code> column that specifies the departure time that each entry
-refers to, passing <code>"departure_time"</code> to this parameter results in
-inequality estimates grouped by departure time.</p></dd>
+<code>scenario</code> column that identifies distinct scenarios that each
+accessibility estimates refer to (e.g. before and after a transport policy
+intervention), passing <code>"scenario"</code> to this parameter results in inequality
+estimates grouped by scenario.</p></dd>
 
 </dl></div>
     <div id="value">
