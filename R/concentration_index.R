@@ -1,4 +1,4 @@
-#' Concentration index
+#' Concentration Index
 #'
 #' Calculates the Concentration Index to measure the socioeconomic inequality of
 #' access to opportunities. It measures the extent to which inequalities in
@@ -8,10 +8,7 @@
 #' and the standard relative concentration index.
 #'
 #' @template accessibility_data
-#' @param sociodemographic_data A data frame. The distribution of
-#'   sociodemographic characteristics of the population in the study area cells.
-#'   Must contain the columns `id` and any others specified in `population` and
-#'   `income`.
+#' @template sociodem_data_with_income
 #' @template opportunity_access
 #' @template population
 #' @param income A string. The name of column in `sociodemographic_data` with
@@ -24,12 +21,7 @@
 #'        Options include "CIc" for the Corrected concentration index proposed
 #'        by Erreygers (2009) (the default), and "CI" for the the standard
 #'        relative concentration index.
-#' @param group_by A `character` vector. When not `character(0)` (the default),
-#'   indicates the `accessibility_data` columns that should be used to group the
-#'   poverty estimates by. For example, if `accessibility_data` includes a
-#'   `"scenario"` column that specifies the accessibility estimates `"before"`
-#'   and `"after"` given a transport policy intervention, passing `"scenario"` to
-#'   this parameter results in inequality estimates for each scenario.
+#' @template group_by_access
 #'
 #' @template return_inequality
 #'

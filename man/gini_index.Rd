@@ -2,7 +2,7 @@
 % Please edit documentation in R/gini_index.R
 \name{gini_index}
 \alias{gini_index}
-\title{Gini index}
+\title{Gini Index}
 \usage{
 gini_index(
   accessibility_data,
@@ -32,15 +32,16 @@ when calculating inequality.}
 \item{group_by}{A \code{character} vector. When not \code{character(0)} (the default),
 indicates the \code{accessibility_data} columns that should be used to group the
 inequality estimates by. For example, if \code{accessibility_data} includes a
-\code{departure_time} column that specifies the departure time that each entry
-refers to, passing \code{"departure_time"} to this parameter results in
-inequality estimates grouped by departure time.}
+\code{scenario} column that identifies distinct scenarios that each
+accessibility estimates refer to (e.g. before and after a transport policy
+intervention), passing \code{"scenario"} to this parameter results in inequality
+estimates grouped by scenario.}
 }
 \value{
 A data frame containing the inequality estimates for the study area.
 }
 \description{
-Calculates the Gini index of a given accessibility distribution.
+Calculates the Gini Index of a given accessibility distribution.
 }
 \examples{
 \dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

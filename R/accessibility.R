@@ -17,6 +17,10 @@
 #' - Decay functions. Run `vignette("decay_functions", package =
 #' "accessibility")` or check it on the [website](
 #' https://ipeagit.github.io/accessibility/articles/decay_functions.html).
+#' - Calculating accessibility inequality and poverty. Run
+#' `vignette("inequality_and_poverty", package = "accessibility")` or check it
+#' on the
+#' [website](https://ipeagit.github.io/accessibility/articles/inequality_and_poverty.html).
 #'
 #' @docType package
 #' @name accessibility

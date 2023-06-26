@@ -2,7 +2,7 @@
 % Please edit documentation in R/concentration_index.R
 \name{concentration_index}
 \alias{concentration_index}
-\title{Concentration index}
+\title{Concentration Index}
 \usage{
 concentration_index(
   accessibility_data,
@@ -46,10 +46,11 @@ relative concentration index.}
 
 \item{group_by}{A \code{character} vector. When not \code{character(0)} (the default),
 indicates the \code{accessibility_data} columns that should be used to group the
-poverty estimates by. For example, if \code{accessibility_data} includes a
-\code{"scenario"} column that specifies the accessibility estimates \code{"before"}
-and \code{"after"} given a transport policy intervention, passing \code{"scenario"} to
-this parameter results in inequality estimates for each scenario.}
+inequality estimates by. For example, if \code{accessibility_data} includes a
+\code{scenario} column that identifies distinct scenarios that each
+accessibility estimates refer to (e.g. before and after a transport policy
+intervention), passing \code{"scenario"} to this parameter results in inequality
+estimates grouped by scenario.}
 }
 \value{
 A data frame containing the inequality estimates for the study area.

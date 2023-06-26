@@ -23,6 +23,10 @@ Please check the vignettes for more on the package usage:
 \item Introduction to accessibility: calculating accessibility measures. Run
 \code{vignette("accessibility")} or check it on the \href{https://ipeagit.github.io/accessibility/articles/accessibility.html}{website}.
 \item Decay functions. Run \code{vignette("decay_functions", package = "accessibility")} or check it on the \href{https://ipeagit.github.io/accessibility/articles/decay_functions.html}{website}.
+\item Calculating accessibility inequality and poverty. Run
+\code{vignette("inequality_and_poverty", package = "accessibility")} or check it
+on the
+\href{https://ipeagit.github.io/accessibility/articles/inequality_and_poverty.html}{website}.
 }
 }
 

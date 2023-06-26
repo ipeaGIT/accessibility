@@ -1,6 +1,6 @@
-#' Gini index
+#' Gini Index
 #'
-#' Calculates the Gini index of a given accessibility distribution.
+#' Calculates the Gini Index of a given accessibility distribution.
 #'
 #' @template accessibility_data
 #' @template sociodem_data_without_income

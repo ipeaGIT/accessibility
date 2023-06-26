@@ -40,9 +40,10 @@ capita, etc), instead of the total amount of income in each cell.}
 \item{group_by}{A \code{character} vector. When not \code{character(0)} (the default),
 indicates the \code{accessibility_data} columns that should be used to group the
 inequality estimates by. For example, if \code{accessibility_data} includes a
-\code{departure_time} column that specifies the departure time that each entry
-refers to, passing \code{"departure_time"} to this parameter results in
-inequality estimates grouped by departure time.}
+\code{scenario} column that identifies distinct scenarios that each
+accessibility estimates refer to (e.g. before and after a transport policy
+intervention), passing \code{"scenario"} to this parameter results in inequality
+estimates grouped by scenario.}
 }
 \value{
 A data frame containing the inequality estimates for the study area.
