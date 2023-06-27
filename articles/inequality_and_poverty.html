@@ -157,7 +157,10 @@ accessibility distribution. Originally defined as the income share of
 the wealthiest 10% of a population divided by the income share of the
 poorest 40%, this measure has been adapted in transport planning as the
 average accessibility of the wealthiest 10% divided by the average
-accessibility of the poorest 40%.</p>
+accessibility of the poorest 40%. Palma Ratio values higher than 1
+indicate a scenario in which the wealthiest population has higher
+accessibility levels than the poorest, whereas values lower than 1
+indicate the opposite situation.</p>
 <p>This function includes an additional <code>income</code> parameter,
 used to list the column in the sociodemographic dataset with the income
 variable that should be used to classify the population in socioeconomic
@@ -180,7 +183,14 @@ of the total amount of income in each cell.</p>
 <h3 id="gini-index">Gini Index<a class="anchor" aria-label="anchor" href="#gini-index"></a>
 </h3>
 <p><code><a href="../reference/gini_index.html">gini_index()</a></code> calculates the Gini Index of a given
-accessibility distribution.</p>
+accessibility distribution. Probably the most frequently used inequality
+measure in transport planning, this index estimates how much a
+distribution deviates from a hypothetical situation in which everyone
+has the exact same accessibility conditions. Gini Index values range
+from 0 to 1. A value of 0 indicates a scenario of perfect equality, in
+which everyone has the same accessibility levels, whereas a value of 1
+indicates a scenario of perfect inequality, in which the accessibility
+levels in a study area are all concentrated into a single cell.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gini</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gini_index.html">gini_index</a></span><span class="op">(</span></span>
 <span>  <span class="va">access</span>,</span>
@@ -191,6 +201,43 @@ accessibility distribution.</p>
 <span><span class="va">gini</span></span>
 <span><span class="co">#&gt;    gini_index</span></span>
 <span><span class="co">#&gt; 1:  0.4715251</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="concentration-index">Concentration Index<a class="anchor" aria-label="anchor" href="#concentration-index"></a>
+</h3>
+<p><code><a href="../reference/concentration_index.html">concentration_index()</a></code> calculates the Concentration Index
+(CI) of a given accessibility distribution. This measures estimates the
+extent to which accessibility inequalities are systematically associated
+with individuals’ socioeconomic levels. CI values can theoretically vary
+between -1 and 1 (when all accessibility is concentrated in the most or
+in the least disadvantaged cell, respectively). Negative values indicate
+that inequalities favor the poor, while positive values indicate a
+pro-rich bias.</p>
+<p>Just like <code><a href="../reference/palma_ratio.html">palma_ratio()</a></code>, this function includes an
+<code>income</code> parameter to indicate which variable from the
+sociodemographic dataset should be used to rank the population from the
+least to the most privileged groups. Unlike the Palma Ratio function,
+however, any variable that can be used to describe one’s socioeconomic
+status, such as education level, for example, can be passed to this
+argument, as long as it can be numerically ordered (in which higher
+values denote higher socioeconomic status).</p>
+<p><code><a href="../reference/concentration_index.html">concentration_index()</a></code> also includes a <code>type</code>
+parameter, used to indicate which Concentration Index to calculate. This
+parameter currently supports two values, <code>"standard"</code> and
+<code>"corrected"</code>, which respectively identify the standard
+relative CI and the corrected CI, proposed by <span class="citation">Erreygers (2009)</span>.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/concentration_index.html">concentration_index</a></span><span class="op">(</span></span>
+<span>  <span class="va">access</span>,</span>
+<span>  sociodemographic_data <span class="op">=</span> <span class="va">land_use_data</span>,</span>
+<span>  opportunity <span class="op">=</span> <span class="st">"jobs"</span>,</span>
+<span>  population <span class="op">=</span> <span class="st">"population"</span>,</span>
+<span>  income <span class="op">=</span> <span class="st">"income_per_capita"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"corrected"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">ci</span></span>
+<span><span class="co">#&gt;    concentration_index</span></span>
+<span><span class="co">#&gt; 1:           0.3346494</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="foster-greer-thorbecke-fgt-poverty-measures">Foster-Greer-Thorbecke (FGT) poverty measures<a class="anchor" aria-label="anchor" href="#foster-greer-thorbecke-fgt-poverty-measures"></a>
@@ -218,7 +265,7 @@ line.</li>
 <p>This function includes an additional <code>poverty_line</code>
 parameter, used to define the poverty line below which individuals are
 considered to be in accessibility poverty.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">poverty</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fgt_poverty.html">fgt_poverty</a></span><span class="op">(</span></span>
 <span>  <span class="va">access</span>,</span>
 <span>  opportunity <span class="op">=</span> <span class="st">"jobs"</span>,</span>
@@ -235,6 +282,11 @@ considered to be in accessibility poverty.</p>
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-erreygers2009correcting" class="csl-entry">
+Erreygers, Guido. 2009. <span>“Correcting the <span>Concentration
+Index</span>.”</span> <em>Journal of Health Economics</em> 28 (2):
+504–15. <a href="https://doi.org/10.1016/j.jhealeco.2008.02.003" class="external-link">https://doi.org/10.1016/j.jhealeco.2008.02.003</a>.
+</div>
 <div id="ref-foster1984class" class="csl-entry">
 Foster, James, Joel Greer, and Erik Thorbecke. 1984. <span>“A
 <span>Class</span> of <span>Decomposable Poverty
