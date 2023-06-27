@@ -2,6 +2,8 @@
 
 ## New features
 
+- New inequality function `concentration_index()`.
+
 ## Bug fixes
 
 ## Notes

@@ -78,11 +78,12 @@ utils::globalVariables(
     ".fgt2",
     ".norm_opp_shortfall",
     "pop_share",
-    "weighted_rank",
-    "meanw_rank",
-    "weights_norm",
     "upper",
-    "lower"
+    "lower",
+    "cont_to_total",
+    "correction_factor",
+    "diff_from_avg",
+    "fractional_rank"
   )
 )
 

@@ -1,38 +1,36 @@
 #' Concentration Index
 #'
-#' Calculates the Concentration Index to measure the socioeconomic inequality of
-#' access to opportunities. It measures the extent to which inequalities in
-#' accessibility are systematically associated with individuals' socioeconomic
-#' levels. The function currently include the options of calculating the
-#' corrected concentration index proposed by \insertCite{erreygers2009correcting;textual}{accessibility}
-#' and the standard relative concentration index.
+#' Calculates the Concentration Index (CI) of a given accessibility
+#' distribution. This measures estimates the extent to which accessibility
+#' inequalities are systematically associated with individuals' socioeconomic
+#' levels. CI values can theoretically vary between -1 and +1 (when all
+#' accessibility is concentrated in the most or in the least disadvantaged
+#' person, respectively). Negative values indicate that inequalities favor the
+#' poor, while positive values indicate a pro-rich bias. The function supports
+#' calculating the standard relative CI and the corrected CI, as proposed by
+#' \insertCite{erreygers2009correcting;textual}{accessibility}.
 #'
 #' @template accessibility_data
 #' @template sociodem_data_with_income
 #' @template opportunity_access
 #' @template population
-#' @param income A string. The name of column in `sociodemographic_data` with
-#'        the income variable that should be used to classify the population in
-#'        socioeconomic groups. Please note that this variable should describe
-#'        income per capita (e.g. mean income per capita, household income per
-#'        capita, etc), instead of the total amount of income in each cell.
-#'        ?? income or SES ? daniel
-#' @param type A string. the type of concentration index to be calculated.
-#'        Options include "CIc" for the Corrected concentration index proposed
-#'        by Erreygers (2009) (the default), and "CI" for the the standard
-#'        relative concentration index.
+#' @param income A string. The name of the column in `sociodemographic_data`
+#'   with the income variable that should be used to sort the population from
+#'   the least to the most privileged. Please note that this variable should
+#'   describe income per capita (e.g. mean income per capita, household income
+#'   per capita, etc), instead of the total amount of income in each cell. Also
+#'   note that, while income is generally used to rank population groups, any
+#'   variable that can be used to describe one's socioeconomic status, such as
+#'   education level, can be passed to this argument, as long as it can be
+#'   numerically ordered (in which higher values denote higher socioeconomic
+#'   status).
+#' @param type A string. Which type of Concentration Index to calculate. Current
+#'   available options are `"standard"` and `"corrected"`.
 #' @template group_by_access
 #'
 #' @template return_inequality
 #'
 #' @family inequality
-#'
-#' @section Interpretation of the concentration index:
-#' The concentration index can theoretically vary between -1 and +1
-#' (when all accessibility is concentrated in the most or in the least
-#' disadvantaged person, respectively). Negative values indicate
-#' that inequalities favor the poor, while positive values indicate a pro-rich
-#' bias.
 #'
 #' @references
 #' \insertAllCited{}
@@ -51,31 +49,34 @@
 #' )
 #'
 #' ci <- concentration_index(
-#'   accessibility_data = access,
+#'   access,
 #'   sociodemographic_data = land_use_data,
 #'   opportunity = "jobs",
 #'   population = "population",
 #'   income = "income_per_capita",
-#'   type = "CIc"
+#'   type = "corrected"
 #' )
 #' ci
 #'
 #' @export
-concentration_index <- function(
-                         accessibility_data,
-                         sociodemographic_data,
-                         opportunity,
-                         population,
-                         income,
-                         type = "CIc",
-                         group_by = character(0)) {
+concentration_index <- function(accessibility_data,
+                                sociodemographic_data,
+                                opportunity,
+                                population,
+                                income,
+                                type,
+                                group_by = character(0)) {
   checkmate::assert_string(opportunity)
   checkmate::assert_string(population)
   checkmate::assert_string(income)
+  checkmate::assert(
+    checkmate::check_string(type),
+    checkmate::check_names(type, subset.of = c("standard", "corrected")),
+    combine = "and"
+  )
   assert_access_group_by(group_by)
   assert_accessibility_data(accessibility_data, opportunity, group_by)
   assert_sociodemographic_data(sociodemographic_data, c(population, income))
-
 
   if (!inherits(accessibility_data, "data.table")) {
     original_class <- class(accessibility_data)
@@ -87,7 +88,6 @@ concentration_index <- function(
   if (!inherits(sociodemographic_data, "data.table")) {
     sociodemographic_data <- data.table::as.data.table(sociodemographic_data)
   }
-
 
   merge_by_reference(
     data,
@@ -101,73 +101,62 @@ concentration_index <- function(
 
   .opp_colname <- opportunity
   .pop_colname <- population
-  .inc_colname <- income
   .groups <- group_by
 
+  data.table::setorderv(data, cols = c(income, group_by))
 
-  # remove obs with no pop na missing income
-  data <- data[ get(.pop_colname) >0 ]
-  data <- data[ ! is.na(get(.inc_colname)) ]
-  data <- data[ ! is.na(get(.opp_colname)) ]
+  # fractional rank calculation based on equation 4 of this paper:
+  # Eddy van Doorslaer and Xander Koolman, https://doi.org/10.1002/hec.918
 
-  ## order observations by SES
-  data.table::setorderv(data, cols = c(group_by, income, population))
+  data[, pop_share := get(.pop_colname) / sum(get(.pop_colname)), by = .groups]
+  data[
+    ,
+    fractional_rank := c(0, cumsum(pop_share)[-.N]) + pop_share / 2,
+    by = .groups
+  ]
 
+  data[
+    ,
+    avg_access := stats::weighted.mean(
+      get(.opp_colname),
+      w = get(.pop_colname)
+    ),
+    by = .groups
+  ]
+  data[, diff_from_avg := get(.opp_colname) - avg_access]
 
-  ### fractional rank (for weighted data) of the income variable
-  # Eddy van Doorslaer and Xander Koolman (4)
-  # https://doi.org/10.1002/hec.918
-  data[, rank := 1:.N, by = .groups]
-  data[, pop_share := get(.pop_colname)/sum(get(.pop_colname)) , by = .groups]
-  data[, weighted_rank := (c(0, cumsum(pop_share)[-max(rank)]) + pop_share/2), by = .groups]
-  # data[, weighted_rank := rineq::rank_wt(get(.inc_colname), wt = get(.pop_colname)), by = .groups]
+  data[
+    ,
+    cont_to_total := (fractional_rank - 0.5) * diff_from_avg * pop_share /
+      avg_access
+  ]
 
-  # calculate average rank
-  data[, meanw_rank := mean(weighted_rank), by = .groups]
+  if (nrow(data) == 0 && identical(group_by, character(0))) {
+    ci <- data.table::data.table(concentration_index = numeric(0))
+  } else if (type == "standard") {
+    ci <- data[
+      ,
+      .(concentration_index = 2 * sum(cont_to_total)),
+      by = .groups
+    ]
+  } else if (type == "corrected") {
+    # max()/min() may result in warnings if nrow(data) == 0
+    data[, upper := suppressWarnings(max(get(.opp_colname))), by = .groups]
+    data[, lower := suppressWarnings(min(get(.opp_colname))), by = .groups]
 
-  # weight for access level of each individual
-  # data[, w := rank - ((.N + 1)/2), by = .groups]
-  data[, weights_norm := get(.pop_colname) / sum(get(.pop_colname)), by = .groups]
+    # from Erreygers (2009), comparing equations 27 and 24, we have the
+    # following correction factor
+    # https://doi.org/10.1016/j.jhealeco.2008.02.003
+    data[, correction_factor := 4 * avg_access / (upper - lower)]
 
+    ci <- data[
+      ,
+      .(concentration_index = 2 * sum(cont_to_total * correction_factor)),
+      by = .groups
+    ]
+  }
 
-  # weighted average access
-  data[, avg_access := stats::weighted.mean(x = get(.opp_colname),
-                                     w = get(.pop_colname)
-                                     ), by = .groups]
+  if (exists("original_class")) class(ci) <- original_class
 
-  # order df
-  data.table::setorderv(data, cols = c(group_by, 'weighted_rank'))
-
-
-  ### calcuate CI
-
-  # standard CI
-  if (type == 'CI') {
-    ci <- data[, .(CI = 2 * sum(
-            weights_norm * (get(.opp_colname) - avg_access) *
-              (weighted_rank - meanw_rank) / avg_access)
-            )
-          , by = .groups]
-    }
-
-
-  # corrected CI, see Erreygers (2009)
-  if (type == 'CIc') {
-    # upper and lower bounds
-    data[, upper := max(get(.opp_colname), na.rm = TRUE), by = .groups]
-    data[, lower := min(get(.opp_colname), na.rm = TRUE), by = .groups]
-    # ou seriam max e min teoricos, e nao os observados
-
-    ci <- data[, .(CI = 8 * sum(
-            weights_norm * (get(.opp_colname) - avg_access) *
-              (weighted_rank - meanw_rank) / avg_access
-            ) * avg_access / (upper - lower)
-          )
-          , by = .groups]
-      }
-
-
-  # return output
-  ci <- unique(ci)
   return(ci)
 }

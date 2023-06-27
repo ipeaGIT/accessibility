@@ -10,7 +10,7 @@ concentration_index(
   opportunity,
   population,
   income,
-  type = "CIc",
+  type,
   group_by = character(0)
 )
 }
@@ -32,17 +32,19 @@ levels.}
 with the number of people in each cell. Used to weigh accessibility levels
 when calculating inequality.}
 
-\item{income}{A string. The name of column in \code{sociodemographic_data} with
-the income variable that should be used to classify the population in
-socioeconomic groups. Please note that this variable should describe
-income per capita (e.g. mean income per capita, household income per
-capita, etc), instead of the total amount of income in each cell.
-?? income or SES ? daniel}
+\item{income}{A string. The name of the column in \code{sociodemographic_data}
+with the income variable that should be used to sort the population from
+the least to the most privileged. Please note that this variable should
+describe income per capita (e.g. mean income per capita, household income
+per capita, etc), instead of the total amount of income in each cell. Also
+note that, while income is generally used to rank population groups, any
+variable that can be used to describe one's socioeconomic status, such as
+education level, can be passed to this argument, as long as it can be
+numerically ordered (in which higher values denote higher socioeconomic
+status).}
 
-\item{type}{A string. the type of concentration index to be calculated.
-Options include "CIc" for the Corrected concentration index proposed
-by Erreygers (2009) (the default), and "CI" for the the standard
-relative concentration index.}
+\item{type}{A string. Which type of Concentration Index to calculate. Current
+available options are \code{"standard"} and \code{"corrected"}.}
 
 \item{group_by}{A \code{character} vector. When not \code{character(0)} (the default),
 indicates the \code{accessibility_data} columns that should be used to group the
@@ -56,22 +58,16 @@ estimates grouped by scenario.}
 A data frame containing the inequality estimates for the study area.
 }
 \description{
-Calculates the Concentration Index to measure the socioeconomic inequality of
-access to opportunities. It measures the extent to which inequalities in
-accessibility are systematically associated with individuals' socioeconomic
-levels. The function currently include the options of calculating the
-corrected concentration index proposed by \insertCite{erreygers2009correcting;textual}{accessibility}
-and the standard relative concentration index.
+Calculates the Concentration Index (CI) of a given accessibility
+distribution. This measures estimates the extent to which accessibility
+inequalities are systematically associated with individuals' socioeconomic
+levels. CI values can theoretically vary between -1 and +1 (when all
+accessibility is concentrated in the most or in the least disadvantaged
+person, respectively). Negative values indicate that inequalities favor the
+poor, while positive values indicate a pro-rich bias. The function supports
+calculating the standard relative CI and the corrected CI, as proposed by
+\insertCite{erreygers2009correcting;textual}{accessibility}.
 }
-\section{Interpretation of the concentration index}{
-
-The concentration index can theoretically vary between -1 and +1
-(when all accessibility is concentrated in the most or in the least
-disadvantaged person, respectively). Negative values indicate
-that inequalities favor the poor, while positive values indicate a pro-rich
-bias.
-}
-
 \examples{
 \dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 data_dir <- system.file("extdata", package = "accessibility")
@@ -87,12 +83,12 @@ access <- cumulative_cutoff(
 )
 
 ci <- concentration_index(
-  accessibility_data = access,
+  access,
   sociodemographic_data = land_use_data,
   opportunity = "jobs",
   population = "population",
   income = "income_per_capita",
-  type = "CIc"
+  type = "corrected"
 )
 ci
 \dontshow{\}) # examplesIf}
