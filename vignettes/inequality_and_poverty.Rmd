@@ -61,7 +61,10 @@ information as input, including:
 distribution. Originally defined as the income share of the wealthiest 10% of a
 population divided by the income share of the poorest 40%, this measure has been
 adapted in transport planning as the average accessibility of the wealthiest 10%
-divided by the average accessibility of the poorest 40%.
+divided by the average accessibility of the poorest 40%. Palma Ratio values
+higher than 1 indicate a scenario in which the wealthiest population has higher
+accessibility levels than the poorest, whereas values lower than 1 indicate the
+opposite situation.
 
 This function includes an additional `income` parameter, used to list the column
 in the sociodemographic dataset with the income variable that should be used to
@@ -83,6 +86,13 @@ palma
 ## Gini Index
 
 `gini_index()` calculates the Gini Index of a given accessibility distribution.
+Probably the most frequently used inequality measure in transport planning, this
+index estimates how much a distribution deviates from a hypothetical situation
+in which everyone has the exact same accessibility conditions. Gini Index values
+range from 0 to 1. A value of 0 indicates a scenario of perfect
+equality, in which everyone has the same accessibility levels, whereas a value
+of 1 indicates a scenario of perfect inequality, in which the accessibility
+levels in a study area are all concentrated into a single cell.
 
 ```{r}
 gini <- gini_index(
@@ -92,6 +102,41 @@ gini <- gini_index(
   population = "population"
 )
 gini
+```
+
+## Concentration Index
+
+`concentration_index()` calculates the Concentration Index (CI) of a given
+accessibility distribution. This measures estimates the extent to which
+accessibility inequalities are systematically associated with individuals'
+socioeconomic levels. CI values can theoretically vary between -1 and 1 (when
+all accessibility is concentrated in the most or in the least disadvantaged
+cell, respectively). Negative values indicate that inequalities favor the poor,
+while positive values indicate a pro-rich bias.
+
+Just like `palma_ratio()`, this function includes an `income` parameter to
+indicate which variable from the sociodemographic dataset should be used to rank
+the population from the least to the most privileged groups. Unlike the Palma
+Ratio function, however, any variable that can be used to describe one's
+socioeconomic status, such as education level, for example, can be passed to
+this argument, as long as it can be numerically ordered (in which higher values
+denote higher socioeconomic status).
+
+`concentration_index()` also includes a `type` parameter, used to indicate which
+Concentration Index to calculate. This parameter currently supports two values,
+`"standard"` and `"corrected"`, which respectively identify the standard
+relative CI and the corrected CI, proposed by @erreygers2009correcting.
+
+```{r}
+ci <- concentration_index(
+  access,
+  sociodemographic_data = land_use_data,
+  opportunity = "jobs",
+  population = "population",
+  income = "income_per_capita",
+  type = "corrected"
+)
+ci
 ```
 
 ## Foster-Greer-Thorbecke (FGT) poverty measures
