@@ -83,7 +83,14 @@ utils::globalVariables(
     "cont_to_total",
     "correction_factor",
     "diff_from_avg",
-    "fractional_rank"
+    "fractional_rank",
+    "..population",
+    "access_share",
+    "component",
+    "group_avg_access",
+    "group_theil_t",
+    "theil_share",
+    "total_access"
   )
 )
 
