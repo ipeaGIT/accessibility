@@ -83,6 +83,7 @@ palma
 Other inequality: 
 \code{\link{concentration_index}()},
 \code{\link{gini_index}()},
+\code{\link{theil_index2}()},
 \code{\link{theil_index}()}
 }
 \concept{inequality}
