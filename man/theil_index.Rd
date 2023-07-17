@@ -80,6 +80,7 @@ ti
 Other inequality: 
 \code{\link{concentration_index}()},
 \code{\link{gini_index}()},
-\code{\link{palma_ratio}()}
+\code{\link{palma_ratio}()},
+\code{\link{theil_index2}()}
 }
 \concept{inequality}
