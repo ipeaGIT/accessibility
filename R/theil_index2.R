@@ -163,8 +163,8 @@ theil_index2 <- function(accessibility_data,
 
   #### TOTAL ineq
 
-  total_ineq <- cbind(total_within , total_between)
-  total_ineq <- cbind(total_ineq, theil_index)
+  total_ineq <- cbind(total_within , total_between[, !group_by, with=FALSE] )
+  total_ineq <- cbind(total_ineq, theil_index[, !group_by, with=FALSE])
 
   suppressWarnings(
     total_ineq <- data.table::melt(total_ineq,
