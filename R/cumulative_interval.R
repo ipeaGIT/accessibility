@@ -74,7 +74,12 @@ cumulative_interval <- function(travel_matrix,
   assert_summary_function(summary_function)
   assert_group_by(group_by)
   assert_travel_matrix(travel_matrix, travel_cost, group_by)
-  assert_land_use_data(land_use_data, opportunity)
+  assert_land_use_data(
+    land_use_data,
+    travel_matrix,
+    opportunity,
+    active = active
+  )
 
   interval <- assert_and_assign_interval(interval)
 

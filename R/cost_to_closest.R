@@ -71,7 +71,12 @@ cost_to_closest <- function(travel_matrix,
   checkmate::assert_logical(fill_missing_ids, len = 1, any.missing = FALSE)
   assert_group_by(group_by)
   assert_travel_matrix(travel_matrix, travel_cost, group_by)
-  assert_land_use_data(land_use_data, opportunity)
+  assert_land_use_data(
+    land_use_data,
+    travel_matrix,
+    opportunity,
+    active = active
+  )
 
   # if not a dt, keep original class to assign later when returning result
 

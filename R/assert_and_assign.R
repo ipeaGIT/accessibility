@@ -90,7 +90,11 @@ assert_accessibility_data <- function(accessibility_data,
 
 
 #' @keywords internal
-assert_land_use_data <- function(land_use_data, opportunity, demand = NULL) {
+assert_land_use_data <- function(land_use_data,
+                                 travel_matrix,
+                                 opportunity,
+                                 active = NULL,
+                                 demand = NULL) {
   land_use_data_req_names <- c("id", opportunity)
   if (!is.null(demand)) {
     land_use_data_req_names <- c(land_use_data_req_names, demand)
@@ -102,6 +106,43 @@ assert_land_use_data <- function(land_use_data, opportunity, demand = NULL) {
     must.include = land_use_data_req_names,
     .var.name = "land_use_data"
   )
+
+  # if an id is present in travel_matrix but not in land_use_data, merging the
+  # datasets will produce NAs, so we warn users about that
+
+  travel_matrix_ids <- if (is.null(active)) {
+    c(travel_matrix$from_id, travel_matrix$to_id)
+  } else if (active) {
+    travel_matrix$to_id
+  } else {
+    travel_matrix$from_id
+  }
+
+  if (!all(travel_matrix_ids %in% land_use_data$id)) {
+    warning(
+      "'land_use_data' is missing ids listed in 'travel_matrix', which may ",
+      "produce NAs in the final output.",
+      call. = FALSE
+    )
+  }
+
+  # if either land_use_data$opportunity or $demand contains NA values, the final
+  # result may contain NAs as well, so we warn about that too
+
+  cols_to_check <- c(
+    opportunity,
+    ifelse(is.null(demand), character(0), demand)
+  )
+
+  for (col in cols_to_check) {
+    if (any(is.na(land_use_data[[col]]))) {
+      warning(
+        "'land_use_data$", col, "' contains NA values, which may produce NAs ",
+        "in the final output.",
+        call. = FALSE
+      )
+    }
+  }
 
   return(invisible(TRUE))
 }

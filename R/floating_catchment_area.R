@@ -90,7 +90,12 @@ floating_catchment_area <- function(travel_matrix,
   assert_decay_function(decay_function)
   assert_group_by(group_by)
   assert_travel_matrix(travel_matrix, travel_cost, group_by)
-  assert_land_use_data(land_use_data, opportunity, demand)
+  assert_land_use_data(
+    land_use_data,
+    travel_matrix,
+    opportunity,
+    demand = demand
+  )
 
   # if not a dt, keep original class to assign later when returning result
 
