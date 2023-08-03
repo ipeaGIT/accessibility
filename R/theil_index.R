@@ -55,6 +55,7 @@ theil_index <- function(accessibility_data,
   assert_accessibility_data(accessibility_data, opportunity, group_by)
   assert_sociodemographic_data(
     sociodemographic_data,
+    accessibility_data,
     c(population, socioeconomic_groups)
   )
 

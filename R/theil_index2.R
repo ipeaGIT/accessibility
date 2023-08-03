@@ -43,11 +43,11 @@
 #'
 #' @keywords internal
 theil_index2 <- function(accessibility_data,
-                        sociodemographic_data,
-                        opportunity,
-                        population,
-                        socioeconomic_groups,
-                        group_by = character(0)) {
+                         sociodemographic_data,
+                         opportunity,
+                         population,
+                         socioeconomic_groups,
+                         group_by = character(0)) {
   checkmate::assert_string(opportunity)
   checkmate::assert_string(population)
   checkmate::assert_string(socioeconomic_groups)
@@ -55,6 +55,7 @@ theil_index2 <- function(accessibility_data,
   assert_accessibility_data(accessibility_data, opportunity, group_by)
   assert_sociodemographic_data(
     sociodemographic_data,
+    accessibility_data,
     c(population, socioeconomic_groups)
   )
 

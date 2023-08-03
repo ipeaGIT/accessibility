@@ -43,7 +43,11 @@ gini_index <- function(accessibility_data,
   checkmate::assert_string(population)
   assert_access_group_by(group_by)
   assert_accessibility_data(accessibility_data, opportunity, group_by)
-  assert_sociodemographic_data(sociodemographic_data, population)
+  assert_sociodemographic_data(
+    sociodemographic_data,
+    accessibility_data,
+    population
+  )
 
   if (!inherits(accessibility_data, "data.table")) {
     original_class <- class(accessibility_data)

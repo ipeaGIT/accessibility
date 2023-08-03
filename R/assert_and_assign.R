@@ -150,6 +150,7 @@ assert_land_use_data <- function(land_use_data,
 
 #' @keywords internal
 assert_sociodemographic_data <- function(sociodemographic_data,
+                                         accessibility_data,
                                          columns) {
   required_names <- c("id", columns)
 
@@ -159,6 +160,31 @@ assert_sociodemographic_data <- function(sociodemographic_data,
     must.include = required_names,
     .var.name = "sociodemographic_data"
   )
+
+  # if an id is present in accessibility_data but not in sociodemographic_data,
+  # merging the datasets will produce NAs, so we warn users about that
+
+  if (!all(accessibility_data$id %in% sociodemographic_data$id)) {
+    warning(
+      "'sociodemographic_data' is missing ids listed in 'accessibility_data', ",
+      "which may produce NAs in the final output.",
+      call. = FALSE
+    )
+  }
+
+  # if any of the columns in sociodemographic_data required to calculate
+  # inequality contains NA values, the final result may contain NAs as well, so
+  # we warn about that too
+
+  for (col in columns) {
+    if (any(is.na(sociodemographic_data[[col]]))) {
+      warning(
+        "'sociodemographic_data$", col, "' contains NA values, which may ",
+        "produce NAs in the final output.",
+        call. = FALSE
+      )
+    }
+  }
 
   return(invisible(TRUE))
 }
