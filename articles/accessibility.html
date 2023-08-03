@@ -230,13 +230,13 @@ dataset we’ll be using looks like this:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">land_use_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data_dir</span>, <span class="st">"land_use_data.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">land_use_data</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                 id population jobs schools income_per_capita</span></span>
-<span><span class="co">#&gt; 1: 89a881a5a2bffff        381  180       0           22369.1</span></span>
-<span><span class="co">#&gt; 2: 89a881a5a2fffff        269  134       0            3205.1</span></span>
-<span><span class="co">#&gt; 3: 89a881a5a67ffff        929  143       0           11394.0</span></span>
-<span><span class="co">#&gt; 4: 89a881a5a6bffff        249   61       0            3659.8</span></span>
-<span><span class="co">#&gt; 5: 89a881a5a6fffff        176   11       0            4905.1</span></span>
-<span><span class="co">#&gt; 6: 89a881a5b03ffff        681 1071       0            2200.2</span></span></code></pre></div>
+<span><span class="co">#&gt;                 id population jobs schools income_per_capita income_decile</span></span>
+<span><span class="co">#&gt; 1: 89a881a5a2bffff        381  180       0           22369.1            10</span></span>
+<span><span class="co">#&gt; 2: 89a881a5a2fffff        269  134       0            3205.1             9</span></span>
+<span><span class="co">#&gt; 3: 89a881a5a67ffff        929  143       0           11394.0            10</span></span>
+<span><span class="co">#&gt; 4: 89a881a5a6bffff        249   61       0            3659.8             9</span></span>
+<span><span class="co">#&gt; 5: 89a881a5a6fffff        176   11       0            4905.1            10</span></span>
+<span><span class="co">#&gt; 6: 89a881a5b03ffff        681 1071       0            2200.2             8</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="minimum-travel-cost">Minimum travel cost<a class="anchor" aria-label="anchor" href="#minimum-travel-cost"></a>
