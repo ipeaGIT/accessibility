@@ -40,6 +40,8 @@
 #'   socioeconomic_groups = "income_decile"
 #' )
 #' ti
+#'
+#' @keywords internal
 theil_index2 <- function(accessibility_data,
                         sociodemographic_data,
                         opportunity,

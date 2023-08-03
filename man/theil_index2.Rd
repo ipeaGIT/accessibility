@@ -84,3 +84,4 @@ Other inequality:
 \code{\link{theil_index}()}
 }
 \concept{inequality}
+\keyword{internal}
