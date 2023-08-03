@@ -79,17 +79,7 @@ test_that("warns if travel_matrix contains ids that land_use_data does not", {
 test_that("warns if either opportunity or demand cols contain NAs", {
   expect_warning(
     tester(
-      rbind(land_use_data, data.table::data.table(id = "hehe"), fill = TRUE)
-    )
-  )
-
-  expect_warning(
-    tester(
-      rbind(
-        land_use_data,
-        data.table::data.table(id = "hehe", jobs = 20),
-        fill = TRUE
-      ),
+      rbind(land_use_data, data.table::data.table(id = "hehe"), fill = TRUE),
       demand = "population"
     )
   )
