@@ -90,7 +90,12 @@ utils::globalVariables(
     "group_avg_access",
     "group_theil_t",
     "theil_share",
-    "total_access"
+    "total_access",
+    "group_total_access",
+    "contribution",
+    "value",
+    "within_ineq",
+    "between_share"
   )
 )
 

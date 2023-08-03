@@ -32,7 +32,7 @@
 #'   travel_cost = "travel_time"
 #' )
 #'
-#' ti <- theil_index2(
+#' ti <- accessibility:::theil_index2(
 #'   accessibility_data = access,
 #'   sociodemographic_data = land_use_data,
 #'   opportunity = "jobs",
@@ -40,8 +40,6 @@
 #'   socioeconomic_groups = "income_decile"
 #' )
 #' ti
-#'
-#' @export
 theil_index2 <- function(accessibility_data,
                         sociodemographic_data,
                         opportunity,
@@ -141,7 +139,7 @@ theil_index2 <- function(accessibility_data,
       # theil of each group
       group_theil_t = theil_t(x = get(..opportunity),
                               group_avg_access,
-                              w = get(..population))
+                              weight = get(..population))
     ),
     by = .socioecon_groups]
 
