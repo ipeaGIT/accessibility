@@ -155,44 +155,51 @@ estimates grouped by scenario.</p></dd>
 <span class="r-in"><span>  travel_cost <span class="op">=</span> <span class="st">"travel_time"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># some cells are classified as in the decile NA. that's because their income</span></span></span>
+<span class="r-in"><span><span class="co"># per capita is NaN, as they don't have any population. we filter these cells</span></span></span>
+<span class="r-in"><span><span class="co"># from our accessibility data, otherwise the output would include NA values</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">na_decile_ids</span> <span class="op">&lt;-</span> <span class="va">land_use_data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">land_use_data</span><span class="op">$</span><span class="va">income_decile</span><span class="op">)</span>, <span class="op">]</span><span class="op">$</span><span class="va">id</span></span></span>
+<span class="r-in"><span><span class="va">access</span> <span class="op">&lt;-</span> <span class="va">access</span><span class="op">[</span><span class="op">!</span> <span class="va">access</span><span class="op">$</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">na_decile_ids</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">sociodem_data</span> <span class="op">&lt;-</span> <span class="va">land_use_data</span><span class="op">[</span><span class="op">!</span> <span class="va">land_use_data</span><span class="op">$</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">na_decile_ids</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">ti</span> <span class="op">&lt;-</span> <span class="fu">theil_index</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">access</span>,</span></span>
-<span class="r-in"><span>  sociodemographic_data <span class="op">=</span> <span class="va">land_use_data</span>,</span></span>
+<span class="r-in"><span>  sociodemographic_data <span class="op">=</span> <span class="va">sociodem_data</span>,</span></span>
 <span class="r-in"><span>  opportunity <span class="op">=</span> <span class="st">"jobs"</span>,</span></span>
 <span class="r-in"><span>  population <span class="op">=</span> <span class="st">"population"</span>,</span></span>
 <span class="r-in"><span>  socioeconomic_groups <span class="op">=</span> <span class="st">"income_decile"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'sociodemographic_data$income_decile' contains NA values, which may produce NAs in the final output.</span>
 <span class="r-in"><span><span class="va">ti</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $theil_t</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      theil_t</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.3616631</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $decomposed_theil_t</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         component income_decile  theil_share</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: between-group          &lt;NA&gt;          NaN</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: between-group             1 -0.037573783</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: between-group             2 -0.036276865</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: between-group             3 -0.031829123</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: between-group             4 -0.021600054</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: between-group             5 -0.009938574</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: between-group             6 -0.004401762</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: between-group             7  0.025936879</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: between-group             8  0.042240708</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: between-group             9  0.075742415</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11: between-group            10  0.125775443</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12:  within-group          &lt;NA&gt;          NaN</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13:  within-group             1  0.009181454</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14:  within-group             2  0.011413697</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15:  within-group             3  0.019320622</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16:  within-group             4  0.023606928</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17:  within-group             5  0.031470429</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18:  within-group             6  0.023539337</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19:  within-group             7  0.033329635</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20:  within-group             8  0.032585905</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21:  within-group             9  0.020299031</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22:  within-group            10  0.028840780</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         component income_decile  theil_share</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $within_group_component</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     income_decile       value share_of_component</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:             1 0.009181454         0.03930622</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:             2 0.011413697         0.04886255</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:             3 0.019320622         0.08271246</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:             4 0.023606928         0.10106232</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:             5 0.031470429         0.13472633</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:             6 0.023539337         0.10077296</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:             7 0.033329635         0.14268567</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:             8 0.032585905         0.13950173</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:             9 0.020299031         0.08690107</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:            10 0.028840780         0.12346868</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $between_group_component</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     income_decile        value share_of_component</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:             1 -0.037573783        -0.29337263</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:             2 -0.036276865        -0.28324641</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:             3 -0.031829123        -0.24851886</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:             4 -0.021600054        -0.16865123</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:             5 -0.009938574        -0.07759947</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:             6 -0.004401762        -0.03436855</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:             7  0.025936879         0.20251276</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:             8  0.042240708         0.32981155</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:             9  0.075742415         0.59138979</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:            10  0.125775443         0.98204306</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
