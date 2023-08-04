@@ -58,7 +58,8 @@ palma_ratio <- function(accessibility_data,
   assert_sociodemographic_data(
     sociodemographic_data,
     accessibility_data,
-    c(population, income)
+    population = population,
+    income = income
   )
 
   if (!inherits(accessibility_data, "data.table")) {

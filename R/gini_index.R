@@ -46,7 +46,7 @@ gini_index <- function(accessibility_data,
   assert_sociodemographic_data(
     sociodemographic_data,
     accessibility_data,
-    population
+    population = population
   )
 
   if (!inherits(accessibility_data, "data.table")) {

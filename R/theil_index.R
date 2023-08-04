@@ -56,7 +56,8 @@ theil_index <- function(accessibility_data,
   assert_sociodemographic_data(
     sociodemographic_data,
     accessibility_data,
-    c(population, socioeconomic_groups)
+    population = population,
+    extra_cols = socioeconomic_groups
   )
 
   if (!inherits(accessibility_data, "data.table")) {

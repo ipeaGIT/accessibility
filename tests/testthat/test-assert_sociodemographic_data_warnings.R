@@ -1,15 +1,17 @@
 # if running manually, please run the following line first:
 # source("tests/testthat/setup.R")
 
-land_use_without_nas <- land_use_data[!is.na(income_decile)]
-
-tester <- function(sociodemographic_data = land_use_without_nas,
+tester <- function(sociodemographic_data = land_use_data,
                    accessibility_data = small_access,
-                   columns = "income_per_capita") {
+                   population = NULL,
+                   income = NULL,
+                   extra_cols = NULL) {
   assert_sociodemographic_data(
     sociodemographic_data,
     accessibility_data,
-    columns
+    population,
+    income,
+    extra_cols
   )
 }
 
@@ -28,10 +30,56 @@ test_that("warns if cols contain NAs", {
   expect_warning(
     tester(
       rbind(
-        land_use_without_nas,
+        land_use_data,
         data.table::data.table(id = "hehe"),
         fill = TRUE
-      )
+      ),
+      population = "population"
+    )
+  )
+
+  expect_warning(
+    tester(
+      rbind(
+        land_use_data,
+        data.table::data.table(id = "hehe"),
+        fill = TRUE
+      ),
+      extra_cols = "income_decile"
+    )
+  )
+
+  expect_warning(
+    tester(
+      rbind(
+        land_use_data,
+        data.table::data.table(id = "hehe", population = 1),
+        fill = TRUE
+      ),
+      income = "income_per_capita",
+      population = "population"
+    )
+  )
+
+  expect_warning(
+    tester(
+      rbind(
+        land_use_data,
+        data.table::data.table(id = "hehe", population = NA),
+        fill = TRUE
+      ),
+      income = "income_per_capita",
+      population = "population"
+    )
+  )
+
+  # should not warn because all NA income entries have respective population
+  # entries equal to 0
+  expect_silent(
+    tester(
+      land_use_data,
+      income = "income_per_capita",
+      population = "population"
     )
   )
 })

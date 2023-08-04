@@ -151,8 +151,13 @@ assert_land_use_data <- function(land_use_data,
 #' @keywords internal
 assert_sociodemographic_data <- function(sociodemographic_data,
                                          accessibility_data,
-                                         columns) {
-  required_names <- c("id", columns)
+                                         population = NULL,
+                                         income = NULL,
+                                         extra_cols = NULL) {
+  population <- if (is.null(population)) character() else population
+  income <- if (is.null(income)) character() else income
+  extra_cols <- if (is.null(extra_cols)) character() else extra_cols
+  required_names <- c("id", population, income, extra_cols)
 
   checkmate::assert_data_frame(sociodemographic_data)
   checkmate::assert_names(
@@ -175,14 +180,41 @@ assert_sociodemographic_data <- function(sociodemographic_data,
   # if any of the columns in sociodemographic_data required to calculate
   # inequality contains NA values, the final result may contain NAs as well, so
   # we warn about that too
+  # if NAs are found in income column, we check if the correspondent population
+  # entries are 0. if not, we throw the warning, otherwise we ignore it. related
+  # to https://github.com/ipeaGIT/accessibility/issues/42
 
-  for (col in columns) {
+  non_income_cols <- c(population, extra_cols)
+
+  for (col in non_income_cols) {
     if (any(is.na(sociodemographic_data[[col]]))) {
       warning(
         "'sociodemographic_data$", col, "' contains NA values, which may ",
         "produce NAs in the final output.",
         call. = FALSE
       )
+    }
+  }
+
+  if (!identical(income, character())) {
+    if (any(is.na(sociodemographic_data[[income]]))) {
+      .inc_col <- income
+      na_entries <- sociodemographic_data[
+        is.na(sociodemographic_data[[.inc_col]]),
+      ]
+      pop_na_entries <- na_entries[[population]]
+
+      should_warn <- any(pop_na_entries > 0)
+      should_warn <- ifelse(is.na(should_warn), TRUE, should_warn)
+
+      if (should_warn) {
+        warning(
+          "'sociodemographic_data$", income, "' contains NA values whose ",
+          "correspodent 'sociodemographic_data$population' is not 0, which ",
+          "may produce NAs in the final output.",
+          call. = FALSE
+        )
+      }
     }
   }
 
