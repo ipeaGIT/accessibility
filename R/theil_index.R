@@ -100,6 +100,7 @@ theil_index <- function(accessibility_data,
 
   # we have to filter by opportunity because opportunity = 0 results in
   # theil_t being NaN (because log(0) is NaN)
+  # TODO: throw warning
 
   data[
     ,
@@ -135,24 +136,31 @@ theil_index <- function(accessibility_data,
         group_avg_access,
         get(..population)
       ),
-      total_access = as.numeric(sum(get(..opportunity) * get(..population)))
+      group_tot_access = as.numeric(sum(get(..opportunity) * get(..population)))
     ),
     by = .socioecon_groups
   ]
   within_group[
     ,
-    theil_share := group_theil_t * total_access / sum(total_access),
+    value := group_theil_t * group_tot_access / sum(group_tot_access),
     by = .groups
   ]
-  within_group[, component := "within-group"]
-  within_group[, c("group_theil_t", "total_access") := NULL]
+  within_group[
+    ,
+    share_of_component := value / sum(value),
+    by = .groups
+  ]
+  within_group[, c("group_theil_t", "group_tot_access") := NULL]
+  data.table::setorderv(within_group, .socioecon_groups)
 
   # between group
 
   between_group <- data[
     ,
     .(
-      total_access = as.numeric(sum(get(..opportunity) * get(..population))),
+      group_tot_access = as.numeric(
+        sum(get(..opportunity) * get(..population))
+      ),
       population = sum(get(..population))
     ),
     by = .socioecon_groups
@@ -160,36 +168,33 @@ theil_index <- function(accessibility_data,
   between_group[
     ,
     `:=`(
-      access_share = total_access / sum(total_access),
+      access_share = group_tot_access / sum(group_tot_access),
       pop_share = population / sum(population)
     ),
     by = .groups
   ]
-  between_group[, theil_share := access_share * log(access_share / pop_share)]
+  between_group[, value := access_share * log(access_share / pop_share)]
   between_group[
     ,
-    c("total_access", "population", "access_share", "pop_share") := NULL
+    share_of_component := value / sum(value),
+    by = .groups
   ]
-  between_group[, component := "between-group"]
-
-  decomposed_theil <- rbind(between_group, within_group)
-  data.table::setcolorder(
-    decomposed_theil,
-    c(group_by, "component", socioeconomic_groups)
-  )
-  data.table::setorderv(
-    decomposed_theil,
-    c(group_by, "component", socioeconomic_groups)
-  )
+  between_group[
+    ,
+    c("group_tot_access", "population", "access_share", "pop_share") := NULL
+  ]
+  data.table::setorderv(between_group, .socioecon_groups)
 
   output_list <- list(
     theil_t = theil_index,
-    decomposed_theil_t = decomposed_theil
+    within_group_component = within_group,
+    between_group_component = between_group
   )
 
   if (exists("original_class")) {
     class(output_list$theil_t) <- original_class
-    class(output_list$decomposed_theil_t) <- original_class
+    class(output_list$within_group_component) <- original_class
+    class(output_list$between_group_component) <- original_class
   }
 
   return(output_list)

@@ -95,7 +95,9 @@ utils::globalVariables(
     "contribution",
     "value",
     "within_ineq",
-    "between_share"
+    "between_share",
+    "group_tot_access",
+    "share_of_component"
   )
 )
 
