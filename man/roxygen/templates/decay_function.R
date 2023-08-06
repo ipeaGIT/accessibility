@@ -2,7 +2,7 @@
 #'   impedance factor used to weight opportunities. This function should take a
 #'   `numeric` vector and also return a `numeric` vector as output, with the
 #'   same length as the input. For convenience, the package currently includes
-#'   the following functions: [decay_binary()], [decay_exponential()],
-#'   [decay_exponential()] and [decay_power()]. See the documentation of each
-#'   decay function for more details.
+#'   the following functions: [decay_binary()], [decay_exponential()] and
+#'   [decay_power()]. See the documentation of each decay function for more
+#'   details.
 
