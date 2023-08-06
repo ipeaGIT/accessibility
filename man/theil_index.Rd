@@ -63,9 +63,17 @@ access <- cumulative_cutoff(
   travel_cost = "travel_time"
 )
 
+# some cells are classified as in the decile NA. that's because their income
+# per capita is NaN, as they don't have any population. we filter these cells
+# from our accessibility data, otherwise the output would include NA values
+
+na_decile_ids <- land_use_data[is.na(land_use_data$income_decile), ]$id
+access <- access[! access$id \%in\% na_decile_ids, ]
+sociodem_data <- land_use_data[! land_use_data$id \%in\% na_decile_ids, ]
+
 ti <- theil_index(
   access,
-  sociodemographic_data = land_use_data,
+  sociodemographic_data = sociodem_data,
   opportunity = "jobs",
   population = "population",
   socioeconomic_groups = "income_decile"

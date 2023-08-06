@@ -55,7 +55,12 @@ palma_ratio <- function(accessibility_data,
   checkmate::assert_string(income)
   assert_access_group_by(group_by)
   assert_accessibility_data(accessibility_data, opportunity, group_by)
-  assert_sociodemographic_data(sociodemographic_data, c(population, income))
+  assert_sociodemographic_data(
+    sociodemographic_data,
+    accessibility_data,
+    population = population,
+    income = income
+  )
 
   if (!inherits(accessibility_data, "data.table")) {
     original_class <- class(accessibility_data)

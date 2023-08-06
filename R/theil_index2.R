@@ -32,7 +32,7 @@
 #'   travel_cost = "travel_time"
 #' )
 #'
-#' ti <- theil_index2(
+#' ti <- accessibility:::theil_index2(
 #'   accessibility_data = access,
 #'   sociodemographic_data = land_use_data,
 #'   opportunity = "jobs",
@@ -41,13 +41,13 @@
 #' )
 #' ti
 #'
-#' @export
+#' @keywords internal
 theil_index2 <- function(accessibility_data,
-                        sociodemographic_data,
-                        opportunity,
-                        population,
-                        socioeconomic_groups,
-                        group_by = character(0)) {
+                         sociodemographic_data,
+                         opportunity,
+                         population,
+                         socioeconomic_groups,
+                         group_by = character(0)) {
   checkmate::assert_string(opportunity)
   checkmate::assert_string(population)
   checkmate::assert_string(socioeconomic_groups)
@@ -55,7 +55,9 @@ theil_index2 <- function(accessibility_data,
   assert_accessibility_data(accessibility_data, opportunity, group_by)
   assert_sociodemographic_data(
     sociodemographic_data,
-    c(population, socioeconomic_groups)
+    accessibility_data,
+    population = population,
+    extra_cols = socioeconomic_groups
   )
 
   if (!inherits(accessibility_data, "data.table")) {
@@ -141,7 +143,7 @@ theil_index2 <- function(accessibility_data,
       # theil of each group
       group_theil_t = theil_t(x = get(..opportunity),
                               group_avg_access,
-                              w = get(..population))
+                              weight = get(..population))
     ),
     by = .socioecon_groups]
 

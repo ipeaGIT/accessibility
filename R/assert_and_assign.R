@@ -90,7 +90,11 @@ assert_accessibility_data <- function(accessibility_data,
 
 
 #' @keywords internal
-assert_land_use_data <- function(land_use_data, opportunity, demand = NULL) {
+assert_land_use_data <- function(land_use_data,
+                                 travel_matrix,
+                                 opportunity,
+                                 active = NULL,
+                                 demand = NULL) {
   land_use_data_req_names <- c("id", opportunity)
   if (!is.null(demand)) {
     land_use_data_req_names <- c(land_use_data_req_names, demand)
@@ -103,14 +107,57 @@ assert_land_use_data <- function(land_use_data, opportunity, demand = NULL) {
     .var.name = "land_use_data"
   )
 
+  # if an id is present in travel_matrix but not in land_use_data, merging the
+  # datasets will produce NAs, so we warn users about that
+
+  travel_matrix_ids <- if (is.null(active)) {
+    c(travel_matrix$from_id, travel_matrix$to_id)
+  } else if (active) {
+    travel_matrix$to_id
+  } else {
+    travel_matrix$from_id
+  }
+
+  if (!all(travel_matrix_ids %in% land_use_data$id)) {
+    warning(
+      "'land_use_data' is missing ids listed in 'travel_matrix', which may ",
+      "produce NAs in the final output.",
+      call. = FALSE
+    )
+  }
+
+  # if either land_use_data$opportunity or $demand contains NA values, the final
+  # result may contain NAs as well, so we warn about that too
+
+  cols_to_check <- c(
+    opportunity,
+    ifelse(is.null(demand), character(0), demand)
+  )
+
+  for (col in cols_to_check) {
+    if (any(is.na(land_use_data[[col]]))) {
+      warning(
+        "'land_use_data$", col, "' contains NA values, which may produce NAs ",
+        "in the final output.",
+        call. = FALSE
+      )
+    }
+  }
+
   return(invisible(TRUE))
 }
 
 
 #' @keywords internal
 assert_sociodemographic_data <- function(sociodemographic_data,
-                                         columns) {
-  required_names <- c("id", columns)
+                                         accessibility_data,
+                                         population = NULL,
+                                         income = NULL,
+                                         extra_cols = NULL) {
+  population <- if (is.null(population)) character() else population
+  income <- if (is.null(income)) character() else income
+  extra_cols <- if (is.null(extra_cols)) character() else extra_cols
+  required_names <- c("id", population, income, extra_cols)
 
   checkmate::assert_data_frame(sociodemographic_data)
   checkmate::assert_names(
@@ -118,6 +165,58 @@ assert_sociodemographic_data <- function(sociodemographic_data,
     must.include = required_names,
     .var.name = "sociodemographic_data"
   )
+
+  # if an id is present in accessibility_data but not in sociodemographic_data,
+  # merging the datasets will produce NAs, so we warn users about that
+
+  if (!all(accessibility_data$id %in% sociodemographic_data$id)) {
+    warning(
+      "'sociodemographic_data' is missing ids listed in 'accessibility_data', ",
+      "which may produce NAs in the final output.",
+      call. = FALSE
+    )
+  }
+
+  # if any of the columns in sociodemographic_data required to calculate
+  # inequality contains NA values, the final result may contain NAs as well, so
+  # we warn about that too
+  # if NAs are found in income column, we check if the correspondent population
+  # entries are 0. if not, we throw the warning, otherwise we ignore it. related
+  # to https://github.com/ipeaGIT/accessibility/issues/42
+
+  non_income_cols <- c(population, extra_cols)
+
+  for (col in non_income_cols) {
+    if (any(is.na(sociodemographic_data[[col]]))) {
+      warning(
+        "'sociodemographic_data$", col, "' contains NA values, which may ",
+        "produce NAs in the final output.",
+        call. = FALSE
+      )
+    }
+  }
+
+  if (!identical(income, character())) {
+    if (any(is.na(sociodemographic_data[[income]]))) {
+      .inc_col <- income
+      na_entries <- sociodemographic_data[
+        is.na(sociodemographic_data[[.inc_col]]),
+      ]
+      pop_na_entries <- na_entries[[population]]
+
+      should_warn <- any(pop_na_entries > 0)
+      should_warn <- ifelse(is.na(should_warn), TRUE, should_warn)
+
+      if (should_warn) {
+        warning(
+          "'sociodemographic_data$", income, "' contains NA values whose ",
+          "correspodent 'sociodemographic_data$population' is not 0, which ",
+          "may produce NAs in the final output.",
+          call. = FALSE
+        )
+      }
+    }
+  }
 
   return(invisible(TRUE))
 }

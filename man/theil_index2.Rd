@@ -63,7 +63,7 @@ access <- cumulative_cutoff(
   travel_cost = "travel_time"
 )
 
-ti <- theil_index2(
+ti <- accessibility:::theil_index2(
   accessibility_data = access,
   sociodemographic_data = land_use_data,
   opportunity = "jobs",
@@ -84,3 +84,4 @@ Other inequality:
 \code{\link{theil_index}()}
 }
 \concept{inequality}
+\keyword{internal}
