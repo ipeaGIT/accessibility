@@ -45,9 +45,9 @@ details.}
 impedance factor used to weight opportunities. This function should take a
 \code{numeric} vector and also return a \code{numeric} vector as output, with the
 same length as the input. For convenience, the package currently includes
-the following functions: \code{\link[=decay_binary]{decay_binary()}}, \code{\link[=decay_exponential]{decay_exponential()}},
-\code{\link[=decay_exponential]{decay_exponential()}} and \code{\link[=decay_power]{decay_power()}}. See the documentation of each
-decay function for more details.}
+the following functions: \code{\link[=decay_binary]{decay_binary()}}, \code{\link[=decay_exponential]{decay_exponential()}} and
+\code{\link[=decay_power]{decay_power()}}. See the documentation of each decay function for more
+details.}
 
 \item{group_by}{A \code{character} vector. When not \code{character(0)} (the default),
 indicates the \code{travel_matrix} columns that should be used to group the
