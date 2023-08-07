@@ -97,7 +97,10 @@ utils::globalVariables(
     "within_ineq",
     "between_share",
     "group_tot_access",
-    "share_of_component"
+    "share_of_component",
+    "group_tot_pop",
+    "total",
+    "share_of_total"
   )
 )
 

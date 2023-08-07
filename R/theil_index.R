@@ -110,15 +110,6 @@ theil_index <- function(accessibility_data,
     ),
     by = .groups
   ]
-
-  theil_index <- data[
-    get(.opp_colname) > 0,
-    .(theil_t = theil_t(get(..opportunity), avg_access, get(..population))),
-    by = .groups
-  ]
-
-  # within group
-
   data[
     ,
     group_avg_access := stats::weighted.mean(
@@ -128,18 +119,66 @@ theil_index <- function(accessibility_data,
     by = .socioecon_groups
   ]
 
-  within_group <- data[
-    get(.opp_colname) > 0,
+  # theil_index <- data[
+  #   get(.opp_colname) > 0,
+  #   .(theil_t = theil_t(get(..opportunity), avg_access, get(..population))),
+  #   by = .groups
+  # ]
+
+  summarized_data <- data[
+    ,
     .(
+      group_tot_access = as.numeric(
+        sum(get(..opportunity) * get(..population))
+      ),
+      group_tot_pop = sum(get(..population)),
       group_theil_t = theil_t(
         get(..opportunity),
         group_avg_access,
         get(..population)
       ),
-      group_tot_access = as.numeric(sum(get(..opportunity) * get(..population)))
+      avg_access = mean(avg_access),
+      group_avg_access = mean(group_avg_access)
     ),
     by = .socioecon_groups
   ]
+  summarized_data[
+    ,
+    `:=`(
+      group_avg_access = group_tot_access / group_tot_pop,
+      access_share = group_tot_access / sum(group_tot_access),
+      pop_share = group_tot_pop / sum(group_tot_pop)
+    ),
+    by = .groups
+  ]
+
+  summary <- summarized_data[
+    ,
+    .(
+      between_group = theil_t(
+        group_avg_access,
+        avg_access,
+        group_tot_pop
+      ),
+      within_group = sum(
+        group_theil_t * group_tot_access / sum(group_tot_access)
+      )
+    ),
+    by = .groups
+  ]
+  summary[, total := between_group + within_group]
+
+  summary <- data.table::melt(
+    summary,
+    id.vars = .groups,
+    variable.name = "component",
+    value.name = "value"
+  )
+  summary[, share_of_total := 2 * value / sum(value), by = .groups]
+
+  # decomposed within group
+
+  within_group <- data.table::copy(summarized_data)
   within_group[
     ,
     value := group_theil_t * group_tot_access / sum(group_tot_access),
@@ -150,43 +189,28 @@ theil_index <- function(accessibility_data,
     share_of_component := value / sum(value),
     by = .groups
   ]
-  within_group[, c("group_theil_t", "group_tot_access") := NULL]
+
+  cols_to_drop <- setdiff(
+    names(within_group),
+    c(.socioecon_groups, "value", "share_of_component")
+  )
+  within_group[, eval(cols_to_drop) := NULL]
   data.table::setorderv(within_group, .socioecon_groups)
 
-  # between group
+  # decomposed between group
 
-  between_group <- data[
-    ,
-    .(
-      group_tot_access = as.numeric(
-        sum(get(..opportunity) * get(..population))
-      ),
-      population = sum(get(..population))
-    ),
-    by = .socioecon_groups
-  ]
-  between_group[
-    ,
-    `:=`(
-      access_share = group_tot_access / sum(group_tot_access),
-      pop_share = population / sum(population)
-    ),
-    by = .groups
-  ]
+  between_group <- data.table::copy(summarized_data)
   between_group[, value := access_share * log(access_share / pop_share)]
   between_group[
     ,
     share_of_component := value / sum(value),
     by = .groups
   ]
-  between_group[
-    ,
-    c("group_tot_access", "population", "access_share", "pop_share") := NULL
-  ]
+  between_group[, eval(cols_to_drop) := NULL]
   data.table::setorderv(between_group, .socioecon_groups)
 
   output_list <- list(
-    theil_t = theil_index,
+    summary = summary,
     within_group_component = within_group,
     between_group_component = between_group
   )
