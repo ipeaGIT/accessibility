@@ -40,7 +40,7 @@
 #' access <- access[! access$id %in% na_decile_ids, ]
 #' sociodem_data <- land_use_data[! land_use_data$id %in% na_decile_ids, ]
 #'
-#' ti <- theil_index(
+#' ti <- theil_t(
 #'   access,
 #'   sociodemographic_data = sociodem_data,
 #'   opportunity = "jobs",
@@ -50,12 +50,12 @@
 #' ti
 #'
 #' @export
-theil_index <- function(accessibility_data,
-                        sociodemographic_data,
-                        opportunity,
-                        population,
-                        socioeconomic_groups,
-                        group_by = character(0)) {
+theil_t <- function(accessibility_data,
+                    sociodemographic_data,
+                    opportunity,
+                    population,
+                    socioeconomic_groups,
+                    group_by = character(0)) {
   checkmate::assert_string(opportunity)
   checkmate::assert_string(population)
   checkmate::assert_string(socioeconomic_groups)
@@ -132,7 +132,7 @@ theil_index <- function(accessibility_data,
         sum(get(..opportunity) * get(..population))
       ),
       group_tot_pop = sum(get(..population)),
-      group_theil_t = theil_t(
+      group_theil_t = calc_theil_t(
         get(..opportunity),
         group_avg_access,
         get(..population)
@@ -155,7 +155,7 @@ theil_index <- function(accessibility_data,
   summary <- summarized_data[
     ,
     .(
-      between_group = theil_t(
+      between_group = calc_theil_t(
         group_avg_access,
         avg_access,
         group_tot_pop
@@ -201,11 +201,6 @@ theil_index <- function(accessibility_data,
 
   between_group <- data.table::copy(summarized_data)
   between_group[, value := access_share * log(access_share / pop_share)]
-  between_group[
-    ,
-    share_of_component := value / sum(value),
-    by = .groups
-  ]
   between_group[, eval(cols_to_drop) := NULL]
   data.table::setorderv(between_group, .socioecon_groups)
 
@@ -216,7 +211,7 @@ theil_index <- function(accessibility_data,
   )
 
   if (exists("original_class")) {
-    class(output_list$theil_t) <- original_class
+    class(output_list$summary) <- original_class
     class(output_list$within_group_component) <- original_class
     class(output_list$between_group_component) <- original_class
   }
@@ -224,6 +219,6 @@ theil_index <- function(accessibility_data,
   return(output_list)
 }
 
-theil_t <- function(x, avg_x, weight) {
+calc_theil_t <- function(x, avg_x, weight) {
   stats::weighted.mean(x / avg_x * log(x / avg_x), w = weight)
 }

@@ -100,7 +100,6 @@ ci
 Other inequality: 
 \code{\link{gini_index}()},
 \code{\link{palma_ratio}()},
-\code{\link{theil_index2}()},
-\code{\link{theil_index}()}
+\code{\link{theil_t}()}
 }
 \concept{inequality}
