@@ -9,7 +9,7 @@ theil_t(
   sociodemographic_data,
   opportunity,
   population,
-  socioeconomic_groups,
+  socioeconomic_groups = NULL,
   group_by = character(0)
 )
 }
@@ -69,9 +69,22 @@ access <- cumulative_cutoff(
   travel_cost = "travel_time"
 )
 
-# some cells are classified as in the decile NA. that's because their income
-# per capita is NaN, as they don't have any population. we filter these cells
-# from our accessibility data, otherwise the output would include NA values
+ti <- theil_t(
+  access,
+  sociodemographic_data = land_use_data,
+  opportunity = "jobs",
+  population = "population"
+)
+ti
+
+# to calculate inequality between and within income deciles, we pass
+# "income_decile" to socioeconomic_groups.
+# some cells, however, are classified as in the decile NA because their
+# income per capita is NaN, as they don't have any population. we filter
+# these cells from our accessibility data, otherwise the output would include
+# NA values (note that subsetting the data like this doesn't affect the
+# assumption that groups are completely exhaustive, because cells with NA
+# income decile don't have any population)
 
 na_decile_ids <- land_use_data[is.na(land_use_data$income_decile), ]$id
 access <- access[! access$id \%in\% na_decile_ids, ]

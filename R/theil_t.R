@@ -38,9 +38,22 @@
 #'   travel_cost = "travel_time"
 #' )
 #'
-#' # some cells are classified as in the decile NA. that's because their income
-#' # per capita is NaN, as they don't have any population. we filter these cells
-#' # from our accessibility data, otherwise the output would include NA values
+#' ti <- theil_t(
+#'   access,
+#'   sociodemographic_data = land_use_data,
+#'   opportunity = "jobs",
+#'   population = "population"
+#' )
+#' ti
+#'
+#' # to calculate inequality between and within income deciles, we pass
+#' # "income_decile" to socioeconomic_groups.
+#' # some cells, however, are classified as in the decile NA because their
+#' # income per capita is NaN, as they don't have any population. we filter
+#' # these cells from our accessibility data, otherwise the output would include
+#' # NA values (note that subsetting the data like this doesn't affect the
+#' # assumption that groups are completely exhaustive, because cells with NA
+#' # income decile don't have any population)
 #'
 #' na_decile_ids <- land_use_data[is.na(land_use_data$income_decile), ]$id
 #' access <- access[! access$id %in% na_decile_ids, ]
@@ -60,11 +73,11 @@ theil_t <- function(accessibility_data,
                     sociodemographic_data,
                     opportunity,
                     population,
-                    socioeconomic_groups,
+                    socioeconomic_groups = NULL,
                     group_by = character(0)) {
   checkmate::assert_string(opportunity)
   checkmate::assert_string(population)
-  checkmate::assert_string(socioeconomic_groups)
+  checkmate::assert_string(socioeconomic_groups, null.ok = TRUE)
   assert_access_group_by(group_by)
   assert_accessibility_data(accessibility_data, opportunity, group_by)
   assert_sociodemographic_data(
@@ -91,6 +104,69 @@ theil_t <- function(accessibility_data,
     population,
     left_df_idcol = "id"
   )
+
+  warn_extra_access_cols(accessibility_data, opportunity, group_by)
+
+  if (is.null(socioeconomic_groups)) {
+    result <- theil_without_groups(data, opportunity, population, group_by)
+  } else {
+    result <- theil_with_groups(
+      data,
+      sociodemographic_data,
+      opportunity,
+      population,
+      socioeconomic_groups,
+      group_by
+    )
+  }
+
+  if (exists("original_class")) {
+    if (inherits(result, "data.frame")) {
+      class(result) <- original_class
+    } else {
+      class(result$summary) <- original_class
+      class(result$within_group_component) <- original_class
+      class(result$between_group_component) <- original_class
+    }
+  }
+
+  return(result)
+}
+
+theil_without_groups <- function(data, opportunity, population, group_by) {
+  # we have to filter by opportunity because opportunity = 0 results in
+  # theil_t being NaN (because log(0) is NaN)
+  # TODO: throw warning
+
+  .opp_colname <- opportunity
+  .groups <- group_by
+
+  data[
+    ,
+    avg_access := stats::weighted.mean(
+      get(..opportunity),
+      w = get(..population)
+    ),
+    by = .groups
+  ]
+
+  theil_index <- data[
+    get(.opp_colname) > 0,
+    .(
+      theil_t = calc_theil_t(get(..opportunity), avg_access, get(..population))
+    ),
+    by = .groups
+  ]
+
+  return(theil_index)
+}
+
+theil_with_groups <- function(data,
+                              sociodemographic_data,
+                              opportunity,
+                              population,
+                              socioeconomic_groups,
+                              group_by) {
   merge_by_reference(
     data,
     sociodemographic_data,
@@ -98,15 +174,8 @@ theil_t <- function(accessibility_data,
     left_df_idcol = "id"
   )
 
-  warn_extra_access_cols(accessibility_data, opportunity, group_by)
-
-  .opp_colname <- opportunity
   .groups <- group_by
   .socioecon_groups <- c(group_by, socioeconomic_groups)
-
-  # we have to filter by opportunity because opportunity = 0 results in
-  # theil_t being NaN (because log(0) is NaN)
-  # TODO: throw warning
 
   data[
     ,
@@ -124,12 +193,6 @@ theil_t <- function(accessibility_data,
     ),
     by = .socioecon_groups
   ]
-
-  # theil_index <- data[
-  #   get(.opp_colname) > 0,
-  #   .(theil_t = theil_t(get(..opportunity), avg_access, get(..population))),
-  #   by = .groups
-  # ]
 
   summarized_data <- data[
     ,
@@ -157,6 +220,9 @@ theil_t <- function(accessibility_data,
     ),
     by = .groups
   ]
+
+  # summary, containing total value and total within- and between-groups
+  # inequality
 
   summary <- summarized_data[
     ,
@@ -216,15 +282,10 @@ theil_t <- function(accessibility_data,
     between_group_component = between_group
   )
 
-  if (exists("original_class")) {
-    class(output_list$summary) <- original_class
-    class(output_list$within_group_component) <- original_class
-    class(output_list$between_group_component) <- original_class
-  }
-
   return(output_list)
 }
 
 calc_theil_t <- function(x, avg_x, weight) {
   stats::weighted.mean(x / avg_x * log(x / avg_x), w = weight)
 }
+
