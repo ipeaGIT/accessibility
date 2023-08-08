@@ -1,6 +1,12 @@
-#' Theil Index
+#' Theil T Index
 #'
-#' Theil Index mannn
+#' Calculates the Theil T Index of a given accessibility distribution. Values
+#' range from 0 (when all individuals have exactly the same accessibility
+#' levels) to the natural log of *n*, in which *n* is the number of individuals
+#' in the accessibility dataset. If the individuals can be classified into
+#' mutually exclusive and completely exhaustive groups, the index can be
+#' decomposed into a between-groups inequaliy component and a within-groups
+#' component.
 #'
 #' @template accessibility_data
 #' @template sociodem_data_without_income

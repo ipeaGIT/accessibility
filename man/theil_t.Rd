@@ -2,7 +2,7 @@
 % Please edit documentation in R/theil_t.R
 \name{theil_t}
 \alias{theil_t}
-\title{Theil Index}
+\title{Theil T Index}
 \usage{
 theil_t(
   accessibility_data,
@@ -47,7 +47,13 @@ estimates grouped by scenario.}
 A data frame containing the inequality estimates for the study area.
 }
 \description{
-Theil Index mannn
+Calculates the Theil T Index of a given accessibility distribution. Values
+range from 0 (when all individuals have exactly the same accessibility
+levels) to the natural log of \emph{n}, in which \emph{n} is the number of individuals
+in the accessibility dataset. If the individuals can be classified into
+mutually exclusive and completely exhaustive groups, the index can be
+decomposed into a between-groups inequaliy component and a within-groups
+component.
 }
 \examples{
 \dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
