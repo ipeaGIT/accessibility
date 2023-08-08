@@ -20,7 +20,8 @@ others specified in \code{opportunity}.}
 
 \item{sociodemographic_data}{A data frame. The distribution of
 sociodemographic characteristics of the population in the study area cells.
-Must contain the columns \code{id} and any others specified in \code{population}.}
+Must contain the columns \code{id} and any others specified in \code{population} and
+\code{socioeconomic_groups}.}
 
 \item{opportunity}{A string. The name of the column in \code{accessibility_data}
 with the accessibility levels to be considerend when calculating inequality
@@ -33,7 +34,8 @@ when calculating inequality.}
 \item{socioeconomic_groups}{A string. The name of the column in
 \code{sociodemographic_data} whose values identify the socioeconomic groups that
 should be used to calculate the between- and within-groups inequality
-levels.}
+levels. If \code{NULL} (the default), between- and within-groups components are
+not calculated and only the total aggregate inequality is returned.}
 
 \item{group_by}{A \code{character} vector. When not \code{character(0)} (the default),
 indicates the \code{accessibility_data} columns that should be used to group the
@@ -44,7 +46,12 @@ intervention), passing \code{"scenario"} to this parameter results in inequality
 estimates grouped by scenario.}
 }
 \value{
-A data frame containing the inequality estimates for the study area.
+If \code{socioeconomic_groups} is \code{NULL}, a data frame containing the
+total Theil T estimates for the study area. If not, a list containing three
+dataframes: one summarizing the total inequality and the between- and
+within-groups components, one listing the contribution of each group to the
+between-groups component and another listing the contribution of each group
+to the within-groups component.
 }
 \description{
 Calculates the Theil T Index of a given accessibility distribution. Values

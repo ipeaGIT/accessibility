@@ -9,16 +9,25 @@
 #' component.
 #'
 #' @template accessibility_data
-#' @template sociodem_data_without_income
+#' @param sociodemographic_data A data frame. The distribution of
+#'   sociodemographic characteristics of the population in the study area cells.
+#'   Must contain the columns `id` and any others specified in `population` and
+#'   `socioeconomic_groups`.
 #' @template opportunity_access
 #' @template population
 #' @param socioeconomic_groups A string. The name of the column in
 #'   `sociodemographic_data` whose values identify the socioeconomic groups that
 #'   should be used to calculate the between- and within-groups inequality
-#'   levels.
+#'   levels. If `NULL` (the default), between- and within-groups components are
+#'   not calculated and only the total aggregate inequality is returned.
 #' @template group_by_access
 #'
-#' @template return_inequality
+#' @return If `socioeconomic_groups` is `NULL`, a data frame containing the
+#'   total Theil T estimates for the study area. If not, a list containing three
+#'   dataframes: one summarizing the total inequality and the between- and
+#'   within-groups components, one listing the contribution of each group to the
+#'   between-groups component and another listing the contribution of each group
+#'   to the within-groups component.
 #'
 #' @family inequality
 #'
@@ -246,6 +255,7 @@ theil_with_groups <- function(data,
     variable.name = "component",
     value.name = "value"
   )
+  summary[, component := as.character(component)]
   summary[, share_of_total := 2 * value / sum(value), by = .groups]
 
   # decomposed within group
