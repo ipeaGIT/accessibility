@@ -102,7 +102,8 @@ others specified in <code>opportunity</code>.</p></dd>
 <dt>sociodemographic_data</dt>
 <dd><p>A data frame. The distribution of
 sociodemographic characteristics of the population in the study area cells.
-Must contain the columns <code>id</code> and any others specified in <code>population</code>.</p></dd>
+Must contain the columns <code>id</code> and any others specified in <code>population</code> and
+<code>socioeconomic_groups</code>.</p></dd>
 
 
 <dt>opportunity</dt>
@@ -121,7 +122,8 @@ when calculating inequality.</p></dd>
 <dd><p>A string. The name of the column in
 <code>sociodemographic_data</code> whose values identify the socioeconomic groups that
 should be used to calculate the between- and within-groups inequality
-levels.</p></dd>
+levels. If <code>NULL</code> (the default), between- and within-groups components are
+not calculated and only the total aggregate inequality is returned.</p></dd>
 
 
 <dt>group_by</dt>
@@ -138,7 +140,12 @@ estimates grouped by scenario.</p></dd>
     <h2>Value</h2>
     
 
-<p>A data frame containing the inequality estimates for the study area.</p>
+<p>If <code>socioeconomic_groups</code> is <code>NULL</code>, a data frame containing the
+total Theil T estimates for the study area. If not, a list containing three
+dataframes: one summarizing the total inequality and the between- and
+within-groups components, one listing the contribution of each group to the
+between-groups component and another listing the contribution of each group
+to the within-groups component.</p>
     </div>
     <div id="references">
     <h2>References</h2>
