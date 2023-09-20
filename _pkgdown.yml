@@ -20,3 +20,6 @@ reference:
   - title: "Poverty"
   - contents:
     - fgt_poverty
+
+development:
+  mode: auto
