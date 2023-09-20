@@ -107,9 +107,6 @@ ti <- theil_t(
 ti
 \dontshow{\}) # examplesIf}
 }
-\references{
-\insertAllCited{}
-}
 \seealso{
 Other inequality: 
 \code{\link{concentration_index}()},
