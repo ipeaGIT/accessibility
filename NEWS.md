@@ -1,12 +1,13 @@
-# accessibility (development version)
+# accessibility 1.2.0
 
 ## New features
 
-- New inequality function `concentration_index()`.
-
-## Bug fixes
+- New inequality functions `concentration_index()` and `theil_t()`.
 
 ## Notes
+
+- Various documentation tweaks.
+- Testing performance has greatly improved.
 
 # accessibility 1.1.0
 

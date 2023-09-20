@@ -1,11 +1,6 @@
-## Resubmission
-
-This is a resubmission. Our latest submission got flagged for invalid URIs and
-slow examples, which have been fixed in this version.
-
 ## Test environments
 
-- Local Ubuntu 20.04 installation (R 4.2.1)
+- Local Ubuntu 20.04 installation (R 4.3.1)
 - GitHub Actions:
   - Windows (release, oldrel)
   - MacOS (release, oldrel)
@@ -18,6 +13,23 @@ slow examples, which have been fixed in this version.
 
 ## R CMD check results
 
-After fixing the flagged issues, we got this result:
+In most platforms we got this result:
 
 0 errors | 0 warnings | 0 notes
+
+However, when using win-builder oldrel we got this:
+
+0 errors | 0 warnings | 1 note
+
+Found the following (possibly) invalid URLs:
+  URL: https://doi.org/10.1068/b29120
+    From: inst/doc/accessibility.html
+    Status: 403
+    Message: Forbidden
+  URL: https://doi.org/10.2307/1913475
+    From: inst/doc/inequality_and_poverty.html
+    Status: 403
+    Message: Forbidden
+
+We believe this note is a false positive, since we haven't had any problems
+accessing the mentioned URLs.
