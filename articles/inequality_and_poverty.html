@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">accessibility</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -240,6 +240,94 @@ relative CI and the corrected CI, proposed by <span class="citation">Erreygers (
 <span><span class="co">#&gt; 1:           0.3346494</span></span></code></pre></div>
 </div>
 <div class="section level3">
+<h3 id="theil-t">Theil T<a class="anchor" aria-label="anchor" href="#theil-t"></a>
+</h3>
+<p><code><a href="../reference/theil_t.html">theil_t()</a></code> calculates the Theil T Index of a given
+accessibility distribution. Values range from 0 (when all individuals
+have exactly the same accessibility levels) to the natural log of
+<em>n</em>, in which <em>n</em> is the number of individuals in the
+accessibility dataset.</p>
+<p>If the individuals can be classified into mutually exclusive and
+completely exhaustive groups (i.e. into groups that do not overlap and
+cover the entire population), the index can be decomposed into a
+between- and a within-groups inequality component. The function includes
+a <code>socioeconomic_groups</code> parameter to indicate which variable
+from the sociodemographic dataset should be used identify the
+socioeconomic groups used to calculate these components.</p>
+<p>Please note that the output <code><a href="../reference/theil_t.html">theil_t()</a></code> varies based on
+the value of <code>socioeconomic_groups</code>. If <code>NULL</code>
+(the default), the between- and within-groups components are not
+calculated, and the function returns a data frame containing only the
+total aggregate inequality for the returned area. If
+<code>socioeconomic_groups</code> is not <code>NULL</code>, however, the
+function returns a list containing three dataframes: one summarizing the
+total inequality and the between- and within-groups components, one
+listing the contribution of each group to the between-groups component
+and another listing the contribution of each group to the within-groups
+component. Both behaviors are shown below.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">theil_without_groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/theil_t.html">theil_t</a></span><span class="op">(</span></span>
+<span>  <span class="va">access</span>,</span>
+<span>  sociodemographic_data <span class="op">=</span> <span class="va">land_use_data</span>,</span>
+<span>  opportunity <span class="op">=</span> <span class="st">"jobs"</span>,</span>
+<span>  population <span class="op">=</span> <span class="st">"population"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">theil_without_groups</span></span>
+<span><span class="co">#&gt;      theil_t</span></span>
+<span><span class="co">#&gt; 1: 0.3616631</span></span>
+<span></span>
+<span><span class="co"># some cells are classified as in the decile NA because their income per capita</span></span>
+<span><span class="co"># is NaN, as they don't have any population. we filter these cells from our</span></span>
+<span><span class="co"># accessibility data, otherwise the output would include NA values (note that</span></span>
+<span><span class="co"># subsetting the data like this doesn't affect the assumption that groups are</span></span>
+<span><span class="co"># completely exhaustive, because cells with NA income decile don't have any</span></span>
+<span><span class="co"># population)</span></span>
+<span></span>
+<span><span class="va">na_decile_ids</span> <span class="op">&lt;-</span> <span class="va">land_use_data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">land_use_data</span><span class="op">$</span><span class="va">income_decile</span><span class="op">)</span>, <span class="op">]</span><span class="op">$</span><span class="va">id</span></span>
+<span><span class="va">no_na_access</span> <span class="op">&lt;-</span> <span class="va">access</span><span class="op">[</span><span class="op">!</span> <span class="va">access</span><span class="op">$</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">na_decile_ids</span>, <span class="op">]</span></span>
+<span><span class="va">sociodem_data</span> <span class="op">&lt;-</span> <span class="va">land_use_data</span><span class="op">[</span><span class="op">!</span> <span class="va">land_use_data</span><span class="op">$</span><span class="va">id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">na_decile_ids</span>, <span class="op">]</span></span>
+<span></span>
+<span><span class="va">theil_with_groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/theil_t.html">theil_t</a></span><span class="op">(</span></span>
+<span>  <span class="va">no_na_access</span>,</span>
+<span>  sociodemographic_data <span class="op">=</span> <span class="va">sociodem_data</span>,</span>
+<span>  opportunity <span class="op">=</span> <span class="st">"jobs"</span>,</span>
+<span>  population <span class="op">=</span> <span class="st">"population"</span>,</span>
+<span>  socioeconomic_groups <span class="op">=</span> <span class="st">"income_decile"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">theil_with_groups</span></span>
+<span><span class="co">#&gt; $summary</span></span>
+<span><span class="co">#&gt;        component     value share_of_total</span></span>
+<span><span class="co">#&gt; 1: between_group 0.1280753      0.3541287</span></span>
+<span><span class="co">#&gt; 2:  within_group 0.2335878      0.6458713</span></span>
+<span><span class="co">#&gt; 3:         total 0.3616631      1.0000000</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $within_group_component</span></span>
+<span><span class="co">#&gt;     income_decile       value share_of_component</span></span>
+<span><span class="co">#&gt;  1:             1 0.009181454         0.03930622</span></span>
+<span><span class="co">#&gt;  2:             2 0.011413697         0.04886255</span></span>
+<span><span class="co">#&gt;  3:             3 0.019320622         0.08271246</span></span>
+<span><span class="co">#&gt;  4:             4 0.023606928         0.10106232</span></span>
+<span><span class="co">#&gt;  5:             5 0.031470429         0.13472633</span></span>
+<span><span class="co">#&gt;  6:             6 0.023539337         0.10077296</span></span>
+<span><span class="co">#&gt;  7:             7 0.033329635         0.14268567</span></span>
+<span><span class="co">#&gt;  8:             8 0.032585905         0.13950173</span></span>
+<span><span class="co">#&gt;  9:             9 0.020299031         0.08690107</span></span>
+<span><span class="co">#&gt; 10:            10 0.028840780         0.12346868</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $between_group_component</span></span>
+<span><span class="co">#&gt;     income_decile        value</span></span>
+<span><span class="co">#&gt;  1:             1 -0.037573783</span></span>
+<span><span class="co">#&gt;  2:             2 -0.036276865</span></span>
+<span><span class="co">#&gt;  3:             3 -0.031829123</span></span>
+<span><span class="co">#&gt;  4:             4 -0.021600054</span></span>
+<span><span class="co">#&gt;  5:             5 -0.009938574</span></span>
+<span><span class="co">#&gt;  6:             6 -0.004401762</span></span>
+<span><span class="co">#&gt;  7:             7  0.025936879</span></span>
+<span><span class="co">#&gt;  8:             8  0.042240708</span></span>
+<span><span class="co">#&gt;  9:             9  0.075742415</span></span>
+<span><span class="co">#&gt; 10:            10  0.125775443</span></span></code></pre></div>
+</div>
+<div class="section level3">
 <h3 id="foster-greer-thorbecke-fgt-poverty-measures">Foster-Greer-Thorbecke (FGT) poverty measures<a class="anchor" aria-label="anchor" href="#foster-greer-thorbecke-fgt-poverty-measures"></a>
 </h3>
 <p><code><a href="../reference/fgt_poverty.html">fgt_poverty()</a></code> calculates the FGT metrics, a family of
@@ -265,11 +353,11 @@ line.</li>
 <p>This function includes an additional <code>poverty_line</code>
 parameter, used to define the poverty line below which individuals are
 considered to be in accessibility poverty.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">poverty</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fgt_poverty.html">fgt_poverty</a></span><span class="op">(</span></span>
 <span>  <span class="va">access</span>,</span>
-<span>  opportunity <span class="op">=</span> <span class="st">"jobs"</span>,</span>
 <span>  sociodemographic_data <span class="op">=</span> <span class="va">land_use_data</span>,</span>
+<span>  opportunity <span class="op">=</span> <span class="st">"jobs"</span>,</span>
 <span>  population <span class="op">=</span> <span class="st">"population"</span>,</span>
 <span>  poverty_line <span class="op">=</span> <span class="fl">95368</span></span>
 <span><span class="op">)</span></span>
