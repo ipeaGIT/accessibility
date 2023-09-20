@@ -80,7 +80,22 @@ test_that("returns dataframes with same class as accessibility_data's", {
   expect_is(result$within_group_component, "data.table")
   expect_is(result$between_group_component, "data.table")
 
+  result <- tester(sociodemographic_data = as.data.frame(sociodem_data))
+  expect_is(result, "list")
+  expect_is(result$summary, "data.table")
+  expect_is(result$within_group_component, "data.table")
+  expect_is(result$between_group_component, "data.table")
+
   result <- tester(as.data.frame(small_access))
+  expect_is(result, "list")
+  expect_false(inherits(result$summary, "data.table"))
+  expect_is(result$summary, "data.frame")
+  expect_false(inherits(result$within_group_component, "data.table"))
+  expect_is(result$within_group_component, "data.frame")
+  expect_false(inherits(result$between_group_component, "data.table"))
+  expect_is(result$between_group_component, "data.frame")
+
+  result <- tester(as.data.frame(small_access), as.data.frame(sociodem_data))
   expect_is(result, "list")
   expect_false(inherits(result$summary, "data.table"))
   expect_is(result$summary, "data.frame")
@@ -311,7 +326,17 @@ test_that("returns dataframes with same class as accessibility_data's", {
   result <- null_tester()
   expect_is(result, "data.table")
 
+  result <- null_tester(sociodemographic_data = as.data.frame(sociodem_data))
+  expect_is(result, "data.table")
+
   result <- null_tester(as.data.frame(small_access))
+  expect_false(inherits(result, "data.table"))
+  expect_is(result, "data.frame")
+
+  result <- null_tester(
+    as.data.frame(small_access),
+    as.data.frame(sociodem_data)
+  )
   expect_false(inherits(result, "data.table"))
   expect_is(result, "data.frame")
 })
