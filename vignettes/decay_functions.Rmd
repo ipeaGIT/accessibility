@@ -9,6 +9,8 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
+Sys.setenv(OMP_THREAD_LIMIT = 2)
+
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"

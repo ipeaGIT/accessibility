@@ -1,3 +1,9 @@
+## Resubmission
+
+This is a resubmission. Our latest submission got flagged for discrepancies on
+CPU time and elapsed time, which, to the best of our knowledge, should have
+been fixed in this version.
+
 ## Test environments
 
 - Local Ubuntu 20.04 installation (R 4.3.1)
