@@ -112,11 +112,17 @@ spatial_availability <- function(travel_matrix,
     impedance_bal_fac := opp_weight / sum(opp_weight),
     by = c("to_id", group_by)
   ]
-
+  
+  data[
+    ,
+    total_pa := sum(demand_bal_fac * impedance_bal_fac),
+    by = c("to_id", group_by)
+  ]
+  
   data[
     ,
     combined_bal_fac := demand_bal_fac * impedance_bal_fac /
-      sum(demand_bal_fac * impedance_bal_fac),
+      total_pa,
     by = c("to_id", group_by)
   ]
 
