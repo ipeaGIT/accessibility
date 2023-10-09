@@ -13,7 +13,8 @@ spatial_availability(
   decay_function,
   alpha = 1,
   group_by = character(0),
-  fill_missing_ids = TRUE
+  fill_missing_ids = TRUE,
+  detailed_results = FALSE
 )
 }
 \arguments{
@@ -66,6 +67,10 @@ combination will not be included in the output. When \code{TRUE} (the default),
 the function identifies which combinations would be left out and fills
 their respective accessibility values with 0, which incurs in a
 performance penalty.}
+
+\item{detailed_results}{A \code{logical} value. If FALSE (default), the spatial availability
+by zone of origin will be returned. If TRUE, the spatial availability by origin-destination
+pair will be returned.}
 }
 \value{
 A data frame containing the accessibility estimates for each
