@@ -1,4 +1,4 @@
-# accessibility (development version)
+# accessibility 1.3.0
 
 ## New features
 
@@ -7,10 +7,6 @@
   When aggregation by origin-destination pair, the output also includes the
   demand, impedance and combined balancing factors used to calculate spatial
   availability.
-
-## Bug fixes
-
-## Notes
 
 # accessibility 1.2.0
 
