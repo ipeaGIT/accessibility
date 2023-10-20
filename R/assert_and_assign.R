@@ -373,3 +373,20 @@ assert_and_assign_interval <- function(interval) {
   return(interval)
 }
 
+
+#' @keywords internal
+assert_detailed_fill_missing_ids <- function(fill_missing_ids,
+                                             detailed_results) {
+  checkmate::assert_logical(fill_missing_ids, len = 1, any.missing = FALSE)
+
+  if (detailed_results && !fill_missing_ids) {
+    warning(
+      "Found non-default 'fill_missing_ids' (FALSE) with 'detailed_results = ",
+      "TRUE'. Please note that 'fill_missing_ids' does not affect the ",
+      "detailed spatial availability output.",
+      call. = FALSE
+    )
+  }
+
+  return(invisible(TRUE))
+}

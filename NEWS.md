@@ -2,6 +2,12 @@
 
 ## New features
 
+- New parameter `detailed_results` to `spatial_availability()`, used to specify
+  whether results should be aggregated by origin-destination pair or by origin.
+  When aggregation by origin-destination pair, the output also includes the
+  demand, impedance and combined balancing factors used to calculate spatial
+  availability.
+
 ## Bug fixes
 
 ## Notes

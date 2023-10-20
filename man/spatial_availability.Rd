@@ -68,9 +68,12 @@ the function identifies which combinations would be left out and fills
 their respective accessibility values with 0, which incurs in a
 performance penalty.}
 
-\item{detailed_results}{A \code{logical} value. If FALSE (default), the spatial availability
-by zone of origin will be returned. If TRUE, the spatial availability by origin-destination
-pair will be returned.}
+\item{detailed_results}{A \code{logical}. Whether to return spatial availability
+results aggregated by origin-destination pair (\code{TRUE}) or by origin
+(\code{FALSE}, the default). When \code{TRUE}, the output also includes the demand,
+impedance and combined balancing factors used to calculate spatial
+availability. Please note that the argument \code{fill_missing_ids}
+does not affect the output when \code{detailed_results} is \code{TRUE}.}
 }
 \value{
 A data frame containing the accessibility estimates for each
@@ -111,6 +114,17 @@ df <- spatial_availability(
   decay_function = decay_exponential(decay_value = 0.1)
 )
 df
+
+detailed_df <- spatial_availability(
+  travel_matrix,
+  land_use_data,
+  opportunity = "jobs",
+  travel_cost = "travel_time",
+  demand = "population",
+  decay_function = decay_exponential(decay_value = 0.1),
+  detailed_results = TRUE
+)
+detailed_df
 \dontshow{\}) # examplesIf}
 }
 \references{

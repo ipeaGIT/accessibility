@@ -70,6 +70,8 @@ balancing_cost <- function(travel_matrix,
     demand = demand
   )
 
+  variable <- 3
+
   # if not a dt, keep original class to assign later when returning result
 
   if (!inherits(travel_matrix, "data.table")) {
