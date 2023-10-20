@@ -19,6 +19,9 @@
 #'   the opposite effect.
 #' @template group_by
 #' @template fill_missing_ids_combinations
+#' @param detailed_results A `logical` value. If FALSE (default), the spatial availability
+#'   by zone of origin will be returned. If TRUE, the spatial availability by origin-destination
+#'   pair will be returned.
 #'
 #' @template return_accessibility
 #'
@@ -58,7 +61,8 @@ spatial_availability <- function(travel_matrix,
                                  decay_function,
                                  alpha = 1,
                                  group_by = character(0),
-                                 fill_missing_ids = TRUE) {
+                                 fill_missing_ids = TRUE,
+                                 detailed_results = FALSE) {
   checkmate::assert_string(opportunity)
   checkmate::assert_string(travel_cost)
   checkmate::assert_string(demand)
@@ -127,17 +131,23 @@ spatial_availability <- function(travel_matrix,
     by = c("to_id", group_by)
   ]
 
-  access <- data[
-    ,
-    .(access = sum(spatial_availability)),
-    by = c("from_id", group_by)
-  ]
+  if (detailed_results == TRUE){
+    access <- data[, .(from_id, to_id, demand_bal_fac, impedance_bal_fac, combined_bal_fac, spatial_availability)]
+    data.table::setnames(access, "spatial_availability", opportunity)
+  }
+  else {
+    access <- data[
+      ,
+      .(access = sum(spatial_availability)),
+      by = c("from_id", group_by)
+    ]
+
+    data.table::setnames(access, c("from_id", "access"), c("id", opportunity))
+  }
 
   if (fill_missing_ids) {
     access <- fill_missing_ids(access, travel_matrix, groups)
   }
-
-  data.table::setnames(access, c("from_id", "access"), c("id", opportunity))
 
   if (exists("original_class")) class(access) <- original_class
 
