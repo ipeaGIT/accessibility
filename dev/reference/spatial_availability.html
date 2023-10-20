@@ -92,7 +92,8 @@ such as distance, time and money.</p>
 <span>  <span class="va">decay_function</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  group_by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
-<span>  fill_missing_ids <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  fill_missing_ids <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  detailed_results <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -164,6 +165,12 @@ combination will not be included in the output. When <code>TRUE</code> (the defa
 the function identifies which combinations would be left out and fills
 their respective accessibility values with 0, which incurs in a
 performance penalty.</p></dd>
+
+
+<dt>detailed_results</dt>
+<dd><p>A <code>logical</code> value. If FALSE (default), the spatial availability
+by zone of origin will be returned. If TRUE, the spatial availability by origin-destination
+pair will be returned.</p></dd>
 
 </dl></div>
     <div id="value">
