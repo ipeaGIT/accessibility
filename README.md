@@ -1,5 +1,5 @@
 
-# accessibility: Transport Accessibility Measures
+# accessibility
 
 <img align="right" src="man/figures/logo.png" alt="logo" width="180">
 
@@ -11,7 +11,7 @@ downloads](http://cranlogs.r-pkg.org/badges/grand-total/accessibility?color=yell
 [![Codecov test
 coverage](https://codecov.io/gh/ipeaGIT/accessibility/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ipeaGIT/accessibility?branch=main)
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+stable](https://lifecycle.r-lib.org/articles/figures/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 
 **accessibility** offers a set of fast and convenient functions to
 calculate multiple transport accessibility measures. Given a
