@@ -19,7 +19,7 @@ Description: A set of fast and convenient functions to calculate multiple
     closest N number of activities, gravity-based (with different decay
     functions) and different floating catchment area methods.
 License: MIT + file LICENSE
-URL: https://github.com/ipeaGIT/accessibility
+URL: https://github.com/ipeaGIT/accessibility, https://ipeagit.github.io/accessibility/
 BugReports: https://github.com/ipeaGIT/accessibility/issues
 Depends: 
     R (>= 3.5.0)
