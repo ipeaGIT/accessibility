@@ -4,6 +4,7 @@
   "identifier": "accessibility",
   "description": "A set of fast and convenient functions to calculate multiple transport accessibility measures. Given a pre-computed travel cost matrix and a land use dataset (containing the location of jobs, healthcare and population, for example), the package allows one to calculate active and passive accessibility levels using multiple accessibility measures, such as: cumulative opportunities (using either travel cost cutoffs or intervals), minimum travel cost to closest N number of activities, gravity-based (with different decay functions) and different floating catchment area methods.",
   "name": "accessibility: Transport Accessibility Measures",
+  "relatedLink": ["https://ipeagit.github.io/accessibility/", "https://CRAN.R-project.org/package=accessibility"],
   "codeRepository": "https://github.com/ipeaGIT/accessibility",
   "issueTracker": "https://github.com/ipeaGIT/accessibility/issues",
   "license": "https://spdx.org/licenses/MIT",
@@ -13,7 +14,7 @@
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.3.1 (2023-06-16)",
+  "runtimePlatform": "R version 4.3.2 (2023-10-31)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -129,6 +130,18 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=testthat"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "tibble",
+      "name": "tibble",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=tibble"
     }
   ],
   "softwareRequirements": {
@@ -199,11 +212,10 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "3347.188KB",
+  "fileSize": "3347.681KB",
   "releaseNotes": "https://github.com/ipeaGIT/accessibility/blob/master/NEWS.md",
   "readme": "https://github.com/ipeaGIT/accessibility/blob/main/README.md",
   "contIntegration": ["https://github.com/ipeaGIT/accessibility/actions", "https://app.codecov.io/gh/ipeaGIT/accessibility?branch=main"],
   "developmentStatus": "https://lifecycle.r-lib.org/articles/stages.html",
-  "keywords": ["accessibility", "r", "transport", "transport-accessibility"],
-  "relatedLink": "https://CRAN.R-project.org/package=accessibility"
+  "keywords": ["accessibility", "r", "transport", "transport-accessibility"]
 }

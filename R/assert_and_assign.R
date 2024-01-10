@@ -131,7 +131,7 @@ assert_land_use_data <- function(land_use_data,
 
   cols_to_check <- c(
     opportunity,
-    ifelse(is.null(demand), character(0), demand)
+    if (is.null(demand)) character(0) else demand
   )
 
   for (col in cols_to_check) {
