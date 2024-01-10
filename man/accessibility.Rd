@@ -34,6 +34,7 @@ on the
 Useful links:
 \itemize{
   \item \url{https://github.com/ipeaGIT/accessibility}
+  \item \url{https://ipeagit.github.io/accessibility/}
   \item Report bugs at \url{https://github.com/ipeaGIT/accessibility/issues}
 }
 
