@@ -1,0 +1,7 @@
+repos:
+-   repo: https://github.com/lorenzwalthert/precommit
+    rev: v0.3.2.9027
+    hooks: 
+    -   id: readme-rmd-rendered
+    -   id: codemeta-description-updated
+    -   id: pkgdown
