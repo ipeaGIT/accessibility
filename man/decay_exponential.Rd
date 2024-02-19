@@ -38,6 +38,7 @@ weighting_function(c(20, 30))
 Other decay functions: 
 \code{\link{decay_binary}()},
 \code{\link{decay_linear}()},
+\code{\link{decay_logistic}()},
 \code{\link{decay_power}()},
 \code{\link{decay_stepped}()}
 }
