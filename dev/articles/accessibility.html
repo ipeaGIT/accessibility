@@ -217,6 +217,7 @@ in the package for demonstration purposes<a href="#fn1" class="footnote-ref" id=
 <span><span class="va">travel_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data_dir</span>, <span class="st">"travel_matrix.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">travel_matrix</span><span class="op">)</span></span>
 <span><span class="co">#&gt;            from_id           to_id travel_time</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;          &lt;char&gt;       &lt;num&gt;</span></span>
 <span><span class="co">#&gt; 1: 89a88cdb57bffff 89a88cdb57bffff         5.8</span></span>
 <span><span class="co">#&gt; 2: 89a88cdb57bffff 89a88cdb597ffff        47.0</span></span>
 <span><span class="co">#&gt; 3: 89a88cdb57bffff 89a88cdb5b3ffff        48.0</span></span>
@@ -231,13 +232,14 @@ dataset we’ll be using looks like this:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">land_use_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">data_dir</span>, <span class="st">"land_use_data.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">land_use_data</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                 id population jobs schools income_per_capita income_decile</span></span>
-<span><span class="co">#&gt; 1: 89a881a5a2bffff        381  180       0           22369.1            10</span></span>
-<span><span class="co">#&gt; 2: 89a881a5a2fffff        269  134       0            3205.1             9</span></span>
-<span><span class="co">#&gt; 3: 89a881a5a67ffff        929  143       0           11394.0            10</span></span>
-<span><span class="co">#&gt; 4: 89a881a5a6bffff        249   61       0            3659.8             9</span></span>
-<span><span class="co">#&gt; 5: 89a881a5a6fffff        176   11       0            4905.1            10</span></span>
-<span><span class="co">#&gt; 6: 89a881a5b03ffff        681 1071       0            2200.2             8</span></span></code></pre></div>
+<span><span class="co">#&gt;                 id population  jobs schools income_per_capita income_decile</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;      &lt;int&gt; &lt;int&gt;   &lt;int&gt;             &lt;num&gt;        &lt;fctr&gt;</span></span>
+<span><span class="co">#&gt; 1: 89a881a5a2bffff        381   180       0           22369.1            10</span></span>
+<span><span class="co">#&gt; 2: 89a881a5a2fffff        269   134       0            3205.1             9</span></span>
+<span><span class="co">#&gt; 3: 89a881a5a67ffff        929   143       0           11394.0            10</span></span>
+<span><span class="co">#&gt; 4: 89a881a5a6bffff        249    61       0            3659.8             9</span></span>
+<span><span class="co">#&gt; 5: 89a881a5a6fffff        176    11       0            4905.1            10</span></span>
+<span><span class="co">#&gt; 6: 89a881a5b03ffff        681  1071       0            2200.2             8</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="minimum-travel-cost">Minimum travel cost<a class="anchor" aria-label="anchor" href="#minimum-travel-cost"></a>
@@ -260,7 +262,9 @@ like:</p>
 <span>  n <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mtc</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Key: &lt;id&gt;</span></span>
 <span><span class="co">#&gt;                 id travel_time</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;       &lt;num&gt;</span></span>
 <span><span class="co">#&gt; 1: 89a881a5a2bffff          29</span></span>
 <span><span class="co">#&gt; 2: 89a881a5a2fffff          24</span></span>
 <span><span class="co">#&gt; 3: 89a881a5a67ffff          28</span></span>
@@ -286,6 +290,7 @@ trips taking up to 30 minutes of travel time.</p>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cum_cutoff</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 id  jobs</span></span>
+<span><span class="co">#&gt;             &lt;char&gt; &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1: 89a881a5a2bffff 14561</span></span>
 <span><span class="co">#&gt; 2: 89a881a5a2fffff 29452</span></span>
 <span><span class="co">#&gt; 3: 89a881a5a67ffff 16647</span></span>
@@ -309,6 +314,7 @@ and set <code>active</code> (<code>TRUE</code> by default) to
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">passive_cum_cutoff</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 id population</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;      &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1: 89a881a5a2bffff      11053</span></span>
 <span><span class="co">#&gt; 2: 89a881a5a2fffff      31903</span></span>
 <span><span class="co">#&gt; 3: 89a881a5a67ffff      12488</span></span>
@@ -343,6 +349,7 @@ thresholds between 40 and 60 minutes.</p>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cum_interval</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 id   jobs</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;  &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1: 89a88cdb57bffff 311965</span></span>
 <span><span class="co">#&gt; 2: 89a88cdb597ffff 249416</span></span>
 <span><span class="co">#&gt; 3: 89a88cdb5b3ffff 302515</span></span>
@@ -375,6 +382,7 @@ use custom functions.</p>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">negative_exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 id    schools</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;      &lt;num&gt;</span></span>
 <span><span class="co">#&gt; 1: 89a88cdb57bffff 0.03041853</span></span>
 <span><span class="co">#&gt; 2: 89a88cdb597ffff 1.15549493</span></span>
 <span><span class="co">#&gt; 3: 89a88cdb5b3ffff 0.56519126</span></span>
@@ -418,6 +426,7 @@ jobs and using a negative exponential decay function.</p>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">bfca</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 id       jobs</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;      &lt;num&gt;</span></span>
 <span><span class="co">#&gt; 1: 89a88cdb57bffff 0.10280082</span></span>
 <span><span class="co">#&gt; 2: 89a88cdb597ffff 0.30930287</span></span>
 <span><span class="co">#&gt; 3: 89a88cdb5b3ffff 0.07288551</span></span>
@@ -448,6 +457,7 @@ origin-destination pairs.</p>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">spatial_avlblt</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 id     jobs</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;    &lt;num&gt;</span></span>
 <span><span class="co">#&gt; 1: 89a88cdb57bffff 186.0876</span></span>
 <span><span class="co">#&gt; 2: 89a88cdb597ffff 140.0738</span></span>
 <span><span class="co">#&gt; 3: 89a88cdb5b3ffff 736.5830</span></span>
@@ -485,7 +495,9 @@ example below, we use the default cost increment of 1.</p>
 <span>  demand <span class="op">=</span> <span class="st">"population"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">bal_cost</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Key: &lt;id&gt;</span></span>
 <span><span class="co">#&gt;                 id travel_time</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;       &lt;num&gt;</span></span>
 <span><span class="co">#&gt; 1: 89a881a5a2bffff          15</span></span>
 <span><span class="co">#&gt; 2: 89a881a5a2fffff          13</span></span>
 <span><span class="co">#&gt; 3: 89a881a5a67ffff          23</span></span>
@@ -520,7 +532,7 @@ map using <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2<
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-barboza2021balancing" class="csl-entry">
 Barboza, Matheus H. C., Mariana S. Carneiro, Claudio Falavigna, Gregório
 Luz, and Romulo Orrico. 2021. <span>“Balancing Time: <span>Using</span>

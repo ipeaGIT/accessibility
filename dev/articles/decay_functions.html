@@ -203,6 +203,24 @@ between origin <em>i</em> and destination <em>j</em>, <span class="math inline">
 delimits the <span class="math inline">\(k^{th}\)</span> step, and <span class="math inline">\(v_{k}\)</span> is the value that the decay
 function assumes at the <span class="math inline">\(k^{th}\)</span>
 step.</p>
+</div>
+<div class="section level3">
+<h3 id="logistic-cdf">Logistic-CDF<a class="anchor" aria-label="anchor" href="#logistic-cdf"></a>
+</h3>
+<p>Weights decay sigmoidally for moderate values of the standard
+deviation parameter. Approximates binary decay at standard deviation
+values near 0, and linear decay at standard deviation values near
+120.</p>
+<p><span class="math display">\[
+\begin{aligned}
+  g(t_{ij}, m, s) &amp;= 1 + e^\frac{(t_{ij} - m) * \pi}{\sqrt{3}s} \\
+  f(t_{ij}) &amp;= \frac{g(0, m, s)}{g(t_{ij}, m, s)}
+\end{aligned}
+\]</span></p>
+<p>Where <span class="math inline">\(t_{ij}\)</span> is the travel cost
+between origin <em>i</em> and destination <em>j</em>, <span class="math inline">\(T\)</span> is the median or inflection point, and
+<span class="math inline">\(s\)</span> is the standard deviation of the
+logistic-CDF.</p>
 <div class="section level4">
 <h4 id="quick-demonstration">Quick demonstration<a class="anchor" aria-label="anchor" href="#quick-demonstration"></a>
 </h4>
@@ -332,6 +350,7 @@ the built-in decay functions:</p>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">custom_gravity</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 id     jobs</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;    &lt;num&gt;</span></span>
 <span><span class="co">#&gt; 1: 89a88cdb57bffff 11210.42</span></span>
 <span><span class="co">#&gt; 2: 89a88cdb597ffff 10775.77</span></span>
 <span><span class="co">#&gt; 3: 89a88cdb5b3ffff 11480.25</span></span>
@@ -377,6 +396,7 @@ that takes travel cost input as output:</p>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">second_custom_gravity</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 id     jobs</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;    &lt;num&gt;</span></span>
 <span><span class="co">#&gt; 1: 89a88cdb57bffff 11210.42</span></span>
 <span><span class="co">#&gt; 2: 89a88cdb597ffff 10775.77</span></span>
 <span><span class="co">#&gt; 3: 89a88cdb5b3ffff 11480.25</span></span>
@@ -402,8 +422,8 @@ a function.</p>
 <span><span class="co">#&gt;     names(weights_list) &lt;- decay_value</span></span>
 <span><span class="co">#&gt;     return(weights_list)</span></span>
 <span><span class="co">#&gt; }</span></span>
-<span><span class="co">#&gt; &lt;bytecode: 0x5595b35d8848&gt;</span></span>
-<span><span class="co">#&gt; &lt;environment: 0x5595b78681b0&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; &lt;bytecode: 0x55b604a1f370&gt;</span></span>
+<span><span class="co">#&gt; &lt;environment: 0x55b60711b5a0&gt;</span></span></code></pre></div>
 <p>What if we want our custom function to take many decay parameters as
 inputs, just like the built-in decay functions? In this case, our output
 function has to return a <code>list</code> of <code>numeric</code>
@@ -455,6 +475,7 @@ multiple decay parameters in a single call:</p>
 <span><span class="op">)</span></span>
 <span><span class="va">third_custom_gravity</span></span>
 <span><span class="co">#&gt;                    id decay_function_arg      jobs</span></span>
+<span><span class="co">#&gt;                &lt;char&gt;              &lt;num&gt;     &lt;num&gt;</span></span>
 <span><span class="co">#&gt;    1: 89a88cdb57bffff                  1 11210.421</span></span>
 <span><span class="co">#&gt;    2: 89a88cdb597ffff                  1 10775.769</span></span>
 <span><span class="co">#&gt;    3: 89a88cdb5b3ffff                  1 11480.254</span></span>
