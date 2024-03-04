@@ -38,6 +38,7 @@ Other decay functions:
 \code{\link{decay_binary}()},
 \code{\link{decay_exponential}()},
 \code{\link{decay_linear}()},
+\code{\link{decay_logistic}()},
 \code{\link{decay_stepped}()}
 }
 \concept{decay functions}

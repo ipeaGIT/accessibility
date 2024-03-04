@@ -3,8 +3,8 @@ title: "Decay functions"
 output: rmarkdown::html_vignette
 bibliography: '`r system.file("REFERENCES.bib", package = "accessibility")`'
 vignette: >
-  %\VignetteIndexEntry{Decay functions} 
-  %\VignetteEngine{knitr::rmarkdown} 
+  %\VignetteIndexEntry{Decay functions}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -118,6 +118,22 @@ Where $t_{ij}$ is the travel cost between origin *i* and destination *j*, $n$
 is the total number of steps, $S_{k}$ is the travel cost cutoff that delimits
 the $k^{th}$ step, and $v_{k}$ is the value that the decay function assumes at
 the $k^{th}$ step.
+
+## Logistic-CDF
+
+Weights decay sigmoidally for moderate values of the standard deviation parameter.
+Approximates binary decay at standard deviation values near 0, and linear
+decay at standard deviation values near 120.
+
+$$
+\begin{aligned}
+  g(t_{ij}, m, s) &= 1 + e^\frac{(t_{ij} - m) * \pi}{\sqrt{3}s} \\
+  f(t_{ij}) &= \frac{g(0, m, s)}{g(t_{ij}, m, s)}
+\end{aligned}
+$$
+
+Where $t_{ij}$ is the travel cost between origin *i* and destination *j*, $T$
+is the median or inflection point, and $s$ is the standard deviation of the logistic-CDF.
 
 ### Quick demonstration
 
