@@ -37,6 +37,13 @@
       "@id": "https://orcid.org/0000-0001-8066-1105"
     }
   ],
+  "contributor": [
+    {
+      "@type": "Person",
+      "givenName": "Joey",
+      "familyName": "Reid"
+    }
+  ],
   "copyrightHolder": [
     {
       "@type": "Organization",
@@ -212,7 +219,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "3347.681KB",
+  "fileSize": "3383.385KB",
   "releaseNotes": "https://github.com/ipeaGIT/accessibility/blob/master/NEWS.md",
   "readme": "https://github.com/ipeaGIT/accessibility/blob/main/README.md",
   "contIntegration": ["https://github.com/ipeaGIT/accessibility/actions", "https://app.codecov.io/gh/ipeaGIT/accessibility?branch=main"],

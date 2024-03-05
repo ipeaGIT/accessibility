@@ -49,6 +49,7 @@ Authors:
 
 Other contributors:
 \itemize{
+  \item Joey Reid [contributor]
   \item Ipea - Institute for Applied Economic Research [copyright holder, funder]
 }
 

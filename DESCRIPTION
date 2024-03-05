@@ -7,6 +7,7 @@ Authors@R: c(
            comment = c(ORCID = "0000-0003-2125-7465")),
     person("Daniel", "Herszenhut", , "dhersz@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8066-1105")),
+    person("Joey", "Reid", role = "ctb"),
     person("Ipea - Institute for Applied Economic Research", role = c("cph", "fnd"))
   )
 Description: A set of fast and convenient functions to calculate multiple
