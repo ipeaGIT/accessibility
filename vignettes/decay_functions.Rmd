@@ -181,6 +181,7 @@ linear <- decay_linear(cutoff = 50)
 negative_exp <- decay_exponential(decay_value = 0.2)
 inverse_power <- decay_power(decay_value = 0.2)
 stepped <- decay_stepped(steps = c(30, 60, 90), weights = c(0.67, 0.33, 0))
+logistic <- decay_logistic(cutoff = 50, sd = 10)
 
 travel_costs <- seq(1, 100, 0.1)
 
@@ -190,7 +191,8 @@ weights <- data.table(
   linear = linear(travel_costs)[["50"]],
   negative_exp = negative_exp(travel_costs)[["0.2"]],
   inverse_power = inverse_power(travel_costs)[["0.2"]],
-  stepped = stepped(travel_costs)[["s(30,60,90);w(0.67,0.33,0)"]]
+  stepped = stepped(travel_costs)[["s(30,60,90);w(0.67,0.33,0)"]],
+  logistic = logistic(travel_costs)[["c50;sd10"]]
 )
 
 # reshape data to long format

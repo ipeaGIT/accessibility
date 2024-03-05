@@ -8,16 +8,13 @@ test_that("adequately raises errors", {
   expect_error(tester(c(25, Inf)))
   expect_error(tester(c(25, NA)))
   expect_error(tester(integer()))
-  expect_error(tester(c(25, 25)))
-  expect_error(tester(c(25, 20)))
 
-  expect_error(tester(c(25, 50), "a"))
-  expect_error(tester(c(25, 50), 0))
-  expect_error(tester(c(25, 50), 120))
-  expect_error(tester(c(25, 50), c(25, Inf)))
-  expect_error(tester(c(25, 50), c(25, NA)))
-  expect_error(tester(c(25, 50), integer()))
-
+  expect_error(tester(cutoff = "a"))
+  expect_error(tester(cutoff = 0))
+  expect_error(tester(cutoff = 120))
+  expect_error(tester(cutoff = c(25, Inf)))
+  expect_error(tester(cutoff = c(25, NA)))
+  expect_error(tester(cutoff = integer()))
 })
 
 test_that("output is a decay function that returns a list of numeric vctrs", {
@@ -27,15 +24,15 @@ test_that("output is a decay function that returns a list of numeric vctrs", {
   output_list <- output_fn(0)
   expect_is(output_list, "list")
   expect_length(output_list, 2L)
-  expect_named(output_list, c("T20;s2", "T30;s10"))
+  expect_named(output_list, c("c20;sd2", "c30;sd10"))
 
   expect_equal(
-    output_fn(c(0, 20))[["T20;s2"]],
+    output_fn(c(0, 20))[["c20;sd2"]],
     c(1, 0.5)
   )
 
   expect_equal(
-    output_fn(c(0, 30))[["T30;s10"]],
+    output_fn(c(0, 30))[["c30;sd10"]],
     c(1, 0.502),
     tolerance = 0.001
   )
@@ -44,10 +41,10 @@ test_that("output is a decay function that returns a list of numeric vctrs", {
   output_list <- output_fn(0)
   expect_is(output_list, "list")
   expect_length(output_list, 1L)
-  expect_named(output_list, "T20;s2")
+  expect_named(output_list, "c20;sd2")
 
   expect_equal(
-    output_fn(c(0, 20))[["T20;s2"]],
+    output_fn(c(0, 20))[["c20;sd2"]],
     c(1, 0.5)
   )
 })
@@ -55,6 +52,6 @@ test_that("output is a decay function that returns a list of numeric vctrs", {
 test_that("output fn returns empty numeric if receives empty numeric/integer", {
   output_fn <- tester(20, 2)
 
-  expect_identical(output_fn(integer())[["T20;s2"]], numeric())
-  expect_identical(output_fn(numeric())[["T20;s2"]], numeric())
+  expect_identical(output_fn(integer())[["c20;sd2"]], numeric())
+  expect_identical(output_fn(numeric())[["c20;sd2"]], numeric())
 })
