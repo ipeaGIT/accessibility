@@ -205,22 +205,27 @@ function assumes at the <span class="math inline">\(k^{th}\)</span>
 step.</p>
 </div>
 <div class="section level3">
-<h3 id="logistic-cdf">Logistic-CDF<a class="anchor" aria-label="anchor" href="#logistic-cdf"></a>
+<h3 id="logistic">Logistic<a class="anchor" aria-label="anchor" href="#logistic"></a>
 </h3>
-<p>Weights decay sigmoidally for moderate values of the standard
-deviation parameter. Approximates binary decay at standard deviation
-values near 0, and linear decay at standard deviation values near
-120.</p>
+<p>Weights decay sigmoidally, according to a reversed cumulative
+logistic curve. Currently, the function implements a logistic
+distribution parameterized with the cutoff that sets its inflection
+point and the standard deviation that sets its steepness, according to
+the logistic decay curve proposed by <span class="citation">Bauer and
+Groneberg (2016)</span>. Standard deviations values near 0 result in
+weighting curves that approximate binary decay, while higher values tend
+to linearize the curve.</p>
 <p><span class="math display">\[
 \begin{aligned}
-  g(t_{ij}, m, s) &amp;= 1 + e^\frac{(t_{ij} - m) * \pi}{\sqrt{3}s} \\
-  f(t_{ij}) &amp;= \frac{g(0, m, s)}{g(t_{ij}, m, s)}
+  f(t_{ij}) = \frac{
+    1 + e^\frac{-IP \times \pi}{SD \times \sqrt{3}}}{
+    1 + e^\frac{(t_{ij} - IP) \times \pi}{SD \times \sqrt{3}}}
 \end{aligned}
 \]</span></p>
 <p>Where <span class="math inline">\(t_{ij}\)</span> is the travel cost
-between origin <em>i</em> and destination <em>j</em>, <span class="math inline">\(T\)</span> is the median or inflection point, and
-<span class="math inline">\(s\)</span> is the standard deviation of the
-logistic-CDF.</p>
+between origin <em>i</em> and destination <em>j</em>, <span class="math inline">\(IP\)</span> is the distribution inflection point,
+and <span class="math inline">\(SD\)</span> is the distribution standard
+deviation.</p>
 <div class="section level4">
 <h4 id="quick-demonstration">Quick demonstration<a class="anchor" aria-label="anchor" href="#quick-demonstration"></a>
 </h4>
@@ -272,6 +277,7 @@ costs ranging from 1 to 100:</p>
 <span><span class="va">negative_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decay_exponential.html">decay_exponential</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
 <span><span class="va">inverse_power</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decay_power.html">decay_power</a></span><span class="op">(</span>decay_value <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span></span>
 <span><span class="va">stepped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decay_stepped.html">decay_stepped</a></span><span class="op">(</span>steps <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">60</span>, <span class="fl">90</span><span class="op">)</span>, weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.67</span>, <span class="fl">0.33</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">logistic</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decay_logistic.html">decay_logistic</a></span><span class="op">(</span>cutoff <span class="op">=</span> <span class="fl">50</span>, sd <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">travel_costs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">100</span>, <span class="fl">0.1</span><span class="op">)</span></span>
 <span></span>
@@ -281,7 +287,8 @@ costs ranging from 1 to 100:</p>
 <span>  linear <span class="op">=</span> <span class="fu">linear</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span><span class="op">[[</span><span class="st">"50"</span><span class="op">]</span><span class="op">]</span>,</span>
 <span>  negative_exp <span class="op">=</span> <span class="fu">negative_exp</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span><span class="op">[[</span><span class="st">"0.2"</span><span class="op">]</span><span class="op">]</span>,</span>
 <span>  inverse_power <span class="op">=</span> <span class="fu">inverse_power</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span><span class="op">[[</span><span class="st">"0.2"</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>  stepped <span class="op">=</span> <span class="fu">stepped</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span><span class="op">[[</span><span class="st">"s(30,60,90);w(0.67,0.33,0)"</span><span class="op">]</span><span class="op">]</span></span>
+<span>  stepped <span class="op">=</span> <span class="fu">stepped</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span><span class="op">[[</span><span class="st">"s(30,60,90);w(0.67,0.33,0)"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  logistic <span class="op">=</span> <span class="fu">logistic</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span><span class="op">[[</span><span class="st">"c50;sd10"</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># reshape data to long format</span></span>
@@ -422,8 +429,8 @@ a function.</p>
 <span><span class="co">#&gt;     names(weights_list) &lt;- decay_value</span></span>
 <span><span class="co">#&gt;     return(weights_list)</span></span>
 <span><span class="co">#&gt; }</span></span>
-<span><span class="co">#&gt; &lt;bytecode: 0x55b604a1f370&gt;</span></span>
-<span><span class="co">#&gt; &lt;environment: 0x55b60711b5a0&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; &lt;bytecode: 0x55eae362ab48&gt;</span></span>
+<span><span class="co">#&gt; &lt;environment: 0x55eae5f6b138&gt;</span></span></code></pre></div>
 <p>What if we want our custom function to take many decay parameters as
 inputs, just like the built-in decay functions? In this case, our output
 function has to return a <code>list</code> of <code>numeric</code>
@@ -495,6 +502,16 @@ function and you want to check its sensitivity to different decay
 parameters, for example, you might be better off developing a decay
 function that can take many decay values as inputs and returns a list of
 weight vectors as output.</p>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-bauer2016measuring" class="csl-entry">
+Bauer, Jan, and David A. Groneberg. 2016. <span>“Measuring <span>Spatial
+Accessibility</span> of <span>Health Care Providers</span> –
+<span>Introduction</span> of a <span>Variable Distance Decay
+Function</span> Within the <span>Floating Catchment Area</span>
+(<span>FCA</span>) <span>Method</span>.”</span> Edited by Kebede Deribe.
+<em>PLOS ONE</em> 11 (7): e0159148. <a href="https://doi.org/10.1371/journal.pone.0159148" class="external-link">https://doi.org/10.1371/journal.pone.0159148</a>.
+</div>
+</div>
 </div>
   </div>
 
