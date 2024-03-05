@@ -2,7 +2,12 @@
 
 ## Bug fixes
 
+- Fixed a bug in which land use data passed as a `tibble` to accessibility
+  functions could lead to an error.
+
 ## New features
+
+- New function `decay_logistic()`.
 
 ## Notes
 
