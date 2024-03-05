@@ -201,7 +201,7 @@ to calculate both active and passive accessibility.
 ## Interval-based cumulative opportunities
 
 `cumulative_time_interval()` calculates the interval-based cumulative
-opportunities measure. This measure, developed by @tomasiello2022time,
+opportunities measure. This measure, developed by @tomasiello2023time,
 mitigates the impacts of arbitrary choices of cost cutoffs, one of the main
 disadvantages of the traditional threshold-based cumulative opportunities
 measure. Given a cost interval, it calculates several accessibility estimates
