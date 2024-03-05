@@ -7,14 +7,13 @@
 decay_logistic(cutoff, sd)
 }
 \arguments{
-\item{cutoff}{A \code{numeric} vector. The inflection point of the cumulative
-logistic curve, located at the median value of the distribution (i.e.
-weight is 0.5 at the cutoff).}
+\item{cutoff}{A \code{numeric} vector. The cost value that serves as the
+inflection point of the cumulative logistic curve.}
 
 \item{sd}{A \code{numeric} vector with same length as \code{cutoff}. The standard
-deviation of the logistic curve. Must be greater than 0 and less than 120.
-Values near 0 result in weighting curves that approximate binary decay,
-while values near 120 result in curves that approximate linear decay.}
+deviation of the logistic curve. Values near 0 result in weighting curves
+that approximate binary decay, while higher values tend to linearize the
+decay.}
 }
 \value{
 A \code{function} that takes a generic travel cost vector (\code{numeric}) as

@@ -119,21 +119,27 @@ is the total number of steps, $S_{k}$ is the travel cost cutoff that delimits
 the $k^{th}$ step, and $v_{k}$ is the value that the decay function assumes at
 the $k^{th}$ step.
 
-## Logistic-CDF
+## Logistic
 
-Weights decay sigmoidally for moderate values of the standard deviation parameter.
-Approximates binary decay at standard deviation values near 0, and linear
-decay at standard deviation values near 120.
+Weights decay sigmoidally, according to a reversed cumulative logistic curve.
+Currently, the function implements a logistic distribution parameterized with
+the cutoff that sets its inflection point and the standard deviation that sets
+its steepness, according to the logistic decay curve proposed by
+@bauer2016measuring. Standard deviations values near 0 result in weighting
+curves that approximate binary decay, while higher values tend to linearize the
+curve.
 
 $$
 \begin{aligned}
-  g(t_{ij}, m, s) &= 1 + e^\frac{(t_{ij} - m) * \pi}{\sqrt{3}s} \\
-  f(t_{ij}) &= \frac{g(0, m, s)}{g(t_{ij}, m, s)}
+  f(t_{ij}) = \frac{
+    1 + e^\frac{-IP \times \pi}{SD \times \sqrt{3}}}{
+    1 + e^\frac{(t_{ij} - IP) \times \pi}{SD \times \sqrt{3}}}
 \end{aligned}
 $$
 
-Where $t_{ij}$ is the travel cost between origin *i* and destination *j*, $T$
-is the median or inflection point, and $s$ is the standard deviation of the logistic-CDF.
+Where $t_{ij}$ is the travel cost between origin *i* and destination *j*, $IP$
+is the distribution inflection point, and $SD$ is the distribution standard
+deviation.
 
 ### Quick demonstration
 
