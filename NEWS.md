@@ -1,4 +1,4 @@
-# accessibility (development version)
+# accessibility 1.4.0
 
 ## Bug fixes
 
