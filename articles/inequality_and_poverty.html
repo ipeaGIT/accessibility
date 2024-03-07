@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">accessibility</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
       </span>
     </div>
 
@@ -130,6 +130,7 @@ in the package.</p>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">access</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                 id  jobs</span></span>
+<span><span class="co">#&gt;             &lt;char&gt; &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1: 89a881a5a2bffff 14561</span></span>
 <span><span class="co">#&gt; 2: 89a881a5a2fffff 29452</span></span>
 <span><span class="co">#&gt; 3: 89a881a5a67ffff 16647</span></span>
@@ -177,6 +178,7 @@ of the total amount of income in each cell.</p>
 <span><span class="op">)</span></span>
 <span><span class="va">palma</span></span>
 <span><span class="co">#&gt;    palma_ratio</span></span>
+<span><span class="co">#&gt;          &lt;num&gt;</span></span>
 <span><span class="co">#&gt; 1:    3.800465</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -200,6 +202,7 @@ levels in a study area are all concentrated into a single cell.</p>
 <span><span class="op">)</span></span>
 <span><span class="va">gini</span></span>
 <span><span class="co">#&gt;    gini_index</span></span>
+<span><span class="co">#&gt;         &lt;num&gt;</span></span>
 <span><span class="co">#&gt; 1:  0.4715251</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -237,6 +240,7 @@ relative CI and the corrected CI, proposed by <span class="citation">Erreygers (
 <span><span class="op">)</span></span>
 <span><span class="va">ci</span></span>
 <span><span class="co">#&gt;    concentration_index</span></span>
+<span><span class="co">#&gt;                  &lt;num&gt;</span></span>
 <span><span class="co">#&gt; 1:           0.3346494</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -274,6 +278,7 @@ component. Both behaviors are shown below.</p>
 <span><span class="op">)</span></span>
 <span><span class="va">theil_without_groups</span></span>
 <span><span class="co">#&gt;      theil_t</span></span>
+<span><span class="co">#&gt;        &lt;num&gt;</span></span>
 <span><span class="co">#&gt; 1: 0.3616631</span></span>
 <span></span>
 <span><span class="co"># some cells are classified as in the decile NA because their income per capita</span></span>
@@ -297,12 +302,14 @@ component. Both behaviors are shown below.</p>
 <span><span class="va">theil_with_groups</span></span>
 <span><span class="co">#&gt; $summary</span></span>
 <span><span class="co">#&gt;        component     value share_of_total</span></span>
+<span><span class="co">#&gt;           &lt;char&gt;     &lt;num&gt;          &lt;num&gt;</span></span>
 <span><span class="co">#&gt; 1: between_group 0.1280753      0.3541287</span></span>
 <span><span class="co">#&gt; 2:  within_group 0.2335878      0.6458713</span></span>
 <span><span class="co">#&gt; 3:         total 0.3616631      1.0000000</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $within_group_component</span></span>
 <span><span class="co">#&gt;     income_decile       value share_of_component</span></span>
+<span><span class="co">#&gt;            &lt;fctr&gt;       &lt;num&gt;              &lt;num&gt;</span></span>
 <span><span class="co">#&gt;  1:             1 0.009181454         0.03930622</span></span>
 <span><span class="co">#&gt;  2:             2 0.011413697         0.04886255</span></span>
 <span><span class="co">#&gt;  3:             3 0.019320622         0.08271246</span></span>
@@ -316,6 +323,7 @@ component. Both behaviors are shown below.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $between_group_component</span></span>
 <span><span class="co">#&gt;     income_decile        value</span></span>
+<span><span class="co">#&gt;            &lt;fctr&gt;        &lt;num&gt;</span></span>
 <span><span class="co">#&gt;  1:             1 -0.037573783</span></span>
 <span><span class="co">#&gt;  2:             2 -0.036276865</span></span>
 <span><span class="co">#&gt;  3:             3 -0.031829123</span></span>
@@ -363,13 +371,14 @@ considered to be in accessibility poverty.</p>
 <span><span class="op">)</span></span>
 <span><span class="va">poverty</span></span>
 <span><span class="co">#&gt;         FGT0      FGT1      FGT2</span></span>
+<span><span class="co">#&gt;        &lt;num&gt;     &lt;num&gt;     &lt;num&gt;</span></span>
 <span><span class="co">#&gt; 1: 0.5745378 0.3277383 0.2218769</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-erreygers2009correcting" class="csl-entry">
 Erreygers, Guido. 2009. <span>“Correcting the <span>Concentration
 Index</span>.”</span> <em>Journal of Health Economics</em> 28 (2):
