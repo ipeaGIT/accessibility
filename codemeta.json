@@ -8,13 +8,13 @@
   "codeRepository": "https://github.com/ipeaGIT/accessibility",
   "issueTracker": "https://github.com/ipeaGIT/accessibility/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "1.4.0",
+  "version": "1.4.0.9000",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.3.2 (2023-10-31)",
+  "runtimePlatform": "R version 4.3.3 (2024-02-29)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -219,7 +219,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "3382.175KB",
+  "fileSize": "3382.26KB",
   "releaseNotes": "https://github.com/ipeaGIT/accessibility/blob/master/NEWS.md",
   "readme": "https://github.com/ipeaGIT/accessibility/blob/main/README.md",
   "contIntegration": ["https://github.com/ipeaGIT/accessibility/actions", "https://app.codecov.io/gh/ipeaGIT/accessibility?branch=main"],
