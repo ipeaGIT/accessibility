@@ -107,7 +107,7 @@ gini
 ## Concentration Index
 
 `concentration_index()` calculates the Concentration Index (CI) of a given
-accessibility distribution. This measures estimates the extent to which
+accessibility distribution. This indicator estimates the extent to which
 accessibility inequalities are systematically associated with individuals'
 socioeconomic levels. CI values can theoretically vary between -1 and 1 (when
 all accessibility is concentrated in the most or in the least disadvantaged
