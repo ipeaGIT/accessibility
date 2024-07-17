@@ -1,9 +1,8 @@
 pandoc: 3.1.11
-pkgdown: 2.0.7
+pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   accessibility: accessibility.html
   decay_functions: decay_functions.html
   inequality_and_poverty: inequality_and_poverty.html
-last_built: 2024-03-07T14:42Z
-
+last_built: 2024-07-17T12:16Z
