@@ -1,7 +1,5 @@
 
-# accessibility
-
-<img align="right" src="man/figures/logo.png" alt="logo" width="180">
+# accessibility <img align="right" src="man/figures/logo.png" alt="logo" width="180">
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/accessibility)](https://CRAN.R-project.org/package=accessibility)
