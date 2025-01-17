@@ -1,3 +1,12 @@
+url: https://ipeagit.github.io/accessibility/
+
+template:
+  bootstrap: 5
+  light-switch: true
+
+development:
+  mode: auto
+
 reference:
   - title: "Accessibility"
   - contents:
@@ -20,6 +29,3 @@ reference:
   - title: "Poverty"
   - contents:
     - fgt_poverty
-
-development:
-  mode: auto
