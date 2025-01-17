@@ -44,12 +44,12 @@ remotes::install_github("ipeaGIT/accessibility")
 This section aims to present a very brief overview of some of the
 packages’ features. Fore more details please read the vignettes:
 
-  - [Introduction to **accessibility**: calculating accessibility
-    measures](https://ipeagit.github.io/accessibility/articles/accessibility.html)
-  - [Decay
-    functions](https://ipeagit.github.io/accessibility/articles/decay_functions.html)
-  - [Calculating accessibility inequality and
-    poverty](https://ipeagit.github.io/accessibility/articles/inequality_and_poverty.html)
+- [Introduction to **accessibility**: calculating accessibility
+  measures](https://ipeagit.github.io/accessibility/articles/accessibility.html)
+- [Decay
+  functions](https://ipeagit.github.io/accessibility/articles/decay_functions.html)
+- [Calculating accessibility inequality and
+  poverty](https://ipeagit.github.io/accessibility/articles/inequality_and_poverty.html)
 
 To calculate accessibility levels, one simply needs a pre-calculated
 travel matrix and some land use data. Below we showcase some of the
@@ -71,6 +71,7 @@ cum_cutoff <- cumulative_cutoff(
 )
 head(cum_cutoff)
 #>                 id  jobs
+#>             <char> <int>
 #> 1: 89a881a5a2bffff 14561
 #> 2: 89a881a5a2fffff 29452
 #> 3: 89a881a5a67ffff 16647
@@ -87,6 +88,7 @@ grav <- gravity(
 )
 head(grav)
 #>                 id    schools
+#>             <char>      <num>
 #> 1: 89a88cdb57bffff 0.03041853
 #> 2: 89a88cdb597ffff 1.15549493
 #> 3: 89a88cdb5b3ffff 0.56519126
@@ -105,6 +107,7 @@ fca <- floating_catchment_area(
 )
 head(fca)
 #>                 id      jobs
+#>             <char>     <num>
 #> 1: 89a88cdb57bffff 0.4278111
 #> 2: 89a88cdb597ffff 0.3863614
 #> 3: 89a88cdb5b3ffff 0.4501725
@@ -127,6 +130,7 @@ palma <- palma_ratio(
 )
 palma
 #>    palma_ratio
+#>          <num>
 #> 1:    3.800465
 
 poverty <- fgt_poverty(
@@ -138,19 +142,20 @@ poverty <- fgt_poverty(
 )
 poverty
 #>         FGT0      FGT1      FGT2
+#>        <num>     <num>     <num>
 #> 1: 0.5745378 0.3277383 0.2218769
 ```
 
 ## Related work:
 
-  - [r5r](https://github.com/ipeaGIT/r5r): Rapid Realistic Routing with
-    R5 in R
-  - [tracc](https://github.com/jamaps/tracc): Transport accessibility
-    measures in Python
-  - [access](https://access.readthedocs.io/en/latest/): Spatial Access
-    for PySAL
-  - [aceso](https://github.com/tetraptych/aceso): a lightweight Python
-    package for measuring spatial accessibility
+- [r5r](https://github.com/ipeaGIT/r5r): Rapid Realistic Routing with R5
+  in R
+- [tracc](https://github.com/jamaps/tracc): Transport accessibility
+  measures in Python
+- [access](https://access.readthedocs.io/en/latest/): Spatial Access for
+  PySAL
+- [aceso](https://github.com/tetraptych/aceso): a lightweight Python
+  package for measuring spatial accessibility
 
 ## Acknowledgement <a href="https://www.ipea.gov.br"><img src="man/figures/ipea_logo.png" alt="IPEA" align="right" width="300"/></a>
 

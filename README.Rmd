@@ -19,11 +19,11 @@ knitr::opts_chunk$set(
 status](https://www.r-pkg.org/badges/version/accessibility)](https://CRAN.R-project.org/package=accessibility)
 [![rcmdcheck](https://github.com/ipeaGIT/accessibility/workflows/rcmdcheck/badge.svg)](https://github.com/ipeaGIT/accessibility/actions)
 [![CRAN/METACRAN Total
-downloads](http://cranlogs.r-pkg.org/badges/grand-total/accessibility?color=yellow)](https://CRAN.R-project.org/package=accessibility)
+downloads](https://cranlogs.r-pkg.org/badges/grand-total/accessibility?color=yellow)](https://CRAN.R-project.org/package=accessibility)
 [![Codecov test
 coverage](https://codecov.io/gh/ipeaGIT/accessibility/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ipeaGIT/accessibility?branch=main)
 [![Lifecycle:
-stable](https://lifecycle.r-lib.org/articles/figures/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html) 
+stable](https://lifecycle.r-lib.org/articles/figures/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 
 **accessibility** offers a set of fast and convenient functions to help
 conducting accessibility analyses. Given a pre-computed travel cost matrix and a
