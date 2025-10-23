@@ -91,7 +91,7 @@ This function is generic over any kind of numeric travel cost,
 such as distance, time and money.
 }
 \examples{
-\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) withAutoprint(\{ # examplesIf}
 # the example below is based on Soukhov et al. (2023) paper
 
 travel_matrix <- data.table::data.table(
