@@ -34,8 +34,8 @@ calculating accessibility levels.}
 with the travel cost between origins and destinations.}
 
 \item{demand}{A string. The name of the column in \code{land_use_data} with the
-number of people in each origin that will be considered potential
-competitors.}
+number of opportunity-demanders at each origin (e.g., people) that will be
+considered.}
 
 \item{method}{A string. Which floating catchment area measure to use.
 Current available options are \code{"2sfca"} and \code{"bfca"}. More info in the

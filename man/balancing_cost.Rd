@@ -33,8 +33,8 @@ calculating accessibility levels.}
 with the travel cost between origins and destinations.}
 
 \item{demand}{A string. The name of the column in \code{land_use_data} with the
-number of people in each origin that will be considered potential
-competitors.}
+number of opportunity-demanders at each origin (e.g., people) that will be
+considered.}
 
 \item{cost_increment}{A number. The cost increment that should be used when
 defining the travel cost distribution from which the potential balancing
