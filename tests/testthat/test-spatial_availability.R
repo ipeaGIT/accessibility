@@ -10,7 +10,8 @@ tester <- function(
   decay_function = decay_exponential(0.1),
   alpha = 1,
   group_by = "mode",
-  fill_missing_ids = TRUE
+  fill_missing_ids = TRUE,
+  detailed_results = FALSE
 ) {
   spatial_availability(
     travel_matrix,
@@ -21,7 +22,8 @@ tester <- function(
     decay_function,
     alpha,
     group_by,
-    fill_missing_ids
+    fill_missing_ids,
+    detailed_results
   )
 }
 
@@ -52,6 +54,10 @@ test_that("raises errors due to incorrect input", {
   expect_error(tester(fill_missing_ids = 1))
   expect_error(tester(fill_missing_ids = c(TRUE, TRUE)))
   expect_error(tester(fill_missing_ids = NA))
+
+  expect_error(tester(detailed_results = 1))
+  expect_error(tester(detailed_results = c(TRUE, TRUE)))
+  expect_error(tester(detailed_results = NA))
 
   expect_error(tester(as.list(travel_matrix)))
   expect_error(tester(travel_matrix[, .(oi = from_id, to_id, travel_time)]))
@@ -296,4 +302,41 @@ test_that("results are grouped by decay_function_arg when needed", {
       jobs = c(388780.8, 107272.2, 389238.9, 106814.1)
     )
   )
+})
+
+test_that("throws warning w/ fill_missing_ids = FALSE with detailed_results", {
+  expect_warning(tester(fill_missing_ids = FALSE, detailed_results = TRUE))
+})
+
+test_that("result has correct structure with detailed_results = TRUE", {
+  result <- tester(detailed_results = TRUE)
+  expect_true(ncol(result) == 7)
+  expect_is(result$mode, "character")
+  expect_is(result$from_id, "character")
+  expect_is(result$to_id, "character")
+  expect_is(result$demand_bal_fac, "numeric")
+  expect_is(result$impedance_bal_fac, "numeric")
+  expect_is(result$combined_bal_fac, "numeric")
+  expect_is(result$jobs, "numeric")
+
+  result <- tester(detailed_results = TRUE, opportunity = "schools")
+  expect_true(ncol(result) == 7)
+  expect_is(result$mode, "character")
+  expect_is(result$from_id, "character")
+  expect_is(result$to_id, "character")
+  expect_is(result$demand_bal_fac, "numeric")
+  expect_is(result$impedance_bal_fac, "numeric")
+  expect_is(result$combined_bal_fac, "numeric")
+  expect_is(result$schools, "numeric")
+
+  result <- tester(smaller_matrix[0], detailed_results = TRUE)
+  expect_true(ncol(result) == 7)
+  expect_true(nrow(result) == 0)
+  expect_is(result$mode, "character")
+  expect_is(result$from_id, "character")
+  expect_is(result$to_id, "character")
+  expect_is(result$demand_bal_fac, "numeric")
+  expect_is(result$impedance_bal_fac, "numeric")
+  expect_is(result$combined_bal_fac, "numeric")
+  expect_is(result$jobs, "numeric")
 })

@@ -13,7 +13,8 @@ spatial_availability(
   decay_function,
   alpha = 1,
   group_by = character(0),
-  fill_missing_ids = TRUE
+  fill_missing_ids = TRUE,
+  detailed_results = FALSE
 )
 }
 \arguments{
@@ -41,9 +42,9 @@ competitors.}
 impedance factor used to weight opportunities. This function should take a
 \code{numeric} vector and also return a \code{numeric} vector as output, with the
 same length as the input. For convenience, the package currently includes
-the following functions: \code{\link[=decay_binary]{decay_binary()}}, \code{\link[=decay_exponential]{decay_exponential()}} and
-\code{\link[=decay_power]{decay_power()}}. See the documentation of each decay function for more
-details.}
+the following functions: \code{\link[=decay_binary]{decay_binary()}}, \code{\link[=decay_exponential]{decay_exponential()}},
+\code{\link[=decay_power]{decay_power()}} and \code{\link[=decay_stepped]{decay_stepped()}}. See the documentation of each decay
+function for more details.}
 
 \item{alpha}{A \code{numeric}. A parameter used to modulate the effect of demand
 by population. When less than 1, opportunities are allocated more rapidly
@@ -66,6 +67,13 @@ combination will not be included in the output. When \code{TRUE} (the default),
 the function identifies which combinations would be left out and fills
 their respective accessibility values with 0, which incurs in a
 performance penalty.}
+
+\item{detailed_results}{A \code{logical}. Whether to return spatial availability
+results aggregated by origin-destination pair (\code{TRUE}) or by origin
+(\code{FALSE}, the default). When \code{TRUE}, the output also includes the demand,
+impedance and combined balancing factors used to calculate spatial
+availability. Please note that the argument \code{fill_missing_ids}
+does not affect the output when \code{detailed_results} is \code{TRUE}.}
 }
 \value{
 A data frame containing the accessibility estimates for each
@@ -106,6 +114,17 @@ df <- spatial_availability(
   decay_function = decay_exponential(decay_value = 0.1)
 )
 df
+
+detailed_df <- spatial_availability(
+  travel_matrix,
+  land_use_data,
+  opportunity = "jobs",
+  travel_cost = "travel_time",
+  demand = "population",
+  decay_function = decay_exponential(decay_value = 0.1),
+  detailed_results = TRUE
+)
+detailed_df
 \dontshow{\}) # examplesIf}
 }
 \references{

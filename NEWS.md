@@ -1,12 +1,47 @@
 # accessibility (development version)
 
+## Bug fixes
+
 ## New features
 
-- New inequality function `concentration_index()`.
+## Notes
+
+# accessibility 1.4.0
 
 ## Bug fixes
 
+- Fixed a bug in which land use data passed to accessibility functions as a
+  `tibble` could lead to an error.
+
+## New features
+
+- New function `decay_logistic()`.
+
 ## Notes
+
+- Package description has been adjusted to better reflect the current set of
+  available features.
+
+# accessibility 1.3.0
+
+## New features
+
+- New parameter `detailed_results` to `spatial_availability()`, used to specify
+  whether results should be aggregated by origin-destination pair or by origin.
+  When aggregation by origin-destination pair, the output also includes the
+  demand, impedance and combined balancing factors used to calculate spatial
+  availability.
+
+# accessibility 1.2.0
+
+## New features
+
+- New inequality functions `concentration_index()` and `theil_t()`.
+
+## Notes
+
+- Various documentation tweaks.
+- Testing performance has greatly improved.
 
 # accessibility 1.1.0
 

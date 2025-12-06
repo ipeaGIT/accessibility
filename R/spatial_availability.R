@@ -19,6 +19,12 @@
 #'   the opposite effect.
 #' @template group_by
 #' @template fill_missing_ids_combinations
+#' @param detailed_results A `logical`. Whether to return spatial availability
+#'   results aggregated by origin-destination pair (`TRUE`) or by origin
+#'   (`FALSE`, the default). When `TRUE`, the output also includes the demand,
+#'   impedance and combined balancing factors used to calculate spatial
+#'   availability. Please note that the argument `fill_missing_ids`
+#'   does not affect the output when `detailed_results` is `TRUE`.
 #'
 #' @template return_accessibility
 #'
@@ -49,6 +55,17 @@
 #' )
 #' df
 #'
+#' detailed_df <- spatial_availability(
+#'   travel_matrix,
+#'   land_use_data,
+#'   opportunity = "jobs",
+#'   travel_cost = "travel_time",
+#'   demand = "population",
+#'   decay_function = decay_exponential(decay_value = 0.1),
+#'   detailed_results = TRUE
+#' )
+#' detailed_df
+#'
 #' @export
 spatial_availability <- function(travel_matrix,
                                  land_use_data,
@@ -58,14 +75,16 @@ spatial_availability <- function(travel_matrix,
                                  decay_function,
                                  alpha = 1,
                                  group_by = character(0),
-                                 fill_missing_ids = TRUE) {
+                                 fill_missing_ids = TRUE,
+                                 detailed_results = FALSE) {
   checkmate::assert_string(opportunity)
   checkmate::assert_string(travel_cost)
   checkmate::assert_string(demand)
   checkmate::assert_number(alpha, lower = 0, finite = TRUE)
-  checkmate::assert_logical(fill_missing_ids, len = 1, any.missing = FALSE)
+  checkmate::assert_logical(detailed_results, len = 1, any.missing = FALSE)
   assert_decay_function(decay_function)
   assert_group_by(group_by)
+  assert_detailed_fill_missing_ids(fill_missing_ids, detailed_results)
   assert_travel_matrix(travel_matrix, travel_cost, group_by)
   assert_land_use_data(
     land_use_data,
@@ -127,19 +146,26 @@ spatial_availability <- function(travel_matrix,
     by = c("to_id", group_by)
   ]
 
-  access <- data[
-    ,
-    .(access = sum(spatial_availability)),
-    by = c("from_id", group_by)
-  ]
+  if (detailed_results) {
+    cols_to_drop <- c(travel_cost, opportunity, demand, "opp_weight")
+    access <- data[, (cols_to_drop) := NULL]
 
-  if (fill_missing_ids) {
-    access <- fill_missing_ids(access, travel_matrix, groups)
+    data.table::setnames(access, "spatial_availability", opportunity)
+  } else {
+    access <- data[
+      ,
+      .(access = sum(spatial_availability)),
+      by = c("from_id", group_by)
+    ]
+
+    if (fill_missing_ids) {
+      access <- fill_missing_ids(access, travel_matrix, groups)
+    }
+
+    data.table::setnames(access, c("from_id", "access"), c("id", opportunity))
   }
-
-  data.table::setnames(access, c("from_id", "access"), c("id", opportunity))
 
   if (exists("original_class")) class(access) <- original_class
 
-  return(access)
+  return(access[])
 }

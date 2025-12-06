@@ -84,3 +84,10 @@ test_that("warns if either opportunity or demand cols contain NAs", {
     )
   )
 })
+
+test_that("assert_land_use_data() doesn't error with tibbles", {
+  # issue 49 (https://github.com/ipeaGIT/accessibility/issues/49)
+  # using land_use_data as tibbles would throw errors because this format has
+  # stricter subsetting rules
+  expect_no_error(tester(tibble::as_tibble(land_use_data)))
+})

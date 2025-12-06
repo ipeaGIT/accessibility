@@ -1,3 +1,12 @@
+url: https://ipeagit.github.io/accessibility/
+
+template:
+  bootstrap: 5
+  light-switch: true
+
+development:
+  mode: auto
+
 reference:
   - title: "Accessibility"
   - contents:
@@ -16,7 +25,7 @@ reference:
     - concentration_index
     - gini_index
     - palma_ratio
-    - theil_index
+    - theil_t
   - title: "Poverty"
   - contents:
     - fgt_poverty

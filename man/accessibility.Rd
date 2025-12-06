@@ -7,14 +7,9 @@
 \alias{accessibility-package}
 \title{accessibility: Transport accessibility measures}
 \description{
-A set of fast and convenient functions to calculate multiple transport
-accessibility measures. Given a pre-computed travel cost matrix and a land
-use dataset (containing the location of jobs, healthcare and population, for
-example), the package allows one to calculate active and passive
-accessibility levels using multiple accessibility measures, such as:
-cumulative opportunities (using either travel cost cutoffs or intervals),
-minimum travel cost to closest N number of activities, gravity-based (with
-different decay functions) and different floating catchment area methods.
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
+A set of fast and convenient functions to help conducting accessibility analyses. Given a pre-computed travel cost matrix and a land use dataset (containing the location of jobs, healthcare and population, for example), the package allows one to calculate accessibility levels and accessibility poverty and inequality. The package covers the majority of the most commonly used accessibility measures (such as cumulative opportunities, gravity-based and floating catchment areas methods), as well as the most frequently used inequality and poverty metrics (such as the Palma ratio, the concentration and Theil indices and the FGT family of measures).
 }
 \section{Usage}{
 
@@ -34,6 +29,7 @@ on the
 Useful links:
 \itemize{
   \item \url{https://github.com/ipeaGIT/accessibility}
+  \item \url{https://ipeagit.github.io/accessibility/}
   \item Report bugs at \url{https://github.com/ipeaGIT/accessibility/issues}
 }
 
@@ -48,6 +44,7 @@ Authors:
 
 Other contributors:
 \itemize{
+  \item Joey Reid [contributor]
   \item Ipea - Institute for Applied Economic Research [copyright holder, funder]
 }
 
