@@ -11,3 +11,4 @@
 ^codemeta\.json$
 ^data-raw$
 ^\.pre-commit-config\.yaml$
+^testing_constrained\.Rmd$

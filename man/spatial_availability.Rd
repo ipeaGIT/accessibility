@@ -35,8 +35,8 @@ calculating accessibility levels.}
 with the travel cost between origins and destinations.}
 
 \item{demand}{A string. The name of the column in \code{land_use_data} with the
-number of people in each origin that will be considered potential
-competitors.}
+number of opportunity-demanders at each origin (e.g., people) that will be
+considered.}
 
 \item{decay_function}{A \code{fuction} that converts travel cost into an
 impedance factor used to weight opportunities. This function should take a
@@ -91,7 +91,7 @@ This function is generic over any kind of numeric travel cost,
 such as distance, time and money.
 }
 \examples{
-\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) withAutoprint(\{ # examplesIf}
 # the example below is based on Soukhov et al. (2023) paper
 
 travel_matrix <- data.table::data.table(

@@ -1,0 +1,337 @@
+---
+title: "testing_constrained"
+output: html_document
+---
+
+```{r}
+library(data.table)
+library(dplyr)
+source("R/assert_and_assign.R")  
+source("R/merge_by_reference.R")
+source("R/apply_gravity_measure.R")
+source("R/warn_extra_cols.R")
+source("R/fill_missing_ids.R")
+
+
+# source("R/total_constrained.R")
+# source("R/singly_constrained.R")
+#source("R/doubly_constrained.R")
+source("R/constrained_accessibility.R")
+
+source("R/decay_exponential.R")
+source("R/decay_power.R")
+source("R/spatial_availability.R")
+source("R/floating_catchment_area.R")
+```
+
+# Test 1. Toy data from the spaital availability (2023) paper.
+## TOT CONST
+```{r}
+# Toy travel matrix and land use data
+travel_matrix <- expand.grid(from_id = c("1", "2", "3"),
+                             to_id = c("1", "2", "3")) |>
+  dplyr::mutate(travel_time = c(10, 30, 15, 30, 10, 25, 15, 25, 10)) |>
+  data.table::data.table()
+
+land_use_data <- data.table::data.table(
+  id = c("1", "2", "3"),
+  population = c(4, 10, 6),   # supply
+  jobs = c(160, 150, 180)     # demand
+)
+
+# Decay function
+decay <- decay_exponential(decay_value = 0.1)
+```
+
+
+```{r}
+agg_false <- constrained_accessibility("total",
+                                       travel_matrix, land_use_data,
+                                travel_cost = "travel_time",
+                                decay_function = decay,
+                                demand = NULL,
+                                supply = "jobs",
+                                detailed_results = FALSE,
+                                return_demand_side = FALSE)
+agg_false
+
+agg_true <- constrained_accessibility("total", travel_matrix, land_use_data,
+                                travel_cost = "travel_time",
+                                decay_function = decay,
+                                demand = "population",
+                                supply = NULL,
+                                detailed_results = FALSE,
+                                return_demand_side = TRUE)
+agg_true
+
+det_false <- constrained_accessibility("total", travel_matrix, land_use_data,
+                                travel_cost = "travel_time",
+                                decay_function = decay,
+                                demand = NULL,
+                                supply = "jobs",
+                                detailed_results = TRUE,
+                                return_demand_side = FALSE)
+det_false
+det_true <- constrained_accessibility("total", travel_matrix, land_use_data,
+                               travel_cost = "travel_time",
+                               decay_function = decay,
+                               demand = "population",
+                               supply = NULL,
+                               detailed_results = TRUE,
+                               return_demand_side = TRUE)
+det_true
+```
+
+```{r}
+det_true$demand |> sum()
+det_false$supply |> sum()
+agg_true$demand |> sum()
+agg_false$supply |> sum()
+
+det_false$kappa_total |> sum()
+det_true$hatkappa_total |> sum()
+```
+
+## SINGLE CONST
+```{r}
+agg_false <- constrained_accessibility("singly", travel_matrix, land_use_data,
+                                travel_cost = "travel_time",
+                                decay_function = decay,
+                                demand = "population",
+                                supply = "jobs",
+                                detailed_results = FALSE,
+                                return_demand_side = FALSE)
+agg_false
+
+agg_true <- constrained_accessibility("singly", travel_matrix, land_use_data,
+                                travel_cost = "travel_time",
+                                decay_function = decay,
+                                demand = "population",
+                                supply = "jobs",
+                                detailed_results = FALSE,
+                                return_demand_side = TRUE)
+agg_true
+
+det_false <- constrained_accessibility("singly", travel_matrix, land_use_data,
+                                travel_cost = "travel_time",
+                                decay_function = decay,
+                                demand = "population",
+                                supply = "jobs",
+                                detailed_results = TRUE,
+                                return_demand_side = FALSE)
+det_false
+
+
+det_true <- constrained_accessibility("singly", travel_matrix, land_use_data,
+                               travel_cost = "travel_time",
+                               decay_function = decay,
+                               demand = "population",
+                                supply = "jobs",
+                               detailed_results = TRUE,
+                               return_demand_side = TRUE)
+det_true
+```
+
+Checks!
+```{r}
+det_true$demand |> sum() #accessible population (490)
+det_false$supply |> sum() #accessible opps (20)
+agg_true$demand |> sum() #accessible population (490)
+agg_false$supply |> sum() #accessible opps (20)
+```
+
+
+```{r}
+det_false$kappa_singly |> sum() #should be the number of destinations
+det_false[, sum(kappa_singly), by = to_id]  #should all be 1
+
+det_true$hatkappa_singly |> sum() #should be the number of origins
+det_true[, sum(hatkappa_singly), by = from_id]  #should all be 1
+```
+
+# Test 2. Testing results with total/singly constrained toy example in 2025 paper
+Data:
+```{r test-data}
+travel_matrix <- expand.grid(from_id = c("1", "2", "3"),
+                  to_id = c("1", "2", "3")) |>
+  mutate(travel_time = c(10, 30, 15, 30, 10, 25, 15, 25, 10)) |> data.table()
+
+land_use_data <- data.table(
+  id = c("1", "2", "3"),
+  population = c(4, 10, 6),
+  jobs = c(160, 150, 180)
+)
+```
+
+11/12 --> total_constrained works! I tested it for all decay scenarios (3, 2, 0.1). 
+```{r}
+constrained_accessibility(constraint="total",
+                          travel_matrix, land_use_data,
+                                travel_cost = "travel_time",
+                                decay_function = decay_power(decay_value = 3),
+                                demand = NULL,
+                                supply = "jobs",
+                                detailed_results = TRUE,
+                                return_demand_side = FALSE)
+
+constrained_accessibility(constraint="total",
+                          travel_matrix, land_use_data,
+                                travel_cost = "travel_time",
+                                decay_function = decay_power(decay_value = 3),
+                                demand = NULL,
+                                supply = "jobs",
+                                detailed_results = FALSE,
+                                return_demand_side = FALSE)
+
+
+constrained_accessibility(constraint="total",
+                          travel_matrix, land_use_data,
+                                travel_cost = "travel_time",
+                                decay_function = decay_power(decay_value = 3),
+                                demand = "population",
+                                supply = NULL,
+                                detailed_results = TRUE,
+                                return_demand_side = TRUE)
+
+constrained_accessibility(constraint="total",
+                          travel_matrix, land_use_data,
+                                travel_cost = "travel_time",
+                                decay_function = decay_power(decay_value = 3),
+                                demand = "population",
+                                supply = NULL,
+                                detailed_results = FALSE,
+                                return_demand_side = TRUE)
+```
+
+11/12 --> Singly-constrained  works! I tested it for all decay scenarios (3, 2, 0.1)!
+```{r}
+constrained_accessibility("singly",
+                          travel_matrix, land_use_data,
+                                travel_cost = "travel_time",
+                                decay_function = decay_power(decay_value = 3),
+                                demand = "population",
+                                supply = "jobs",
+                                detailed_results = TRUE,
+                                return_demand_side = FALSE)
+
+constrained_accessibility("singly",
+                          travel_matrix, land_use_data,
+                                travel_cost = "travel_time",
+                                decay_function = decay_power(decay_value = 3),
+                                demand = "population",
+                                supply = "jobs",
+                                detailed_results = FALSE,
+                                return_demand_side = FALSE)
+#  
+```
+
+# Test 3. Testing results with doubly constrained toy example in 2025 paper
+
+```{r}
+# Toy dataset where totals match (sum demand = sum supply = 20)
+travel_matrix <- expand.grid(from_id = c("1", "2", "3"),
+                             to_id = c("1", "2", "3")) |>
+  dplyr::mutate(travel_time = c(10, 30, 15, 30, 10, 25, 15, 25, 10)) |>
+  data.table()
+
+land_use_data <- data.table(
+  id = c("1", "2", "3"),
+  population = c(4, 10, 6),
+  jobs = c(7, 5, 8)
+)
+```
+#--
+11/12 --> tested this for decay_value =3 (table 10), and check zone 2 for all scenarios (3, 2, 0.1) in Table 11 and they match! Though.. the paper accidentally flips the columns.
+```{r}
+det <- 
+  constrained_accessibility("doubly",
+  #doubly_constrained(
+    travel_matrix, land_use_data,
+                                travel_cost = "travel_time",
+                                decay_function = decay_power(decay_value = 0.1),
+                                demand = "population",
+                                supply = "jobs",
+                                detailed_results = TRUE,
+                                return_demand_side = NULL)
+
+det
+
+agg <- 
+  constrained_accessibility("doubly",
+                            #doubly_constrained(
+                            travel_matrix, land_use_data,
+                                travel_cost = "travel_time",
+                                decay_function = decay_power(decay_value = 0.1),
+                                demand = "population",
+                                supply = "jobs",
+                                detailed_results = FALSE,
+                                return_demand_side = NULL)
+```
+
+
+```{r}
+agg$flow |> sum() #should be double,
+det$flow |> sum() 
+
+det$kappa_doubly |> sum() #should be the number of destinations or origins
+```
+
+# Test 4. Testing singly constrained's equality to spatial_availbility() and 2SFCA(). 
+```{r}
+travel_matrix <- expand.grid(from_id = c("1", "2", "3"),
+                  to_id = c("1", "2", "3")) |>
+  mutate(travel_time = c(10, 30, 15, 30, 10, 25, 15, 25, 10)) |> data.table()
+
+land_use_data <- data.table(
+  id = c("1", "2", "3"),
+  population = c(4, 10, 6),
+  jobs = c(160, 150, 180)
+)
+```
+
+Spatial_availability() equality:
+```{r}
+constrained_accessibility("singly",
+                          travel_matrix, land_use_data,
+                                travel_cost = "travel_time",
+                                decay_function = decay_power(decay_value = 2),
+                                demand = "population",
+                                supply = "jobs",
+                                detailed_results = FALSE,
+                                return_demand_side = FALSE)
+
+spatial_availability(travel_matrix,
+    land_use_data,
+    opportunity = "jobs",
+    travel_cost = "travel_time",
+    demand = "population",
+    decay_function = decay_power(decay_value = 2),
+    alpha = 1
+  )
+```
+
+floating_catchment_area(method="2sfca") equality:
+```{r}
+result_singly <- constrained_accessibility("singly",
+                          travel_matrix, land_use_data,
+                                travel_cost = "travel_time",
+                                decay_function = decay_power(decay_value = 2),
+                                demand = "population",
+                                supply = "jobs",
+                                detailed_results = FALSE,
+                                return_demand_side = FALSE)
+
+round(result_singly$supply / land_use_data$population, 6)
+  
+floating_catchment_area(
+    travel_matrix,
+    land_use_data,
+    opportunity = "jobs",
+    travel_cost = "travel_time",
+    demand = "population",
+    method = "2sfca",
+    decay_function = decay_power(decay_value = 2)
+  )
+
+```
+yay!

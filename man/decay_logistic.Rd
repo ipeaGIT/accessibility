@@ -41,7 +41,7 @@ condition f(0) = 1 is met (i.e. the weight of an opportunity whose cost to
 reach is 0 is 1).
 }
 \examples{
-\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) withAutoprint(\{ # examplesIf}
 weighting_function <- decay_logistic(cutoff = 30, sd = 5)
 
 weighting_function(c(0, 30, 45, 60))
