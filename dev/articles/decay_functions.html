@@ -279,7 +279,7 @@ costs ranging from 1 to 100:</p>
 <span></span>
 <span><span class="va">travel_costs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">100</span>, <span class="fl">0.1</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">weights</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span></span>
+<span><span class="va">weights</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span></span>
 <span>  minutes <span class="op">=</span> <span class="va">travel_costs</span>,</span>
 <span>  binary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">binary</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span><span class="op">[[</span><span class="st">"50"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>  linear <span class="op">=</span> <span class="fu">linear</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span><span class="op">[[</span><span class="st">"50"</span><span class="op">]</span><span class="op">]</span>,</span>
@@ -290,7 +290,7 @@ costs ranging from 1 to 100:</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># reshape data to long format</span></span>
-<span><span class="va">weights</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/melt.data.table.html" class="external-link">melt</a></span><span class="op">(</span></span>
+<span><span class="va">weights</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/melt.data.table.html" class="external-link">melt</a></span><span class="op">(</span></span>
 <span>  <span class="va">weights</span>,</span>
 <span>  id.vars <span class="op">=</span> <span class="st">"minutes"</span>,</span>
 <span>  variable.name <span class="op">=</span> <span class="st">"decay_function"</span>,</span>
@@ -304,7 +304,7 @@ costs ranging from 1 to 100:</p>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="va">.</span> <span class="op">~</span> <span class="va">decay_function</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="decay_functions_files/figure-html/unnamed-chunk-4-1.png" width="80%"></p>
+<p><img src="decay_functions_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" width="80%"></p>
 </div>
 </div>
 </div>
@@ -429,8 +429,8 @@ a function.</p>
 <span><span class="co">#&gt;     names(weights_list) &lt;- decay_value</span></span>
 <span><span class="co">#&gt;     return(weights_list)</span></span>
 <span><span class="co">#&gt; }</span></span>
-<span><span class="co">#&gt; &lt;bytecode: 0x55caa55f1bd8&gt;</span></span>
-<span><span class="co">#&gt; &lt;environment: 0x55caa75d22c8&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; &lt;bytecode: 0x5610867a8678&gt;</span></span>
+<span><span class="co">#&gt; &lt;environment: 0x56108b6e0888&gt;</span></span></code></pre></div>
 <p>What if we want our custom function to take many decay parameters as
 inputs, just like the built-in decay functions? In this case, our output
 function has to return a <code>list</code> of <code>numeric</code>
@@ -524,7 +524,7 @@ Function</span> Within the <span>Floating Catchment Area</span>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

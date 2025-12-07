@@ -105,8 +105,8 @@ with the travel cost between origins and destinations.</p></dd>
 
 <dt id="arg-demand">demand<a class="anchor" aria-label="anchor" href="#arg-demand"></a></dt>
 <dd><p>A string. The name of the column in <code>land_use_data</code> with the
-number of people in each origin that will be considered potential
-competitors.</p></dd>
+number of opportunity-demanders at each origin (e.g., people) that will be
+considered.</p></dd>
 
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
@@ -158,17 +158,32 @@ travel matrix.</p>
 
 <p>The package currently includes two built-in FCA measures:</p><ul><li><p>2SFCA - the 2-Step Floating Catchment Area measure was the first
 accessibility metric in the FCA family. It was originally proposed by
-luo2003measures;textualaccessibility.</p></li>
+Luo and Wang (2003)
+.</p></li>
 <li><p>BFCA - the Balanced Floating Catchment Area measure calculates
 accessibility accounting for competition effects while simultaneously
 correcting for issues of inflation of demand and service levels that are
 present in other FCA measures. It was originally proposed by
-paez2019demand;textualaccessibility and named in
-pereira2021geographic;textualaccessibility.</p></li>
+Paez et al. (2019)
+ and named in
+Pereira et al. (2021)
+.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p></p>
+    <p>Luo W, Wang F (2003).
+“Measures of Spatial Accessibility to Health Care in a GIS Environment: Synthesis and a Case Study in the Chicago Region.”
+<em>Environment and Planning B: Planning and Design</em>, <b>30</b>(6), 865–884.
+ISSN 0265-8135, 1472-3417, <a href="https://doi.org/10.1068/b29120" class="external-link">doi:10.1068/b29120</a>
+.<br><br> Paez A, Higgins CD, Vivona SF (2019).
+“Demand and Level of Service Inflation in Floating Catchment Area (FCA) Methods.”
+<em>PLOS ONE</em>, <b>14</b>(6), e0218773.
+ISSN 1932-6203, <a href="https://doi.org/10.1371/journal.pone.0218773" class="external-link">doi:10.1371/journal.pone.0218773</a>
+.<br><br> Pereira RHM, Braga CKV, Servo LM, Serra B, Amaral P, Gouveia N, Paez A (2021).
+“Geographic Access to COVID-19 Healthcare in Brazil Using a Balanced Float Catchment Area Approach.”
+<em>Social Science &amp; Medicine</em>, <b>273</b>, 113773.
+ISSN 0277-9536, <a href="https://doi.org/10.1016/j.socscimed.2021.113773" class="external-link">doi:10.1016/j.socscimed.2021.113773</a>
+.</p>
     </div>
 
     <div class="section level2">
@@ -228,7 +243,7 @@ pereira2021geographic;textualaccessibility.</p></li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
