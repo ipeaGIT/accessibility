@@ -2,6 +2,7 @@
 
 export(balancing_cost)
 export(concentration_index)
+export(constrained_accessibility)
 export(cost_to_closest)
 export(cumulative_cutoff)
 export(cumulative_interval)

@@ -3,7 +3,6 @@
 \docType{package}
 \name{accessibility}
 \alias{accessibility}
-\alias{_PACKAGE}
 \alias{accessibility-package}
 \title{accessibility: Transport accessibility measures}
 \description{
