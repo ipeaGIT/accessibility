@@ -7,8 +7,10 @@
 A \code{data.table}/\code{data.frame} with results (structure mirrors the wrapper).
 }
 \description{
-Allocates total opportunities in the region proportionally based on travel impedance. Uses the logic of a total (or unconstrained by Wilon's terms) constraint. Returns values as either 'demand' or 'supply'
-Internal helper used by \code{\link[=constrained_accessibility]{constrained_accessibility()}} when \code{constraint = "total"}.
+Allocates total opportunities in the region proportionally based on travel
+impedance. Uses the logic of a total (or unconstrained by Wilon's terms)
+constraint. Returns values as either 'demand' or 'supply'. This is an internal
+helper function used by \code{\link[=constrained_accessibility]{constrained_accessibility()}} when \code{constraint = "total"}.
 }
 \examples{
 NULL

@@ -2,8 +2,9 @@
 #'
 #' Calculates accessibility using Wilson's doubly-constrained gravity model.
 #' This measure allocates flows between origins and destinations such that
-#' origin totals equal demand and destination totals equal supply.
-#' Internal helper used by [constrained_accessibility()] when `constraint = "doubly"`.
+#' origin totals equal demand and destination totals equal supply. This is an
+#' internal helper function used by [constrained_accessibility()] when
+#' `constraint = "doubly"`.
 #'
 #' @name doubly_constrained
 #' @keywords internal

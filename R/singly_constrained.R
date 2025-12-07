@@ -1,7 +1,9 @@
 #' Singly constrained accessibility
 #'
-#' Allocates opportunities at each destination proportionally based on travel impedance and population at the origin. Uses the logic of Wilon's single constraint. Returns values as either 'demand' or 'supply'.
-#' Internal helper used by [constrained_accessibility()] when `constraint = "singly"`.
+#' Allocates opportunities at each destination proportionally based on travel
+#' impedance and population at the origin. Uses the logic of Wilon's single
+#' constraint. Returns values as either 'demand' or 'supply'. This is an internal
+#' helper function used by [constrained_accessibility()] when `constraint = "singly"`.
 #'
 #' @name singly_constrained
 #' @keywords internal

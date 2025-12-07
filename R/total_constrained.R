@@ -1,7 +1,10 @@
 #' Total constrained accessibility
 #'
-#' Allocates total opportunities in the region proportionally based on travel impedance. Uses the logic of a total (or unconstrained by Wilon's terms) constraint. Returns values as either 'demand' or 'supply'
-#' Internal helper used by [constrained_accessibility()] when `constraint = "total"`.
+#' Allocates total opportunities in the region proportionally based on travel
+#' impedance. Uses the logic of a total (or unconstrained by Wilon's terms)
+#' constraint. Returns values as either 'demand' or 'supply'. This is an internal
+#' helper function used by [constrained_accessibility()] when `constraint = "total"`.
+#'
 #' @name total_constrained
 #' @keywords internal
 #' @return A `data.table`/`data.frame` with results (structure mirrors the wrapper).

@@ -4,7 +4,6 @@
 #' measure from the floating catchment area (FCA) family. Please see the
 #' details for the available FCA measures.
 #' @template description_generic_cost
-#'
 #' @template travel_matrix
 #' @template land_use_data
 #' @template opportunity

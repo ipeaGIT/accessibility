@@ -3,7 +3,6 @@
 #' Calculates gravity-based accessibility using a decay function specified by
 #' the user.
 #' @template description_generic_cost
-#'
 #' @template travel_matrix
 #' @template land_use_data
 #' @template opportunity

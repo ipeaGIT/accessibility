@@ -10,6 +10,7 @@ development:
 reference:
   - title: "Accessibility"
   - contents:
+    - constrained_accessibility
     - cost_to_closest
     - cumulative_cutoff
     - cumulative_interval

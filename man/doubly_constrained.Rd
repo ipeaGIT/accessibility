@@ -10,8 +10,9 @@ or marginals; see Details.
 \description{
 Calculates accessibility using Wilson's doubly-constrained gravity model.
 This measure allocates flows between origins and destinations such that
-origin totals equal demand and destination totals equal supply.
-Internal helper used by \code{\link[=constrained_accessibility]{constrained_accessibility()}} when \code{constraint = "doubly"}.
+origin totals equal demand and destination totals equal supply. This is an
+internal helper function used by \code{\link[=constrained_accessibility]{constrained_accessibility()}} when
+\code{constraint = "doubly"}.
 }
 \examples{
 NULL
