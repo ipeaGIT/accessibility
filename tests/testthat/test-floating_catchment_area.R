@@ -25,6 +25,7 @@ tester <- function(
   )
 }
 
+
 test_that("raises errors due to incorrect input", {
   expect_error(tester(method = 1))
   expect_error(tester(method = "a"))
