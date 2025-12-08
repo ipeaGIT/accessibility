@@ -24,9 +24,6 @@
 #' @template fill_missing_ids_combinations
 #' @param detailed_results Logical. Whether to return detailed OD-level results.
 #'
-#' @details
-#' See individual function documentation for mathematical details:
-#' [total_constrained()], [singly_constrained()], [doubly_constrained()].
 #' @section Details:
 #' This function covers the family of constrained accessibility measures
 #' proposed in \insertCite{soukhov2025family;textual}{accessibility}.
@@ -39,7 +36,7 @@
 #' constraint. Returns values as either `demand` or `supply`. When
 #' `return_demand_side = TRUE` (market potential variant) is also available.
 #'
-#' ## Singly constrained
+#' ## Singly constrained accessibility
 #'
 #' Allocates opportunities at each destination proportionally based on travel
 #' impedance and population at the origin. Uses the logic of single constraint
@@ -48,7 +45,7 @@
 #' when `return_demand_side = FALSE`. In either case, totals match either the
 #' demand at each origin or supply at each destination, depending on variant.
 #'
-#' ## Doubly constrained
+#' ## Doubly constrained accessibility
 #'
 #' Calculates accessibility using doubly-constrained gravity model of
 #' \insertCite{wilson1971family;textual}{accessibility}. This measure allocates

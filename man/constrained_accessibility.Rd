@@ -92,10 +92,6 @@ Please see the Details section for more information.
 This function is generic over any kind of numeric travel cost,
 such as distance, time and money.
 }
-\details{
-See individual function documentation for mathematical details:
-\code{\link[=total_constrained]{total_constrained()}}, \code{\link[=singly_constrained]{singly_constrained()}}, \code{\link[=doubly_constrained]{doubly_constrained()}}.
-}
 \section{Details}{
 
 This function covers the family of constrained accessibility measures
@@ -109,7 +105,7 @@ constraint. Returns values as either \code{demand} or \code{supply}. When
 \code{return_demand_side = TRUE} (market potential variant) is also available.
 }
 
-\subsection{Singly constrained}{
+\subsection{Singly constrained accessibility}{
 
 Allocates opportunities at each destination proportionally based on travel
 impedance and population at the origin. Uses the logic of single constraint
@@ -119,7 +115,7 @@ when \code{return_demand_side = FALSE}. In either case, totals match either the
 demand at each origin or supply at each destination, depending on variant.
 }
 
-\subsection{Doubly constrained}{
+\subsection{Doubly constrained accessibility}{
 
 Calculates accessibility using doubly-constrained gravity model of
 \insertCite{wilson1971family;textual}{accessibility}. This measure allocates
