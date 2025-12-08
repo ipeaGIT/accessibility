@@ -8,6 +8,8 @@
 - **Daniel Herszenhut**. Author, maintainer.
   [](https://orcid.org/0000-0001-8066-1105)
 
+- **Anastasia Soukhov**. Contributor.
+
 - **Joey Reid**. Contributor.
 
 - **Ipea - Institute for Applied Economic Research**. Copyright holder,

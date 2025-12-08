@@ -6,10 +6,11 @@ analyses. Given a pre-computed travel cost matrix and a land use dataset
 example), the package allows one to calculate accessibility levels and
 accessibility poverty and inequality. The package covers the majority of
 the most commonly used accessibility measures (such as cumulative
-opportunities, gravity-based and floating catchment areas methods), as
-well as the most frequently used inequality and poverty metrics (such as
-the Palma ratio, the concentration and Theil indices and the FGT family
-of measures).
+opportunities, gravity-based and floating catchment areas methods), some
+cutting edge measures proposed in the literature (e.g. balancing cost
+and constrained accessibility) as well as the most frequently used
+inequality and poverty metrics (such as the Palma ratio, the
+concentration and Theil indices and the FGT family of measures).
 
 ## Usage
 
@@ -51,6 +52,8 @@ Authors:
   ([ORCID](https://orcid.org/0000-0003-2125-7465))
 
 Other contributors:
+
+- Anastasia Soukhov \[contributor\]
 
 - Joey Reid \[contributor\]
 

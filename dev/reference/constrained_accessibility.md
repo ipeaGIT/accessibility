@@ -1,6 +1,7 @@
 # Constrained accessibility
 
-Calculates accessibility using constrained gravity models:
+Calculates accessibility using constrained gravity models, as proposed
+in Soukhov et al. (2025) :
 
 - `"total"`: Allocates total opportunities proportionally based on
   travel impedance.
@@ -9,7 +10,8 @@ Calculates accessibility using constrained gravity models:
   side (demand or supply).
 
 - `"doubly"`: Allocates flows so origin totals equal demand and
-  destination totals equal supply.
+  destination totals equal supply. Please see the Details section for
+  more information.
 
 This function is generic over any kind of numeric travel cost, such as
 distance, time and money.
@@ -23,8 +25,8 @@ constrained_accessibility(
   land_use_data,
   travel_cost,
   decay_function,
-  demand,
-  supply,
+  demand = NULL,
+  supply = NULL,
   return_demand_side = NULL,
   error_threshold = 0.001,
   improvement_threshold = 1e-06,
@@ -134,16 +136,67 @@ See individual function documentation for mathematical details:
 [`singly_constrained()`](https://ipeagit.github.io/accessibility/dev/reference/singly_constrained.md),
 [`doubly_constrained()`](https://ipeagit.github.io/accessibility/dev/reference/doubly_constrained.md).
 
+## Details
+
+This function covers the family of constrained accessibility measures
+proposed in Soukhov et al. (2025) .
+
+### Total constrained accessibility
+
+Sum of accessibility equals total opportunities (supply) in the region.
+It allocates total opportunities in the region proportionally based on
+travel impedance. Uses the logic of a total ~(or unconstrained by
+Wilon's terms)~ constraint. Returns values as either `demand` or
+`supply`. When `return_demand_side = TRUE` (market potential variant) is
+also available.
+
+### Singly constrained
+
+Allocates opportunities at each destination proportionally based on
+travel impedance and population at the origin. Uses the logic of single
+constraint from Wilson (1971) . Returns values as either 'demand' or
+'supply'. Supply-constrained (destination totals fixed) when
+`return_demand_side = FALSE`. In either case, totals match either the
+demand at each origin or supply at each destination, depending on
+variant.
+
+### Doubly constrained
+
+Calculates accessibility using doubly-constrained gravity model of
+Wilson (1971) . This measure allocates flows between origins and
+destinations such that origin totals equal demand and destination totals
+equal supply. Iterative proportional fitting updates (A_i) and (B_j)
+until convergence. This ensures that row sums equal (O_i) (demand) and
+column sums equal (D_j) (supply). Note, only OD-level outputs are
+available (as aggregate outputs just match inputs).
+
+## References
+
+Soukhov A, Pereira RH, Higgins CD, Páez A (2025). “A family of
+accessibility measures derived from spatial interaction principles.”
+*PLoS One*, **20**(11), e0335951.  
+  
+Wilson AG (1971). “A family of spatial interaction models, and
+associated developments.” *Environment and Planning A*, **3**(1), 1–32.
+
+## See also
+
+Other Constrained accessibility:
+[`spatial_availability()`](https://ipeagit.github.io/accessibility/dev/reference/spatial_availability.md)
+
 ## Examples
 
 ``` r
-# Load demo data shipped with the package (used for 'total' and 'singly')
+# Load demo data shipped with the package
 data_dir <- system.file("extdata", package = "accessibility")
 travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
 land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
 
 # Total-constrained (supply-side)
-constrained_accessibility("total", travel_matrix, land_use_data,
+constrained_accessibility(
+  constraint =   "total",
+  travel_matrix = travel_matrix,
+  land_use_data = land_use_data,
   travel_cost     = "travel_time",
   decay_function  = decay_exponential(0.1),
   demand          = NULL,
@@ -165,7 +218,10 @@ constrained_accessibility("total", travel_matrix, land_use_data,
 #> 898: 89a881aebafffff   0.0000
 
 # Singly-constrained (demand-side)
-constrained_accessibility("singly", travel_matrix, land_use_data,
+constrained_accessibility(
+  constraint =   "singly",
+  travel_matrix = travel_matrix,
+  land_use_data = land_use_data,
   travel_cost     = "travel_time",
   decay_function  = decay_exponential(0.1),
   demand          = "population",
@@ -208,7 +264,10 @@ lu_small <- data.table::data.table(
   jobs       = c(7,  5,  8)   # sum = 20
 )
 
-constrained_accessibility("doubly", tm_small, lu_small,
+constrained_accessibility(
+  constraint = "doubly",
+  travel_matrix = tm_small,
+  land_use_data = lu_small,
   travel_cost     = "travel_time",
   decay_function  = decay_exponential(0.1),
   demand          = "population",

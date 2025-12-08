@@ -124,6 +124,11 @@ Accessibility.” *PLOS ONE*, **18**(1), e0278468. ISSN 1932-6203,
 [doi:10.1371/journal.pone.0278468](https://doi.org/10.1371/journal.pone.0278468)
 .
 
+## See also
+
+Other Constrained accessibility:
+[`constrained_accessibility()`](https://ipeagit.github.io/accessibility/dev/reference/constrained_accessibility.md)
+
 ## Examples
 
 ``` r
