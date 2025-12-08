@@ -6,22 +6,7 @@ output: html_document
 ```{r}
 library(data.table)
 library(dplyr)
-source("R/assert_and_assign.R")  
-source("R/merge_by_reference.R")
-source("R/apply_gravity_measure.R")
-source("R/warn_extra_cols.R")
-source("R/fill_missing_ids.R")
-
-
-# source("R/total_constrained.R")
-# source("R/singly_constrained.R")
-#source("R/doubly_constrained.R")
-source("R/constrained_accessibility.R")
-
-source("R/decay_exponential.R")
-source("R/decay_power.R")
-source("R/spatial_availability.R")
-source("R/floating_catchment_area.R")
+devtools::load_all(".")
 ```
 
 # Test 1. Toy data from the spaital availability (2023) paper.
@@ -45,34 +30,46 @@ decay <- decay_exponential(decay_value = 0.1)
 
 
 ```{r}
-agg_false <- constrained_accessibility("total",
-                                       travel_matrix, land_use_data,
-                                travel_cost = "travel_time",
-                                decay_function = decay,
-                                demand = NULL,
-                                supply = "jobs",
-                                detailed_results = FALSE,
-                                return_demand_side = FALSE)
+agg_false <- constrained_accessibility(
+  constraint = "total",
+  travel_matrix, land_use_data,
+  travel_cost = "travel_time",
+  decay_function = decay,
+  demand = NULL,
+  supply = "jobs",
+  detailed_results = FALSE,
+  return_demand_side = FALSE)
+
 agg_false
 
-agg_true <- constrained_accessibility("total", travel_matrix, land_use_data,
-                                travel_cost = "travel_time",
-                                decay_function = decay,
-                                demand = "population",
-                                supply = NULL,
-                                detailed_results = FALSE,
-                                return_demand_side = TRUE)
+agg_true <- constrained_accessibility(
+  constraint = "total", 
+  travel_matrix = travel_matrix, 
+  land_use_data = land_use_data,
+  travel_cost = "travel_time",
+  decay_function = decay,
+  demand = "population",
+  supply = NULL,
+  detailed_results = FALSE,
+  return_demand_side = TRUE
+  )
+
 agg_true
 
-det_false <- constrained_accessibility("total", travel_matrix, land_use_data,
+det_false <- constrained_accessibility(
+  constraint = "total", 
+  travel_matrix, 
+  land_use_data,
                                 travel_cost = "travel_time",
                                 decay_function = decay,
                                 demand = NULL,
                                 supply = "jobs",
                                 detailed_results = TRUE,
-                                return_demand_side = FALSE)
+                                return_demand_side = FALSE
+  )
+
 det_false
-det_true <- constrained_accessibility("total", travel_matrix, land_use_data,
+det_true <- constrained_accessibility(constraint = "total", travel_matrix, land_use_data,
                                travel_cost = "travel_time",
                                decay_function = decay,
                                demand = "population",
@@ -94,7 +91,7 @@ det_true$hatkappa_total |> sum()
 
 ## SINGLE CONST
 ```{r}
-agg_false <- constrained_accessibility("singly", travel_matrix, land_use_data,
+agg_false <- constrained_accessibility(constraint = "singly", travel_matrix, land_use_data,
                                 travel_cost = "travel_time",
                                 decay_function = decay,
                                 demand = "population",
@@ -103,7 +100,7 @@ agg_false <- constrained_accessibility("singly", travel_matrix, land_use_data,
                                 return_demand_side = FALSE)
 agg_false
 
-agg_true <- constrained_accessibility("singly", travel_matrix, land_use_data,
+agg_true <- constrained_accessibility(constraint = "singly", travel_matrix, land_use_data,
                                 travel_cost = "travel_time",
                                 decay_function = decay,
                                 demand = "population",
@@ -112,7 +109,7 @@ agg_true <- constrained_accessibility("singly", travel_matrix, land_use_data,
                                 return_demand_side = TRUE)
 agg_true
 
-det_false <- constrained_accessibility("singly", travel_matrix, land_use_data,
+det_false <- constrained_accessibility(constraint = "singly", travel_matrix, land_use_data,
                                 travel_cost = "travel_time",
                                 decay_function = decay,
                                 demand = "population",
@@ -122,7 +119,7 @@ det_false <- constrained_accessibility("singly", travel_matrix, land_use_data,
 det_false
 
 
-det_true <- constrained_accessibility("singly", travel_matrix, land_use_data,
+det_true <- constrained_accessibility(constraint = "singly", travel_matrix, land_use_data,
                                travel_cost = "travel_time",
                                decay_function = decay,
                                demand = "population",
@@ -205,7 +202,7 @@ constrained_accessibility(constraint="total",
 
 11/12 --> Singly-constrained  works! I tested it for all decay scenarios (3, 2, 0.1)!
 ```{r}
-constrained_accessibility("singly",
+constrained_accessibility(constraint = "singly",
                           travel_matrix, land_use_data,
                                 travel_cost = "travel_time",
                                 decay_function = decay_power(decay_value = 3),
@@ -214,7 +211,7 @@ constrained_accessibility("singly",
                                 detailed_results = TRUE,
                                 return_demand_side = FALSE)
 
-constrained_accessibility("singly",
+constrained_accessibility(constraint = "singly",
                           travel_matrix, land_use_data,
                                 travel_cost = "travel_time",
                                 decay_function = decay_power(decay_value = 3),
@@ -244,7 +241,7 @@ land_use_data <- data.table(
 11/12 --> tested this for decay_value =3 (table 10), and check zone 2 for all scenarios (3, 2, 0.1) in Table 11 and they match! Though.. the paper accidentally flips the columns.
 ```{r}
 det <- 
-  constrained_accessibility("doubly",
+  constrained_accessibility(constraint = "doubly",
   #doubly_constrained(
     travel_matrix, land_use_data,
                                 travel_cost = "travel_time",
@@ -257,7 +254,7 @@ det <-
 det
 
 agg <- 
-  constrained_accessibility("doubly",
+  constrained_accessibility(constraint = "doubly",
                             #doubly_constrained(
                             travel_matrix, land_use_data,
                                 travel_cost = "travel_time",
@@ -291,7 +288,7 @@ land_use_data <- data.table(
 
 Spatial_availability() equality:
 ```{r}
-constrained_accessibility("singly",
+constrained_accessibility(constraint = "singly",
                           travel_matrix, land_use_data,
                                 travel_cost = "travel_time",
                                 decay_function = decay_power(decay_value = 2),
@@ -312,7 +309,7 @@ spatial_availability(travel_matrix,
 
 floating_catchment_area(method="2sfca") equality:
 ```{r}
-result_singly <- constrained_accessibility("singly",
+result_singly <- constrained_accessibility(constraint = "singly",
                           travel_matrix, land_use_data,
                                 travel_cost = "travel_time",
                                 decay_function = decay_power(decay_value = 2),

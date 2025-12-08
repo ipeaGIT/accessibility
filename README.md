@@ -18,9 +18,11 @@ healthcare and population, for example), the package allows one to
 calculate accessibility levels and accessibility poverty and inequality.
 The package covers the majority of the most commonly used accessibility
 measures (such as cumulative opportunities, gravity-based and floating
-catchment areas methods), as well as the most frequently used inequality
-and poverty metrics (such as the Palma ratio, the concentration and
-Theil indices and the FGT family of measures).
+catchment areas methods), some cutting edge measures proposed in the
+literature (e.g. balancing cost and constrained accessibility), as well
+as the most frequently used inequality and poverty metrics (such as the
+Palma ratio, the concentration and Theil indices and the FGT family of
+measures).
 
 ## Installation
 

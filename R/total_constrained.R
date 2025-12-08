@@ -34,8 +34,6 @@ total_constrained <- function(travel_matrix,
                               supply = NULL) { # jobs
 
   # Validate inputs
-  checkmate::assert_string(travel_cost)
-  checkmate::assert_logical(detailed_results, len = 1, any.missing = FALSE)
   checkmate::assert_logical(return_demand_side, len = 1, any.missing = FALSE)
 
   if (return_demand_side) {

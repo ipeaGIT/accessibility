@@ -73,8 +73,8 @@ travel matrix.
 }
 \description{
 Calculates accessibility accounting for the competition of resources using a
-measure from the floating catchment area (FCA) family. Please see the
-details for the available FCA measures.
+measure from the floating catchment area (FCA) family. Please see the details
+for the available FCA measures.
 
 This function is generic over any kind of numeric travel cost,
 such as distance, time and money.

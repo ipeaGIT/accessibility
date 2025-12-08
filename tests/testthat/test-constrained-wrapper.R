@@ -15,31 +15,55 @@ test_that("constrained_accessibility: wrapper argument rules are enforced", {
 
   # invalid constraint -> any error is fine
   expect_error(
-    constrained_accessibility("invalid", tm, lu,
-                              travel_cost = "travel_time", decay_function = decay,
-                              demand = "population", supply = "jobs", return_demand_side = TRUE
+    constrained_accessibility(
+      constraint = "invalid",
+      travel_matrix = tm,
+      land_use_data = lu,
+      travel_cost = "travel_time",
+      decay_function = decay,
+      demand = "population",
+      supply = "jobs",
+      return_demand_side = TRUE
     )
   )
 
   # total/singly require TRUE or FALSE (not NULL)
   expect_error(
-    constrained_accessibility("total", tm, lu,
-                              travel_cost = "travel_time", decay_function = decay,
-                              demand = "population", supply = "jobs", return_demand_side = NULL
+    constrained_accessibility(
+      constraint = "total",
+      travel_matrix = tm,
+      land_use_data = lu,
+      travel_cost = "travel_time",
+      decay_function = decay,
+      demand = "population",
+      supply = "jobs",
+      return_demand_side = NULL
     )
   )
   expect_error(
-    constrained_accessibility("singly", tm, lu,
-                              travel_cost = "travel_time", decay_function = decay,
-                              demand = "population", supply = "jobs", return_demand_side = NULL
+    constrained_accessibility(
+      constraint = "singly",
+      travel_matrix = tm,
+      land_use_data = lu,
+      travel_cost = "travel_time",
+      decay_function = decay,
+      demand = "population",
+      supply = "jobs",
+      return_demand_side = NULL
     )
   )
 
   # doubly requires NULL (error if TRUE)
   expect_error(
-    constrained_accessibility("doubly", tm, lu,
-                              travel_cost = "travel_time", decay_function = decay,
-                              demand = "population", supply = "jobs", return_demand_side = TRUE
+    constrained_accessibility(
+      constraint = "doubly",
+      travel_matrix = tm,
+      land_use_data = lu,
+      travel_cost = "travel_time",
+      decay_function = decay,
+      demand = "population",
+      supply = "jobs",
+      return_demand_side = TRUE
     )
   )
 })

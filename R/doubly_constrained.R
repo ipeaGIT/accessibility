@@ -36,19 +36,12 @@ doubly_constrained <- function(travel_matrix,
                                fill_missing_ids = TRUE,
                                detailed_results = FALSE) {
   # Validate inputs
-  checkmate::assert_string(travel_cost)
   checkmate::assert_string(demand)
   checkmate::assert_string(supply)
   checkmate::assert_null(return_demand_side)
   checkmate::assert_number(error_threshold, lower = 0)
   checkmate::assert_number(improvement_threshold, lower = 0)
   checkmate::assert_int(max_iterations, lower = 1)
-  checkmate::assert_logical(detailed_results, len = 1)
-  assert_decay_function(decay_function)
-  assert_group_by(group_by)
-  assert_detailed_fill_missing_ids(fill_missing_ids, detailed_results)
-  assert_travel_matrix(travel_matrix, travel_cost, group_by)
-  assert_land_use_data(land_use_data, travel_matrix, opportunity = supply, demand = demand)
 
   # Convert to data.table
   if (!inherits(travel_matrix, "data.table")) {

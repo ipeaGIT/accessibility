@@ -3,7 +3,7 @@
 #' Calculates the balancing cost measure, which is defined as the travel cost
 #' required to reach as many opportunities as the number of people in a given
 #' origin. Originally proposed by
-#' \insertCite{barboza2021balancing;textual}{accessibility}, under the name
+#'  \insertCite{barboza2021balancing;textual}{accessibility}, under the name
 #' "balancing time".
 #' @template description_generic_cost
 #'

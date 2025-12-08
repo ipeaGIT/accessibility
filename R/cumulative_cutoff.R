@@ -94,6 +94,7 @@ cumulative_cutoff <- function(travel_matrix,
                               group_by = character(0),
                               active = TRUE,
                               fill_missing_ids = TRUE) {
+
   checkmate::assert_string(opportunity)
   checkmate::assert_character(
     travel_cost,

@@ -7,19 +7,21 @@ Authors@R: c(
            comment = c(ORCID = "0000-0003-2125-7465")),
     person("Daniel", "Herszenhut", , "dhersz@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8066-1105")),
+    person("Anastasia", "Soukhov", role = "ctb"),
     person("Joey", "Reid", role = "ctb"),
     person("Ipea - Institute for Applied Economic Research", role = c("cph", "fnd"))
   )
-Description: A set of fast and convenient functions to help conducting
-    accessibility analyses. Given a pre-computed travel cost matrix and a
-    land use dataset (containing the location of jobs, healthcare and
-    population, for example), the package allows one to calculate
-    accessibility levels and accessibility poverty and inequality. The
-    package covers the majority of the most commonly used accessibility
-    measures (such as cumulative opportunities, gravity-based and floating
-    catchment areas methods), as well as the most frequently used
-    inequality and poverty metrics (such as the Palma ratio, the
-    concentration and Theil indices and the FGT family of measures).
+Description: A set of fast and convenient functions to help conducting 
+    accessibility analyses. Given a pre-computed travel cost matrix and a land 
+    use dataset (containing the location of jobs, healthcare and population, for 
+    example), the package allows one to calculate accessibility levels and 
+    accessibility poverty and inequality. The package covers the majority of the 
+    most commonly used accessibility measures (such as cumulative opportunities, 
+    gravity-based and floating catchment areas methods), some cutting edge 
+    measures proposed in the literature (e.g. balancing cost and constrained 
+    accessibility) as well as the most frequently used inequality and poverty 
+    metrics (such as the Palma ratio, the concentration and Theil indices and 
+    the FGT family of measures).
 License: MIT + file LICENSE
 URL: https://github.com/ipeaGIT/accessibility,
     https://ipeagit.github.io/accessibility/
