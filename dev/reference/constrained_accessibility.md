@@ -131,13 +131,6 @@ constrained_accessibility(
 
 ## Details
 
-See individual function documentation for mathematical details:
-[`total_constrained()`](https://ipeagit.github.io/accessibility/dev/reference/total_constrained.md),
-[`singly_constrained()`](https://ipeagit.github.io/accessibility/dev/reference/singly_constrained.md),
-[`doubly_constrained()`](https://ipeagit.github.io/accessibility/dev/reference/doubly_constrained.md).
-
-## Details
-
 This function covers the family of constrained accessibility measures
 proposed in Soukhov et al. (2025) .
 
@@ -150,7 +143,7 @@ Wilon's terms)~ constraint. Returns values as either `demand` or
 `supply`. When `return_demand_side = TRUE` (market potential variant) is
 also available.
 
-### Singly constrained
+### Singly constrained accessibility
 
 Allocates opportunities at each destination proportionally based on
 travel impedance and population at the origin. Uses the logic of single
@@ -160,7 +153,7 @@ constraint from Wilson (1971) . Returns values as either 'demand' or
 demand at each origin or supply at each destination, depending on
 variant.
 
-### Doubly constrained
+### Doubly constrained accessibility
 
 Calculates accessibility using doubly-constrained gravity model of
 Wilson (1971) . This measure allocates flows between origins and
