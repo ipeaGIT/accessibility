@@ -4,7 +4,8 @@ Calculates spatial availability, an accessibility measured proposed by
 Soukhov et al. (2023) that takes into account competition effects. The
 accessibility levels that result from using this measure are
 proportional both to the demand in each origin and to the travel cost it
-takes to reach the destinations.
+takes to reach the destinations. The spatial availability is a
+particular case of `constrained_accessibility(constraint = "singly")`.
 
 This function is generic over any kind of numeric travel cost, such as
 distance, time and money.

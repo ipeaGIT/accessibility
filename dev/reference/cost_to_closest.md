@@ -66,10 +66,11 @@ cost_to_closest(
 
 - active:
 
-  A logical. Whether to calculate active accessibility (the of
-  opportunities that can be reached from a given origin, the default) or
-  passive accessibility (by how many people each destination can be
-  reached).
+  A logical. When `TRUE`, the function calculates active accessibility
+  (the quantity of opportunities that can be reached from a given
+  origin). when `FALSE`, it calculates passive accessibility (by how
+  many people each destination can be reached), which is equivalent to
+  the notion of market potential.
 
 - fill_missing_ids:
 

@@ -27,7 +27,7 @@ constrained_accessibility(
   decay_function,
   demand = NULL,
   supply = NULL,
-  return_demand_side = NULL,
+  active = TRUE,
   error_threshold = 0.001,
   improvement_threshold = 1e-06,
   max_iterations = 1000,
@@ -41,7 +41,8 @@ constrained_accessibility(
 
 - constraint:
 
-  A string. One of `"total"`, `"singly"`, or `"doubly"`.
+  A string. One of `"total"`, `"singly"`, or `"doubly"`. See Details
+  section for more information.
 
 - travel_matrix:
 
@@ -87,21 +88,29 @@ constrained_accessibility(
   opportunity supply at each destination (e.g., jobs, school-seats) that
   will be considered.
 
-- return_demand_side:
+- active:
 
-  Logical for `"total"` and `"singly"`, must be `NULL` for `"doubly"`.
+  A logical. When `TRUE`, the function calculates active accessibility
+  (the quantity of opportunities that can be reached from a given
+  origin). when `FALSE`, it calculates passive accessibility (by how
+  many people each destination can be reached), which is equivalent to
+  the notion of market potential. This parameter only works for
+  `constraint` types `"total"` and `"singly"`. Ignored for
+  `constraint = "doubly"`.
 
 - error_threshold:
 
-  Numeric. Convergence criterion for doubly-constrained case.
+  Numeric. Convergence criterion used only for doubly-constrained case.
 
 - improvement_threshold:
 
-  Numeric. Convergence criterion for improvement.
+  Numeric. Convergence criterion for improvement used only for
+  doubly-constrained case.
 
 - max_iterations:
 
-  Integer. Maximum iterations for doubly-constrained calibration.
+  Integer. Maximum iterations used only for doubly-constrained
+  calibration.
 
 - group_by:
 
@@ -139,9 +148,9 @@ proposed in Soukhov et al. (2025) .
 Sum of accessibility equals total opportunities (supply) in the region.
 It allocates total opportunities in the region proportionally based on
 travel impedance. Uses the logic of a total ~(or unconstrained by
-Wilon's terms)~ constraint. Returns values as either `demand` or
-`supply`. When `return_demand_side = TRUE` (market potential variant) is
-also available.
+Wilson's terms)~ constraint. Returns values as either `demand` or
+`supply`. When `active = FALSE` (market potential variant) is also
+available.
 
 ### Singly constrained accessibility
 
@@ -149,9 +158,11 @@ Allocates opportunities at each destination proportionally based on
 travel impedance and population at the origin. Uses the logic of single
 constraint from Wilson (1971) . Returns values as either 'demand' or
 'supply'. Supply-constrained (destination totals fixed) when
-`return_demand_side = FALSE`. In either case, totals match either the
+`market_potential = FALSE`. In either case, totals match either the
 demand at each origin or supply at each destination, depending on
-variant.
+variant. This is equivalent to the
+[`spatial_availability()`](https://ipeagit.github.io/accessibility/dev/reference/spatial_availability.md)
+function.
 
 ### Doubly constrained accessibility
 
@@ -194,21 +205,9 @@ constrained_accessibility(
   decay_function  = decay_exponential(0.1),
   demand          = NULL,
   supply          = "jobs",
-  return_demand_side = FALSE
+  active = FALSE
 )
-#>              from_id   supply
-#>               <char>    <num>
-#>   1: 89a88cdb57bffff 263.8175
-#>   2: 89a88cdb597ffff 264.7306
-#>   3: 89a88cdb5b3ffff 319.5332
-#>   4: 89a88cdb5cfffff 428.2523
-#>   5: 89a88cd909bffff 291.7166
-#>  ---                         
-#> 894: 89a881acda3ffff 280.1091
-#> 895: 89a88cdb543ffff 697.2299
-#> 896: 89a88cda667ffff 346.8143
-#> 897: 89a88cd900fffff 113.1569
-#> 898: 89a881aebafffff   0.0000
+#> Error in total_constrained(travel_matrix = travel_matrix, land_use_data = land_use_data,     travel_cost = travel_cost, decay_function = decay_function,     group_by = group_by, fill_missing_ids = fill_missing_ids,     detailed_results = detailed_results, active = active, demand = if (!active) demand else NULL,     supply = if (active) supply else NULL): For active = FALSE, demand must be specified and supply must be NULL.
 
 # Singly-constrained (demand-side)
 constrained_accessibility(
@@ -219,20 +218,20 @@ constrained_accessibility(
   decay_function  = decay_exponential(0.1),
   demand          = "population",
   supply          = "jobs",
-  return_demand_side = TRUE
+  active = TRUE
 )
-#>                to_id    demand
+#>              from_id    supply
 #>               <char>     <num>
-#>   1: 89a88cdb57bffff  67.95218
-#>   2: 89a88cdb597ffff 661.02294
-#>   3: 89a88cdb5b3ffff 228.67413
-#>   4: 89a88cdb5cfffff  88.35283
-#>   5: 89a88cd909bffff   0.00000
+#>   1: 89a88cdb57bffff  186.0876
+#>   2: 89a88cdb597ffff  140.0738
+#>   3: 89a88cdb5b3ffff  736.5830
+#>   4: 89a88cdb5cfffff  900.9284
+#>   5: 89a88cd909bffff    0.0000
 #>  ---                          
-#> 894: 89a881ae92fffff   0.00000
-#> 895: 89a881ae923ffff   0.00000
-#> 896: 89a881ae9afffff   0.00000
-#> 897: 89a88cd8407ffff  36.87961
+#> 894: 89a881acda3ffff  453.8818
+#> 895: 89a88cdb543ffff 1184.0239
+#> 896: 89a88cda667ffff  276.2530
+#> 897: 89a88cd900fffff  103.5370
 #> 898: 89a881aebafffff       NaN
 
 # Doubly-constrained: use a small toy dataset with matching totals
@@ -264,16 +263,7 @@ constrained_accessibility(
   travel_cost     = "travel_time",
   decay_function  = decay_exponential(0.1),
   demand          = "population",
-  supply          = "jobs",
-  return_demand_side = NULL
+  supply          = "jobs"
 )
-#> Warning: Aggregated results equal marginals (O_i or D_j). Interpret with caution.
-#>        id  flow
-#>    <fctr> <num>
-#> 1:      1     4
-#> 2:      2    10
-#> 3:      3     6
-#> 4:      1     7
-#> 5:      2     5
-#> 6:      3     8
+#> Error in constrained_accessibility(constraint = "doubly", travel_matrix = tm_small,     land_use_data = lu_small, travel_cost = "travel_time", decay_function = decay_exponential(0.1),     demand = "population", supply = "jobs"): For 'doubly', the 'active' parameter is not used.
 ```

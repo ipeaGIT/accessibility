@@ -85,7 +85,7 @@ such as distance, time and money.</p>
 <span>  <span class="va">decay_function</span>,</span>
 <span>  demand <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  supply <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  return_demand_side <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  active <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  error_threshold <span class="op">=</span> <span class="fl">0.001</span>,</span>
 <span>  improvement_threshold <span class="op">=</span> <span class="fl">1e-06</span>,</span>
 <span>  max_iterations <span class="op">=</span> <span class="fl">1000</span>,</span>
@@ -100,7 +100,8 @@ such as distance, time and money.</p>
 
 
 <dl><dt id="arg-constraint">constraint<a class="anchor" aria-label="anchor" href="#arg-constraint"></a></dt>
-<dd><p>A string. One of <code>"total"</code>, <code>"singly"</code>, or <code>"doubly"</code>.</p></dd>
+<dd><p>A string. One of <code>"total"</code>, <code>"singly"</code>, or <code>"doubly"</code>. See
+Details section for more information.</p></dd>
 
 
 <dt id="arg-travel-matrix">travel_matrix<a class="anchor" aria-label="anchor" href="#arg-travel-matrix"></a></dt>
@@ -143,20 +144,29 @@ number of opportunity supply at each destination (e.g., jobs, school-seats)
 that will be considered.</p></dd>
 
 
-<dt id="arg-return-demand-side">return_demand_side<a class="anchor" aria-label="anchor" href="#arg-return-demand-side"></a></dt>
-<dd><p>Logical for <code>"total"</code> and <code>"singly"</code>, must be <code>NULL</code> for <code>"doubly"</code>.</p></dd>
+<dt id="arg-active">active<a class="anchor" aria-label="anchor" href="#arg-active"></a></dt>
+<dd><p>A logical. When <code>TRUE</code>, the function calculates active
+accessibility (the quantity of opportunities that can be reached from
+a given origin). when <code>FALSE</code>, it calculates passive accessibility (by
+how many people each destination can be reached), which is equivalent
+to the notion of market potential. This parameter only works for
+<code>constraint</code> types <code>"total"</code> and <code>"singly"</code>. Ignored for
+<code>constraint = "doubly"</code>.</p></dd>
 
 
 <dt id="arg-error-threshold">error_threshold<a class="anchor" aria-label="anchor" href="#arg-error-threshold"></a></dt>
-<dd><p>Numeric. Convergence criterion for doubly-constrained case.</p></dd>
+<dd><p>Numeric. Convergence criterion used only for
+doubly-constrained case.</p></dd>
 
 
 <dt id="arg-improvement-threshold">improvement_threshold<a class="anchor" aria-label="anchor" href="#arg-improvement-threshold"></a></dt>
-<dd><p>Numeric. Convergence criterion for improvement.</p></dd>
+<dd><p>Numeric. Convergence criterion for improvement
+used only for doubly-constrained case.</p></dd>
 
 
 <dt id="arg-max-iterations">max_iterations<a class="anchor" aria-label="anchor" href="#arg-max-iterations"></a></dt>
-<dd><p>Integer. Maximum iterations for doubly-constrained calibration.</p></dd>
+<dd><p>Integer. Maximum iterations used only for
+doubly-constrained calibration.</p></dd>
 
 
 <dt id="arg-group-by">group_by<a class="anchor" aria-label="anchor" href="#arg-group-by"></a></dt>
@@ -196,9 +206,9 @@ proposed in Soukhov et al. (2025)
 
 <p>Sum of accessibility equals total opportunities (supply) in the region.
 It allocates total opportunities in the region proportionally based on travel
-impedance. Uses the logic of a total ~(or unconstrained by Wilon's terms)~
+impedance. Uses the logic of a total ~(or unconstrained by Wilson's terms)~
 constraint. Returns values as either <code>demand</code> or <code>supply</code>. When
-<code>return_demand_side = TRUE</code> (market potential variant) is also available.</p>
+<code>active = FALSE</code> (market potential variant) is also available.</p>
 </div>
 
 <div class="section">
@@ -210,8 +220,9 @@ impedance and population at the origin. Uses the logic of single constraint
 from Wilson (1971)
 . Returns values as
 either 'demand' or 'supply'. Supply-constrained (destination totals fixed)
-when <code>return_demand_side = FALSE</code>. In either case, totals match either the
-demand at each origin or supply at each destination, depending on variant.</p>
+when <code>market_potential = FALSE</code>. In either case, totals match either the
+demand at each origin or supply at each destination, depending on variant.
+This is equivalent to the <code><a href="spatial_availability.html">spatial_availability()</a></code> function.</p>
 </div>
 
 <div class="section">
@@ -259,21 +270,9 @@ are available (as aggregate outputs just match inputs).</p>
 <span class="r-in"><span>  decay_function  <span class="op">=</span> <span class="fu"><a href="decay_exponential.html">decay_exponential</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  demand          <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
 <span class="r-in"><span>  supply          <span class="op">=</span> <span class="st">"jobs"</span>,</span></span>
-<span class="r-in"><span>  return_demand_side <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span>  active <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              from_id   supply</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;char&gt;    &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1: 89a88cdb57bffff 263.8175</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2: 89a88cdb597ffff 264.7306</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3: 89a88cdb5b3ffff 319.5332</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4: 89a88cdb5cfffff 428.2523</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5: 89a88cd909bffff 291.7166</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 894: 89a881acda3ffff 280.1091</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 895: 89a88cdb543ffff 697.2299</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 896: 89a88cda667ffff 346.8143</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 897: 89a88cd900fffff 113.1569</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 898: 89a881aebafffff   0.0000</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in total_constrained(travel_matrix = travel_matrix, land_use_data = land_use_data,     travel_cost = travel_cost, decay_function = decay_function,     group_by = group_by, fill_missing_ids = fill_missing_ids,     detailed_results = detailed_results, active = active, demand = if (!active) demand else NULL,     supply = if (active) supply else NULL):</span> For active = FALSE, demand must be specified and supply must be NULL.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Singly-constrained (demand-side)</span></span></span>
 <span class="r-in"><span><span class="fu">constrained_accessibility</span><span class="op">(</span></span></span>
@@ -284,20 +283,20 @@ are available (as aggregate outputs just match inputs).</p>
 <span class="r-in"><span>  decay_function  <span class="op">=</span> <span class="fu"><a href="decay_exponential.html">decay_exponential</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  demand          <span class="op">=</span> <span class="st">"population"</span>,</span></span>
 <span class="r-in"><span>  supply          <span class="op">=</span> <span class="st">"jobs"</span>,</span></span>
-<span class="r-in"><span>  return_demand_side <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  active <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                to_id    demand</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              from_id    supply</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               &lt;char&gt;     &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1: 89a88cdb57bffff  67.95218</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2: 89a88cdb597ffff 661.02294</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3: 89a88cdb5b3ffff 228.67413</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4: 89a88cdb5cfffff  88.35283</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5: 89a88cd909bffff   0.00000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1: 89a88cdb57bffff  186.0876</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2: 89a88cdb597ffff  140.0738</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3: 89a88cdb5b3ffff  736.5830</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4: 89a88cdb5cfffff  900.9284</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5: 89a88cd909bffff    0.0000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 894: 89a881ae92fffff   0.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 895: 89a881ae923ffff   0.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 896: 89a881ae9afffff   0.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 897: 89a88cd8407ffff  36.87961</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 894: 89a881acda3ffff  453.8818</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 895: 89a88cdb543ffff 1184.0239</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 896: 89a88cda667ffff  276.2530</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 897: 89a88cd900fffff  103.5370</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 898: 89a881aebafffff       NaN</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Doubly-constrained: use a small toy dataset with matching totals</span></span></span>
@@ -329,18 +328,9 @@ are available (as aggregate outputs just match inputs).</p>
 <span class="r-in"><span>  travel_cost     <span class="op">=</span> <span class="st">"travel_time"</span>,</span></span>
 <span class="r-in"><span>  decay_function  <span class="op">=</span> <span class="fu"><a href="decay_exponential.html">decay_exponential</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  demand          <span class="op">=</span> <span class="st">"population"</span>,</span></span>
-<span class="r-in"><span>  supply          <span class="op">=</span> <span class="st">"jobs"</span>,</span></span>
-<span class="r-in"><span>  return_demand_side <span class="op">=</span> <span class="cn">NULL</span></span></span>
+<span class="r-in"><span>  supply          <span class="op">=</span> <span class="st">"jobs"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Aggregated results equal marginals (O_i or D_j). Interpret with caution.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        id  flow</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;fctr&gt; &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:      1     4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:      2    10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:      3     6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:      1     7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:      2     5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:      3     8</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in constrained_accessibility(constraint = "doubly", travel_matrix = tm_small,     land_use_data = lu_small, travel_cost = "travel_time", decay_function = decay_exponential(0.1),     demand = "population", supply = "jobs"):</span> For 'doubly', the 'active' parameter is not used.</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
