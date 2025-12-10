@@ -12,7 +12,7 @@ constrained_accessibility(
   decay_function,
   demand = NULL,
   supply = NULL,
-  return_demand_side = NULL,
+  active = TRUE,
   error_threshold = 0.001,
   improvement_threshold = 1e-06,
   max_iterations = 1000,
@@ -22,7 +22,8 @@ constrained_accessibility(
 )
 }
 \arguments{
-\item{constraint}{A string. One of \code{"total"}, \code{"singly"}, or \code{"doubly"}.}
+\item{constraint}{A string. One of \code{"total"}, \code{"singly"}, or \code{"doubly"}. See
+Details section for more information.}
 
 \item{travel_matrix}{A data frame. The travel matrix describing the costs
 (i.e. travel time, distance, monetary cost, etc.) between the origins and
@@ -52,13 +53,22 @@ considered.}
 number of opportunity supply at each destination (e.g., jobs, school-seats)
 that will be considered.}
 
-\item{return_demand_side}{Logical for \code{"total"} and \code{"singly"}, must be \code{NULL} for \code{"doubly"}.}
+\item{active}{A logical. When \code{TRUE}, the function calculates active
+accessibility (the quantity of opportunities that can be reached from
+a given origin). when \code{FALSE}, it calculates passive accessibility (by
+how many people each destination can be reached), which is equivalent
+to the notion of market potential. This parameter only works for
+\code{constraint} types \code{"total"} and \code{"singly"}. Ignored for
+\code{constraint = "doubly"}.}
 
-\item{error_threshold}{Numeric. Convergence criterion for doubly-constrained case.}
+\item{error_threshold}{Numeric. Convergence criterion used only for
+doubly-constrained case.}
 
-\item{improvement_threshold}{Numeric. Convergence criterion for improvement.}
+\item{improvement_threshold}{Numeric. Convergence criterion for improvement
+used only for doubly-constrained case.}
 
-\item{max_iterations}{Integer. Maximum iterations for doubly-constrained calibration.}
+\item{max_iterations}{Integer. Maximum iterations used only for
+doubly-constrained calibration.}
 
 \item{group_by}{A \code{character} vector. When not \code{character(0)} (the default),
 indicates the \code{travel_matrix} columns that should be used to group the
@@ -100,9 +110,9 @@ proposed in \insertCite{soukhov2025family;textual}{accessibility}.
 
 Sum of accessibility equals total opportunities (supply) in the region.
 It allocates total opportunities in the region proportionally based on travel
-impedance. Uses the logic of a total ~(or unconstrained by Wilon's terms)~
+impedance. Uses the logic of a total ~(or unconstrained by Wilson's terms)~
 constraint. Returns values as either \code{demand} or \code{supply}. When
-\code{return_demand_side = TRUE} (market potential variant) is also available.
+\code{active = FALSE} (market potential variant) is also available.
 }
 
 \subsection{Singly constrained accessibility}{
@@ -111,8 +121,9 @@ Allocates opportunities at each destination proportionally based on travel
 impedance and population at the origin. Uses the logic of single constraint
 from \insertCite{wilson1971family;textual}{accessibility}. Returns values as
 either 'demand' or 'supply'. Supply-constrained (destination totals fixed)
-when \code{return_demand_side = FALSE}. In either case, totals match either the
+when \code{market_potential = FALSE}. In either case, totals match either the
 demand at each origin or supply at each destination, depending on variant.
+This is equivalent to the \code{spatial_availability()} function.
 }
 
 \subsection{Doubly constrained accessibility}{
@@ -142,7 +153,7 @@ constrained_accessibility(
   decay_function  = decay_exponential(0.1),
   demand          = NULL,
   supply          = "jobs",
-  return_demand_side = FALSE
+  active = FALSE
 )
 
 # Singly-constrained (demand-side)
@@ -154,7 +165,7 @@ constrained_accessibility(
   decay_function  = decay_exponential(0.1),
   demand          = "population",
   supply          = "jobs",
-  return_demand_side = TRUE
+  active = TRUE
 )
 
 # Doubly-constrained: use a small toy dataset with matching totals
@@ -175,8 +186,7 @@ constrained_accessibility(
   travel_cost     = "travel_time",
   decay_function  = decay_exponential(0.1),
   demand          = "population",
-  supply          = "jobs",
-  return_demand_side = NULL
+  supply          = "jobs"
 )
 
 }

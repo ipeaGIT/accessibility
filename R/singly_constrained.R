@@ -26,14 +26,14 @@ singly_constrained <- function(travel_matrix,
                                decay_function,
                                demand,
                                supply,
-                               return_demand_side = FALSE,
+                               active = TRUE,
                                group_by = character(0),
                                fill_missing_ids = TRUE,
                                detailed_results = FALSE) {
   # Validate
   checkmate::assert_string(demand)
   checkmate::assert_string(supply)
-  checkmate::assert_logical(return_demand_side, len = 1)
+  checkmate::assert_logical(active, len = 1)
 
   # Convert to data.table
   if (!inherits(travel_matrix, "data.table")) {
@@ -53,7 +53,7 @@ singly_constrained <- function(travel_matrix,
   # Apply decay
   data <- apply_gravity_measure(data, decay_function, travel_cost)
 
-  if (!return_demand_side) {
+  if (active) {
     # Supply-constrained (returns the number of supply or JOBS)
     data[, weighted_demand := get(demand) * opp_weight]
     data[, denom_j := sum(weighted_demand), by = c("to_id", group_by)]

@@ -15,11 +15,21 @@
 #' @template decay_function
 #' @template demand
 #' @template supply
-#' @param constraint A string. One of `"total"`, `"singly"`, or `"doubly"`.
-#' @param return_demand_side Logical for `"total"` and `"singly"`, must be `NULL` for `"doubly"`.
-#' @param error_threshold Numeric. Convergence criterion for doubly-constrained case.
-#' @param improvement_threshold Numeric. Convergence criterion for improvement.
-#' @param max_iterations Integer. Maximum iterations for doubly-constrained calibration.
+#' @param constraint A string. One of `"total"`, `"singly"`, or `"doubly"`. See
+#'        Details section for more information.
+#' @param active A logical. When `TRUE`, the function calculates active
+#'        accessibility (the quantity of opportunities that can be reached from
+#'        a given origin). when `FALSE`, it calculates passive accessibility (by
+#'        how many people each destination can be reached), which is equivalent
+#'        to the notion of market potential. This parameter only works for
+#'        `constraint` types `"total"` and `"singly"`. Ignored for
+#'        `constraint = "doubly"`.
+#' @param error_threshold Numeric. Convergence criterion used only for
+#'        doubly-constrained case.
+#' @param improvement_threshold Numeric. Convergence criterion for improvement
+#'        used only for doubly-constrained case.
+#' @param max_iterations Integer. Maximum iterations used only for
+#'        doubly-constrained calibration.
 #' @template group_by
 #' @template fill_missing_ids_combinations
 #' @param detailed_results Logical. Whether to return detailed OD-level results.
@@ -32,9 +42,9 @@
 #'
 #' Sum of accessibility equals total opportunities (supply) in the region.
 #' It allocates total opportunities in the region proportionally based on travel
-#' impedance. Uses the logic of a total ~(or unconstrained by Wilon's terms)~
+#' impedance. Uses the logic of a total ~(or unconstrained by Wilson's terms)~
 #' constraint. Returns values as either `demand` or `supply`. When
-#' `return_demand_side = TRUE` (market potential variant) is also available.
+#' `active = FALSE` (market potential variant) is also available.
 #'
 #' ## Singly constrained accessibility
 #'
@@ -42,8 +52,10 @@
 #' impedance and population at the origin. Uses the logic of single constraint
 #' from \insertCite{wilson1971family;textual}{accessibility}. Returns values as
 #' either 'demand' or 'supply'. Supply-constrained (destination totals fixed)
-#' when `return_demand_side = FALSE`. In either case, totals match either the
+#' when `market_potential = FALSE`. In either case, totals match either the
 #' demand at each origin or supply at each destination, depending on variant.
+#' This is equivalent to the `spatial_availability()` function.
+#'
 #'
 #' ## Doubly constrained accessibility
 #'
@@ -75,7 +87,7 @@
 #'   decay_function  = decay_exponential(0.1),
 #'   demand          = NULL,
 #'   supply          = "jobs",
-#'   return_demand_side = FALSE
+#'   active = FALSE
 #' )
 #'
 #' # Singly-constrained (demand-side)
@@ -87,7 +99,7 @@
 #'   decay_function  = decay_exponential(0.1),
 #'   demand          = "population",
 #'   supply          = "jobs",
-#'   return_demand_side = TRUE
+#'   active = TRUE
 #' )
 #'
 #' # Doubly-constrained: use a small toy dataset with matching totals
@@ -108,8 +120,7 @@
 #'   travel_cost     = "travel_time",
 #'   decay_function  = decay_exponential(0.1),
 #'   demand          = "population",
-#'   supply          = "jobs",
-#'   return_demand_side = NULL
+#'   supply          = "jobs"
 #' )
 #'
 #' @export
@@ -120,7 +131,7 @@ constrained_accessibility <- function(constraint,
                                       decay_function,
                                       demand = NULL,
                                       supply = NULL,
-                                      return_demand_side = NULL,
+                                      active = TRUE,
                                       error_threshold = 0.001,
                                       improvement_threshold = 1e-6,
                                       max_iterations = 1000,
@@ -139,8 +150,8 @@ constrained_accessibility <- function(constraint,
 
 
   if (constraint == "doubly") {
-    if (!is.null(return_demand_side)) {
-      stop("For 'doubly', return_demand_side must be NULL.")
+    if (!is.null(active)) {
+      stop("For 'doubly', the 'active' parameter is not used.")
     }
     return(doubly_constrained(
       travel_matrix = travel_matrix,
@@ -158,8 +169,8 @@ constrained_accessibility <- function(constraint,
     ))
   }
 
-  if (is.null(return_demand_side)) {
-    stop(sprintf("For '%s', return_demand_side must be TRUE or FALSE.", constraint))
+  if (is.null(active)) {
+    stop(sprintf("For '%s', active must be TRUE or FALSE.", constraint))
   }
 
   if (constraint == "total") {
@@ -171,9 +182,9 @@ constrained_accessibility <- function(constraint,
       group_by = group_by,
       fill_missing_ids = fill_missing_ids,
       detailed_results = detailed_results,
-      return_demand_side = return_demand_side,
-      demand = if (return_demand_side) demand else NULL,
-      supply = if (!return_demand_side) supply else NULL
+      active = active,
+      demand = if (!active) demand else NULL,
+      supply = if (active) supply else NULL
     ))
   }
 
@@ -185,7 +196,7 @@ constrained_accessibility <- function(constraint,
       decay_function = decay_function,
       demand = demand,
       supply = supply,
-      return_demand_side = return_demand_side,
+      active = active,
       group_by = group_by,
       fill_missing_ids = fill_missing_ids,
       detailed_results = detailed_results

@@ -4,7 +4,8 @@
 #' \insertCite{soukhov2023introducing;textual}{accessibility} that takes into
 #' account competition effects. The accessibility levels that result from using
 #' this measure are proportional both to the demand in each origin and to the
-#' travel cost it takes to reach the destinations.
+#' travel cost it takes to reach the destinations. The spatial availability is
+#' a particular case of `constrained_accessibility(constraint = "singly")`.
 #' @template description_generic_cost
 #'
 #' @template travel_matrix

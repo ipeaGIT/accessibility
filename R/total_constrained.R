@@ -29,16 +29,16 @@ total_constrained <- function(travel_matrix,
                               group_by = character(0),
                               fill_missing_ids = TRUE,
                               detailed_results = FALSE,
-                              return_demand_side = FALSE,
+                              active = TRUE,
                               demand = NULL,   # population
                               supply = NULL) { # jobs
 
   # Validate inputs
-  checkmate::assert_logical(return_demand_side, len = 1, any.missing = FALSE)
+  checkmate::assert_logical(active, len = 1, any.missing = FALSE)
 
-  if (return_demand_side) {
+  if (isFALSE(active)) {
     if (is.null(demand) || !is.null(supply)) {
-      stop("For return_demand_side = TRUE, demand must be specified and supply must be NULL.")
+      stop("For active = FALSE, demand must be specified and supply must be NULL.")
     }
     merge_id <- "from_id"
     group_id <- "to_id"
@@ -49,7 +49,7 @@ total_constrained <- function(travel_matrix,
     opportunity_col <- demand
   } else {
     if (is.null(supply) || !is.null(demand)) {
-      stop("For return_demand_side = FALSE, supply must be specified and demand must be NULL.")
+      stop("For active = TRUE, supply must be specified and demand must be NULL.")
     }
     merge_id <- "to_id"
     group_id <- "from_id"
@@ -91,7 +91,7 @@ total_constrained <- function(travel_matrix,
   data[, constrained_opportunity := get(kappa_col) * total_opportunities_region]
 
   if (detailed_results) {
-    if (return_demand_side) {
+    if (!active) {
       access <- data[, .(
         from_id,
         to_id,
@@ -111,7 +111,7 @@ total_constrained <- function(travel_matrix,
       )]
     }
   } else {
-    if (return_demand_side) {
+    if (!active) {
       access <- data[, .(demand = sum(constrained_opportunity)), by = c("to_id", group_by)]
       if (fill_missing_ids) access <- fill_missing_ids(access, travel_matrix, c("to_id", group_by))
     } else {

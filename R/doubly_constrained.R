@@ -28,7 +28,6 @@ doubly_constrained <- function(travel_matrix,
                                decay_function,
                                demand,
                                supply,
-                               return_demand_side = NULL,
                                error_threshold = 0.001,
                                improvement_threshold = 1e-6,
                                max_iterations = 1000,
@@ -38,7 +37,6 @@ doubly_constrained <- function(travel_matrix,
   # Validate inputs
   checkmate::assert_string(demand)
   checkmate::assert_string(supply)
-  checkmate::assert_null(return_demand_side)
   checkmate::assert_number(error_threshold, lower = 0)
   checkmate::assert_number(improvement_threshold, lower = 0)
   checkmate::assert_int(max_iterations, lower = 1)
