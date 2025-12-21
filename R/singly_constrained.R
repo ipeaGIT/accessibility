@@ -1,9 +1,9 @@
 #' Singly constrained accessibility
 #'
 #' Allocates opportunities at each destination proportionally based on travel
-#' impedance and population at the origin. Uses the logic of Wilon's single
-#' constraint. Returns values as either 'demand' or 'supply'. This is an internal
-#' helper function used by [constrained_accessibility()] when `constraint = "singly"`.
+#' impedance and population at the origin. Uses the logic of Wilson's single
+#' constraint. Returns values in the unit of 'demand'.
+#' Internal helper function used by [constrained_accessibility()] when `constraint = "singly"`.
 #'
 #' @name singly_constrained
 #' @keywords internal
@@ -26,7 +26,7 @@ singly_constrained <- function(travel_matrix,
                                decay_function,
                                demand,
                                supply,
-                               active = TRUE,
+                               active,
                                group_by = character(0),
                                fill_missing_ids = TRUE,
                                detailed_results = FALSE) {
@@ -54,10 +54,10 @@ singly_constrained <- function(travel_matrix,
   data <- apply_gravity_measure(data, decay_function, travel_cost)
 
   if (active) {
-    # Supply-constrained (returns the number of supply or JOBS)
+    # Supply-constrained (returns units of supply).. V_ij = (O_i f(c_ij) / sum_i O_i f(c_ij)) * D_j
     data[, weighted_demand := get(demand) * opp_weight]
     data[, denom_j := sum(weighted_demand), by = c("to_id", group_by)]
-    data[, kappa_singly := weighted_demand / denom_j]
+    data[, kappa_singly := data.table::fifelse(denom_j > 0, weighted_demand / denom_j, 0)]
     data[, singly_access := kappa_singly * get(supply)]
 
     if (detailed_results) {
@@ -66,7 +66,7 @@ singly_constrained <- function(travel_matrix,
         to_id,
         kappa_singly,
         supply = singly_access,
-        B_j = 1 / denom_j
+        B_j = data.table::fifelse(denom_j > 0, 1 / denom_j, 0)
       )]
     } else {
       access <- data[, .(supply = sum(singly_access)), by = c("from_id", group_by)]
@@ -74,10 +74,10 @@ singly_constrained <- function(travel_matrix,
     }
 
   } else {
-    # Demand-constrained (returns the number of demand or POPULATION)
+    # Demand-constrained (returns units of demand).... M_ij = (D_j f(c_ij) / sum_j D_j f(c_ij)) * O_i
     data[, weighted_supply := get(supply) * opp_weight]
     data[, denom_i := sum(weighted_supply), by = c("from_id", group_by)]
-    data[, hatkappa_singly := weighted_supply / denom_i]
+    data[, hatkappa_singly := data.table::fifelse(denom_i > 0, weighted_supply / denom_i, 0)]
     data[, singly_access := hatkappa_singly * get(demand)]
 
     if (detailed_results) {
@@ -86,7 +86,7 @@ singly_constrained <- function(travel_matrix,
         to_id,
         hatkappa_singly,
         demand = singly_access,
-        A_i = 1 / denom_i
+        A_i = data.table::fifelse(denom_i > 0, 1 / denom_i, 0)
       )]
     } else {
       access <- data[, .(demand = sum(singly_access)), by = c("to_id", group_by)]

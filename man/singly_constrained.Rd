@@ -8,9 +8,9 @@ A \code{data.table}/\code{data.frame} with results (structure mirrors the wrappe
 }
 \description{
 Allocates opportunities at each destination proportionally based on travel
-impedance and population at the origin. Uses the logic of Wilon's single
-constraint. Returns values as either 'demand' or 'supply'. This is an internal
-helper function used by \code{\link[=constrained_accessibility]{constrained_accessibility()}} when \code{constraint = "singly"}.
+impedance and population at the origin. Uses the logic of Wilson's single
+constraint. Returns values in the unit of 'demand'.
+Internal helper function used by \code{\link[=constrained_accessibility]{constrained_accessibility()}} when \code{constraint = "singly"}.
 }
 \examples{
 NULL

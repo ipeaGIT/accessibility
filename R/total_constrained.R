@@ -1,9 +1,12 @@
 #' Total constrained accessibility
 #'
 #' Allocates total opportunities in the region proportionally based on travel
-#' impedance. Uses the logic of a total (or unconstrained by Wilon's terms)
-#' constraint. Returns values as either 'demand' or 'supply'. This is an internal
-#' helper function used by [constrained_accessibility()] when `constraint = "total"`.
+#' impedance. Uses the logic of a total (or unconstrained by Wilson's terms)
+#' constraint. Returns values in units of 'supply' (i.e., opportunities) if
+#' `active = TRUE` and returns values in units of demand' (i.e., population)
+#' if `active = FALSE`.
+#'
+#' Internal helper used by [constrained_accessibility()] when `constraint = "total"`.
 #'
 #' @name total_constrained
 #' @keywords internal
@@ -29,25 +32,17 @@ total_constrained <- function(travel_matrix,
                               group_by = character(0),
                               fill_missing_ids = TRUE,
                               detailed_results = FALSE,
-                              active = TRUE,
+                              active,
                               demand = NULL,   # population
                               supply = NULL) { # jobs
 
   # Validate inputs
+  checkmate::assert_string(travel_cost)
+  checkmate::assert_logical(detailed_results, len = 1, any.missing = FALSE)
   checkmate::assert_logical(active, len = 1, any.missing = FALSE)
 
-  if (isFALSE(active)) {
-    if (is.null(demand) || !is.null(supply)) {
-      stop("For active = FALSE, demand must be specified and supply must be NULL.")
-    }
-    merge_id <- "from_id"
-    group_id <- "to_id"
-    weighted_col <- "weighted_demand"
-    kappa_col <- "hatkappa_total"
-    total_col <- "hatK_total"
-    result_col <- "demand"
-    opportunity_col <- demand
-  } else {
+  if (active) {
+    #active accessibility
     if (is.null(supply) || !is.null(demand)) {
       stop("For active = TRUE, supply must be specified and demand must be NULL.")
     }
@@ -58,6 +53,18 @@ total_constrained <- function(travel_matrix,
     total_col <- "K_total"
     result_col <- "supply"
     opportunity_col <- supply
+  } else {
+    #passive accessibility
+    if (is.null(demand) || !is.null(supply)) {
+      stop("For active = FALSE, demand must be specified and supply must be NULL.")
+    }
+    merge_id <- "from_id"
+    group_id <- "to_id"
+    weighted_col <- "weighted_demand"
+    kappa_col <- "hatkappa_total"
+    total_col <- "hatK_total"
+    result_col <- "demand"
+    opportunity_col <- demand
   }
 
   assert_decay_function(decay_function)
@@ -87,7 +94,10 @@ total_constrained <- function(travel_matrix,
   data[, (weighted_col) := get(opportunity_col) * opp_weight]
   total_weighted_system <- data[, sum(get(weighted_col))]
   data[, (kappa_col) := get(weighted_col) / total_weighted_system]
-  total_opportunities_region <- sum(land_use_data[[opportunity_col]])
+
+  ids_for_total <- unique(data[[merge_id]])                   # e.g., A,B,C when active=TRUE
+  total_opportunities_region <- land_use_data[id %in% ids_for_total, sum(get(opportunity_col), na.rm = TRUE)]
+
   data[, constrained_opportunity := get(kappa_col) * total_opportunities_region]
 
   if (detailed_results) {
@@ -101,6 +111,7 @@ total_constrained <- function(travel_matrix,
         hatK_total = total_opportunities_region / total_weighted_system
       )]
     } else {
+      # supply-side details (active accessibility)
       access <- data[, .(
         from_id,
         to_id,
@@ -111,12 +122,14 @@ total_constrained <- function(travel_matrix,
       )]
     }
   } else {
-    if (!active) {
-      access <- data[, .(demand = sum(constrained_opportunity)), by = c("to_id", group_by)]
-      if (fill_missing_ids) access <- fill_missing_ids(access, travel_matrix, c("to_id", group_by))
-    } else {
+    if (active) {
+      # supply aggregated by origin (from_id)
       access <- data[, .(supply = sum(constrained_opportunity)), by = c("from_id", group_by)]
       if (fill_missing_ids) access <- fill_missing_ids(access, travel_matrix, c("from_id", group_by))
+    } else {
+      # demand aggregated by destination (to_id)
+      access <- data[, .(demand = sum(constrained_opportunity)), by = c("to_id", group_by)]
+      if (fill_missing_ids) access <- fill_missing_ids(access, travel_matrix, c("to_id", group_by))
     }
   }
 
