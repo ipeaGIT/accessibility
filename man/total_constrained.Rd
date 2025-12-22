@@ -8,9 +8,13 @@ A \code{data.table}/\code{data.frame} with results (structure mirrors the wrappe
 }
 \description{
 Allocates total opportunities in the region proportionally based on travel
-impedance. Uses the logic of a total (or unconstrained by Wilon's terms)
-constraint. Returns values as either 'demand' or 'supply'. This is an internal
-helper function used by \code{\link[=constrained_accessibility]{constrained_accessibility()}} when \code{constraint = "total"}.
+impedance. Uses the logic of a total (or unconstrained by Wilson's terms)
+constraint. Returns values in units of 'supply' (i.e., opportunities) if
+\code{active = TRUE} and returns values in units of demand' (i.e., population)
+if \code{active = FALSE}.
+}
+\details{
+Internal helper used by \code{\link[=constrained_accessibility]{constrained_accessibility()}} when \code{constraint = "total"}.
 }
 \examples{
 NULL

@@ -12,7 +12,7 @@ constrained_accessibility(
   decay_function,
   demand = NULL,
   supply = NULL,
-  active = TRUE,
+  active = NULL,
   error_threshold = 0.001,
   improvement_threshold = 1e-06,
   max_iterations = 1000,
@@ -55,20 +55,21 @@ that will be considered.}
 
 \item{active}{A logical. When \code{TRUE}, the function calculates active
 accessibility (the quantity of opportunities that can be reached from
-a given origin). when \code{FALSE}, it calculates passive accessibility (by
+a given origin). When \code{FALSE}, it calculates passive accessibility (by
 how many people each destination can be reached), which is equivalent
 to the notion of market potential. This parameter only works for
 \code{constraint} types \code{"total"} and \code{"singly"}. Ignored for
 \code{constraint = "doubly"}.}
 
 \item{error_threshold}{Numeric. Convergence criterion used only for
-doubly-constrained case.}
+calibration in the doubly-constrained case (\code{constraint = "doubly"}).}
 
 \item{improvement_threshold}{Numeric. Convergence criterion for improvement
-used only for doubly-constrained case.}
+used only for calibration in the doubly-constrained case
+(\code{constraint = "doubly"}).}
 
-\item{max_iterations}{Integer. Maximum iterations used only for
-doubly-constrained calibration.}
+\item{max_iterations}{Integer. Maximum iterations used only for calibration
+in the doubly-constrained case (\code{constraint = "doubly"}).}
 
 \item{group_by}{A \code{character} vector. When not \code{character(0)} (the default),
 indicates the \code{travel_matrix} columns that should be used to group the
@@ -90,51 +91,208 @@ performance penalty.}
 \item{detailed_results}{Logical. Whether to return detailed OD-level results.}
 }
 \description{
-Calculates accessibility using constrained gravity models, as proposed in
-\insertCite{soukhov2025family;textual}{accessibility}:
-\itemize{
-\item \code{"total"}: Allocates total opportunities proportionally based on travel impedance.
-\item \code{"singly"}: Allocates opportunities proportionally, constrained on one side (demand or supply).
-\item \code{"doubly"}: Allocates flows so origin totals equal demand and destination totals equal supply.
-Please see the Details section for more information.
-}
+Calculates accessibility using constraints, as proposed in
+\insertCite{soukhov2025family;textual}{accessibility}. Accessibility is
+conceptualised as potential' spatial interaction. The results are in units of
+opportunities in the region (i.e., active accessibility \code{active = TRUE}) or
+in units of population in the region (if \code{active = FALSE} reflecting passive
+accessibility). Results are presented as a sum of a zone or presented as an
+origin-destination flow (if \code{detailed_results = TRUE}). Please see Details
+section for more information.
 
 This function is generic over any kind of numeric travel cost,
 such as distance, time and money.
+}
+\details{
+The following three constraint cases (along with their \code{active} and passive
+variants) are included:
+\itemize{
+\item \code{"total"}: Allocates the system-wide total proportionally based on travel
+impedance.
+\item If \code{active = TRUE}, results are in units of  \strong{opportunities} (supply)
+accessible by the origin. Only \code{supply} can be passed, \code{demand} must be NULL.
+\item If \code{active = FALSE}, results are in units of  \strong{population} (demand)
+accessible by the destination. Only \code{demand} can be passed, \code{supply} must
+be NULL.
+\item If \code{detailed_results = TRUE}, accessibility (in units corresponding to the
+logical for \code{active}) is presented as a flow along with intermediates.
+\item \code{"singly"}: Applies a single constraint, allocating one side of the marginal
+proportionally based on the other marginal and travel impedance:
+\item If \code{active = TRUE}, returns origin-side results (how much supply is
+accessible from each origin). Outputs are units of supply. \code{demand} and
+\code{supply} must be passed.
+\item If \code{active = FALSE}, returns destination-side results (how much demand is
+accessible from each destination). Outputs are units of demand. \code{demand} and
+\code{supply} must be passed.
+\item If \code{detailed_results = TRUE}, accessibility (in units corresponding to the
+logical for \code{active}) is presented as a flow along with intermediates.
+\item \code{"doubly"}: Allocates flows so supply at each destination matches demand at
+each origin.
+\item OD flows are calibrated to both marginals. OD flows are calibrated to both
+marginals using iterative proportional fitting. The sum of \code{demand} and
+\code{supply} must match; otherwise, the function will not converge.
+\item \code{active} and \code{detailed_results} must be NULL. Since supply must match
+demand, their units are the same and there is no distinction between 'active'
+and 'passive' notions.
+}
+
+Please see the Details section for more information.
 }
 \section{Details}{
 
 This function covers the family of constrained accessibility measures
 proposed in \insertCite{soukhov2025family;textual}{accessibility}.
-\subsection{Total constrained accessibility}{
+\subsection{Total Constrained Accessibility}{
 
-Sum of accessibility equals total opportunities (supply) in the region.
-It allocates total opportunities in the region proportionally based on travel
-impedance. Uses the logic of a total ~(or unconstrained by Wilson's terms)~
-constraint. Returns values as either \code{demand} or \code{supply}. When
-\code{active = FALSE} (market potential variant) is also available.
+Allocates the total system-wide quantity proportionally based on travel
+impedance between origins and destinations. This measure uses the logic of a
+total ~(or 'unconstrained' by Wilson's terms)~ constraint.
+
+Use this measure when the total quantity of \strong{supply} OR \strong{demand} in the
+system is known and representing accessibility as a proportion of this total
+is meaningful.
+
+\strong{Requirements}:
+\itemize{
+\item Either \code{demand} or \code{supply} must be provided (cannot provide both).
 }
 
-\subsection{Singly constrained accessibility}{
-
-Allocates opportunities at each destination proportionally based on travel
-impedance and population at the origin. Uses the logic of single constraint
-from \insertCite{wilson1971family;textual}{accessibility}. Returns values as
-either 'demand' or 'supply'. Supply-constrained (destination totals fixed)
-when \code{market_potential = FALSE}. In either case, totals match either the
-demand at each origin or supply at each destination, depending on variant.
-This is equivalent to the \code{spatial_availability()} function.
+\strong{Interpretation}:
+\itemize{
+\item \code{active = TRUE} (\emph{active accessibility}): Results represent the total
+number of  \strong{opportunities} (supply) accessible from each origin based on
+region-relative travel impedance. The units are in 'supply' (e.g., jobs,
+school seats).
+\itemize{
+\item If \code{detailed_results = FALSE}, outputs are aggregated and returned by
+origin.
+\item If \code{detailed_results = TRUE}, OD-level flows are returned. Summing flows
+by origin equals the aggregated result.
+}
+\item \code{active = FALSE} (\emph{passive accessibility}, the notion of market potential):
+Results represent the total number of \strong{population} (demand) that can reach
+each destination based on region-relative travel impedance. The units are in
+'demand' (e.g., population).
+\itemize{
+\item If \code{detailed_results = FALSE}, outputs are aggregated by destination.
+\item If \code{detailed_results = TRUE}, OD-level flows are returned. Summing flows
+by destination equals the aggregated result.
+}
 }
 
-\subsection{Doubly constrained accessibility}{
+\strong{Use cases}:
+\itemize{
+\item Active accessibility (aggregated):
+"How many jobs can be reached from origin zone A given its region-relative
+travel impedance?"
+\item Active accessibility (flow-level):
+"How many jobs can be reached by flow A->1 given A->1's region-relative
+travel impedance?"
+\item Passive accessibility (aggregated):
+"How many people can reach destination zone 1 given its region-relative
+travel impedance?"
+\item Passive accessibility (flow-level):
+"How many people are reached by flow 1->A given 1->A's region-relative
+travel impedance?"
+}
+}
 
-Calculates accessibility using doubly-constrained gravity model of
-\insertCite{wilson1971family;textual}{accessibility}. This measure allocates
-flows between origins and destinations such that origin totals equal demand
-and destination totals equal supply. Iterative proportional fitting updates
-(A_i) and (B_j) until convergence. This ensures that row sums equal (O_i)
-(demand) and column sums equal (D_j) (supply). Note, only OD-level outputs
-are available (as aggregate outputs just match inputs).
+\subsection{Singly Constrained Accessibility}{
+
+Allocates opportunities at each destination (or population at each origin)
+proportionally based on travel impedance and the opposite marginal. This
+measure uses the logic of single constraint from
+\insertCite{wilson1971family;textual}{accessibility}.
+
+Use this measure when modeling \strong{competition}, where both demand and supply
+are conceptualised to influence accessibility but only one side is fixed.
+The measure distributes flows so that totals match the constrained side
+while weighting by travel impedance and the unconstrained side.
+
+\strong{Requirements}:
+\itemize{
+\item Both \code{demand} and \code{supply} must be provided (the logical for \code{active}
+determines if either demand or supply is constrained).
+}
+
+\strong{Interpretation}:
+\itemize{
+\item \code{active = TRUE} (\emph{active accessibility}): constrains supply. Results
+represent the total number of \strong{opportunities} (supply) accessible from each
+origin based on region-relative travel impedance and population at the origin.
+The units are in 'supply' (e.g., jobs, school seats).
+\itemize{
+\item If \code{detailed_results = FALSE}, outputs are aggregated and returned by origin.
+\item If \code{detailed_results = TRUE}, OD-level flows are returned. Summing flows
+by origin equals the aggregated result.
+}
+\item \code{active = FALSE} (\emph{passive accessibility}, the notion of market potential):
+constrains demand. Results represent the total number of
+\strong{population} (demand) that can reach each destination based on
+region-relative travel impedance and opportunities at the destination. The
+units are in 'demand' (e.g., population).
+\itemize{
+\item If \code{detailed_results = FALSE}, outputs are aggregated by destination.
+\item If \code{detailed_results = TRUE}, OD-level flows are returned. Summing flows
+by destination equals the aggregated result.
+}
+}
+
+\strong{Use cases}:
+\itemize{
+\item Active accessibility (aggregated):
+"How many jobs can be reached from origin zone A given its region-relative
+travel impedance and demand?"
+\item Active accessibility (flow-level):
+"How many jobs can be reached by flow A->1 given A->1's region-relative
+travel impedance and demand?"
+\item Passive accessibility (aggregated):
+"How many people can reach destination zone 1 given its region-relative
+travel impedance and supply?"
+\item Passive accessibility (flow-level):
+"How many people are reached by flow 1->A given 1->A's region-relative
+travel impedance and supply?"
+}
+
+\strong{NOTE:} the active form of this measure yields equivalent results to the
+\code{spatial_availability()} function, through different logic.
+}
+
+\subsection{Doubly Constrained Accessibility}{
+
+Allocates flows between origins and destinations using Wilson's \emph{doubly-constrained}
+gravity model \insertCite{wilson1971family;textual}{accessibility}.
+
+The model uses iterative proportional fitting to update balancing factors
+(\code{A_i} for origins and \code{B_j} for destinations) until convergence. This guarantees
+that flows satisfy both marginals while being weighted by travel impedance.
+
+\strong{Requirements}:
+\itemize{
+\item Both \code{demand} and \code{supply} must be provided.
+\item Unlike \code{total} and \code{singly}, \code{doubly} requires the sum of demand and supply
+to match; otherwise, the model will not converge.
+}
+
+\strong{Interpretation}:
+\itemize{
+\item When \code{detailed_results = TRUE}, results include OD-level flows (\code{flow})
+along with balancing factors (\code{A_i}, \code{B_j}) and travel impedance weights.
+The resulting flows represent the distribution of demand and supply across
+all origin-destination pairs. NOTE: OD flows are in flow units (jointly
+determined by demand and supply).
+\item When \code{detailed_results = FALSE}, results are not returned. As the
+aggregated outputs simply return the supply at destinations or demand at
+origin that was fed into \code{demand} and \code{supply} parameters.
+\code{detailed_results = TRUE} should only be used.
+}
+
+\strong{Use cases}:
+\itemize{
+\item flow-level:
+"What is the count of A->1 flows given A->1's region-relative travel impedance,
+demand and supply?"
+}
 }
 }
 
@@ -144,7 +302,8 @@ data_dir <- system.file("extdata", package = "accessibility")
 travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
 land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
 
-# Total-constrained (supply-side)
+# Total-constrained (active accessibility, aggregated): returns units of
+# accessible supply by origin (requires supply)
 constrained_accessibility(
   constraint =   "total",
   travel_matrix = travel_matrix,
@@ -153,10 +312,26 @@ constrained_accessibility(
   decay_function  = decay_exponential(0.1),
   demand          = NULL,
   supply          = "jobs",
-  active = FALSE
+  active = TRUE,
+  detailed_results = FALSE
 )
 
-# Singly-constrained (demand-side)
+# Total-constrained (passive accessibility, aggregated): returns units of
+# accessible demand by destination  (requires demand)
+constrained_accessibility(
+  constraint =   "total",
+  travel_matrix = travel_matrix,
+  land_use_data = land_use_data,
+  travel_cost     = "travel_time",
+  decay_function  = decay_exponential(0.1),
+  demand          = "population",
+  supply          = NULL,
+  active = FALSE,
+  detailed_results = FALSE
+)
+
+# Singly-constrained (active accessibility, aggregated): returns units of
+# accessible supply by origin (requires supply and demand)
 constrained_accessibility(
   constraint =   "singly",
   travel_matrix = travel_matrix,
@@ -165,10 +340,14 @@ constrained_accessibility(
   decay_function  = decay_exponential(0.1),
   demand          = "population",
   supply          = "jobs",
-  active = TRUE
+  active = TRUE,
+  detailed_results = FALSE
 )
 
-# Doubly-constrained: use a small toy dataset with matching totals
+# Doubly-constrained: returns units of flow (requires both demand and supply
+# (totals that match) and `detailed_results = TRUE`)
+
+# Using a small toy dataset with matching totals.
 tm_small <- data.table::data.table(
   expand.grid(from_id = c("1","2","3"), to_id = c("1","2","3"))
 )
@@ -186,7 +365,8 @@ constrained_accessibility(
   travel_cost     = "travel_time",
   decay_function  = decay_exponential(0.1),
   demand          = "population",
-  supply          = "jobs"
+  supply          = "jobs",
+  detailed_results = TRUE
 )
 
 }

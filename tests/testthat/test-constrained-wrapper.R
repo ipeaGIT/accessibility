@@ -20,7 +20,7 @@ tester <- function(
     decay_function = decay,
     demand = "population",
     supply = "jobs",
-    return_demand_side = TRUE,
+    active = FALSE,
     error_threshold = 0.001,
     improvement_threshold = 1e-6,
     max_iterations = 1000,
@@ -62,7 +62,7 @@ test_that("constrained_accessibility: wrapper argument rules are enforced", {
 
   # doubly requires NULL (error if TRUE)
   expect_error(
-    tester(constraint = "doubly", return_demand_side = TRUE)
+    tester(constraint = "doubly", active = FALSE)
   )
 })
 

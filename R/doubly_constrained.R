@@ -2,8 +2,8 @@
 #'
 #' Calculates accessibility using Wilson's doubly-constrained gravity model.
 #' This measure allocates flows between origins and destinations such that
-#' origin totals equal demand and destination totals equal supply. This is an
-#' internal helper function used by [constrained_accessibility()] when
+#' origin totals equal demand and destination totals equal supply. Note: this is
+#' an internal helper function used by [constrained_accessibility()] when
 #' `constraint = "doubly"`.
 #'
 #' @name doubly_constrained
@@ -31,9 +31,11 @@ doubly_constrained <- function(travel_matrix,
                                error_threshold = 0.001,
                                improvement_threshold = 1e-6,
                                max_iterations = 1000,
+                               active,
                                group_by = character(0),
                                fill_missing_ids = TRUE,
-                               detailed_results = FALSE) {
+                               detailed_results = FALSE
+                               ) {
   # Validate inputs
   checkmate::assert_string(demand)
   checkmate::assert_string(supply)

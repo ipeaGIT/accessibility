@@ -33,24 +33,24 @@ test_that("total-constrained: preserves totals on supply/demand sides", {
   det_supply <- constrained_accessibility("total", tm, lu,
                                           travel_cost = "travel_time", decay_function = exp_decay_01,
                                           demand = NULL, supply = "jobs",
-                                          detailed_results = TRUE, return_demand_side = FALSE
+                                          detailed_results = TRUE, active = TRUE
   )
   agg_supply <- constrained_accessibility("total", tm, lu,
                                           travel_cost = "travel_time", decay_function = exp_decay_01,
                                           demand = NULL, supply = "jobs",
-                                          detailed_results = FALSE, return_demand_side = FALSE
+                                          detailed_results = FALSE, active = TRUE
   )
 
   # Demand-side output (returns accessible population)
   det_demand <- constrained_accessibility("total", tm, lu,
                                           travel_cost = "travel_time", decay_function = exp_decay_01,
                                           demand = "population", supply = NULL,
-                                          detailed_results = TRUE, return_demand_side = TRUE
+                                          detailed_results = TRUE, active = FALSE
   )
   agg_demand <- constrained_accessibility("total", tm, lu,
                                           travel_cost = "travel_time", decay_function = exp_decay_01,
                                           demand = "population", supply = NULL,
-                                          detailed_results = FALSE, return_demand_side = TRUE
+                                          detailed_results = FALSE, active = FALSE
   )
 
   expect_equal(sum(det_supply$supply), sum(lu$jobs))
@@ -68,24 +68,24 @@ test_that("singly-constrained: preserves totals and kappa properties", {
   det_supply <- constrained_accessibility("singly", tm, lu,
                                           travel_cost = "travel_time", decay_function = exp_decay_01,
                                           demand = "population", supply = "jobs",
-                                          detailed_results = TRUE, return_demand_side = FALSE
+                                          detailed_results = TRUE, active = TRUE
   )
   agg_supply <- constrained_accessibility("singly", tm, lu,
                                           travel_cost = "travel_time", decay_function = exp_decay_01,
                                           demand = "population", supply = "jobs",
-                                          detailed_results = FALSE, return_demand_side = FALSE
+                                          detailed_results = FALSE, active = TRUE
   )
 
   # Demand-constrained (returns accessible population)
   det_demand <- constrained_accessibility("singly", tm, lu,
                                           travel_cost = "travel_time", decay_function = exp_decay_01,
                                           demand = "population", supply = "jobs",
-                                          detailed_results = TRUE, return_demand_side = TRUE
+                                          detailed_results = TRUE, active = FALSE
   )
   agg_demand <- constrained_accessibility("singly", tm, lu,
                                           travel_cost = "travel_time", decay_function = exp_decay_01,
                                           demand = "population", supply = "jobs",
-                                          detailed_results = FALSE, return_demand_side = TRUE
+                                          detailed_results = FALSE, active = FALSE
   )
 
   # Totals
@@ -113,7 +113,7 @@ test_that("doubly-constrained: errors when totals mismatch", {
     constrained_accessibility("doubly", tm, lu_bad,
                               travel_cost = "travel_time", decay_function = exp_decay_01,
                               demand = "population", supply = "jobs",
-                              detailed_results = TRUE, return_demand_side = NULL
+                              detailed_results = TRUE, active = NULL
     ),
     "sum of origins must equal the sum of destinations"
   )
@@ -129,7 +129,7 @@ test_that("doubly-constrained: OD flows match marginals", {
   det <- constrained_accessibility("doubly", tm, lu,
                                    travel_cost = "travel_time", decay_function = decay,
                                    demand = "population", supply = "jobs",
-                                   detailed_results = TRUE, return_demand_side = NULL
+                                   detailed_results = TRUE, active = NULL
   )
 
   # Robustly pick the numeric flow column
