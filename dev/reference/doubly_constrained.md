@@ -3,7 +3,7 @@
 Calculates accessibility using Wilson's doubly-constrained gravity
 model. This measure allocates flows between origins and destinations
 such that origin totals equal demand and destination totals equal
-supply. This is an internal helper function used by
+supply. Note: this is an internal helper function used by
 [`constrained_accessibility()`](https://ipeagit.github.io/accessibility/dev/reference/constrained_accessibility.md)
 when `constraint = "doubly"`.
 
