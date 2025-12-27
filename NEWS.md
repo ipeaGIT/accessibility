@@ -1,10 +1,13 @@
-# accessibility (development version)
+# accessibility 1.5.0
 
 ## Bug fixes
 
 ## New features
 
+- New function `constrained_accessibility()`.
+
 ## Notes
+
 
 # accessibility 1.4.0
 
