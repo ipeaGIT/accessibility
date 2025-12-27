@@ -1,10 +1,13 @@
 # Changelog
 
-## accessibility (development version)
+## accessibility 1.5.0
 
 ### Bug fixes
 
 ### New features
+
+- New function
+  [`constrained_accessibility()`](https://ipeagit.github.io/accessibility/dev/reference/constrained_accessibility.md).
 
 ### Notes
 
