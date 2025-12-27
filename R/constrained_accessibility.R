@@ -2,46 +2,8 @@
 #'
 #' Calculates accessibility using constraints, as proposed in
 #' \insertCite{soukhov2025family;textual}{accessibility}. Accessibility is
-#' conceptualised as potential' spatial interaction. The results are in units of
-#' opportunities in the region (i.e., active accessibility `active = TRUE`) or
-#' in units of population in the region (if `active = FALSE` reflecting passive
-#' accessibility). Results are presented as a sum of a zone or presented as an
-#' origin-destination flow (if `detailed_results = TRUE`).
-#'
-#' The following three constraint cases (along with their `active` and passive
-#' variants) are included:
-#'
-#' - `"total"`: Allocates the system-wide total proportionally based on travel
-#' impedance.
-#'  - If `active = TRUE`, results are in units of  **opportunities** (supply)
-#'  accessible by the origin. Only `supply` can be passed, `demand` must be NULL.
-#'  - If `active = FALSE`, results are in units of  **population** (demand)
-#'  accessible by the destination. Only `demand` can be passed, `supply` must
-#'  be NULL.
-#'  - If `detailed_results = TRUE`, accessibility (in units corresponding to the
-#'   logical for `active`) is presented as a flow along with intermediates.
-#'
-#' - `"singly"`: Applies a single constraint, allocating one side of the marginal
-#'  proportionally based on the other marginal and travel impedance:
-#'  - If `active = TRUE`, returns origin-side results (how much supply is
-#'  accessible from each origin). Outputs are units of supply. `demand` and
-#'  `supply` must be passed.
-#'  - If `active = FALSE`, returns destination-side results (how much demand is
-#'  accessible from each destination). Outputs are units of demand. `demand` and
-#'   `supply` must be passed.
-#'  - If `detailed_results = TRUE`, accessibility (in units corresponding to the
-#'   logical for `active`) is presented as a flow along with intermediates.
-#'
-#' - `"doubly"`: Allocates flows so supply at each destination matches demand at
-#'  each origin.
-#'  - OD flows are calibrated to both marginals. OD flows are calibrated to both
-#'   marginals using iterative proportional fitting. The sum of `demand` and
-#'   `supply` must match; otherwise, the function will not converge.
-#'  - `active` and `detailed_results` must be NULL. Since supply must match
-#'  demand, their units are the same and there is no distinction between 'active'
-#'  and 'passive' notions.
-#'
-#' Please see the Details section for more information.
+#' conceptualised as potential spatial interaction. This function covers three
+#' constraint cases. Please see the Details section for more information.
 #'
 #' @param constraint A string. One of `"total"`, `"singly"`, or `"doubly"`. See
 #'        Details section for more information.
@@ -77,18 +39,18 @@
 #'
 #' ## Total Constrained Accessibility
 #'
-#' Allocates the total system-wide quantity proportionally based on travel
-#' impedance between origins and destinations. This measure uses the logic of a
+#' Allocates the system-wide total proportionally based on travel impedance
+#' between origins and destinations. This measure uses the logic of a
 #' total ~(or 'unconstrained' by Wilson's terms)~ constraint.
 #'
 #' Use this measure when the total quantity of **supply** OR **demand** in the
 #' system is known and representing accessibility as a proportion of this total
 #'  is meaningful.
 #'
-#' **Requirements**:
+#' ### Requirement:
 #' - Either `demand` or `supply` must be provided (cannot provide both).
 #'
-#' **Interpretation**:
+#' ### Interpretation:
 #' - `active = TRUE` (*active accessibility*): Results represent the total
 #' number of  **opportunities** (supply) accessible from each origin based on
 #' region-relative travel impedance. The units are in 'supply' (e.g., jobs,
@@ -106,7 +68,7 @@
 #'   - If `detailed_results = TRUE`, OD-level flows are returned. Summing flows
 #'   by destination equals the aggregated result.
 #'
-#' **Use cases**:
+#' ### Use cases:
 #' - Active accessibility (aggregated):
 #'   "How many jobs can be reached from origin zone A given its region-relative
 #'   travel impedance?"
@@ -136,11 +98,11 @@
 #' The measure distributes flows so that totals match the constrained side
 #' while weighting by travel impedance and the unconstrained side.
 #'
-#' **Requirements**:
+#' ### Requirements:
 #' - Both `demand` and `supply` must be provided (the logical for `active`
 #' determines if either demand or supply is constrained).
 #'
-#' **Interpretation**:
+#' ### Interpretation:
 #' - `active = TRUE` (*active accessibility*): constrains supply. Results
 #' represent the total number of **opportunities** (supply) accessible from each
 #'  origin based on region-relative travel impedance and population at the origin.
@@ -158,7 +120,7 @@
 #'   - If `detailed_results = TRUE`, OD-level flows are returned. Summing flows
 #'   by destination equals the aggregated result.
 #'
-#' **Use cases**:
+#' ### Use cases:
 #' - Active accessibility (aggregated):
 #'   "How many jobs can be reached from origin zone A given its region-relative
 #'   travel impedance and demand?"
@@ -180,31 +142,30 @@
 #'
 #' ## Doubly Constrained Accessibility
 #'
-#' Allocates flows between origins and destinations using Wilson's *doubly-constrained*
-#' gravity model \insertCite{wilson1971family;textual}{accessibility}.
+#' Allocates flows so supply at each destination matches demand at each origin.
+#' It uses Wilson's *doubly-constrained* gravity model \insertCite{wilson1971family;textual}{accessibility}.
 #'
-#' The model uses iterative proportional fitting to update balancing factors
-#' (`A_i` for origins and `B_j` for destinations) until convergence. This guarantees
-#' that flows satisfy both marginals while being weighted by travel impedance.
+#' The model uses iterative proportional fitting to update balancing factors in
+#' order to calibrate OD flows on both margins (`A_i` for origins and `B_j` for
+#' destinations) until convergence (i.e. the sum of `demand` and `supply` match).
+#' This guarantees that flows satisfy both marginals while being weighted by
+#' travel  impedance.
 #'
-#' **Requirements**:
+#' ### Requirements:
 #' - Both `demand` and `supply` must be provided.
 #' - Unlike `total` and `singly`, `doubly` requires the sum of demand and supply
 #' to match; otherwise, the model will not converge.
+#'  - `active` must be `NULL`. Since supply must match demand, their units are
+#'  the same and there is no distinction between 'active' and 'passive' notions.
+#' - Only accepts`detailed_results = TRUE`.
 #'
-#' **Interpretation**:
-#' - When `detailed_results = TRUE`, results include OD-level flows (`flow`)
-#' along with balancing factors (`A_i`, `B_j`) and travel impedance weights.
-#' The resulting flows represent the distribution of demand and supply across
-#' all origin-destination pairs. NOTE: OD flows are in flow units (jointly
-#' determined by demand and supply).
+#' ### Interpretation:
+#' - Results include OD-level flows (`flow`) along with balancing factors (`A_i`,
+#' `B_j`) and travel impedance weights. The resulting flows represent the
+#' distribution of demand and supply across all origin-destination pairs. NOTE:
+#' OD flows are in flow units (jointly determined by demand and supply).
 #'
-#' - When `detailed_results = FALSE`, results are not returned. As the
-#' aggregated outputs simply return the supply at destinations or demand at
-#' origin that was fed into `demand` and `supply` parameters.
-#' `detailed_results = TRUE` should only be used.
-#'
-#' **Use cases**:
+#' ### Use cases:
 #' - flow-level:
 #' "What is the count of A->1 flows given A->1's region-relative travel impedance,
 #'  demand and supply?"

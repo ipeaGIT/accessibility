@@ -93,50 +93,11 @@ performance penalty.}
 \description{
 Calculates accessibility using constraints, as proposed in
 \insertCite{soukhov2025family;textual}{accessibility}. Accessibility is
-conceptualised as potential' spatial interaction. The results are in units of
-opportunities in the region (i.e., active accessibility \code{active = TRUE}) or
-in units of population in the region (if \code{active = FALSE} reflecting passive
-accessibility). Results are presented as a sum of a zone or presented as an
-origin-destination flow (if \code{detailed_results = TRUE}). Please see Details
-section for more information.
+conceptualised as potential spatial interaction. This function covers three
+constraint cases. Please see the Details section for more information.
 
 This function is generic over any kind of numeric travel cost,
 such as distance, time and money.
-}
-\details{
-The following three constraint cases (along with their \code{active} and passive
-variants) are included:
-\itemize{
-\item \code{"total"}: Allocates the system-wide total proportionally based on travel
-impedance.
-\item If \code{active = TRUE}, results are in units of  \strong{opportunities} (supply)
-accessible by the origin. Only \code{supply} can be passed, \code{demand} must be NULL.
-\item If \code{active = FALSE}, results are in units of  \strong{population} (demand)
-accessible by the destination. Only \code{demand} can be passed, \code{supply} must
-be NULL.
-\item If \code{detailed_results = TRUE}, accessibility (in units corresponding to the
-logical for \code{active}) is presented as a flow along with intermediates.
-\item \code{"singly"}: Applies a single constraint, allocating one side of the marginal
-proportionally based on the other marginal and travel impedance:
-\item If \code{active = TRUE}, returns origin-side results (how much supply is
-accessible from each origin). Outputs are units of supply. \code{demand} and
-\code{supply} must be passed.
-\item If \code{active = FALSE}, returns destination-side results (how much demand is
-accessible from each destination). Outputs are units of demand. \code{demand} and
-\code{supply} must be passed.
-\item If \code{detailed_results = TRUE}, accessibility (in units corresponding to the
-logical for \code{active}) is presented as a flow along with intermediates.
-\item \code{"doubly"}: Allocates flows so supply at each destination matches demand at
-each origin.
-\item OD flows are calibrated to both marginals. OD flows are calibrated to both
-marginals using iterative proportional fitting. The sum of \code{demand} and
-\code{supply} must match; otherwise, the function will not converge.
-\item \code{active} and \code{detailed_results} must be NULL. Since supply must match
-demand, their units are the same and there is no distinction between 'active'
-and 'passive' notions.
-}
-
-Please see the Details section for more information.
 }
 \section{Details}{
 
@@ -144,20 +105,20 @@ This function covers the family of constrained accessibility measures
 proposed in \insertCite{soukhov2025family;textual}{accessibility}.
 \subsection{Total Constrained Accessibility}{
 
-Allocates the total system-wide quantity proportionally based on travel
-impedance between origins and destinations. This measure uses the logic of a
+Allocates the system-wide total proportionally based on travel impedance
+between origins and destinations. This measure uses the logic of a
 total ~(or 'unconstrained' by Wilson's terms)~ constraint.
 
 Use this measure when the total quantity of \strong{supply} OR \strong{demand} in the
 system is known and representing accessibility as a proportion of this total
 is meaningful.
-
-\strong{Requirements}:
+\subsection{Requirement:}{
 \itemize{
 \item Either \code{demand} or \code{supply} must be provided (cannot provide both).
 }
+}
 
-\strong{Interpretation}:
+\subsection{Interpretation:}{
 \itemize{
 \item \code{active = TRUE} (\emph{active accessibility}): Results represent the total
 number of  \strong{opportunities} (supply) accessible from each origin based on
@@ -179,8 +140,9 @@ each destination based on region-relative travel impedance. The units are in
 by destination equals the aggregated result.
 }
 }
+}
 
-\strong{Use cases}:
+\subsection{Use cases:}{
 \itemize{
 \item Active accessibility (aggregated):
 "How many jobs can be reached from origin zone A given its region-relative
@@ -197,6 +159,8 @@ travel impedance?"
 }
 }
 
+}
+
 \subsection{Singly Constrained Accessibility}{
 
 Allocates opportunities at each destination (or population at each origin)
@@ -208,14 +172,14 @@ Use this measure when modeling \strong{competition}, where both demand and suppl
 are conceptualised to influence accessibility but only one side is fixed.
 The measure distributes flows so that totals match the constrained side
 while weighting by travel impedance and the unconstrained side.
-
-\strong{Requirements}:
+\subsection{Requirements:}{
 \itemize{
 \item Both \code{demand} and \code{supply} must be provided (the logical for \code{active}
 determines if either demand or supply is constrained).
 }
+}
 
-\strong{Interpretation}:
+\subsection{Interpretation:}{
 \itemize{
 \item \code{active = TRUE} (\emph{active accessibility}): constrains supply. Results
 represent the total number of \strong{opportunities} (supply) accessible from each
@@ -237,8 +201,9 @@ units are in 'demand' (e.g., population).
 by destination equals the aggregated result.
 }
 }
+}
 
-\strong{Use cases}:
+\subsection{Use cases:}{
 \itemize{
 \item Active accessibility (aggregated):
 "How many jobs can be reached from origin zone A given its region-relative
@@ -258,41 +223,46 @@ travel impedance and supply?"
 \code{spatial_availability()} function, through different logic.
 }
 
+}
+
 \subsection{Doubly Constrained Accessibility}{
 
-Allocates flows between origins and destinations using Wilson's \emph{doubly-constrained}
-gravity model \insertCite{wilson1971family;textual}{accessibility}.
+Allocates flows so supply at each destination matches demand at each origin.
+It uses Wilson's \emph{doubly-constrained} gravity model \insertCite{wilson1971family;textual}{accessibility}.
 
-The model uses iterative proportional fitting to update balancing factors
-(\code{A_i} for origins and \code{B_j} for destinations) until convergence. This guarantees
-that flows satisfy both marginals while being weighted by travel impedance.
-
-\strong{Requirements}:
+The model uses iterative proportional fitting to update balancing factors in
+order to calibrate OD flows on both margins (\code{A_i} for origins and \code{B_j} for
+destinations) until convergence (i.e. the sum of \code{demand} and \code{supply} match).
+This guarantees that flows satisfy both marginals while being weighted by
+travel  impedance.
+\subsection{Requirements:}{
 \itemize{
 \item Both \code{demand} and \code{supply} must be provided.
 \item Unlike \code{total} and \code{singly}, \code{doubly} requires the sum of demand and supply
 to match; otherwise, the model will not converge.
+\item \code{active} must be \code{NULL}. Since supply must match demand, their units are
+the same and there is no distinction between 'active' and 'passive' notions.
+\item Only accepts\code{detailed_results = TRUE}.
+}
 }
 
-\strong{Interpretation}:
+\subsection{Interpretation:}{
 \itemize{
-\item When \code{detailed_results = TRUE}, results include OD-level flows (\code{flow})
-along with balancing factors (\code{A_i}, \code{B_j}) and travel impedance weights.
-The resulting flows represent the distribution of demand and supply across
-all origin-destination pairs. NOTE: OD flows are in flow units (jointly
-determined by demand and supply).
-\item When \code{detailed_results = FALSE}, results are not returned. As the
-aggregated outputs simply return the supply at destinations or demand at
-origin that was fed into \code{demand} and \code{supply} parameters.
-\code{detailed_results = TRUE} should only be used.
+\item Results include OD-level flows (\code{flow}) along with balancing factors (\code{A_i},
+\code{B_j}) and travel impedance weights. The resulting flows represent the
+distribution of demand and supply across all origin-destination pairs. NOTE:
+OD flows are in flow units (jointly determined by demand and supply).
+}
 }
 
-\strong{Use cases}:
+\subsection{Use cases:}{
 \itemize{
 \item flow-level:
 "What is the count of A->1 flows given A->1's region-relative travel impedance,
 demand and supply?"
 }
+}
+
 }
 }
 
