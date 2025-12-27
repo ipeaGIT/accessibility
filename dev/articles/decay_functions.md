@@ -333,8 +333,8 @@ decay_power(1)
 #>     names(weights_list) <- decay_value
 #>     return(weights_list)
 #> }
-#> <bytecode: 0x560a5d7c96c8>
-#> <environment: 0x560a62827278>
+#> <bytecode: 0x55cdd773d688>
+#> <environment: 0x55cddc769008>
 ```
 
 What if we want our custom function to take many decay parameters as
