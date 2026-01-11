@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-A set of fast and convenient functions to help conducting accessibility analyses. Given a pre-computed travel cost matrix and a land use dataset (containing the location of jobs, healthcare and population, for example), the package allows one to calculate accessibility levels and accessibility poverty and inequality. The package covers the majority of the most commonly used accessibility measures (such as cumulative opportunities, gravity-based and floating catchment areas methods), some cutting edge measures proposed in the literature (e.g. balancing cost and constrained accessibility) as well as the most frequently used inequality and poverty metrics (such as the Palma ratio, the concentration and Theil indices and the FGT family of measures).
+A set of fast and convenient functions to help conducting accessibility analyses. Given a pre-computed travel cost matrix and a land use dataset (containing for example the location of jobs, healthcare and population), the package allows one to calculate accessibility levels, and accessibility poverty and inequality. The package covers the majority of the most commonly used accessibility measures (such as cumulative opportunities, gravity-based and floating catchment areas methods), some cutting edge measures proposed in the literature (e.g. balancing cost and constrained accessibility) as well as the most frequently used inequality and poverty metrics (such as the Palma ratio, the concentration and Theil indices and the FGT family of measures).
 }
 \section{Usage}{
 
@@ -39,11 +39,11 @@ Useful links:
 Authors:
 \itemize{
   \item Rafael H. M. Pereira \email{rafa.pereira.br@gmail.com} (\href{https://orcid.org/0000-0003-2125-7465}{ORCID})
+  \item Anastasia Soukhov
 }
 
 Other contributors:
 \itemize{
-  \item Anastasia Soukhov [contributor]
   \item Joey Reid [contributor]
   \item Ipea - Institute for Applied Economic Research [copyright holder, funder]
 }
