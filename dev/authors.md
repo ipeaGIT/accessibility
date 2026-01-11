@@ -20,14 +20,14 @@
 Source:
 [`DESCRIPTION`](https://github.com/ipeaGIT/accessibility/blob/main/DESCRIPTION)
 
-Pereira R, Herszenhut D (2025). *accessibility: Transport Accessibility
+Pereira R, Herszenhut D (2026). *accessibility: Transport Accessibility
 Measures*. R package version 1.4.0.9000,
 <https://github.com/ipeaGIT/accessibility>.
 
     @Manual{,
       title = {accessibility: Transport Accessibility Measures},
       author = {Rafael H. M. Pereira and Daniel Herszenhut},
-      year = {2025},
+      year = {2026},
       note = {R package version 1.4.0.9000},
       url = {https://github.com/ipeaGIT/accessibility},
     }

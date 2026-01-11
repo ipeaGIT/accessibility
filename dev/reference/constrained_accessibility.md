@@ -5,20 +5,17 @@ al. (2025) . Accessibility is conceptualised as potential spatial
 interaction. This function covers three constraint cases. Please see the
 Details section for more information.
 
-This function is generic over any kind of numeric travel cost, such as
-distance, time and money.
-
 ## Usage
 
 ``` r
 constrained_accessibility(
-  constraint,
   travel_matrix,
   land_use_data,
   travel_cost,
-  decay_function,
   demand = NULL,
   supply = NULL,
+  constraint,
+  decay_function,
   active = NULL,
   error_threshold = 0.001,
   improvement_threshold = 1e-06,
@@ -30,11 +27,6 @@ constrained_accessibility(
 ```
 
 ## Arguments
-
-- constraint:
-
-  A string. One of `"total"`, `"singly"`, or `"doubly"`. See Details
-  section for more information.
 
 - travel_matrix:
 
@@ -52,7 +44,26 @@ constrained_accessibility(
 - travel_cost:
 
   A string. The name of the column in `travel_matrix` with the travel
-  cost between origins and destinations.
+  cost between origins and destinations. The notion of cost here is
+  generic over any kind of numeric travel cost, such as distance, time
+  and money.
+
+- demand:
+
+  A string. The name of the column in `land_use_data` with the number of
+  opportunity-demanders at each origin (e.g., people) that will be
+  considered.
+
+- supply:
+
+  A string. The name of the column in `land_use_data` with the number of
+  opportunity supply at each destination (e.g., jobs, school-seats) that
+  will be considered.
+
+- constraint:
+
+  A string. One of `"total"`, `"singly"`, or `"doubly"`. See Details
+  section for more information.
 
 - decay_function:
 
@@ -67,18 +78,6 @@ constrained_accessibility(
   and
   [`decay_stepped()`](https://ipeagit.github.io/accessibility/dev/reference/decay_stepped.md).
   See the documentation of each decay function for more details.
-
-- demand:
-
-  A string. The name of the column in `land_use_data` with the number of
-  opportunity-demanders at each origin (e.g., people) that will be
-  considered.
-
-- supply:
-
-  A string. The name of the column in `land_use_data` with the number of
-  opportunity supply at each destination (e.g., jobs, school-seats) that
-  will be considered.
 
 - active:
 
@@ -315,14 +314,14 @@ land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
 # Total-constrained (active accessibility, aggregated): returns units of
 # accessible supply by origin (requires supply)
 constrained_accessibility(
-  constraint =   "total",
-  travel_matrix = travel_matrix,
-  land_use_data = land_use_data,
+  travel_matrix   = travel_matrix,
+  land_use_data   = land_use_data,
   travel_cost     = "travel_time",
+  constraint      = "total",
   decay_function  = decay_exponential(0.1),
   demand          = NULL,
   supply          = "jobs",
-  active = TRUE,
+  active          = TRUE,
   detailed_results = FALSE
 )
 #>              from_id   supply
@@ -342,14 +341,14 @@ constrained_accessibility(
 # Total-constrained (passive accessibility, aggregated): returns units of
 # accessible demand by destination  (requires demand)
 constrained_accessibility(
-  constraint =   "total",
-  travel_matrix = travel_matrix,
-  land_use_data = land_use_data,
-  travel_cost     = "travel_time",
-  decay_function  = decay_exponential(0.1),
-  demand          = "population",
-  supply          = NULL,
-  active = FALSE,
+  travel_matrix  = travel_matrix,
+  land_use_data  = land_use_data,
+  travel_cost    = "travel_time",
+  constraint     = "total",
+  decay_function = decay_exponential(0.1),
+  demand         = "population",
+  supply         = NULL,
+  active         = FALSE,
   detailed_results = FALSE
 )
 #>                to_id       demand
@@ -369,14 +368,14 @@ constrained_accessibility(
 # Singly-constrained (active accessibility, aggregated): returns units of
 # accessible supply by origin (requires supply and demand)
 constrained_accessibility(
-  constraint =   "singly",
-  travel_matrix = travel_matrix,
-  land_use_data = land_use_data,
+  travel_matrix   = travel_matrix,
+  land_use_data   = land_use_data,
   travel_cost     = "travel_time",
+  constraint      = "singly",
   decay_function  = decay_exponential(0.1),
   demand          = "population",
   supply          = "jobs",
-  active = TRUE,
+  active          = TRUE,
   detailed_results = FALSE
 )
 #>              from_id    supply
@@ -419,10 +418,10 @@ lu_small <- data.table::data.table(
 )
 
 constrained_accessibility(
-  constraint = "doubly",
-  travel_matrix = tm_small,
-  land_use_data = lu_small,
+  travel_matrix   = tm_small,
+  land_use_data   = lu_small,
   travel_cost     = "travel_time",
+  constraint      = "doubly",
   decay_function  = decay_exponential(0.1),
   demand          = "population",
   supply          = "jobs",
