@@ -5,8 +5,14 @@
 #' conceptualised as potential spatial interaction. This function covers three
 #' constraint cases. Please see the Details section for more information.
 #'
+#' @template travel_matrix
+#' @template land_use_data
+#' @template travel_cost
+#' @template demand
+#' @template supply
 #' @param constraint A string. One of `"total"`, `"singly"`, or `"doubly"`. See
 #'        Details section for more information.
+#' @template decay_function
 #' @param active A logical. When `TRUE`, the function calculates active
 #'        accessibility (the quantity of opportunities that can be reached from
 #'        a given origin). When `FALSE`, it calculates passive accessibility (by
@@ -25,13 +31,6 @@
 #' @template fill_missing_ids_combinations
 #' @param detailed_results Logical. Whether to return detailed OD-level results.
 #'
-#' @template description_generic_cost
-#' @template travel_matrix
-#' @template land_use_data
-#' @template travel_cost
-#' @template decay_function
-#' @template demand
-#' @template supply
 #'
 #' @section Details:
 #' This function covers the family of constrained accessibility measures
@@ -184,42 +183,42 @@
 #' # Total-constrained (active accessibility, aggregated): returns units of
 #' # accessible supply by origin (requires supply)
 #' constrained_accessibility(
-#'   constraint =   "total",
-#'   travel_matrix = travel_matrix,
-#'   land_use_data = land_use_data,
+#'   travel_matrix   = travel_matrix,
+#'   land_use_data   = land_use_data,
 #'   travel_cost     = "travel_time",
+#'   constraint      = "total",
 #'   decay_function  = decay_exponential(0.1),
 #'   demand          = NULL,
 #'   supply          = "jobs",
-#'   active = TRUE,
+#'   active          = TRUE,
 #'   detailed_results = FALSE
 #' )
 #'
 #' # Total-constrained (passive accessibility, aggregated): returns units of
 #' # accessible demand by destination  (requires demand)
 #' constrained_accessibility(
-#'   constraint =   "total",
-#'   travel_matrix = travel_matrix,
-#'   land_use_data = land_use_data,
-#'   travel_cost     = "travel_time",
-#'   decay_function  = decay_exponential(0.1),
-#'   demand          = "population",
-#'   supply          = NULL,
-#'   active = FALSE,
+#'   travel_matrix  = travel_matrix,
+#'   land_use_data  = land_use_data,
+#'   travel_cost    = "travel_time",
+#'   constraint     = "total",
+#'   decay_function = decay_exponential(0.1),
+#'   demand         = "population",
+#'   supply         = NULL,
+#'   active         = FALSE,
 #'   detailed_results = FALSE
 #' )
 #'
 #' # Singly-constrained (active accessibility, aggregated): returns units of
 #' # accessible supply by origin (requires supply and demand)
 #' constrained_accessibility(
-#'   constraint =   "singly",
-#'   travel_matrix = travel_matrix,
-#'   land_use_data = land_use_data,
+#'   travel_matrix   = travel_matrix,
+#'   land_use_data   = land_use_data,
 #'   travel_cost     = "travel_time",
+#'   constraint      = "singly",
 #'   decay_function  = decay_exponential(0.1),
 #'   demand          = "population",
 #'   supply          = "jobs",
-#'   active = TRUE,
+#'   active          = TRUE,
 #'   detailed_results = FALSE
 #' )
 #'
@@ -238,10 +237,10 @@
 #' )
 #'
 #' constrained_accessibility(
-#'   constraint = "doubly",
-#'   travel_matrix = tm_small,
-#'   land_use_data = lu_small,
+#'   travel_matrix   = tm_small,
+#'   land_use_data   = lu_small,
 #'   travel_cost     = "travel_time",
+#'   constraint      = "doubly",
 #'   decay_function  = decay_exponential(0.1),
 #'   demand          = "population",
 #'   supply          = "jobs",
@@ -249,13 +248,13 @@
 #' )
 #'
 #' @export
-constrained_accessibility <- function(constraint,
-                                      travel_matrix,
+constrained_accessibility <- function(travel_matrix,
                                       land_use_data,
                                       travel_cost,
-                                      decay_function,
                                       demand = NULL,
                                       supply = NULL,
+                                      constraint,
+                                      decay_function,
                                       active = NULL,
                                       error_threshold = 0.001,
                                       improvement_threshold = 1e-6,

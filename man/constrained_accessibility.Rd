@@ -5,13 +5,13 @@
 \title{Constrained accessibility}
 \usage{
 constrained_accessibility(
-  constraint,
   travel_matrix,
   land_use_data,
   travel_cost,
-  decay_function,
   demand = NULL,
   supply = NULL,
+  constraint,
+  decay_function,
   active = NULL,
   error_threshold = 0.001,
   improvement_threshold = 1e-06,
@@ -22,9 +22,6 @@ constrained_accessibility(
 )
 }
 \arguments{
-\item{constraint}{A string. One of \code{"total"}, \code{"singly"}, or \code{"doubly"}. See
-Details section for more information.}
-
 \item{travel_matrix}{A data frame. The travel matrix describing the costs
 (i.e. travel time, distance, monetary cost, etc.) between the origins and
 destinations in the study area. Must contain the columns \code{from_id}, \code{to_id}
@@ -34,16 +31,10 @@ and any others specified in \code{travel_cost}.}
 the study area cells. Must contain the columns \code{id} and any others
 specified in \code{opportunity}.}
 
-\item{travel_cost}{A string. The name of the column in \code{travel_matrix}
-with the travel cost between origins and destinations.}
-
-\item{decay_function}{A \code{fuction} that converts travel cost into an
-impedance factor used to weight opportunities. This function should take a
-\code{numeric} vector and also return a \code{numeric} vector as output, with the
-same length as the input. For convenience, the package currently includes
-the following functions: \code{\link[=decay_binary]{decay_binary()}}, \code{\link[=decay_exponential]{decay_exponential()}},
-\code{\link[=decay_power]{decay_power()}} and \code{\link[=decay_stepped]{decay_stepped()}}. See the documentation of each decay
-function for more details.}
+\item{travel_cost}{A string. The name of the column in \code{travel_matrix} with
+the travel cost between origins and destinations. The notion of cost
+here is generic over any kind of numeric travel cost, such as distance,
+time and money.}
 
 \item{demand}{A string. The name of the column in \code{land_use_data} with the
 number of opportunity-demanders at each origin (e.g., people) that will be
@@ -52,6 +43,17 @@ considered.}
 \item{supply}{A string. The name of the column in \code{land_use_data} with the
 number of opportunity supply at each destination (e.g., jobs, school-seats)
 that will be considered.}
+
+\item{constraint}{A string. One of \code{"total"}, \code{"singly"}, or \code{"doubly"}. See
+Details section for more information.}
+
+\item{decay_function}{A \code{fuction} that converts travel cost into an
+impedance factor used to weight opportunities. This function should take a
+\code{numeric} vector and also return a \code{numeric} vector as output, with the
+same length as the input. For convenience, the package currently includes
+the following functions: \code{\link[=decay_binary]{decay_binary()}}, \code{\link[=decay_exponential]{decay_exponential()}},
+\code{\link[=decay_power]{decay_power()}} and \code{\link[=decay_stepped]{decay_stepped()}}. See the documentation of each decay
+function for more details.}
 
 \item{active}{A logical. When \code{TRUE}, the function calculates active
 accessibility (the quantity of opportunities that can be reached from
@@ -95,9 +97,6 @@ Calculates accessibility using constraints, as proposed in
 \insertCite{soukhov2025family;textual}{accessibility}. Accessibility is
 conceptualised as potential spatial interaction. This function covers three
 constraint cases. Please see the Details section for more information.
-
-This function is generic over any kind of numeric travel cost,
-such as distance, time and money.
 }
 \section{Details}{
 
@@ -275,42 +274,42 @@ land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
 # Total-constrained (active accessibility, aggregated): returns units of
 # accessible supply by origin (requires supply)
 constrained_accessibility(
-  constraint =   "total",
-  travel_matrix = travel_matrix,
-  land_use_data = land_use_data,
+  travel_matrix   = travel_matrix,
+  land_use_data   = land_use_data,
   travel_cost     = "travel_time",
+  constraint      = "total",
   decay_function  = decay_exponential(0.1),
   demand          = NULL,
   supply          = "jobs",
-  active = TRUE,
+  active          = TRUE,
   detailed_results = FALSE
 )
 
 # Total-constrained (passive accessibility, aggregated): returns units of
 # accessible demand by destination  (requires demand)
 constrained_accessibility(
-  constraint =   "total",
-  travel_matrix = travel_matrix,
-  land_use_data = land_use_data,
-  travel_cost     = "travel_time",
-  decay_function  = decay_exponential(0.1),
-  demand          = "population",
-  supply          = NULL,
-  active = FALSE,
+  travel_matrix  = travel_matrix,
+  land_use_data  = land_use_data,
+  travel_cost    = "travel_time",
+  constraint     = "total",
+  decay_function = decay_exponential(0.1),
+  demand         = "population",
+  supply         = NULL,
+  active         = FALSE,
   detailed_results = FALSE
 )
 
 # Singly-constrained (active accessibility, aggregated): returns units of
 # accessible supply by origin (requires supply and demand)
 constrained_accessibility(
-  constraint =   "singly",
-  travel_matrix = travel_matrix,
-  land_use_data = land_use_data,
+  travel_matrix   = travel_matrix,
+  land_use_data   = land_use_data,
   travel_cost     = "travel_time",
+  constraint      = "singly",
   decay_function  = decay_exponential(0.1),
   demand          = "population",
   supply          = "jobs",
-  active = TRUE,
+  active          = TRUE,
   detailed_results = FALSE
 )
 
@@ -329,10 +328,10 @@ lu_small <- data.table::data.table(
 )
 
 constrained_accessibility(
-  constraint = "doubly",
-  travel_matrix = tm_small,
-  land_use_data = lu_small,
+  travel_matrix   = tm_small,
+  land_use_data   = lu_small,
   travel_cost     = "travel_time",
+  constraint      = "doubly",
   decay_function  = decay_exponential(0.1),
   demand          = "population",
   supply          = "jobs",

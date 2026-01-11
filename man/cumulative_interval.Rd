@@ -30,8 +30,10 @@ specified in \code{opportunity}.}
 with the number of opportunities/resources/services to be considered when
 calculating accessibility levels.}
 
-\item{travel_cost}{A string. The name of the column in \code{travel_matrix}
-with the travel cost between origins and destinations.}
+\item{travel_cost}{A string. The name of the column in \code{travel_matrix} with
+the travel cost between origins and destinations. The notion of cost
+here is generic over any kind of numeric travel cost, such as distance,
+time and money.}
 
 \item{interval}{A \code{numeric} vector of length 2. Indicates the start and end
 points of the interval of travel cost thresholds to be used. The first
