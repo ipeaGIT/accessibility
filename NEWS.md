@@ -3,7 +3,7 @@
 ## New features
 
 - New function `constrained_accessibility()`, which implements the family of 
-constrained accessibility measures proposed in \url{https://doi.org/10.1371/journal.pone.0335951}
+constrained accessibility measures proposed in Soukhov et al. (2025).
 
 ## Minor changes
 
