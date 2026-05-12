@@ -20,6 +20,13 @@
 #'   when calculating poverty.
 #' @param poverty_line A `numeric`. The poverty line below which individuals are
 #'   considered to be in accessibility poverty.
+#' @param poor_below_threshold Logic. If `TRUE` (default,) the observations below
+#'       the poverty line are considered to be poor. This is the correct approach
+#'       for primal accessibility measures (e.g.cumulative accessibility). If
+#'       `FALSE`, then observations above the poverty line are considered to be
+#'       poor. This is the correct approach for dual accessibility measures (e.g.
+#'       travel time to the closest facility). When set to `FALSE`, FGT 1 and 2
+#'       do not have an upper bound.
 #' @param group_by A `character` vector. When not `character(0)` (the default),
 #'   indicates the `accessibility_data` columns that should be used to group the
 #'   poverty estimates by. For example, if `accessibility_data` includes a
@@ -68,24 +75,27 @@
 #' )
 #'
 #' poverty <- fgt_poverty(
-#'   access,
+#'   accessibility_data = access,
 #'   opportunity = "jobs",
 #'   sociodemographic_data = land_use_data,
 #'   population = "population",
-#'   poverty_line = 95368
+#'   poverty_line = 50000
 #' )
 #' poverty
 #'
 #' @export
 fgt_poverty <- function(accessibility_data,
-                        sociodemographic_data,
-                        opportunity,
-                        population,
-                        poverty_line,
-                        group_by = character(0)) {
+                         sociodemographic_data,
+                         opportunity,
+                         population,
+                         poverty_line,
+                         poor_below_threshold = TRUE,
+                         group_by = character(0)) {
+
   checkmate::assert_string(opportunity)
   checkmate::assert_string(population)
   checkmate::assert_numeric(poverty_line, lower = 0)
+  checkmate::assert_logical(poor_below_threshold)
   assert_access_group_by(group_by)
   assert_accessibility_data(accessibility_data, opportunity, group_by)
   assert_sociodemographic_data(
@@ -118,20 +128,45 @@ fgt_poverty <- function(accessibility_data,
   .pop_colname <- population
   .groups <- group_by
 
-  data[get(.opp_colname) >= poverty_line, c(".fgt0", ".fgt1", ".fgt2") := 0]
+  # primal accessibility ---------------------------------------------------------
+  if (isTRUE(poor_below_threshold)) {
 
-  data[
-    get(.opp_colname) < poverty_line,
-    .norm_opp_shortfall := (poverty_line - get(.opp_colname)) / poverty_line
-  ]
-  data[
-    get(.opp_colname) < poverty_line,
-    `:=`(
-      .fgt0 = .norm_opp_shortfall ^ 0,
-      .fgt1 = .norm_opp_shortfall ^ 1,
-      .fgt2 = .norm_opp_shortfall ^ 2
-    )
-  ]
+    data[get(.opp_colname) >= poverty_line, c(".fgt0", ".fgt1", ".fgt2") := 0]
+
+    data[
+      get(.opp_colname) < poverty_line,
+      .norm_opp_shortfall := (poverty_line - get(.opp_colname)) / poverty_line
+    ]
+    data[
+      get(.opp_colname) < poverty_line,
+      `:=`(
+        .fgt0 = .norm_opp_shortfall ^ 0,
+        .fgt1 = .norm_opp_shortfall ^ 1,
+        .fgt2 = .norm_opp_shortfall ^ 2
+      )
+    ]
+  }
+
+  # dual accessibility ---------------------------------------------------------
+  if (isFALSE(poor_below_threshold)) {
+    data[get(.opp_colname) <= poverty_line, c(".fgt0", ".fgt1", ".fgt2") := 0]
+
+    data[
+      get(.opp_colname) > poverty_line,
+      .norm_opp_shortfall := (get(.opp_colname) - poverty_line) / poverty_line
+      # .norm_opp_shortfall := (get(.opp_colname)  / poverty_line)
+    ]
+
+    data[
+      get(.opp_colname) > poverty_line,
+      `:=`(
+        .fgt0 = .norm_opp_shortfall ^ 0,
+        .fgt1 = .norm_opp_shortfall ^ 1,
+        .fgt2 = .norm_opp_shortfall ^ 2
+      )
+    ]
+  }
+
 
   if (nrow(data) == 0 && identical(group_by, character(0))) {
     fgt <- data.table::data.table(

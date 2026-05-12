@@ -6,6 +6,7 @@ tester <- function(accessibility_data = small_access,
                    opportunity = "jobs",
                    population = "population",
                    poverty_line = 10000,
+                   poor_below_threshold = TRUE,
                    group_by = "mode") {
   fgt_poverty(
     accessibility_data,
@@ -13,6 +14,7 @@ tester <- function(accessibility_data = small_access,
     opportunity,
     population,
     poverty_line,
+    poor_below_threshold,
     group_by
   )
 }
@@ -43,6 +45,10 @@ test_that("raises errors due to incorrect input", {
   )
   expect_error(
     tester(sociodemographic_data = land_use_data[, .(id, oi = population)])
+  )
+
+  expect_error(
+    tester(poor_below_threshold = "banana")
   )
 })
 
@@ -198,4 +204,10 @@ test_that("works even if access_data and sociodem_data has specific colnames", {
   expect_identical(expected_result, result)
 
   access_data[, group_by := NULL]
+
+  # poor above the threshold
+  poor_above <- tester(poor_below_threshold = F, poverty_line = 41)
+  expect_identical(poor_above$FGT0, 1)
+  expect_identical(poor_above$FGT1, 1)
+  expect_identical(poor_above$FGT2, 1)
 })

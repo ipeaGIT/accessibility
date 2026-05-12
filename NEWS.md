@@ -1,12 +1,20 @@
 # accessibility 1.5.0
 
-## Bug fixes
-
 ## New features
 
-- New function `constrained_accessibility()`.
+- New function `constrained_accessibility()`, which implements the family of 
+constrained accessibility measures proposed in \url{https://doi.org/10.1371/journal.pone.0335951}
 
-## Notes
+## Minor changes
+
+- The function `fgt_poverty()` has a new argument `poor_below_threshold`. when
+set to `TRUE` (default,) the observations below the poverty line are considered 
+to be poor. This is the correct approach for primal accessibility measures (e.g.
+cumulative accessibility). If `FALSE`, then observations above the poverty line 
+are considered to be poor. This is the correct approach for dual accessibility 
+measures (e.g. travel time to the closest facility). When set to `FALSE`, FGT 1 
+and 2 do not have an upper bound. Closes [#63](https://github.com/ipeaGIT/accessibility/issues/63)
+
 
 
 # accessibility 1.4.0

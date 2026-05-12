@@ -44,6 +44,7 @@ Authors:
 
 Other contributors:
 \itemize{
+  \item Christopher Higgins [contributor]
   \item Joey Reid [contributor]
   \item Ipea - Institute for Applied Economic Research [copyright holder, funder]
 }
