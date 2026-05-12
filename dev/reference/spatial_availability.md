@@ -123,7 +123,7 @@ travel matrix.
 
 Soukhov A, Páez A, Higgins CD, Mohamed M (2023). “Introducing Spatial
 Availability, a Singly-Constrained Measure of Competitive
-Accessibility.” *PLOS ONE*, **18**(1), e0278468. ISSN 1932-6203,
+Accessibility.” *PLOS ONE*, **18**(1), e0278468. ISSN 1932-6203.
 [doi:10.1371/journal.pone.0278468](https://doi.org/10.1371/journal.pone.0278468)
 .
 

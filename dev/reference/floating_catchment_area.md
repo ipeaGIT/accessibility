@@ -124,19 +124,19 @@ The package currently includes two built-in FCA measures:
 Luo W, Wang F (2003). “Measures of Spatial Accessibility to Health Care
 in a GIS Environment: Synthesis and a Case Study in the Chicago Region.”
 *Environment and Planning B: Planning and Design*, **30**(6), 865–884.
-ISSN 0265-8135, 1472-3417,
+ISSN 0265-8135, 1472-3417.
 [doi:10.1068/b29120](https://doi.org/10.1068/b29120) .  
   
 Paez A, Higgins CD, Vivona SF (2019). “Demand and Level of Service
 Inflation in Floating Catchment Area (FCA) Methods.” *PLOS ONE*,
-**14**(6), e0218773. ISSN 1932-6203,
+**14**(6), e0218773. ISSN 1932-6203.
 [doi:10.1371/journal.pone.0218773](https://doi.org/10.1371/journal.pone.0218773)
 .  
   
 Pereira RHM, Braga CKV, Servo LM, Serra B, Amaral P, Gouveia N, Paez A
 (2021). “Geographic Access to COVID-19 Healthcare in Brazil Using a
 Balanced Float Catchment Area Approach.” *Social Science & Medicine*,
-**273**, 113773. ISSN 0277-9536,
+**273**, 113773. ISSN 0277-9536.
 [doi:10.1016/j.socscimed.2021.113773](https://doi.org/10.1016/j.socscimed.2021.113773)
 .
 

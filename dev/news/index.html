@@ -46,15 +46,14 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.5.0" id="accessibility-150">accessibility 1.5.0<a class="anchor" aria-label="anchor" href="#accessibility-150"></a></h2>
 <div class="section level3">
-<h3 id="bug-fixes-1-5-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-5-0"></a></h3>
-</div>
-<div class="section level3">
 <h3 id="new-features-1-5-0">New features<a class="anchor" aria-label="anchor" href="#new-features-1-5-0"></a></h3>
-<ul><li>New function <code><a href="../reference/constrained_accessibility.html">constrained_accessibility()</a></code>.</li>
+<ul><li>New function <code><a href="../reference/constrained_accessibility.html">constrained_accessibility()</a></code>, which implements the family of constrained accessibility measures proposed in </li>
 </ul></div>
 <div class="section level3">
-<h3 id="notes-1-5-0">Notes<a class="anchor" aria-label="anchor" href="#notes-1-5-0"></a></h3>
-</div>
+<h3 id="minor-changes-1-5-0">Minor changes<a class="anchor" aria-label="anchor" href="#minor-changes-1-5-0"></a></h3>
+<ul><li>The function <code><a href="../reference/fgt_poverty.html">fgt_poverty()</a></code> has a new argument <code>poor_below_threshold</code>. when set to <code>TRUE</code> (default,) the observations below the poverty line are considered to be poor. This is the correct approach for primal accessibility measures (e.g. cumulative accessibility). If <code>FALSE</code>, then observations above the poverty line are considered to be poor. This is the correct approach for dual accessibility measures (e.g. travel time to the closest facility). When set to <code>FALSE</code>, FGT 1 and 2 do not have an upper bound. Closes <a href="https://github.com/ipeaGIT/accessibility/issues/63" class="external-link">#63</a>
+</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.4.0" id="accessibility-140">accessibility 1.4.0<a class="anchor" aria-label="anchor" href="#accessibility-140"></a></h2><p class="text-muted">CRAN release: 2024-03-06</p>

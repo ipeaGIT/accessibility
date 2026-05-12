@@ -28,12 +28,14 @@ measures).
 Stable version:
 
 ``` r
+
 install.packages("accessibility")
 ```
 
 Development version:
 
 ``` r
+
 # install.packages("remotes")
 remotes::install_github("ipeaGIT/accessibility")
 ```
@@ -55,6 +57,7 @@ travel matrix and some land use data. Below we showcase some of the
 available functions:
 
 ``` r
+
 library(accessibility)
 
 data_dir <- system.file("extdata", package = "accessibility")
@@ -120,6 +123,7 @@ the previously calculated cumulative accessibility dataset to show some
 of the available inequality and poverty functions:
 
 ``` r
+
 palma <- palma_ratio(
   cum_cutoff,
   sociodemographic_data = land_use_data,

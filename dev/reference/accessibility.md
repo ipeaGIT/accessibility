@@ -55,6 +55,8 @@ Authors:
 
 Other contributors:
 
+- Christopher Higgins \[contributor\]
+
 - Joey Reid \[contributor\]
 
 - Ipea - Institute for Applied Economic Research \[copyright holder,

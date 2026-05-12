@@ -18,54 +18,65 @@ the opportunities, which is discussed further down in this the vignette.
 Also known as the step decay function, it’s most commonly used in
 cumulative opportunities measures.
 
-$$\begin{array}{r}
-{f\left( t_{ij} \right) = \begin{cases}
-1 & {\quad{\text{for}\mspace{6mu}}t_{ij} \leq T} \\
-0 & {\quad{\text{for}\mspace{6mu}}t_{ij} > T}
-\end{cases}} \\
+``` math
+\begin{aligned}
+  f(t_{ij})= \left\{
+      \begin{array}{ll}
+          1 & \quad \text{for }t_{ij} \leq T \\
+          0 & \quad \text{for }t_{ij} > T
+      \end{array}
+    \right.\\
+\end{aligned}
+```
 
-\end{array}$$
-
-Where $t_{ij}$ is the travel cost between origin *i* and destination
-*j*, and $T$ is the travel cost cutoff.
+Where $`t_{ij}`$ is the travel cost between origin *i* and destination
+*j*, and $`T`$ is the travel cost cutoff.
 
 ### Linear
 
 Weights decay linearly until the travel cost cutoff is reached. From
 this point onward weights assume the value of 0.
 
-$$\begin{array}{r}
-{f\left( t_{ij} \right) = \begin{cases}
-\left( 1 - t_{ij}/T \right) & {\quad{\text{for}\mspace{6mu}}t_{ij} \leq T} \\
-0 & {\quad{\text{for}\mspace{6mu}}t_{ij} > T}
-\end{cases}} \\
+``` math
+\begin{aligned}
+  f(t_{ij})= \left\{
+      \begin{array}{ll}
+          (1 - t_{ij}/ T) & \quad \text{for }t_{ij} \leq T \\
+          0 & \quad \text{for }t_{ij} > T
+      \end{array}
+    \right.\\
+\end{aligned}
+```
 
-\end{array}$$
-
-Where $t_{ij}$ is the travel cost between origin *i* and destination
-*j*, and $T$ is the travel cost cutoff.
+Where $`t_{ij}`$ is the travel cost between origin *i* and destination
+*j*, and $`T`$ is the travel cost cutoff.
 
 ### Negative exponential
 
-$$\begin{array}{r}
-{f\left( t_{ij} \right) = e^{( - \beta t_{ij})}}
-\end{array}$$
+``` math
+\begin{aligned}
+  f(t_{ij})= e^{(-\beta t_{ij})}
+\end{aligned}
+```
 
-Where $t_{ij}$ is the travel cost between origin *i* and destination
-*j*, and $\beta$ is the parameter that tells the speed of decay.
+Where $`t_{ij}`$ is the travel cost between origin *i* and destination
+*j*, and $`\beta`$ is the parameter that tells the speed of decay.
 
 ### Inverse power
 
-$$\begin{array}{r}
-{f\left( t_{ij} \right) = \begin{cases}
-1 & {\quad{\text{for}\mspace{6mu}}t_{ij} \leq 1} \\
-t_{ij}^{- \beta} & {\quad{\text{for}\mspace{6mu}}t_{ij} > 1}
-\end{cases}} \\
+``` math
+\begin{aligned}
+  f(t_{ij})= \left\{
+      \begin{array}{ll}
+          1 & \quad \text{for } t_{ij}\leq 1 \\
+          t_{ij}^{-\beta} & \quad \text{for }t_{ij} > 1
+      \end{array}
+    \right.\\
+\end{aligned}
+```
 
-\end{array}$$
-
-Where $t_{ij}$ is the travel cost between origin *i* and destination
-*j*, and $\beta$ is the parameter that tells the speed of decay.
+Where $`t_{ij}`$ is the travel cost between origin *i* and destination
+*j*, and $`\beta`$ is the parameter that tells the speed of decay.
 
 ### Stepped
 
@@ -73,23 +84,25 @@ Similar to the binary function, but can take an arbitrary number of
 steps. The current implementation assumes that values changes at each
 step, instead of right after it.
 
-$$\begin{array}{r}
-{f\left( t_{ij} \right) = \begin{cases}
-1 & {\quad{\text{for}\mspace{6mu}}t_{ij} < S_{1}} \\
-v_{1} & {\quad{\text{for}\mspace{6mu}}t_{ij} < S_{2}} \\
-v_{2} & {\quad{\text{for}\mspace{6mu}}t_{ij} < S_{3}} \\
-{...} & \\
-v_{n - 1} & {\quad{\text{for}\mspace{6mu}}t_{ij} < S_{n}} \\
-v_{n} & {\quad\text{otherwise}} \\
- & 
-\end{cases}} \\
+``` math
+\begin{aligned}
+  f(t_{ij})= \left\{
+      \begin{array}{ll}
+          1 & \quad \text{for } t_{ij} \lt S_{1} \\
+          v_{1} & \quad \text{for } t_{ij} \lt S_{2} \\
+          v_{2} & \quad \text{for } t_{ij} \lt S_{3} \\
+          ... \\
+          v_{n-1} & \quad \text{for } t_{ij} \lt S_{n} \\
+          v_{n} & \quad \text{otherwise} \\
+      \end{array}
+    \right.\\
+\end{aligned}
+```
 
-\end{array}$$
-
-Where $t_{ij}$ is the travel cost between origin *i* and destination
-*j*, $n$ is the total number of steps, $S_{k}$ is the travel cost cutoff
-that delimits the $k^{th}$ step, and $v_{k}$ is the value that the decay
-function assumes at the $k^{th}$ step.
+Where $`t_{ij}`$ is the travel cost between origin *i* and destination
+*j*, $`n`$ is the total number of steps, $`S_{k}`$ is the travel cost
+cutoff that delimits the $`k^{th}`$ step, and $`v_{k}`$ is the value
+that the decay function assumes at the $`k^{th}`$ step.
 
 ### Logistic
 
@@ -101,12 +114,16 @@ decay curve proposed by Bauer and Groneberg (2016). Standard deviations
 values near 0 result in weighting curves that approximate binary decay,
 while higher values tend to linearize the curve.
 
-$$\begin{array}{r}
-{f\left( t_{ij} \right) = \frac{1 + e^{\frac{- IP \times \pi}{SD \times \sqrt{3}}}}{1 + e^{\frac{{(t_{ij} - IP)} \times \pi}{SD \times \sqrt{3}}}}}
-\end{array}$$
+``` math
+\begin{aligned}
+  f(t_{ij}) = \frac{
+    1 + e^\frac{-IP \times \pi}{SD \times \sqrt{3}}}{
+    1 + e^\frac{(t_{ij} - IP) \times \pi}{SD \times \sqrt{3}}}
+\end{aligned}
+```
 
-Where $t_{ij}$ is the travel cost between origin *i* and destination
-*j*, $IP$ is the distribution inflection point, and $SD$ is the
+Where $`t_{ij}`$ is the travel cost between origin *i* and destination
+*j*, $`IP`$ is the distribution inflection point, and $`SD`$ is the
 distribution standard deviation.
 
 #### Quick demonstration
@@ -123,6 +140,7 @@ we calculate the opportunities weights for the same travel costs, but
 using different negative exponential decay values (0.2 and 0.3):
 
 ``` r
+
 library(accessibility)
 
 output_fn <- decay_exponential(c(0.2, 0.3))
@@ -141,6 +159,7 @@ as the only decay function that takes more than one argument (both
 of steps and weights:
 
 ``` r
+
 stepped_output <- decay_stepped(
   steps = list(c(10, 20, 30), c(10, 20, 30, 40)),
   weights = list(c(0.67, 0.33, 0), c(0.75, 0.5, 0.25, 0))
@@ -158,7 +177,13 @@ With the code below, we demonstrate each decay function with travel
 costs ranging from 1 to 100:
 
 ``` r
+
 library(data.table)
+#> 
+#> Attaching package: 'data.table'
+#> The following object is masked from 'package:base':
+#> 
+#>     %notin%
 library(ggplot2)
 
 binary <- decay_binary(cutoff = 50)
@@ -212,12 +237,13 @@ and returns either:
 
 Let’s check the difference between each case with an example. Suppose we
 want to use a very simple decay function that defines the weights as the
-multiplicative inverse of travel cost - i.e. $travel\_ cost^{- 1}$. We
+multiplicative inverse of travel cost - i.e. $`travel\_cost^{-1}`$. We
 just have to take care of the case when travel cost is less than 1, in
 which case the function would return values greater than 1 and which we
 will replace with 1, but otherwise the implementation is pretty simple:
 
 ``` r
+
 my_decay <- function(travel_cost) {
   weights <- 1 / travel_cost
   weights[weights > 1] <- 1
@@ -229,6 +255,7 @@ Given a `numeric` vector of travel costs, the function returns a
 `numeric` vector of weights:
 
 ``` r
+
 my_decay(c(0, 0.5, 1, 2, 5, 10))
 #> [1] 1.0 1.0 1.0 0.5 0.2 0.1
 ```
@@ -237,6 +264,7 @@ Using this function to calculate accessibility is as easy as any of the
 built-in decay functions:
 
 ``` r
+
 data_dir <- system.file("extdata", package = "accessibility")
 
 travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
@@ -273,6 +301,7 @@ parameter as input and returns a function that takes travel cost input
 as output:
 
 ``` r
+
 my_second_decay <- function(decay_parameter) {
   function(travel_cost) {
     weights <- 1 / (decay_parameter * travel_cost)
@@ -296,6 +325,7 @@ result shown above if we use `my_second_decay(1)`, instead of
 `my_decay`:
 
 ``` r
+
 second_custom_gravity <- gravity(
   travel_matrix,
   land_use_data,
@@ -322,6 +352,7 @@ is actually a function “factory”: it’s a function that returns a
 function.
 
 ``` r
+
 decay_power(1)
 #> function (travel_cost) 
 #> {
@@ -333,8 +364,8 @@ decay_power(1)
 #>     names(weights_list) <- decay_value
 #>     return(weights_list)
 #> }
-#> <bytecode: 0x55d3f37ccad0>
-#> <environment: 0x55d3f87e75a0>
+#> <bytecode: 0x55d431c570e8>
+#> <environment: 0x55d436c67158>
 ```
 
 What if we want our custom function to take many decay parameters as
@@ -343,6 +374,7 @@ function has to return a `list` of `numeric` weights named after the
 decay parameters we have set:
 
 ``` r
+
 my_third_decay <- function(decay_parameter) {
   function(travel_cost) {
     weighting_list <- lapply(
@@ -384,6 +416,7 @@ input as well) to calculate the accessibility with multiple decay
 parameters in a single call:
 
 ``` r
+
 third_custom_gravity <- gravity(
   travel_matrix,
   land_use_data,
@@ -419,5 +452,5 @@ weight vectors as output.
 Bauer, Jan, and David A. Groneberg. 2016. “Measuring Spatial
 Accessibility of Health Care Providers – Introduction of a Variable
 Distance Decay Function Within the Floating Catchment Area (FCA)
-Method.” Edited by Kebede Deribe. *PLOS ONE* 11 (7): e0159148.
+Method.” *PLOS ONE* 11 (7): e0159148.
 <https://doi.org/10.1371/journal.pone.0159148>.

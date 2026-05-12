@@ -91,7 +91,7 @@ which is discussed further down in this the vignette.</p>
 </h3>
 <p>Also known as the step decay function, it’s most commonly used in
 cumulative opportunities measures.</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mn>1</mn></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">for </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>≤</mo><mi>T</mi></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mn>0</mn></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">for </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>&gt;</mo><mi>T</mi></mtd></mtr></mtable></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd></mtr></mtable><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mn>1</mn></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">for </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>≤</mo><mi>T</mi></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mn>0</mn></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">for </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>&gt;</mo><mi>T</mi></mtd></mtr></mtable></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd></mtr></mtable><annotation encoding="application/x-tex">
 \begin{aligned}
   f(t_{ij})= \left\{
       \begin{array}{ll}
@@ -113,7 +113,7 @@ is the travel cost cutoff.</p>
 </h3>
 <p>Weights decay linearly until the travel cost cutoff is reached. From
 this point onward weights assume the value of 0.</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mi>/</mi><mi>T</mi><mo stretchy="true" form="postfix">)</mo></mrow></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">for </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>≤</mo><mi>T</mi></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mn>0</mn></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">for </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>&gt;</mo><mi>T</mi></mtd></mtr></mtable></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd></mtr></mtable><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mi>/</mi><mi>T</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">for </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>≤</mo><mi>T</mi></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mn>0</mn></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">for </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>&gt;</mo><mi>T</mi></mtd></mtr></mtable></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd></mtr></mtable><annotation encoding="application/x-tex">
 \begin{aligned}
   f(t_{ij})= \left\{
       \begin{array}{ll}
@@ -133,7 +133,7 @@ is the travel cost cutoff.</p>
 <div class="section level3">
 <h3 id="negative-exponential">Negative exponential<a class="anchor" aria-label="anchor" href="#negative-exponential"></a>
 </h3>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msup><mi>e</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>−</mo><mi>β</mi><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></msup></mtd></mtr></mtable><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>e</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>β</mi><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="false" form="postfix">)</mo></mrow></msup></mtd></mtr></mtable><annotation encoding="application/x-tex">
 \begin{aligned}
   f(t_{ij})= e^{(-\beta t_{ij})}
 \end{aligned}
@@ -148,7 +148,7 @@ is the parameter that tells the speed of decay.</p>
 <div class="section level3">
 <h3 id="inverse-power">Inverse power<a class="anchor" aria-label="anchor" href="#inverse-power"></a>
 </h3>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mn>1</mn></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">for </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>≤</mo><mn>1</mn></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><msubsup><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow><mrow><mo>−</mo><mi>β</mi></mrow></msubsup></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">for </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>&gt;</mo><mn>1</mn></mtd></mtr></mtable></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd></mtr></mtable><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mn>1</mn></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">for </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>≤</mo><mn>1</mn></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><msubsup><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow><mrow><mi>−</mi><mi>β</mi></mrow></msubsup></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">for </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>&gt;</mo><mn>1</mn></mtd></mtr></mtable></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd></mtr></mtable><annotation encoding="application/x-tex">
 \begin{aligned}
   f(t_{ij})= \left\{
       \begin{array}{ll}
@@ -171,7 +171,7 @@ is the parameter that tells the speed of decay.</p>
 <p>Similar to the binary function, but can take an arbitrary number of
 steps. The current implementation assumes that values changes at each
 step, instead of right after it.</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mn>1</mn></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">for </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>&lt;</mo><msub><mi>S</mi><mn>1</mn></msub></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><msub><mi>v</mi><mn>1</mn></msub></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">for </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>&lt;</mo><msub><mi>S</mi><mn>2</mn></msub></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><msub><mi>v</mi><mn>2</mn></msub></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">for </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>&lt;</mo><msub><mi>S</mi><mn>3</mn></msub></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>.</mi><mi>.</mi><mi>.</mi></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><msub><mi>v</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">for </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>&lt;</mo><msub><mi>S</mi><mi>n</mi></msub></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><msub><mi>v</mi><mi>n</mi></msub></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">otherwise</mtext></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"></mtd></mtr></mtable></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd></mtr></mtable><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mn>1</mn></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">for </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>&lt;</mo><msub><mi>S</mi><mn>1</mn></msub></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><msub><mi>v</mi><mn>1</mn></msub></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">for </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>&lt;</mo><msub><mi>S</mi><mn>2</mn></msub></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><msub><mi>v</mi><mn>2</mn></msub></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">for </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>&lt;</mo><msub><mi>S</mi><mn>3</mn></msub></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>.</mi><mi>.</mi><mi>.</mi></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><msub><mi>v</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">for </mtext><mspace width="0.333em"></mspace></mrow><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>&lt;</mo><msub><mi>S</mi><mi>n</mi></msub></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><msub><mi>v</mi><mi>n</mi></msub></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">otherwise</mtext></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"></mtd></mtr></mtable></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd></mtr></mtable><annotation encoding="application/x-tex">
 \begin{aligned}
   f(t_{ij})= \left\{
       \begin{array}{ll}
@@ -210,7 +210,7 @@ the logistic decay curve proposed by <span class="citation">Bauer and
 Groneberg (2016)</span>. Standard deviations values near 0 result in
 weighting curves that approximate binary decay, while higher values tend
 to linearize the curve.</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mrow><mn>1</mn><mo>+</mo><msup><mi>e</mi><mfrac><mrow><mo>−</mo><mi>I</mi><mi>P</mi><mo>×</mo><mi>π</mi></mrow><mrow><mi>S</mi><mi>D</mi><mo>×</mo><msqrt><mn>3</mn></msqrt></mrow></mfrac></msup></mrow><mrow><mn>1</mn><mo>+</mo><msup><mi>e</mi><mfrac><mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>−</mo><mi>I</mi><mi>P</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>×</mo><mi>π</mi></mrow><mrow><mi>S</mi><mi>D</mi><mo>×</mo><msqrt><mn>3</mn></msqrt></mrow></mfrac></msup></mrow></mfrac></mtd></mtr></mtable><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mn>1</mn><mo>+</mo><msup><mi>e</mi><mfrac><mrow><mi>−</mi><mi>I</mi><mi>P</mi><mo>×</mo><mi>π</mi></mrow><mrow><mi>S</mi><mi>D</mi><mo>×</mo><msqrt><mn>3</mn></msqrt></mrow></mfrac></msup></mrow><mrow><mn>1</mn><mo>+</mo><msup><mi>e</mi><mfrac><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>−</mo><mi>I</mi><mi>P</mi><mo stretchy="false" form="postfix">)</mo><mo>×</mo><mi>π</mi></mrow><mrow><mi>S</mi><mi>D</mi><mo>×</mo><msqrt><mn>3</mn></msqrt></mrow></mfrac></msup></mrow></mfrac></mtd></mtr></mtable><annotation encoding="application/x-tex">
 \begin{aligned}
   f(t_{ij}) = \frac{
     1 + e^\frac{-IP \times \pi}{SD \times \sqrt{3}}}{
@@ -268,6 +268,11 @@ steps and weights:</p>
 costs ranging from 1 to 100:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'data.table'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     %notin%</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">binary</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decay_binary.html">decay_binary</a></span><span class="op">(</span>cutoff <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span>
@@ -279,7 +284,7 @@ costs ranging from 1 to 100:</p>
 <span></span>
 <span><span class="va">travel_costs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">100</span>, <span class="fl">0.1</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">weights</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span></span>
+<span><span class="va">weights</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span></span>
 <span>  minutes <span class="op">=</span> <span class="va">travel_costs</span>,</span>
 <span>  binary <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu">binary</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span><span class="op">[[</span><span class="st">"50"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>  linear <span class="op">=</span> <span class="fu">linear</span><span class="op">(</span><span class="va">travel_costs</span><span class="op">)</span><span class="op">[[</span><span class="st">"50"</span><span class="op">]</span><span class="op">]</span>,</span>
@@ -290,7 +295,7 @@ costs ranging from 1 to 100:</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># reshape data to long format</span></span>
-<span><span class="va">weights</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/melt.data.table.html" class="external-link">melt</a></span><span class="op">(</span></span>
+<span><span class="va">weights</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/melt.data.table.html" class="external-link">melt</a></span><span class="op">(</span></span>
 <span>  <span class="va">weights</span>,</span>
 <span>  id.vars <span class="op">=</span> <span class="st">"minutes"</span>,</span>
 <span>  variable.name <span class="op">=</span> <span class="st">"decay_function"</span>,</span>
@@ -324,7 +329,7 @@ as weights, each one with the same length of input.</li>
 <p>Let’s check the difference between each case with an example. Suppose
 we want to use a very simple decay function that defines the weights as
 the multiplicative inverse of travel cost -
-i.e. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mi>r</mi><mi>a</mi><mi>v</mi><mi>e</mi><mi>l</mi><mi>_</mi><mi>c</mi><mi>o</mi><mi>s</mi><msup><mi>t</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">travel\_cost^{-1}</annotation></semantics></math>.
+i.e. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mi>r</mi><mi>a</mi><mi>v</mi><mi>e</mi><mi>l</mi><mi>_</mi><mi>c</mi><mi>o</mi><mi>s</mi><msup><mi>t</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">travel\_cost^{-1}</annotation></semantics></math>.
 We just have to take care of the case when travel cost is less than 1,
 in which case the function would return values greater than 1 and which
 we will replace with 1, but otherwise the implementation is pretty
@@ -429,8 +434,8 @@ a function.</p>
 <span><span class="co">#&gt;     names(weights_list) &lt;- decay_value</span></span>
 <span><span class="co">#&gt;     return(weights_list)</span></span>
 <span><span class="co">#&gt; }</span></span>
-<span><span class="co">#&gt; &lt;bytecode: 0x55d3f37ccad0&gt;</span></span>
-<span><span class="co">#&gt; &lt;environment: 0x55d3f87e75a0&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; &lt;bytecode: 0x55d431c570e8&gt;</span></span>
+<span><span class="co">#&gt; &lt;environment: 0x55d436c67158&gt;</span></span></code></pre></div>
 <p>What if we want our custom function to take many decay parameters as
 inputs, just like the built-in decay functions? In this case, our output
 function has to return a <code>list</code> of <code>numeric</code>
@@ -502,14 +507,14 @@ function and you want to check its sensitivity to different decay
 parameters, for example, you might be better off developing a decay
 function that can take many decay values as inputs and returns a list of
 weight vectors as output.</p>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-bauer2016measuring" class="csl-entry">
 Bauer, Jan, and David A. Groneberg. 2016. <span>“Measuring <span>Spatial
 Accessibility</span> of <span>Health Care Providers</span> –
 <span>Introduction</span> of a <span>Variable Distance Decay
 Function</span> Within the <span>Floating Catchment Area</span>
-(<span>FCA</span>) <span>Method</span>.”</span> Edited by Kebede Deribe.
-<em>PLOS ONE</em> 11 (7): e0159148. <a href="https://doi.org/10.1371/journal.pone.0159148" class="external-link">https://doi.org/10.1371/journal.pone.0159148</a>.
+(<span>FCA</span>) <span>Method</span>.”</span> <em>PLOS ONE</em> 11
+(7): e0159148. <a href="https://doi.org/10.1371/journal.pone.0159148" class="external-link">https://doi.org/10.1371/journal.pone.0159148</a>.
 </div>
 </div>
 </div>

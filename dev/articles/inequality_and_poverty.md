@@ -13,6 +13,7 @@ use in this demonstration. To do so, we use the
 function and the sample data included in the package.
 
 ``` r
+
 library(accessibility)
 
 data_dir <- system.file("extdata", package = "accessibility")
@@ -70,6 +71,7 @@ Please note that this variable should describe income per capita
 of the total amount of income in each cell.
 
 ``` r
+
 palma <- palma_ratio(
   access,
   sociodemographic_data = land_use_data,
@@ -97,6 +99,7 @@ perfect inequality, in which the accessibility levels in a study area
 are all concentrated into a single cell.
 
 ``` r
+
 gini <- gini_index(
   access,
   sociodemographic_data = land_use_data,
@@ -138,6 +141,7 @@ Index to calculate. This parameter currently supports two values,
 relative CI and the corrected CI, proposed by Erreygers (2009).
 
 ``` r
+
 ci <- concentration_index(
   access,
   sociodemographic_data = land_use_data,
@@ -182,6 +186,7 @@ each group to the within-groups component. Both behaviors are shown
 below.
 
 ``` r
+
 theil_without_groups <- theil_t(
   access,
   sociodemographic_data = land_use_data,
@@ -252,20 +257,20 @@ theil_with_groups
 
 [`fgt_poverty()`](https://ipeagit.github.io/accessibility/dev/reference/fgt_poverty.md)
 calculates the FGT metrics, a family of poverty measures originally
-proposed by Foster, Greer, and Thorbecke (1984) that capture the extent
-and severity of poverty within an accessibility distribution. The FGT
-family is composed of three measures that differ based on the $\alpha$
-parameter used to calculate them (either 0, 1 or 2) and which also
-changes their interpretation:
+proposed by Foster et al. (1984) that capture the extent and severity of
+poverty within an accessibility distribution. The FGT family is composed
+of three measures that differ based on the $`\alpha`$ parameter used to
+calculate them (either 0, 1 or 2) and which also changes their
+interpretation:
 
-- with $\alpha = 0$ (FGT0) the measure captures the extent of poverty as
-  a simple headcount - i.e. the proportion of people below the poverty
-  line;
-- with $\alpha = 1$ (FGT1) the measure, also know as the “poverty gap
+- with $`\alpha = 0`$ (FGT0) the measure captures the extent of poverty
+  as a simple headcount - i.e. the proportion of people below the
+  poverty line;
+- with $`\alpha = 1`$ (FGT1) the measure, also know as the “poverty gap
   index”, captures the severity of poverty as the average percentage
   distance between the poverty line and the accessibility of individuals
   below the poverty line;
-- with $\alpha = 2$ (FGT2) the measure simultaneously captures the
+- with $`\alpha = 2`$ (FGT2) the measure simultaneously captures the
   extent and the severity of poverty by calculating the number of people
   below the poverty line weighted by the size of the accessibility
   shortfall relative to the poverty line.
@@ -275,17 +280,19 @@ define the poverty line below which individuals are considered to be in
 accessibility poverty.
 
 ``` r
+
 poverty <- fgt_poverty(
   access,
   sociodemographic_data = land_use_data,
   opportunity = "jobs",
   population = "population",
-  poverty_line = 95368
+  poverty_line = 50000
 )
+
 poverty
 #>         FGT0      FGT1      FGT2
 #>        <num>     <num>     <num>
-#> 1: 0.5745378 0.3277383 0.2218769
+#> 1: 0.3923817 0.1776241 0.1010123
 ```
 
 ## References

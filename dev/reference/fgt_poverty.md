@@ -17,6 +17,7 @@ fgt_poverty(
   opportunity,
   population,
   poverty_line,
+  poor_below_threshold = TRUE,
   group_by = character(0)
 )
 ```
@@ -51,6 +52,16 @@ fgt_poverty(
 
   A `numeric`. The poverty line below which individuals are considered
   to be in accessibility poverty.
+
+- poor_below_threshold:
+
+  Logic. If `TRUE` (default,) the observations below the poverty line
+  are considered to be poor. This is the correct approach for primal
+  accessibility measures (e.g.cumulative accessibility). If `FALSE`,
+  then observations above the poverty line are considered to be poor.
+  This is the correct approach for dual accessibility measures (e.g.
+  travel time to the closest facility). When set to `FALSE`, FGT 1 and 2
+  do not have an upper bound.
 
 - group_by:
 
@@ -94,8 +105,8 @@ poverty line, however, FGT0 value is 1 and FGT1 and FGT2 values approach
 ## References
 
 Foster J, Greer J, Thorbecke E (1984). “A Class of Decomposable Poverty
-Measures.” *Econometrica*, **52**(3), 761–766. ISSN 0012-9682,
-[doi:10.2307/1913475](https://doi.org/10.2307/1913475) , 1913475.
+Measures.” *Econometrica*, **52**(3), 761–766. ISSN 0012-9682.
+[doi:10.2307/1913475](https://doi.org/10.2307/1913475) . 1913475.
 
 ## Examples
 
@@ -113,14 +124,14 @@ access <- cumulative_cutoff(
 )
 
 poverty <- fgt_poverty(
-  access,
+  accessibility_data = access,
   opportunity = "jobs",
   sociodemographic_data = land_use_data,
   population = "population",
-  poverty_line = 95368
+  poverty_line = 50000
 )
 poverty
 #>         FGT0      FGT1      FGT2
 #>        <num>     <num>     <num>
-#> 1: 0.5745378 0.3277383 0.2218769
+#> 1: 0.3923817 0.1776241 0.1010123
 ```

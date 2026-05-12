@@ -18,12 +18,14 @@ installed in your computer. You can download either the most stable
 version from CRAN…
 
 ``` r
+
 install.packages("accessibility")
 ```
 
 …or the development version from GitHub.
 
 ``` r
+
 # install.packages("remotes")
 remotes::install_github("ipeaGIT/accessibility")
 ```
@@ -94,6 +96,7 @@ Enough talking. Let’s demonstrate some of the key features of the
 package. First we’ll need to load the libraries we’ll be using:
 
 ``` r
+
 library(accessibility)
 library(data.table)
 library(ggplot2)
@@ -112,9 +115,10 @@ origin-destination pair.
 
 Your data should look similar to this sample dataset with public
 transport travel times for the city of Belo Horizonte, Brazil, included
-in the package for demonstration purposes[¹](#fn1).
+in the package for demonstration purposes[^1].
 
 ``` r
+
 data_dir <- system.file("extdata", package = "accessibility")
 
 travel_matrix <- readRDS(file.path(data_dir, "travel_matrix.rds"))
@@ -135,6 +139,7 @@ matrix, and the number of opportunities/facilities/services in each
 spatial unit. The sample dataset we’ll be using looks like this:
 
 ``` r
+
 land_use_data <- readRDS(file.path(data_dir, "land_use_data.rds"))
 head(land_use_data)
 #>                 id population  jobs schools income_per_capita income_decile
@@ -160,6 +165,7 @@ considered. Here’s how calculating the time from each origin in Belo
 Horizonte to the closest school looks like:
 
 ``` r
+
 mtc <- cost_to_closest(
   travel_matrix,
   land_use_data,
@@ -189,6 +195,7 @@ reached from each origin with trips taking up to 30 minutes of travel
 time.
 
 ``` r
+
 cum_cutoff <- cumulative_cutoff(
   travel_matrix,
   land_use_data,
@@ -214,6 +221,7 @@ call: just change the “opportunity” column to `"population"` and set
 `active` (`TRUE` by default) to `FALSE`.
 
 ``` r
+
 passive_cum_cutoff <- cumulative_cutoff(
   travel_matrix,
   land_use_data,
@@ -251,6 +259,7 @@ number of accessible jobs considering multiple minute-by-minute time
 thresholds between 40 and 60 minutes.
 
 ``` r
+
 cum_interval <- cumulative_interval(
   travel_matrix = travel_matrix,
   land_use_data = land_use_data,
@@ -288,6 +297,7 @@ for more information on the decay functions shipped with the package and
 how to use custom functions.
 
 ``` r
+
 negative_exp <- gravity(
   travel_matrix,
   land_use_data,
@@ -319,8 +329,8 @@ two different methods:
   FCA family, originally proposed by Luo and Wang (2003).
 - Balanced Floating Catchment Area (`"bfca"`) - takes competition
   affects into account while correcting for issues of inflation of
-  demand and service levels. Originally proposed by Paez, Higgins, and
-  Vivona (2019) and named in Pereira et al. (2021).
+  demand and service levels. Originally proposed by Paez et al. (2019)
+  and named in Pereira et al. (2021).
 
 Please note that, since FCA measures consider competition effects, we
 have to specify which column in the land use dataset represents the
@@ -331,6 +341,7 @@ that the entire population of the city compete for these jobs and using
 a negative exponential decay function.
 
 ``` r
+
 bfca <- floating_catchment_area(
   travel_matrix,
   land_use_data,
@@ -364,6 +375,7 @@ can use different decay functions to calculate the impedance between
 origin-destination pairs.
 
 ``` r
+
 spatial_avlblt <- spatial_availability(
   travel_matrix,
   land_use_data,
@@ -409,6 +421,7 @@ cost of 0, then 0.05, 0.10, …, etc. In the example below, we use the
 default cost increment of 1.
 
 ``` r
+
 bal_cost <- balancing_cost(
   travel_matrix,
   land_use_data,
@@ -436,6 +449,7 @@ of the results. The example below quickly shows how to create a simple
 map using [ggplot2](https://ggplot2.tidyverse.org).
 
 ``` r
+
 grid <- system.file("extdata/grid_bho.rds", package = "accessibility")
 grid <- readRDS(grid)
 
@@ -467,19 +481,18 @@ Chicago Region.” *Environment and Planning B: Planning and Design* 30
 
 Paez, Antonio, Christopher D. Higgins, and Salvatore F. Vivona. 2019.
 “Demand and Level of Service Inflation in Floating Catchment Area (FCA)
-Methods.” Edited by Tayyab Ikram Shah. *PLOS ONE* 14 (6): e0218773.
+Methods.” *PLOS ONE* 14 (6): e0218773.
 <https://doi.org/10.1371/journal.pone.0218773>.
 
 Pereira, Rafael H. M., Carlos Kauê Vieira Braga, Luciana Mendes Servo,
-Bernardo Serra, Pedro Amaral, Nelson Gouveia, and Antonio Paez. 2021.
-“Geographic Access to COVID-19 Healthcare in Brazil Using a Balanced
-Float Catchment Area Approach.” *Social Science & Medicine* 273 (March):
-113773. <https://doi.org/10.1016/j.socscimed.2021.113773>.
+et al. 2021. “Geographic Access to COVID-19 Healthcare in Brazil Using a
+Balanced Float Catchment Area Approach.” *Social Science & Medicine* 273
+(March): 113773. <https://doi.org/10.1016/j.socscimed.2021.113773>.
 
 Soukhov, Anastasia, Antonio Páez, Christopher D. Higgins, and Moataz
 Mohamed. 2023. “Introducing Spatial Availability, a Singly-Constrained
-Measure of Competitive Accessibility.” Edited by Jun Yang. *PLOS ONE* 18
-(1): e0278468. <https://doi.org/10.1371/journal.pone.0278468>.
+Measure of Competitive Accessibility.” *PLOS ONE* 18 (1): e0278468.
+<https://doi.org/10.1371/journal.pone.0278468>.
 
 Tomasiello, Diego Bogado, Daniel Herszenhut, João Lucas Albuquerque
 Oliveira, Carlos Kaue Vieira Braga, and Rafael H. M. Pereira. 2023. “A
@@ -487,9 +500,7 @@ Time Interval Metric for Cumulative Opportunity Accessibility.” *Applied
 Geography* 157 (August): 103007.
 <https://doi.org/10.1016/j.apgeog.2023.103007>.
 
-------------------------------------------------------------------------
-
-1.  If you would like to calculate such travel cost matrices yourself,
+[^1]: If you would like to calculate such travel cost matrices yourself,
     there are several computational packages to do that in R, such as
     [r5r](https://github.com/ipeaGIT/r5r),
     [dodgr](https://github.com/UrbanAnalyst/dodgr),

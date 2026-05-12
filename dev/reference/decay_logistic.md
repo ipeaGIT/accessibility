@@ -50,7 +50,7 @@ opportunity whose cost to reach is 0 is 1).
 Bauer J, Groneberg DA (2016). “Measuring Spatial Accessibility of Health
 Care Providers – Introduction of a Variable Distance Decay Function
 within the Floating Catchment Area (FCA) Method.” *PLOS ONE*, **11**(7),
-e0159148. ISSN 1932-6203,
+e0159148. ISSN 1932-6203.
 [doi:10.1371/journal.pone.0159148](https://doi.org/10.1371/journal.pone.0159148)
 .
 

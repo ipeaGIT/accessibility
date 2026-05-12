@@ -107,7 +107,7 @@ specified travel matrix.
 
 Barboza MH, Carneiro MS, Falavigna C, Luz G, Orrico R (2021). “Balancing
 Time: Using a New Accessibility Measure in Rio de Janeiro.” *Journal of
-Transport Geography*, **90**, 102924. ISSN 09666923,
+Transport Geography*, **90**, 102924. ISSN 09666923.
 [doi:10.1016/j.jtrangeo.2020.102924](https://doi.org/10.1016/j.jtrangeo.2020.102924)
 .
 

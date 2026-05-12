@@ -103,7 +103,7 @@ travel matrix.
 
 Tomasiello DB, Herszenhut D, Oliveira JLA, Braga CKV, Pereira RHM
 (2023). “A Time Interval Metric for Cumulative Opportunity
-Accessibility.” *Applied Geography*, **157**, 103007. ISSN 0143-6228,
+Accessibility.” *Applied Geography*, **157**, 103007. ISSN 0143-6228.
 [doi:10.1016/j.apgeog.2023.103007](https://doi.org/10.1016/j.apgeog.2023.103007)
 .
 

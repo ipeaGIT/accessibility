@@ -85,7 +85,7 @@ A data frame containing the inequality estimates for the study area.
 ## References
 
 Erreygers G (2009). “Correcting the Concentration Index.” *Journal of
-Health Economics*, **28**(2), 504–515. ISSN 0167-6296,
+Health Economics*, **28**(2), 504–515. ISSN 0167-6296.
 [doi:10.1016/j.jhealeco.2008.02.003](https://doi.org/10.1016/j.jhealeco.2008.02.003)
 .
 

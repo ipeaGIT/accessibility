@@ -77,6 +77,7 @@ the interpretation of the measures.</p>
 <span>  <span class="va">opportunity</span>,</span>
 <span>  <span class="va">population</span>,</span>
 <span>  <span class="va">poverty_line</span>,</span>
+<span>  poor_below_threshold <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  group_by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -112,6 +113,16 @@ when calculating poverty.</p></dd>
 <dt id="arg-poverty-line">poverty_line<a class="anchor" aria-label="anchor" href="#arg-poverty-line"></a></dt>
 <dd><p>A <code>numeric</code>. The poverty line below which individuals are
 considered to be in accessibility poverty.</p></dd>
+
+
+<dt id="arg-poor-below-threshold">poor_below_threshold<a class="anchor" aria-label="anchor" href="#arg-poor-below-threshold"></a></dt>
+<dd><p>Logic. If <code>TRUE</code> (default,) the observations below
+the poverty line are considered to be poor. This is the correct approach
+for primal accessibility measures (e.g.cumulative accessibility). If
+<code>FALSE</code>, then observations above the poverty line are considered to be
+poor. This is the correct approach for dual accessibility measures (e.g.
+travel time to the closest facility). When set to <code>FALSE</code>, FGT 1 and 2
+do not have an upper bound.</p></dd>
 
 
 <dt id="arg-group-by">group_by<a class="anchor" aria-label="anchor" href="#arg-group-by"></a></dt>
@@ -152,8 +163,10 @@ however, FGT0 value is 1 and FGT1 and FGT2 values approach 1.</p>
     <p>Foster J, Greer J, Thorbecke E (1984).
 “A Class of Decomposable Poverty Measures.”
 <em>Econometrica</em>, <b>52</b>(3), 761–766.
-ISSN 0012-9682, <a href="https://doi.org/10.2307/1913475" class="external-link">doi:10.2307/1913475</a>
-, 1913475.</p>
+ISSN 0012-9682.
+<a href="https://doi.org/10.2307/1913475" class="external-link">doi:10.2307/1913475</a>
+.
+1913475.</p>
     </div>
 
     <div class="section level2">
@@ -171,16 +184,16 @@ ISSN 0012-9682, <a href="https://doi.org/10.2307/1913475" class="external-link">
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">poverty</span> <span class="op">&lt;-</span> <span class="fu">fgt_poverty</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">access</span>,</span></span>
+<span class="r-in"><span>  accessibility_data <span class="op">=</span> <span class="va">access</span>,</span></span>
 <span class="r-in"><span>  opportunity <span class="op">=</span> <span class="st">"jobs"</span>,</span></span>
 <span class="r-in"><span>  sociodemographic_data <span class="op">=</span> <span class="va">land_use_data</span>,</span></span>
 <span class="r-in"><span>  population <span class="op">=</span> <span class="st">"population"</span>,</span></span>
-<span class="r-in"><span>  poverty_line <span class="op">=</span> <span class="fl">95368</span></span></span>
+<span class="r-in"><span>  poverty_line <span class="op">=</span> <span class="fl">50000</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">poverty</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         FGT0      FGT1      FGT2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;     &lt;num&gt;     &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.5745378 0.3277383 0.2218769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.3923817 0.1776241 0.1010123</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
