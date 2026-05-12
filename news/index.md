@@ -9,7 +9,7 @@ CRAN release: 2026-05-12
 - New function
   [`constrained_accessibility()`](https://ipeagit.github.io/accessibility/reference/constrained_accessibility.md),
   which implements the family of constrained accessibility measures
-  proposed in
+  proposed in Soukhov et al. (2025).
 
 ### Minor changes
 
