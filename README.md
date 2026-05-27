@@ -45,11 +45,11 @@ This section aims to present a very brief overview of some of the
 packages’ features. Fore more details please read the vignettes:
 
 - [Introduction to **accessibility**: calculating accessibility
-  measures](https://ipeagit.github.io/accessibility/articles/accessibility.html)
+  measures](https://ipea.github.io/accessibility/articles/accessibility.html)
 - [Decay
-  functions](https://ipeagit.github.io/accessibility/articles/decay_functions.html)
+  functions](https://ipea.github.io/accessibility/articles/decay_functions.html)
 - [Calculating accessibility inequality and
-  poverty](https://ipeagit.github.io/accessibility/articles/inequality_and_poverty.html)
+  poverty](https://ipea.github.io/accessibility/articles/inequality_and_poverty.html)
 
 To calculate accessibility levels, one simply needs a pre-calculated
 travel matrix and some land use data. Below we showcase some of the
